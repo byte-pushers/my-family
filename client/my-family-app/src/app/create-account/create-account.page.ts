@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-
+// import {form} from './node_modules/postcss-loader/dist/cjs.js'
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.page.html',
