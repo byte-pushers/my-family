@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CreateAccountController {
 
+    private final CreateAccountRepository createAccountRepository;
+
+    //constructor injection
+    public CreateAccountController(CreateAccountRepository createAccountRepository) {
+        this.createAccountRepository = createAccountRepository;
+    }
+
     //test api
     @GetMapping("/api/v1/home")
     public String home() {
@@ -16,9 +23,9 @@ public class CreateAccountController {
 
     //create-account post api
     @PostMapping("/api/v1/create-account")
-    public String createAccount(
+    public CreateAccount createAccount(
             @RequestBody CreateAccount createAccount
     ) {
-        return "your account has been created"+ createAccount.toString();
+        return createAccountRepository.save(createAccount);
     }
 }

@@ -1,8 +1,17 @@
 package com.bytepushers.family.createaccount;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 
+@Entity
 public class CreateAccount {
+
+    @Id
+    @GeneratedValue
+    private Integer Id;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -12,10 +21,12 @@ public class CreateAccount {
     private String email;
     private String address;
 
+
     public CreateAccount() {
     }
 
-    public CreateAccount(String firstName, String middleName, String lastName, String nickName, LocalDate birthday, int age, String email, String address) {
+    public CreateAccount(Integer Id, String firstName, String middleName, String lastName, String nickName, LocalDate birthday, int age, String email, String address) {
+        this.Id = Id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -26,6 +37,12 @@ public class CreateAccount {
         this.address = address;
     }
 
+    public void setId(Integer Id) {
+        this.Id = Id;
+    }
+    public Integer getId() {
+        return Id;
+    }
     public String getFirstName() {
         return firstName;
     }
@@ -103,4 +120,8 @@ public class CreateAccount {
                 ", address='" + address + '\'' +
                 '}';
     }
+
+
+
+
 }
