@@ -10,7 +10,6 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonIcon,
   AlertController
 } from '@ionic/angular/standalone';
 
@@ -20,15 +19,15 @@ import {
   styleUrls: ['./login-page.page.scss'],
   standalone: true,
   imports: [
+    //ionic components
     IonContent,
     IonHeader,
     IonTitle,
-    IonToolbar,
+    IonToolbar,//Contains the title and other controls.
     IonItem,
-    IonLabel,
+    IonLabel, //Provides a label for the input fields (e.g., "Username" and "Password").
     IonInput,
-    IonButton,
-    IonIcon,
+    IonButton,//Represents the "Sign In" button.
     CommonModule,
     FormsModule
   ]
@@ -37,7 +36,7 @@ export class LoginPagePage implements OnInit {
   username: string = '';
   password: string = '';
   passwordType: string = 'password';  // Default is hidden
-  passwordIcon: string = 'eye-off';   // Default icon for hidden password
+
 
   constructor(private alertCtrl: AlertController) {}
 
