@@ -38,7 +38,9 @@ export class LoginPagePage implements OnInit {
   passwordType: string = 'password';  // Default is hidden
 
 
-  constructor(private alertCtrl: AlertController) {}
+  constructor(private alertCtrl: AlertController) {
+    console.log("Inside the login page constructor");
+  }
 
   ngOnInit() {}
 
