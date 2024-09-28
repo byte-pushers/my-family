@@ -1,33 +1,28 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Sign In</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Sign In</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Sign In</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <!-- Centralized Login Form -->
+    <div class="login-container">
+        <h2 class="login-title">Sign In</h2>
 
-  <!-- Login Form -->
-  <div class="ion-padding">
-    <h2>Please sign in</h2>
+        <!-- Username Input: Text is to have it show and password is to have it hidden -->
+        <ion-item lines="none" class="login-input">
+            <ion-input [(ngModel)]="username" type="text" placeholder="Username" required></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Username</ion-label>
-      <ion-input [(ngModel)]="username" type="text" required></ion-input>
-    </ion-item>
+        <!-- Password Input -->
+        <ion-item lines="none" class="login-input">
+            <ion-input [(ngModel)]="password" type="password" placeholder="Password" required></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input [(ngModel)]="password" [type]="passwordType" required></ion-input>
-    </ion-item>
+        <!-- Sign In Button -->
+        <ion-button expand="block" class="login-button" (click)="onSignIn()">
+            Sign In
+        </ion-button>
 
-
-    <ion-button expand="block" color="primary" class="ion-margin-top" (click)="onSignIn()">
-      Sign In
-    </ion-button>
-  </div>
+    </div>
 </ion-content>

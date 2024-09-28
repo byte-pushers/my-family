@@ -19,15 +19,14 @@ import {
   styleUrls: ['./login-page.page.scss'],
   standalone: true,
   imports: [
-    //ionic components
     IonContent,
     IonHeader,
     IonTitle,
-    IonToolbar,//Contains the title and other controls.
+    IonToolbar,
     IonItem,
-    IonLabel, //Provides a label for the input fields (e.g., "Username" and "Password").
+    IonLabel,
     IonInput,
-    IonButton,//Represents the "Sign In" button.
+    IonButton,
     CommonModule,
     FormsModule
   ]
@@ -37,27 +36,22 @@ export class LoginPagePage implements OnInit {
   password: string = '';
   passwordType: string = 'password';  // Default is hidden
 
-
-  constructor(private alertCtrl: AlertController) {
-    console.log("Inside the login page constructor");
-  }
+  constructor(private alertCtrl: AlertController) {}
 
   ngOnInit() {}
 
-
-
   async onSignIn() {
-    if (!this.username || !this.password) {
+    if (!this.username ) {
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'Username and password are required',
-        buttons: ['OK'],
+       // buttons: ['OK'],
       });
       await alert.present();
       return;
     }
 
-    // Proceed with login logic (e.g., call an API or perform authentication)
+    // Note to self: The  login logic to call an API or perform authentication)
     console.log('Username:', this.username);
     console.log('Password:', this.password);
 
@@ -65,7 +59,7 @@ export class LoginPagePage implements OnInit {
     const successAlert = await this.alertCtrl.create({
       header: 'Success',
       message: 'Login successful!',
-      buttons: ['OK'],
+      //buttons: ['OK'],
     });
     await successAlert.present();
   }

@@ -1,0 +1,61 @@
+* [33m3643601[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/login-view-2[m[33m, [m[1;31morigin/feature/login-view-2[m[33m)[m changes made
+* [33mc518b3b[m[33m ([m[1;31morigin/developer[m[33m)[m Look & feel Changes to Login
+* [33m6eb61de[m feat(login-view-2): Added Eva tailwindcss changes into project
+* [33m5d6896e[m feat(login-view-2): Fixed bug in code that pervent other routes from displaying
+* [33mbfec8c5[m Deleted Scss
+* [33md62ffbf[m Adding Login-page
+[31m|[m *   [33m3c39973[m[33m ([m[1;35mrefs/stash[m[33m)[m WIP on feature/login-view: 94ac5ce feature/login-view
+[31m|[m [32m|[m[33m\[m  
+[31m|[m [32m|[m * [33maaccc8c[m index on feature/login-view: 94ac5ce feature/login-view
+[31m|[m [32m|[m[32m/[m  
+[31m|[m * [33m94ac5ce[m[33m ([m[1;31morigin/feature/login-view[m[33m, [m[1;32mfeature/login-view[m[33m)[m feature/login-view
+[31m|[m *   [33m4911a04[m changes made
+[31m|[m [34m|[m[35m\[m  
+[31m|[m * [35m|[m [33m775e97e[m Added show password functionality and fixed layout
+[31m|[m [35m|[m [35m|[m * [33medb76c8[m[33m ([m[1;31morigin/feature/create-account-api-call3[m[33m)[m feat(create-account-api-call): Created services folder and .ts file
+[31m|[m [35m|[m [35m|[m * [33m088248e[m Your descriptive commit message here
+[31m|[m [35m|[m[31m_[m[35m|[m[31m/[m  
+[31m|[m[31m/[m[35m|[m [35m|[m   
+* [35m|[m [35m|[m   [33mb0d7124[m[33m ([m[1;31morigin/develop[m[33m)[m Merge pull request #4 from byte-pushers/feature/create-account-view
+[1;31m|[m[1;32m\[m [35m\[m [35m\[m  
+[1;31m|[m * [35m|[m [35m|[m [33m0b0b428[m[33m ([m[1;31morigin/feature/create-account-view[m[33m)[m feat(Create a create-account page)
+[1;31m|[m[1;31m/[m [35m/[m [35m/[m  
+* [35m|[m [35m|[m   [33m0cd2f8e[m Merge pull request #2 from byte-pushers/feature/tailwind-css
+[1;33m|[m[1;34m\[m [35m\[m [35m\[m  
+[1;33m|[m * [35m|[m [35m|[m [33mf4f2f5e[m[33m ([m[1;31morigin/feature/tailwind-css[m[33m, [m[1;32mfeature/tailwind-css[m[33m)[m feat(Tailwind-configured):Ignore .DS_Store
+[1;33m|[m * [35m|[m [35m|[m [33mfa457f2[m feat(Tailwind-configured):Remove .DS_Store file
+[1;33m|[m [35m|[m [35m|[m[35m/[m  
+[1;33m|[m [35m|[m[35m/[m[35m|[m   
+[1;33m|[m [35m|[m [35m|[m * [33m7b56681[m[33m ([m[1;31morigin/feature/login-api-service[m[33m)[m feat(api): Updated code and directories.
+[1;33m|[m [35m|[m [35m|[m * [33mfc10ede[m feat(api): added classes and packages to create login api
+[1;33m|[m [35m|[m [35m|[m *   [33m281612f[m Merge branch 'feature/create-account-api-call' into feature/login-api-service
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m[31m\[m  
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m * [33m57ce47f[m feat(create-account-api created)
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m * [33md442759[m work on create-account with adish, create the layer of create-account
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m * [33m26cfe0a[m feat(Create a create-account page)
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m *   [33ma951516[m Merge branch 'feature/login-api-call' into feature/create-account-api-call
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m [32m|[m[33m\[m  
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m [32m|[m * [33m5d9c012[m[33m ([m[1;31morigin/feature/login-api-call[m[33m)[m Merging feature/tailwind-css
+[1;33m|[m [35m|[m[1;33m_[m[35m|[m[1;33m_[m[1;36m|[m[1;33m_[m[32m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[35m|[m [35m|[m [1;36m|[m [32m|[m   
+[1;33m|[m [35m|[m [35m|[m [1;36m|[m * [33m32b6761[m Merge branch 'feature/tailwind-css' into feature/create-account-api-call
+[1;33m|[m [35m|[m[1;33m_[m[35m|[m[1;33m_[m[1;36m|[m[1;33m/[m[35m|[m 
+[1;33m|[m[1;33m/[m[35m|[m [35m|[m [1;36m|[m[35m/[m  
+[1;33m|[m [35m|[m [35m|[m[35m/[m[1;36m|[m   
+[1;33m|[m [35m|[m[35m/[m[35m|[m [1;36m|[m   
+[1;33m|[m * [35m|[m [1;36m|[m [33m26b3ffa[m feat(Tailwind-configured): configured tailwind-css into the project
+[1;33m|[m [35m|[m[35m/[m [1;36m/[m  
+[1;33m|[m [35m|[m * [33m8ecdf4b[m feat(api): added .ts files for account creating/login api services
+[1;33m|[m [35m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[35m|[m   
+* [35m|[m [33mde32955[m[33m ([m[1;31morigin/feature/create-account-api-service[m[33m, [m[1;31morigin/feature/create-account-api-call2[m[33m)[m feat(api-design): documented api design
+[35m|[m[35m/[m  
+* [33m5108feb[m[33m ([m[1;31morigin/feature/create-account-api-call[m[33m)[m feat(initial-project-setup): change project to use ionic framework
+* [33m78519ac[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mtailwind[m[33m, [m[1;32mmaster[m[33m)[m feat(initial-project-setup): removed InntelliJ project files and directory
+*   [33m1b82740[m Merge branch 'master' of github.com:byte-pushers/my-family
+[36m|[m[1;31m\[m  
+[36m|[m * [33m7d0b6a9[m test
+* [1;31m|[m [33m11b9a89[m feat(initial-project-setup): create projects for client and server
+[1;31m|[m[1;31m/[m  
+* [33ma9e6ce8[m initial check-in
+* [33md21f182[m Initial commit
