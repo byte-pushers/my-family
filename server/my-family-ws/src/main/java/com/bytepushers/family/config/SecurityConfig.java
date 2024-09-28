@@ -1,7 +1,6 @@
 package com.bytepushers.family.config;
 
-import com.bytepushers.family.model.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bytepushers.family.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,7 +8,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,17 +35,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(httpForm -> {
-                    httpForm
-                            .loginPage("/login").permitAll();
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/session").permitAll();  // Allow access to the login endpoint without authentication
+                    auth.anyRequest().authenticated();  // All other requests require authentication
                 })
-
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/login", "/api/v1/create-account").permitAll();
-                    registry.anyRequest().authenticated();
-                })
+                .formLogin(AbstractHttpConfigurer::disable)  // Disable form login to prevent default behavior of redirecting unauthorized requests
                 .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

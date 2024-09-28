@@ -1,4 +1,4 @@
-package com.bytepushers.family.DTO;
+package com.bytepushers.family.model;
 
 import java.time.LocalDate;
 

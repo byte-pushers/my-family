@@ -1,6 +1,6 @@
 package com.bytepushers.family.controller;
 
-import com.bytepushers.family.DTO.CreateAccount;
+import com.bytepushers.family.model.CreateAccount;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

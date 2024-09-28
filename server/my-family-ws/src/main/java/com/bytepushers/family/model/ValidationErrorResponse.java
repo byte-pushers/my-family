@@ -1,4 +1,4 @@
-package com.bytepushers.family.logs;
+package com.bytepushers.family.model;
 
 import java.util.List;
 

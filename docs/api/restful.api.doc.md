@@ -15,7 +15,7 @@
 > | name            | value                | description                                                              |
 > |-----------------|----------------------|--------------------------------------------------------------------------|
 > | Content-Type    | "application/json"   | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic verisions, used for semantic versioning |
+> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic versions, used for semantic versioning |
 
 ##### Parameters
 
@@ -89,14 +89,14 @@
 </details>
 
 <details>
-<summary><code>GET</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary><code>POST</code><code><b>/api/session</b></code><code>User Login API</code></summary>
 
 ##### Headers
 
 > | name            | value             | description                                                              |
 > |-----------------|-------------------|--------------------------------------------------------------------------|
 > | Content-Type    | "application/json" | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"         | comma seperated list of semantic verisions, used for semantic versioning |
+> | Accept-Versions | "1.5.0.0"         | comma seperated list of semantic versions, used for semantic versioning |
 
 ##### Parameters
 
@@ -156,8 +156,7 @@
 ##### Example cURL
 
 > ```curl
->  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
+>  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
 > ```
 
-</details>
 ------------------------------------------------------------------------------------------

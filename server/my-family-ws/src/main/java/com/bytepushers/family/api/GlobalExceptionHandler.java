@@ -1,12 +1,11 @@
-package com.bytepushers.family;
+package com.bytepushers.family.api;
 
-import com.bytepushers.family.logs.ErrorDetail;
-import com.bytepushers.family.logs.ErrorResponse;
-import com.bytepushers.family.logs.ValidationErrorResponse;
+import com.bytepushers.family.model.ErrorDetail;
+import com.bytepushers.family.model.ErrorResponse;
+import com.bytepushers.family.model.ValidationErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

@@ -1,4 +1,4 @@
-package com.bytepushers.family.logs;
+package com.bytepushers.family.model;
 
 public class ErrorResponse {
     private int status;
