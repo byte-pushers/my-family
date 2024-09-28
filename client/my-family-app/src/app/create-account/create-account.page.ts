@@ -42,7 +42,6 @@ export class CreateAccountPage implements OnInit {
  }
 
 
-
   // Method to handle form submission
   onSubmit() {
     this.submitted = true;  // Set the flag to true when form is submitted
@@ -77,7 +76,7 @@ export class CreateAccountPage implements OnInit {
         console.log('Account created successfully. ', response);
       })
     } else {
-      console.log('Account creation failed. Try Again.');
+      console.log('Form is invalid');
     }
   }
 
