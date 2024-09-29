@@ -79,30 +79,4 @@ export class CreateAccountPage implements OnInit {
       console.log('Form is invalid');
     }
   }
-
-// Handle file input change
-onFileChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-
-    // Ensure the selected file is an image
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.');
-      return;
-    }
-
-    // Read the image for preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.selectedImage = reader.result;  // Store the image URL for preview
-    };
-    reader.readAsDataURL(file);
-  }
-}/*
-createAccount(accountData: any): Observable<any> {
-    return this.http.post(this.apiUrl, accountData);
-  } */
-  ngOnInit() {}
 }
