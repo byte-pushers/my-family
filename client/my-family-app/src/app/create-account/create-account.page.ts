@@ -12,6 +12,8 @@ import { CreateAccountService } from "../services/create-account.service";
 import {CreateAccountRequestPayload} from "../models/create-account-request.payload";
 import { AccountInfo } from "../models/account-info";
 import { Address } from "../models/address"
+import {PhoneNumber} from "../models/phone-number";
+import {create} from "ionicons/icons";
 
 @Component({
   selector: 'app-create-account',
@@ -49,7 +51,7 @@ export class CreateAccountPage implements OnInit {
     if (this.profileForm.valid) {
       console.log(this.profileForm.value); // Process the form data
 
-      // TODO: create address object with values from form
+      // TODO: create address object with values from form. return objects. profile form in parameter to pass. private
       const address = new Address(
         this.profileForm.get("address")?.value,
         "AddressLine2",
@@ -58,22 +60,28 @@ export class CreateAccountPage implements OnInit {
         "Zipcode"
       );
 
+      const phoneNumber = new PhoneNumber(
+        "Type",
+        "CountryCode",
+        "AreaCode",
+        "SubscriberNumber"
+      );
+
       // TODO: create accountInfo object with values from form and with objects list above^
       const accountInfo = new AccountInfo(
         this.profileForm.get("firstName")?.value,
         "middleNamePlaceholder",
         this.profileForm.get("lastName")?.value,
         this.profileForm.get("email")?.value,
-        "phoneNumberPlaceholder",
+        phoneNumber,
         address
       );
 
-      // TODO: search and write how to create GUIDs in javascript
-      const createAccountRequestPayload = new CreateAccountRequestPayload("trans id", accountInfo);
+      const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
 
-      // TODO: add transID into console.log; look up promise
+      // TODO: look up promise
       this.createAccountService.createAccount(createAccountRequestPayload).subscribe(response => {
-        console.log('Account created successfully. ', response);
+        console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
       })
     } else {
       console.log('Form is invalid');

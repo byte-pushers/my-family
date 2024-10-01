@@ -1,55 +1,65 @@
 export class Address {
-  public addressLine1: string;
-  public addressLine2: string;
-  public city: string;
-  public state: string;
-  public zipcode: string;
+  #addressLine1: string;
+  #addressLine2: string;
+  #city: string;
+  #state: string;
+  #zipcode: string;
 
   constructor(addressLine1: string, addressLine2: string, city: string, state: string, zipcode: string) {
-    this.addressLine1 = addressLine1;
-    this.addressLine2 = addressLine2;
-    this.city = city;
-    this.state = state;
-    this.zipcode = zipcode;
+    this.#addressLine1 = addressLine1;
+    this.#addressLine2 = addressLine2;
+    this.#city = city;
+    this.#state = state;
+    this.#zipcode = zipcode;
   }
 
-  getAddressLine1(): string {
-    return this.addressLine1;
+  public getAddressLine1(): string {
+    return this.#addressLine1;
   }
 
-  setAddressLine1(addressLine1: string) {
-    this.addressLine1 = addressLine1;
+  public get addressLine1(): string {
+    return this.#addressLine1;
   }
 
-  getAddressLine2(): string {
-    return this.addressLine2;
+  public getAddressLine2(): string {
+    return this.#addressLine2;
   }
 
-  setAddressLine2(addressLine2: string) {
-    this.addressLine2 = addressLine2;
+  public get addressLine2(): string {
+    return this.#addressLine2;
   }
 
-  getCity(): string {
-    return this.city;
+  public getCity(): string {
+    return this.#city;
   }
 
-  setCity(city: string) {
-    this.city = city;
+  public get city(): string {
+    return this.#city;
   }
 
-  getState(): string {
-    return this.state;
+  public getState(): string {
+    return this.#state;
   }
 
-  setState(state: string) {
-    this.state = state;
+  public get state(): string {
+    return this.#state;
   }
 
-  getZipcode(): string {
-    return this.zipcode;
+  public getZipcode(): string {
+    return this.#zipcode;
   }
 
-  setZipcode(zipcode: string) {
-    this.zipcode = zipcode;
+  public get zipcode(): string {
+    return this.#zipcode;
+  }
+
+  public toString(): string {
+    return `"address": {
+      "address line1": ${this.#addressLine1},
+      "address line2": ${this.#addressLine2},
+      "city": ${this.#city},
+      "state": ${this.#state},
+      "zipcode": ${this.#zipcode}
+    }`;
   }
 }

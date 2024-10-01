@@ -13,7 +13,6 @@ export class CreateAccountService {
   }
 
   public createAccount(createAccountRequestPayload: CreateAccountRequestPayload): Observable</*CreateAccountResponse|CreateAccountErrorResponse*/any> {
-    // TODO: Delegate payload to api
     const header: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
