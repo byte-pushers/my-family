@@ -84,7 +84,7 @@ export class CreateAccountPage implements OnInit {
         console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
       })
     } else {
-      console.log('Form is invalid');
+      console.log('Account creation failed. Try Again.');
     }
   }
 
