@@ -1,32 +1,32 @@
 package com.bytepushers.family.ApiResponse;
 
-public class ErrorResponse {
-    private int status;
-    private String message;
+public class ErrorResponse<T> {
+    private T status;
+    private T message;
     private ErrorDetail error;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(int status, String message, ErrorDetail error) {
+    public ErrorResponse(T status, T message, ErrorDetail error) {
         this.status = status;
         this.message = message;
         this.error = error;
     }
 
-    public int getStatus() {
+    public T getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(T status) {
         this.status = status;
     }
 
-    public String getMessage() {
+    public T getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(T message) {
         this.message = message;
     }
 

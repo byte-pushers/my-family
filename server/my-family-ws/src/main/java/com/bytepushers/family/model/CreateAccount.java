@@ -1,4 +1,4 @@
-package com.bytepushers.family.createaccount;
+package com.bytepushers.family.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,7 +41,7 @@ public class CreateAccount {
 
     @Column(nullable = false)
     @NotBlank(message="Password is Required")
-    @Size(min=8, message = "Password should be atleast 8 character long")
+    @Size(min=8, message = "Password should be at least 8 character long")
     private String password;
 
     @Column(unique = true, nullable = false)
@@ -142,7 +142,7 @@ public class CreateAccount {
 
     @Override
     public String toString() {
-        return "CreateAccount{" +
+        return "CreateAccount {" +
                 "firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +

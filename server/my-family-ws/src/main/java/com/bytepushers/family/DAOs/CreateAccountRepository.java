@@ -1,5 +1,6 @@
-package com.bytepushers.family.createaccount;
+package com.bytepushers.family.DAOs;
 
+import com.bytepushers.family.model.CreateAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,20 +1,20 @@
-package com.bytepushers.family.createaccount;
+package com.bytepushers.family.controllers;
 
 import com.bytepushers.family.ApiResponse.*;
-import jakarta.validation.ConstraintViolationException;
+import com.bytepushers.family.DAOs.CreateAccountRepository;
+import com.bytepushers.family.model.CreateAccount;
 import jakarta.validation.Valid;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpHeaders;
+import com.bytepushers.family.services.CreateAccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
+
 
 @RestController
+@RequestMapping("/api/v1/")
 public class CreateAccountController {
 
     private final CreateAccountRepository createAccountRepository;
@@ -28,13 +28,14 @@ public class CreateAccountController {
     }
 
     //create-account post api
-    @PostMapping("/api/v1/create-account")
+    @PostMapping("create-account")
     public ResponseEntity<Object> createAccount(
            @Valid @RequestBody CreateAccount createAccount,
            BindingResult bindingResult
     ) {
         CreateAccount userCreated = createAccountService.createAccount(createAccount);
 
+        //if user create successfully
         ApiResponse response = new ApiResponse(
                 null,
                 "user created successfully",

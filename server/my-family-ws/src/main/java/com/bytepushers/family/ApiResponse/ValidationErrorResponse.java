@@ -2,31 +2,31 @@ package com.bytepushers.family.ApiResponse;
 
 import java.util.List;
 
-public class ValidationErrorResponse {
-    private int status;
-    private String message;
+public class ValidationErrorResponse<T> {
+    private T status;
+    private T message;
     private List<String> errors;
 
-    public ValidationErrorResponse(int status, String message, List<String> errors) {
+    public ValidationErrorResponse(T status, T message, List<String> errors) {
         this.status = status;
         this.message = message;
         this.errors = errors;
     }
 
 
-    public int getStatus() {
+    public T getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(T status) {
         this.status = status;
     }
 
-    public String getMessage() {
+    public T getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(T message) {
         this.message = message;
     }
 
