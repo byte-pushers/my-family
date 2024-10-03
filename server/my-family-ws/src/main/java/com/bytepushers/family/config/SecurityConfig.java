@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -36,10 +38,14 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/session").permitAll();  // Allow access to the login endpoint without authentication
+                    auth.requestMatchers(
+                            "/api/session",
+                            "/api/login"
+                            ).permitAll();  // Allow access to the login endpoint without authentication
                     auth.anyRequest().authenticated();  // All other requests require authentication
                 })
                 .formLogin(AbstractHttpConfigurer::disable)  // Disable form login to prevent default behavior of redirecting unauthorized requests
+//                .httpBasic(withDefaults())
                 .build();
     }
 
