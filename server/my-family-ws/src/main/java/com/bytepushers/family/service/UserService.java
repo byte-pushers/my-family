@@ -66,11 +66,3 @@ public class UserService implements UserDetailsService {
         return null;
     }
 }
-
-//@Service
-//public class UserService {
-//    public boolean login(String email, String password) {
-//        // Fake validation: always return true
-//        return true; // Always consider login successful
-//    }
-//}

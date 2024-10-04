@@ -1,5 +1,6 @@
 package com.bytepushers.family.dao;
 
+import com.bytepushers.family.api.InvalidEmailException;
 import com.bytepushers.family.model.User;
 import com.bytepushers.family.model.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,11 +7,13 @@ import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;  // Store hashed passwords
 
     // Default constructor
@@ -50,14 +52,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "User {" +
+            "id=" + id + ", " +
+            "email=" + email + ", "  +
+            "password=" + password +
+        "}";
     }
 
-    public Object get() {
-        return this;
-    }
+    // TODO Override the equals and hashcode methods
 }
