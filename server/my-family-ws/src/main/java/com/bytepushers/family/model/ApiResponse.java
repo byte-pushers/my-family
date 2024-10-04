@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/ApiResponse/ApiResponse.java
 package com.bytepushers.family.ApiResponse;
+========
+package com.bytepushers.family.model;
+>>>>>>>> feature/login-api-service:server/my-family-ws/src/main/java/com/bytepushers/family/model/ApiResponse.java
 
 public class ApiResponse {
     private int status;

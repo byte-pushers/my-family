@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/ApiResponse/ErrorDetail.java
 package com.bytepushers.family.ApiResponse;
+========
+package com.bytepushers.family.model;
+>>>>>>>> feature/login-api-service:server/my-family-ws/src/main/java/com/bytepushers/family/model/ErrorDetail.java
 
 public class ErrorDetail {
     private String code;

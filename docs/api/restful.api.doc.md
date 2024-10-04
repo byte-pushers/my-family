@@ -7,16 +7,16 @@
 
 #### Creating new/overwriting existing stubs & proxy configs
 
+### Create Account API
 <details>
 <summary><code>POST</code><code><b>/api/users</b></code><code>Register User API</code></summary>
 
 ##### Request Headers
 
-> | name            | value              | description                                                             |
-> |-----------------|--------------------|-------------------------------------------------------------------------|
-> | Content-Type    | "application/json" | accepts json                                                            |
-> | Accept          | "application/json" | accepts json                                                            |
-> | Accept-Versions | "0.0.0.1"          | comma seperated list of semantic versions, used for semantic versioning |
+> | name            | value                | description                                                               |
+> |-----------------|----------------------|---------------------------------------------------------------------------|
+> | Content-Type    | "application/json"   | accepts json                                                              |
+> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic versions, used for semantic versioning   |
 
 ##### Parameters
 
@@ -34,12 +34,7 @@
         "middleName": [string, optional, alpha] | null | undefined,
         "lastName": [string, alpha],
         "email": [string, optional] | null,
-        "phoneNumber": {
-            "type": [string, alpha],
-            "country code": [string, numeric]
-            "area code": [string, numeric]
-            "subscriber number": [string, numeric] 
-        } | null | undefined,
+        "phoneNumber": [string, optional, alphanumeric] | null | undefined,
         "address": {
             "address line1": [string, alphanumerica],
             "address line2": [string, optional, alphanumerica] | null | undefined,
@@ -88,27 +83,33 @@
 ```
 
 ##### Example cURL
-
 > ```curl
 >  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "[JSON Request Body]" http://localhost:8080/users
 > ```
 </details>
 
+
+
+------------------------------------------------------------------------------------------
+
+
+
+### Login API
 <details>
-<summary><code>GET</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary> <code>POST</code> <code> <b>/api/session</b></code> <code>User Login API</code> </summary>
 
 ##### Headers
 
-> | name            | value             | description                                                              |
-> |-----------------|-------------------|--------------------------------------------------------------------------|
-> | Content-Type    | "application/json" | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"         | comma seperated list of semantic verisions, used for semantic versioning |
+>| name            | value              | description                                                              |
+>|-----------------|--------------------|--------------------------------------------------------------------------|
+>| Content-Type    | "application/json" | accepts json                                                             |
+>| Accept-Versions | "1.5.0.0"          | comma separated list of semantic versions, used for semantic versioning  |
 
 ##### Parameters
 
-> | name      | type | data type | description |
-> |-----------|------|-----------|-------------|
-> | None      | NA   | NA        | N/A         |
+> | name      | type | data type | description  |
+> |-----------|------|-----------|--------------|
+> | None      | NA   | NA        | N/A          |
 
 ##### Request Body
 
@@ -162,8 +163,8 @@
 ##### Example cURL
 
 > ```curl
->  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
+>  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
 > ```
-
 </details>
+
 ------------------------------------------------------------------------------------------

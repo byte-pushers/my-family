@@ -1,3 +1,4 @@
+<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/createaccount/CreateAccount.java
 package com.bytepushers.family.createaccount;
 
 import jakarta.persistence.Column;
@@ -7,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import org.hibernate.mapping.Value;
 import org.hibernate.validator.constraints.Length;
+========
+package com.bytepushers.family.model;
+>>>>>>>> feature/login-api-service:server/my-family-ws/src/main/java/com/bytepushers/family/model/CreateAccount.java
 
 import java.time.LocalDate;
 
