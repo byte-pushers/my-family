@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+//@CrossOrigin(origins = "http://localhost:4200") // Allows only from your frontend domain
 public class CreateAccountController {
 
     private final CreateAccountRepository createAccountRepository;
@@ -34,7 +35,7 @@ public class CreateAccountController {
            BindingResult bindingResult
     ) {
         CreateAccount userCreated = createAccountService.createAccount(createAccount);
-
+        System.out.println(createAccount.toString());
         ApiResponse response = new ApiResponse(
                 null,
                 "user created successfully",
@@ -42,6 +43,4 @@ public class CreateAccountController {
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-
 }

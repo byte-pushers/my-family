@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, NgModel, ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, AlertController } from '@ionic/angular/standalone';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule, DatePipe} from '@angular/common';
+import {FormsModule, NgModel, ReactiveFormsModule, Validators, FormGroup, FormControl} from '@angular/forms';
+import {IonContent, IonHeader, IonTitle, IonToolbar, AlertController} from '@ionic/angular/standalone';
 
 /* import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'; */ // will be used for API call later
 
-import { CreateAccountService } from "../services/create-account.service";
-import { CreateAccountRequestPayload } from "../models/create-account-request.payload";
-import { AccountInfo } from "../models/account-info";
-import { Address } from "../models/address";
-import { PhoneNumber } from "../models/phone-number";
-import { create } from "ionicons/icons";
+import {CreateAccountService} from "../services/create-account.service";
+import {CreateAccountRequestPayload} from "../models/create-account-request.payload";
+import {AccountInfo} from "../models/account-info";
+import {Address} from "../models/address";
+import {PhoneNumber} from "../models/phone-number";
+import {create} from "ionicons/icons";
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.page.html',
   styleUrls: ['./create-account.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,DatePipe, ReactiveFormsModule],
-  providers:  [CreateAccountService]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DatePipe, ReactiveFormsModule],
+  providers: [CreateAccountService]
 })
 export class CreateAccountPage implements OnInit {
   birthdayInput = '';
@@ -32,23 +32,56 @@ export class CreateAccountPage implements OnInit {
   selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
   file: File | null = null; // The selected file, it is a type of javascript api and file here is object
 
-  constructor(public alertCtrl: AlertController ) {
-   this.profileForm = new FormGroup({
-     firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
-     lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
-     email: new FormControl('', [Validators.required, Validators.email]),             // email: required, must be a valid email format
-     address: new FormControl('', Validators.required),                               // address: required
-     birthday: new FormControl(null, Validators.required),                            // birthday: required
-     age: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(140)]),  // age: required, minimum value of 0, maximum value of 140
-     userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
-     password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),])
-   });
- }
+
+  constructor(public alertCtrl: AlertController, private createAccountService: CreateAccountService) {
+    this.profileForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
+      lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
+      email: new FormControl('', [Validators.required, Validators.email]),             // email: required, must be a valid email format
+      address: new FormControl('', Validators.required),                               // address: required
+      birthday: new FormControl(null, Validators.required),                            // birthday: required
+      age: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(140)]),  // age: required, minimum value of 0, maximum value of 140
+      userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),])
+    });
+  }
+
   toggleShow() {
     this.showPassword = !this.showPassword;
   }
- isValid(): boolean{
+
+  isValid(): boolean {
     this.submitted = true;
+    const address = new Address(
+      this.profileForm.get("address")?.value,
+      "AddressLine2",
+      "City",
+      "State",
+      "Zipcode"
+    );
+
+    const phoneNumber = new PhoneNumber(
+      "Type",
+      "CountryCode",
+      "AreaCode",
+      "SubscriberNumber"
+    );
+
+    const accountInfo = new AccountInfo(
+      this.profileForm.get("firstName")?.value,
+      "middleNamePlaceholder",
+      this.profileForm.get("lastName")?.value,
+      this.profileForm.get("email")?.value,
+      phoneNumber,
+      address,
+      this.profileForm.get("password")?.value,
+    );
+
+    const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
+
+    this.createAccountService.createAccount(createAccountRequestPayload).subscribe(response => {
+      console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
+    })
     if (this.profileForm.invalid) {
       for (const control in this.profileForm.controls) {
         if (this.profileForm.controls.hasOwnProperty(control)) {
@@ -60,7 +93,7 @@ export class CreateAccountPage implements OnInit {
     return true;
   }
 
-  calculateUserAge(event: Event){
+  calculateUserAge(event: Event) {
     const userAge = event.target as HTMLInputElement;
     const currentDate = new Date();
     const birthDate = new Date(userAge.value);
@@ -71,64 +104,52 @@ export class CreateAccountPage implements OnInit {
     this.userAge = ageInYears;
 
   }
-  profileForm: FormGroup;
-//   todayDate: DatePipe;
-  submitted = false;  // Flag to check form submission state
-  selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
-  file: File | null = null; // The selected file, it is a type of javascript api and file here is object
-//   private apiUrl = 'http://localhost:8080/api/create-account'; // Backend API URL
-  constructor(private createAccountService: CreateAccountService) {
-    this.profileForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
-      lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
-      email: new FormControl('', [Validators.required, Validators.email]),             // email: required, must be a valid email format
-      address: new FormControl('', Validators.required),                               // address: required
-      birthday: new FormControl(null, Validators.required),                            // birthday: required
-      age: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(140)]),  // age: required, minimum value of 0, maximum value of 140
 
-    });
-  }
+  // private apiUrl = 'http://localhost:8080/api/create-account'; // Backend API URL
 
 
   // Method to handle form submission
-  onSubmit() {
-    this.submitted = true;  // Set the flag to true when form is submitted
-    console.log(this.profileForm.getRawValue())
-    if (this.profileForm.valid) {
-      console.log(this.profileForm.value); // Process the form data
+  // onSubmit() {
+  //   this.submitted = true;  // Set the flag to true when form is submitted
+  //   console.log(this.profileForm.getRawValue())
+  //
+  //   if (this.profileForm.valid) {
+  //     console.log(this.profileForm.value); // Process the form data
+  //
+  //     const address = new Address(
+  //       this.profileForm.get("address")?.value,
+  //       "AddressLine2",
+  //       "City",
+  //       "State",
+  //       "Zipcode"
+  //     );
+  //
+  //     const phoneNumber = new PhoneNumber(
+  //       "Type",
+  //       "CountryCode",
+  //       "AreaCode",
+  //       "SubscriberNumber"
+  //     );
+  //
+  //     const accountInfo = new AccountInfo(
+  //       this.profileForm.get("firstName")?.value,
+  //       "middleNamePlaceholder",
+  //       this.profileForm.get("lastName")?.value,
+  //       this.profileForm.get("email")?.value,
+  //       phoneNumber,
+  //       address
+  //     );
+  //
+  //     const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
+  //
+  //     this.createAccountService.createAccount(createAccountRequestPayload).subscribe(response => {
+  //       console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
+  //     })
+  //   } else {
+  //     console.log('Account creation failed. Try Again.');
+  //   }
+  // }
 
-      const address = new Address(
-        this.profileForm.get("address")?.value,
-        "AddressLine2",
-        "City",
-        "State",
-        "Zipcode"
-      );
-
-      const phoneNumber = new PhoneNumber(
-        "Type",
-        "CountryCode",
-        "AreaCode",
-        "SubscriberNumber"
-      );
-
-      const accountInfo = new AccountInfo(
-        this.profileForm.get("firstName")?.value,
-        "middleNamePlaceholder",
-        this.profileForm.get("lastName")?.value,
-        this.profileForm.get("email")?.value,
-        phoneNumber,
-        address
-      );
-
-      const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
-
-      this.createAccountService.createAccount(createAccountRequestPayload).subscribe(response => {
-        console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
-      })
-    } else {
-      console.log('Account creation failed. Try Again.');
-    }
   // Method to handle form submission
   async onSubmit() {
     this.submitted = true;  // Set the flag to true when form is submitted
@@ -144,16 +165,17 @@ export class CreateAccountPage implements OnInit {
       if (firstInvalidControl) {
         document.getElementById(firstInvalidControl)?.focus();
       }
+
     }
     this.loading = false;
   }
 
-  clearInputMethod(){
+  clearInputMethod() {
     this.profileForm.reset()
     this.submitted = false;
   }
 
-  async successAlert(){
+  async successAlert() {
     // Show a success alert or navigate to another page
     const successAlert = await this.alertCtrl.create({
       header: 'Success',
@@ -178,14 +200,15 @@ export class CreateAccountPage implements OnInit {
         return;
       }
 
-    // Read the image for preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.selectedImage = reader.result;  // Store the image URL for preview
-    };
-    reader.readAsDataURL(file);
+      // Read the image for preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result;  // Store the image URL for preview
+      };
+      reader.readAsDataURL(file);
+    }
   }
-}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
