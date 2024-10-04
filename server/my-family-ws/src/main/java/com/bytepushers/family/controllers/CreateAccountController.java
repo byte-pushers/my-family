@@ -11,8 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-
-
 @RestController
 @RequestMapping("/api/v1/")
 public class CreateAccountController {
@@ -30,9 +28,10 @@ public class CreateAccountController {
     //create-account post api
     @PostMapping("create-account")
     public ResponseEntity<Object> createAccount(
-           @Valid @RequestBody CreateAccount createAccount,
-           BindingResult bindingResult
+            @Valid @RequestBody CreateAccount createAccount,
+            BindingResult bindingResult
     ) {
+        System.out.println(createAccount);
         CreateAccount userCreated = createAccountService.createAccount(createAccount);
 
         //if user create successfully
@@ -43,6 +42,4 @@ public class CreateAccountController {
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-
 }

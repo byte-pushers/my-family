@@ -8,5 +8,9 @@ export const routes: Routes = [
     path: 'create-account',
     loadComponent: () => import('./create-account/create-account.page').then( m => m.CreateAccountPage)
   },
+  {
+    path: 'add-to-family-tree',
+    loadComponent: () => import('./add-to-family-tree/add-to-family-tree.page').then( m => m.AddToFamilyTreePage)
+  },
 
 ];
