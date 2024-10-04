@@ -7,15 +7,16 @@
 
 #### Creating new/overwriting existing stubs & proxy configs
 
+### Create Account API
 <details>
 <summary><code>POST</code><code><b>/api/users</b></code><code>Register User API</code></summary>
 
 ##### Request Headers
 
-> | name            | value                | description                                                              |
-> |-----------------|----------------------|--------------------------------------------------------------------------|
-> | Content-Type    | "application/json"   | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic verisions, used for semantic versioning |
+> | name            | value                | description                                                               |
+> |-----------------|----------------------|---------------------------------------------------------------------------|
+> | Content-Type    | "application/json"   | accepts json                                                              |
+> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic versions, used for semantic versioning   |
 
 ##### Parameters
 
@@ -67,35 +68,48 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string] | null | undefined, // server error code
-  "message": [string] | null | undefined, // server error message
-  "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string] | null | undefined, // server error code
+      "message": [string] | null | undefined, // server error message
+      "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
-
 > ```curl
 >  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "[JSON Request Body]" http://localhost:8080/users
 > ```
 </details>
 
+
+
+------------------------------------------------------------------------------------------
+
+
+
+### Login API
 <details>
-<summary><code>POST</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary> <code>POST</code> <code> <b>/api/session</b></code> <code>User Login API</code> </summary>
 
 ##### Headers
 
-> | name            | value             | description                                                              |
-> |-----------------|-------------------|--------------------------------------------------------------------------|
-> | Content-Type    | "application/json" | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"         | comma seperated list of semantic verisions, used for semantic versioning |
+>| name            | value              | description                                                              |
+>|-----------------|--------------------|--------------------------------------------------------------------------|
+>| Content-Type    | "application/json" | accepts json                                                             |
+>| Accept-Versions | "1.5.0.0"          | comma separated list of semantic versions, used for semantic versioning  |
 
 ##### Parameters
 
-> | name      | type | data type | description |
-> |-----------|------|-----------|-------------|
-> | None      | NA   | NA        | N/A         |
+> | name      | type | data type | description  |
+> |-----------|------|-----------|--------------|
+> | None      | NA   | NA        | N/A          |
 
 ##### Request Body
 
@@ -132,11 +146,18 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string], // server error code
-  "message": [string], // server error message
-  "messageKey": [string] // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
@@ -144,6 +165,6 @@
 > ```curl
 >  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
 > ```
-
 </details>
+
 ------------------------------------------------------------------------------------------
