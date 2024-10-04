@@ -1,4 +1,55 @@
-.input-create-account:hover{
-  border: 1px;
-  color: #97d2ec;
+:root {
+  --ion-color-alert-background: #69bb7b;
+  --ion-color-alert-background-rgb: 105,187,123;
+  --ion-color-alert-background-contrast: #000000;
+  --ion-color-alert-background-contrast-rgb: 0,0,0;
+  --ion-color-alert-background-shade: #5ca56c;
+  --ion-color-alert-background-tint: #78c288;
 }
+
+::ng-deep .custom-alert .alert-wrapper .ion-color-alert-background {
+  --ion-color-base: var(--ion-color-alert-background);
+  --ion-color-base-rgb: var(--ion-color-alert-background-rgb);
+  --ion-color-contrast: var(--ion-color-alert-background-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-alert-background-contrast-rgb);
+  --ion-color-shade: var(--ion-color-alert-background-shade);
+  --ion-color-tint: var(--ion-color-alert-background-tint);
+}
+::ng-deep .custom-alert .alert-wrapper {
+  --background: #68d587;
+  --border-radius: 8px;
+  border: 2px solid #155724;
+  padding: 16px;
+
+}
+
+::ng-deep .custom-alert .alert-header {
+  color: var(--ion-color-green-800);
+}
+
+::ng-deep .custom-alert .alert-message {
+  color: var(--ion-color-green-800);
+}
+
+::ng-deep .custom-alert .alert-button {
+  color: var(--ion-color-green-800);
+}
+
+::ng-deep .custom-alert .alert-button:hover {
+  background-color: var(--ion-color-green-700);
+}
+
+/* Specific Icon Styling for the alert */
+::ng-deep .custom-alert i.fa {
+  font-size: 1.25rem;
+  color: #000;
+}
+/*
+!* Dark mode styling *!
+@media (prefers-color-scheme: dark) {
+  ::ng-deep .custom-alert .alert-wrapper {
+    background-color: var(--ion-color-dark-background); !* Use gray-800 in dark mode *!
+    color: var(--ion-color-dark-text); !* Use green-400 text in dark mode *!
+    border: 1px solid var(--ion-color-dark-border); !* Use green-800 border in dark mode *!
+  }
+}*/

@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './src/**/*.{html,ts}', // Modify the paths according to your project structure
   ],
+  darkMode: 'class',
   theme: {
     extend: {},
   },
