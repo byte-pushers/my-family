@@ -20,4 +20,19 @@ public class UserDAOImpl implements UserDAO {
     public User findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
+
+    @Override
+    public User create(User user) {
+        return null;
+    }
+
+    @Override
+    public Integer update(User user) {
+        return 0;
+    }
+
+    @Override
+    public Integer delete(User user) {
+        return 0;
+    }
 }

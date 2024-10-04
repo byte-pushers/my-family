@@ -7,7 +7,7 @@ public interface UserDAO {
 
     // TODO CRUD declarations
     User create(User user);
-    User (Integer id);
+//    User (Integer id);
     Integer update(User user);
     Integer delete(User user);
 
