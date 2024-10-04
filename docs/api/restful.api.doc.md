@@ -12,10 +12,11 @@
 
 ##### Request Headers
 
-> | name            | value                | description                                                              |
-> |-----------------|----------------------|--------------------------------------------------------------------------|
-> | Content-Type    | "application/json"   | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic verisions, used for semantic versioning |
+> | name            | value              | description                                                             |
+> |-----------------|--------------------|-------------------------------------------------------------------------|
+> | Content-Type    | "application/json" | accepts json                                                            |
+> | Accept          | "application/json" | accepts json                                                            |
+> | Accept-Versions | "0.0.0.1"          | comma seperated list of semantic versions, used for semantic versioning |
 
 ##### Parameters
 
@@ -33,7 +34,12 @@
         "middleName": [string, optional, alpha] | null | undefined,
         "lastName": [string, alpha],
         "email": [string, optional] | null,
-        "phoneNumber": [string, optional, alphanumeric] | null | undefined,
+        "phoneNumber": {
+            "type": [string, alpha],
+            "country code": [string, numeric]
+            "area code": [string, numeric]
+            "subscriber number": [string, numeric] 
+        } | null | undefined,
         "address": {
             "address line1": [string, alphanumerica],
             "address line2": [string, optional, alphanumerica] | null | undefined,
@@ -67,11 +73,18 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string] | null | undefined, // server error code
-  "message": [string] | null | undefined, // server error message
-  "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string] | null | undefined, // server error code
+      "message": [string] | null | undefined, // server error message
+      "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
@@ -82,7 +95,7 @@
 </details>
 
 <details>
-<summary><code>POST</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary><code>GET</code><code><b>/api/session</b></code><code>User Login API</code></summary>
 
 ##### Headers
 
@@ -132,17 +145,24 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string], // server error code
-  "message": [string], // server error message
-  "messageKey": [string] // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
 
 > ```curl
->  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
+>  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
 > ```
 
 </details>
