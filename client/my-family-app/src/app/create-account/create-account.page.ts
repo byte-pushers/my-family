@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule,  DatePipe } from '@angular/common';
 import {FormsModule, NgModel, ReactiveFormsModule, Validators, FormGroup, FormControl} from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,AlertController } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar,AlertController, } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.page.html',
   styleUrls: ['./create-account.page.scss'],
   standalone: true,
-  imports: [IonContent,IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,DatePipe, ReactiveFormsModule]
+  imports: [CommonModule, IonicModule, FormsModule, DatePipe, ReactiveFormsModule]
 })
 export class CreateAccountPage implements OnInit {
   birthdayInput = '';

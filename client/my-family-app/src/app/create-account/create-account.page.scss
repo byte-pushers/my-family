@@ -44,6 +44,12 @@
   font-size: 1.25rem;
   color: #000;
 }
+ion-icon[name="eye"], ion-icon[name="eye-off"] {
+  font-size: 24px;
+  color: #777;
+  cursor: pointer;
+}
+
 /*
 !* Dark mode styling *!
 @media (prefers-color-scheme: dark) {

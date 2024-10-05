@@ -220,21 +220,15 @@
                    class="text-red-800 text-sm font-bold ">
                 You need to create a password.
               </div>
-
-              <!-- Password Toggle Button -->
-              <div class="input-group-append absolute right-2 top-2">
       <span class="input-group-text cursor-pointer">
-        <i class="fa"
-           [ngClass]="{ 'fa-eye-slash': !showPassword, 'fa-eye': showPassword }"
-           (click)="toggleShow()"
-           [ngStyle] = "{'font-size': '14px'}">
-        </i>
+        <!-- Password Toggle Button -->
+          <div class="absolute inset-y-0 right-2 flex items-center">
+            <ion-icon name="{{ showPassword ? 'eye-off' : 'eye' }}" (click)="toggleShow()" size="small"></ion-icon>
+          </div>
       </span>
-              </div>
             </div>
           </div>
         </div>
-
         <div class="mt-10">
           <div class="sm:col-span-full">
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
@@ -246,8 +240,6 @@
                'pr-8': submitted && profileForm.controls['email'].invalid
              }"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
-
-
 <!--               Red "X" Icon (inside the input box)-->
               <span *ngIf="submitted && profileForm.controls['email'].invalid"
                     class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
