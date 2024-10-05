@@ -1,0 +1,172 @@
+<ion-content [fullscreen]="true">
+  <h1 class="m-9 font-bold font-inter size">Add To Family Tree</h1>
+  <form class="">
+    <div class="sub-header-container">
+      <h2 class="sub-header">Step 3 of 4</h2>
+      <div class="progress-dots">
+        <span class="dot completed"></span>
+        <span class="dot completed"></span>
+        <span class="dot incomplete"></span>
+      </div>
+    </div>
+
+    <!-- This is for cousins -->
+    <div class="mr-5 ml-5 flex gap-x-6 g">
+      <div class="w-5/6">
+        <div class="flex justify-between">
+          <label for="cousin-name" class="block text-sm font-medium leading-6 text-gray-900">Cousins</label>
+          <button class="color-blue" (click)="getCousins($event)">
+            <div class="sub-header">Add Cousins +</div>
+          </button>
+        </div>
+        <input type="text"
+               placeholder="Enter Name..."
+               [(ngModel)]="cousinName"
+               name="first-name"
+               id="cousin-name"
+               autocomplete="given-name"
+               class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
+
+      </div>
+      <!-- ignore because there is no type option -->
+      <!--<div class="flex m-5 w-1/6">
+        <select id="parent"
+                name="parent"
+                [(ngModel)]="parentType"
+                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
+          <option value="mom">MOM</option>
+          <option value="dad">DAD</option>
+        </select>
+      </div>-->
+    </div>
+
+    <div
+      *ngIf="cousinsList.length>0"
+      class="show-parent text-align-center ml-11 mr-11">
+      <ul
+        *ngFor="let cousin of cousinsList; let i = index"
+        class="flex justify-between">
+        <span class="dot completed"></span>
+        <li>{{cousin.name}}</li>
+        <button (click)="removeCousin(i)" class="text-[#0D4C92]">Remove</button>
+      </ul>
+    </div>
+
+    <!-- This is for uncles -->
+    <div class="mr-5 ml-5 flex gap-x-6">
+      <div class="w-5/6">
+        <div class="flex justify-between">
+          <label for="uncle-name" class="block text-sm font-medium leading-6 text-gray-900">Grandparents</label>
+          <button class="color-blue" (click)="getUncles($event)">
+            <div class="sub-header">Add Uncles +</div>
+          </button>
+        </div>
+        <input type="text"
+               placeholder="Enter Name..."
+               [(ngModel)]="uncleName"
+               name="first-name"
+               id="uncle-name"
+               autocomplete="given-name"
+               class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
+      </div>
+      <!--<div class="m-5 w-1/6">
+        <select id="grand-parent"
+                name="parent"
+                [(ngModel)]="grandParentType"
+                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
+          <option value="Grandma">Grandma</option>
+          <option value="Grandpa">Grandpa</option>
+        </select>
+      </div>-->
+    </div>
+
+    <div
+      *ngIf="unclesList.length>0"
+      class="show-parent text-align-center ml-11 mr-11">
+      <ul
+        *ngFor="let uncle of unclesList; let i = index"
+        class="flex justify-between">
+        <span class="dot completed"></span>
+        <li>{{uncle.name}}</li>
+        <button (click)="removeUncle(i)" class="text-[#0D4C92]">Remove</button>
+      </ul>
+    </div>
+
+
+    <!-- This is for aunts -->
+    <div class="mr-5 ml-5 flex gap-x-6">
+      <div class="w-5/6">
+        <div class="flex justify-between">
+          <label for="aunt-name" class="block text-sm font-medium leading-6 text-gray-900">Siblings</label>
+          <button class="color-blue" (click)="getAunts($event)">
+            <div class="sub-header">Add Aunts +</div>
+          </button>
+        </div>
+        <input type="text"
+               placeholder="Enter Name..."
+               [(ngModel)]="auntName"
+               name="first-name"
+               id="aunt-name"
+               autocomplete="given-name"
+               class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
+
+      <!--</div>
+      <div class="m-5 w-1/6">
+        <select id="Sibling"
+                name="parent"
+                [(ngModel)]="siblingType"
+                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
+          <option value="Brother">Brother</option>
+          <option value="Sister">Sister</option>
+        </select>
+      </div>-->
+      </div>
+    </div>
+
+    <div
+      *ngIf="auntsList.length>0"
+      class="show-parent text-align-center ml-11 mr-11">
+      <ul
+        *ngFor="let aunt of auntsList; let i = index"
+        class="flex justify-between">
+        <span class="dot completed"></span>
+        <li>{{aunt.name}}</li>
+        <button (click)="removeAunt(i)" class="text-[#0D4C92]">Remove</button>
+      </ul>
+    </div>
+
+    <!-- buttons -->
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+      <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200">
+        Back
+      </button>
+      <button type="submit"  class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow">Add to family
+      </button>
+      <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200">
+        Clear
+      </button>
+    </div>
+  </form>
+</ion-content>
+
+<!--<ion-content [fullscreen]="false" class="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+
+  &lt;!&ndash;<form [formGroup]="addFamilyForm"  class="add-family-form justify-items-center font-inter w-full md:max-w-md lg:max-w-lg space-y-6 mt-5 mx-auto p-4 lg:p-6 bg-white md:border md:border-gray-300 rounded-lg shadow-lg">
+    <div class="space-y-2">
+      <div class="border-gray-900/10 p-4 pb-4w-full">&ndash;&gt;
+        <div class="header">
+          <b>Add To Family Tree</b>
+          <div class="sub-header">
+            Step 3 of 4
+            <div class="progress-dots">
+            <span class="dot completed"></span>
+            <span class="dot completed"></span>
+            <span class="dot incompleted"></span>
+          </div>
+          </div>
+        </div>
+
+      &lt;!&ndash;</div>
+    </div>
+  </form>&ndash;&gt;
+</ion-content>-->
