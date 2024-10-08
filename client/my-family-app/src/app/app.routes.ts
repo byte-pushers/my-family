@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {AddToFamilyTreePage} from "./add-to-family-tree/add-to-family-tree.page";
 
 export const routes: Routes = [
   {
@@ -12,5 +13,9 @@ export const routes: Routes = [
   {
     path: 'login-page',
     loadComponent: () => import('./login-page/login-page.page').then(m => m.LoginPagePage)
+  },
+  {
+    path: 'add-to-family-tree',
+    loadComponent: () => import('./add-to-family-tree/add-to-family-tree.page').then(m => m.AddToFamilyTreePage)
   },
 ];

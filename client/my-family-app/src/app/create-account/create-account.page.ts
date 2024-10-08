@@ -71,6 +71,7 @@ export class CreateAccountPage implements OnInit {
         "middleNamePlaceholder",
         this.profileForm.get("lastName")?.value,
         this.profileForm.get("email")?.value,
+        this.profileForm.get("password")?.value,
         phoneNumber,
         address
       );

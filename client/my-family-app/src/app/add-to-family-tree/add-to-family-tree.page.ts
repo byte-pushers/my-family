@@ -146,7 +146,7 @@ export class AddToFamilyTreePage implements OnInit {
     }
     if(Type=="Brother" || Type=="Sister" ){
       this.siblingName='';
-      this.siblingType='';
+      this.siblingType=''
     }
     if(Type=="Husband" || Type=="Wife" ){
       this.spouseName='';
