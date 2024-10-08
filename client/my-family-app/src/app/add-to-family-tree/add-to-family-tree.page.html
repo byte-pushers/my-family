@@ -35,7 +35,7 @@
      class="show-parent text-align-center ml-11 mr-11">
      <ul
        *ngFor="let parent of parentsList; let i = index"
-       class="flex justify-between">
+       class="flex justify-evenly">
        <li>{{parent.name}}({{parent.type}}) </li>
        <button (click)="removeParent(i)" class="text-[#0D4C92]">Remove</button>
      </ul>
@@ -72,7 +72,7 @@
      class="show-parent text-align-center ml-11 mr-11">
      <ul
        *ngFor="let grandParent of grandParentList; let i = index"
-       class="flex justify-between">
+       class="flex justify-evenly">
        <li>{{grandParent.name}}({{grandParent.type}}) </li>
        <button (click)="removeGrandParent(i)" class="text-[#0D4C92]">Remove</button>
      </ul>
@@ -111,7 +111,7 @@
      class="show-parent text-align-center ml-11 mr-11">
      <ul
        *ngFor="let siblings of siblingList; let i = index"
-       class="flex justify-between">
+       class="flex justify-evenly">
        <li>{{siblings.name}}({{siblings.type}}) </li>
        <button (click)="removeSiblings(i)" class="text-[#0D4C92]">Remove</button>
      </ul>
@@ -149,7 +149,7 @@
      class="show-parent text-align-center ml-11 mr-11">
      <ul
        *ngFor="let spouse of spouseList; let i = index"
-       class="flex justify-between">
+       class="flex justify-evenly">
        <li>{{spouse.name}}({{spouse.type}}) </li>
        <button (click)="removeSpouse(i)" class="text-[#0D4C92]">Remove</button>
      </ul>

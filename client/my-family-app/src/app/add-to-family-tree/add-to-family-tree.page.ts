@@ -33,7 +33,7 @@ export class AddToFamilyTreePage implements OnInit {
   async getParents(event: Event){
     if (this.parentName && this.parentType) {
       this.parentsList.push({ name: this.parentName, type: this.parentType });
-      this.clearFields();  // Clear the input fields after adding
+      this.clearFields(this.parentType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -49,7 +49,7 @@ export class AddToFamilyTreePage implements OnInit {
   async getGrandParents(event: Event){
     if (this.grandParentName && this.grandParentType) {
       this.grandParentList.push({ name: this.grandParentName, type: this.grandParentType });
-      this.clearFields();  // Clear the input fields after adding
+      this.clearFields(this.grandParentType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -65,7 +65,7 @@ export class AddToFamilyTreePage implements OnInit {
   async getSiblings(event: Event){
     if (this.siblingName && this.siblingType) {
       this.siblingList.push({ name: this.siblingName, type: this.siblingType });
-      this.clearFields();  // Clear the input fields after adding
+      this.clearFields(this.siblingType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -81,7 +81,7 @@ export class AddToFamilyTreePage implements OnInit {
   async getSpouse(event: Event){
     if (this.spouseName && this.spouseType) {
       this.spouseList.push({ name: this.spouseName, type: this.spouseType });
-      this.clearFields();  // Clear the input fields after adding
+      this.clearFields(this.spouseType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -97,7 +97,7 @@ export class AddToFamilyTreePage implements OnInit {
   async getChildren(event: Event){
     if (this.childrenName && this.childrenType) {
       this.childrenList.push({ name: this.childrenName, type: this.childrenType });
-      this.clearFields();  // Clear the input fields after adding
+      this.clearFields(this.childrenType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -135,9 +135,27 @@ export class AddToFamilyTreePage implements OnInit {
   }
 
   //clears all input fields
-  clearFields() {
-    this.parentName = '';
-    this.parentType = '';
+  clearFields(Type:string) {
+   if(Type=="mom" || Type=="dad" ){
+     this.parentName = '';
+     this.parentType = '';
+   }
+    if(Type=="Grandma" || Type=="Grandpa" ){
+      this.grandParentName ='';
+      this.grandParentType='';
+    }
+    if(Type=="Brother" || Type=="Sister" ){
+      this.siblingName='';
+      this.siblingType='';
+    }
+    if(Type=="Husband" || Type=="Wife" ){
+      this.spouseName='';
+      this.spouseType='';
+    }
+    if(Type=="Son" || Type=="Daughter" ){
+      this.childrenName='';
+      this.childrenType='';
+    }
   }
 
   ngOnInit() {
