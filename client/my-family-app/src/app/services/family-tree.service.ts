@@ -8,7 +8,8 @@ import { FamilyTreeRequestPayload } from '../models/family-tree-request.payload'
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiUrl = 'https://your-backend-url.com/family-tree';  // Replace with actual API URL
+  // Use JavaScript true private variable
+  #apiUrl = 'https://your-backend-url.com/family-tree';  // Replace with actual API URL
 
   constructor(private http: HttpClient) {}
 
@@ -16,14 +17,15 @@ export class FamilyTreeService {
   submitFamilyTree(payload: FamilyTreeRequestPayload): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post(this.apiUrl, payload, { headers })
+    // Use the true private variable #apiUrl
+    return this.http.post(this.#apiUrl, payload, { headers })
       .pipe(
-        catchError(this.handleError)  // Handle errors
+        catchError(this.#handleError.bind(this))  // Handle errors
       );
   }
 
   // Error handling logic
-  private handleError(error: any): Observable<never> {
+  #handleError(error: any): Observable<never> {
     console.error('Family Tree API error:', error);  // Log error for debugging
     return throwError(() => new Error('Submission failed. Please try again later.'));
   }
