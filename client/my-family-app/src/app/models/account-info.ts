@@ -6,20 +6,20 @@ export class AccountInfo {
   #middleName: string;
   #lastName: string;
   #email: string;
+  #password: string;
   #phoneNumber: PhoneNumber;
   #address: Address;
-  #password : string;
 
-  constructor(firstName: string, middleName: string, lastName: string, email: string, phoneNumber: PhoneNumber, address: Address, password: string) {
+  constructor(firstName: string, middleName: string, lastName: string, email: string, password: string, phoneNumber: PhoneNumber, address: Address) {
     this.#firstName = firstName;
     this.#middleName = middleName;
     this.#lastName = lastName;
     this.#email = email;
+    this.#password = password;
     this.#phoneNumber = phoneNumber;
     this.#address = address;
-    this.#password = password;
   }
-  // TODO: add the special case getters
+
   public getFirstName(): string {
     return this.#firstName;
   }
@@ -52,6 +52,14 @@ export class AccountInfo {
     return this.#email;
   }
 
+  public getPassword(): string {
+    return this.#password;
+  }
+
+  public get password(): string {
+    return this.#password;
+  }
+
   public getPhoneNumber(): PhoneNumber {
     return this.#phoneNumber;
   }
@@ -67,12 +75,6 @@ export class AccountInfo {
   public get address(): Address {
     return this.#address;
   }
-
-  public get password() {
-    return this.#password;
-  }
-
-
 
   public toString(): string {
     return `"accountInfo": {
