@@ -33,6 +33,7 @@ public class CreateAccountController {
            @Valid @RequestBody CreateAccount createAccount,
            BindingResult bindingResult
     ) {
+
         CreateAccount userCreated = createAccountService.createAccount(createAccount);
 
         //if user create successfully

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<Object> handleException(DuplicateKeyException ex) {
 
