@@ -13,10 +13,11 @@
 
 ##### Request Headers
 
-> | name            | value                | description                                                               |
-> |-----------------|----------------------|---------------------------------------------------------------------------|
-> | Content-Type    | "application/json"   | accepts json                                                              |
-> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic versions, used for semantic versioning   |
+> | name            | value              | description                                                             |
+> |-----------------|--------------------|-------------------------------------------------------------------------|
+> | Content-Type    | "application/json" | accepts json                                                            |
+> | Accept          | "application/json" | accepts json                                                            |
+> | Accept-Versions | "0.0.0.1"          | comma seperated list of semantic versions, used for semantic versioning |
 
 ##### Parameters
 
@@ -34,7 +35,12 @@
         "middleName": [string, optional, alpha] | null | undefined,
         "lastName": [string, alpha],
         "email": [string, optional] | null,
-        "phoneNumber": [string, optional, alphanumeric] | null | undefined,
+        "phoneNumber": {
+            "type": [string, alpha],
+            "country code": [string, numeric]
+            "area code": [string, numeric]
+            "subscriber number": [string, numeric] 
+        } | null | undefined,
         "address": {
             "address line1": [string, alphanumerica],
             "address line2": [string, optional, alphanumerica] | null | undefined,
