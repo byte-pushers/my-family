@@ -1,29 +1,29 @@
 package com.bytepushers.family.ApiResponse;
 
-public class ErrorDetail<T> {
-    private T code;
-    private T details;
+public class ErrorDetail {
+    private int code;
+    private Object details;
 
     // Constructor
-    public ErrorDetail(T code, T details) {
+    public ErrorDetail(int code, Object details) {
         this.code = code;
         this.details = details;
     }
 
     // Getters and Setters
-    public T getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(T code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
-    public T getDetails() {
+    public Object getDetails() {
         return details;
     }
 
-    public void setDetails(T details) {
+    public void setDetails(Object details) {
         this.details = details;
     }
 }

@@ -1,40 +1,63 @@
 package com.bytepushers.family.ApiResponse;
 
-public class ErrorResponse<T> {
-    private T status;
-    private T message;
-    private ErrorDetail error;
+import com.bytepushers.family.logs.ValidationErrorResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ErrorResponse {
+    private String code;
+    private String message;
+    private String messageKey;
+//    private List<ValidationErrorResponse> validationErrors;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(T status, T message, ErrorDetail error) {
-        this.status = status;
+    public ErrorResponse(String code, String message, String messageKey) {
+        this.code = code;
         this.message = message;
-        this.error = error;
+        this.messageKey = messageKey;
+//        this.validationErrors = new ArrayList<>();
     }
 
-    public T getStatus() {
-        return status;
+    public ErrorResponse(String code, String message, String messageKey, List<ValidationErrorResponse> validationErrors) {
+        this.code = code;
+        this.message = message;
+        this.messageKey = messageKey;
+//        this.validationErrors = validationErrors;
     }
 
-    public void setStatus(T status) {
-        this.status = status;
+    public String getCode() {
+        return code;
     }
 
-    public T getMessage() {
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(T message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public ErrorDetail getError() {
-        return error;
+    public String getMessageKey() {
+        return messageKey;
     }
 
-    public void setError(ErrorDetail error) {
-        this.error = error;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
+
+//    public List<ValidationErrorResponse> getValidationErrors() {
+//        return validationErrors;
+//    }
+//
+//    public void setValidationErrors(List<ValidationErrorResponse> validationErrors) {
+//        this.validationErrors = validationErrors;
+//    }
 }
+

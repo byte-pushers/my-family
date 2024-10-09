@@ -2,40 +2,47 @@ package com.bytepushers.family.ApiResponse;
 
 import java.util.List;
 
-public class ValidationErrorResponse<T> {
-    private T status;
-    private T message;
-    private List<String> errors;
+public class ValidationErrorResponse {
+    private int code;
+    private String message;
+    private String messageKey;
 
-    public ValidationErrorResponse(T status, T message, List<String> errors) {
-        this.status = status;
+    public ValidationErrorResponse(int code, String message, String messageKey) {
+        this.code = code;
         this.message = message;
-        this.errors = errors;
+        this.messageKey = messageKey;
     }
 
-
-    public T getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(T status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public T getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(T message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public Object getMessageKey() {
+        return messageKey;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
 
+    @Override
+    public String toString() {
+        return "ValidationErrorResponse{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", messageKey='" + messageKey + '\'' +
+                '}';
+    }
 }

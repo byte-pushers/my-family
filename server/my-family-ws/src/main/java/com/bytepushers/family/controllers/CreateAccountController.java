@@ -4,7 +4,7 @@ import com.bytepushers.family.ApiResponse.*;
 import com.bytepushers.family.DAOs.CreateAccountRepository;
 import com.bytepushers.family.model.CreateAccount;
 import jakarta.validation.Valid;
-import com.bytepushers.family.services.CreateAccountService;
+import com.bytepushers.family.services.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api")
 public class CreateAccountController {
 
     private final CreateAccountRepository createAccountRepository;
-    private final CreateAccountService createAccountService;
+    private final AccountService accountService;
 
 
     //constructor injection
-    public CreateAccountController(CreateAccountRepository createAccountRepository, CreateAccountService createAccountService) {
+    public CreateAccountController(CreateAccountRepository createAccountRepository, AccountService accountService) {
         this.createAccountRepository = createAccountRepository;
-        this.createAccountService = createAccountService;
+        this.accountService = accountService;
     }
 
     //create-account post api
-    @PostMapping("create-account")
+    @PostMapping("/create-account")
     public ResponseEntity<Object> createAccount(
            @Valid @RequestBody CreateAccount createAccount,
            BindingResult bindingResult
     ) {
 
-        CreateAccount userCreated = createAccountService.createAccount(createAccount);
+        CreateAccount userCreated = accountService.createAccount(createAccount);
 
         //if user create successfully
         ApiResponse response = new ApiResponse(

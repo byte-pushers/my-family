@@ -1,32 +1,32 @@
 package com.bytepushers.family.ApiResponse;
 
 public class ApiResponse<T> {
-    private T status;
-    private T message;
+    private int code;
+    private String message;
     private T data;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(T data, T message, T status) {
-        this.data = data;
+    public ApiResponse(T data, String message, int code) {
+        this.code = code;
         this.message = message;
-        this.status = status;
+        this.data = data;
     }
 
-    public T getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(T status) {
-        this.status = status;
+    public void setCode(int status) {
+        this.code = code;
     }
 
-    public T getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(T message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CreateAccountService {
+public class AccountService {
     private final CreateAccountRepository createAccountRepository;
 
-    public CreateAccountService(CreateAccountRepository createAccountRepository) {
+    public AccountService(CreateAccountRepository createAccountRepository) {
         this.createAccountRepository = createAccountRepository;
 
     }
