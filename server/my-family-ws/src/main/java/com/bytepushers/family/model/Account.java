@@ -5,13 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
-import org.hibernate.mapping.Value;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
 @Entity
-public class CreateAccount {
+public class Account {
 
     @Id
     @GeneratedValue
@@ -53,10 +51,10 @@ public class CreateAccount {
     private String address;
 
 
-    public CreateAccount() {
+    public Account() {
     }
 
-    public CreateAccount(Integer Id, String firstName, String middleName, String lastName, String nickName, LocalDate birthday, int age, String password, String email, String address) {
+    public Account(Integer Id, String firstName, String middleName, String lastName, String nickName, LocalDate birthday, int age, String password, String email, String address) {
         this.Id = Id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -141,7 +139,7 @@ public class CreateAccount {
 
     @Override
     public String toString() {
-        return "CreateAccount {" +
+        return "Account {" +
                 "firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +

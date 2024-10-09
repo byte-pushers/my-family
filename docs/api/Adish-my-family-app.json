@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "0a74b188-dbc3-41b0-866c-981292d7c5be",
+		"name": "MY-FAMILY-APP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35578910"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/create-account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"\",\n    \"middleName\":\"middleName\",\n    \"lastName\":\"\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2000-10-10\",\n    \"age\":89,\n    \"password\":\"dhj\",\n    \"email\":\"dsds@gmail.com\",\n    \"address\":\"1234 N road CA\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/create-account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"create-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/home",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"home"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
