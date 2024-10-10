@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {FamilyMember, NameType, Person, RelationshipType} from "../models/family-member.model";
+import {FamilyTreeService} from "../services/family-tree.service";
 
 @Component({
   selector: 'app-add-to-family-tree',
@@ -12,28 +14,53 @@ import {AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar}
 })
 export class AddToFamilyTreePage implements OnInit {
 
-  parentName: string = '';
-  parentType: string = '';
-  grandParentName:string ='';
-  grandParentType:string='';
-  siblingName:string='';
-  siblingType:string='';
-  spouseName:string='';
-  spouseType:string='';
-  childrenName:string='';
-  childrenType:string='';
-  parentsList: Array<{name: string, type: string}> = [];
-  grandParentList: Array<{name: string, type: string}> = [];
-  siblingList: Array<{name:string, type:string}>=[];
-  spouseList: Array<{name:string, type:string}>=[];
-  childrenList:Array<{name:string,type:string}>=[];
+  // parentName: string = '';
+  // parentType: string = '';
+  // grandParentName:string ='';
+  // grandParentType:string='';
+  // siblingName:string='';
+  // siblingType:string='';
+  // spouseName:string='';
+  // spouseType:string='';
+  // childrenName:string='';
+  // childrenType:string='';
+  // parentsList: Array<{name: string, type: string}> = [];
+  // grandParentList: Array<{name: string, type: string}> = [];
+  // siblingList: Array<{name:string, type:string}>=[];
+  // spouseList: Array<{name:string, type:string}>=[];
+  // childrenList:Array<{name:string,type:string}>=[];
 
-  constructor(public alertCtrl: AlertController) { }
+  parentName: string = '';
+  parentType: RelationshipType | '' = '';
+  grandParentName: string = '';
+  grandParentType: RelationshipType | '' = '';
+  siblingName: string = '';
+  siblingType: RelationshipType | '' = '';
+  spouseName: string = '';
+  spouseType: RelationshipType | '' = '';
+  childrenName: string = '';
+  childrenType: RelationshipType | '' = '';
+
+  parentsList: FamilyMember[] = [];
+  grandParentList: FamilyMember[] = [];
+  siblingList: FamilyMember[] = [];
+  spouseList: FamilyMember[] = [];
+  childrenList: FamilyMember[] = [];
+
+
+  constructor(public alertCtrl: AlertController, private familyTreeService: FamilyTreeService) {
+
+
+  }
 
   async getParents(event: Event){
     if (this.parentName && this.parentType) {
-      this.parentsList.push({ name: this.parentName, type: this.parentType });
+      const person = new Person(this.parentName.split(' ')[0], this.parentName.split(' ')[1],45);
+      const familyMember = new FamilyMember(NameType.FULL_NAME, this.parentType, person)
+      this.parentsList.push(familyMember);
+      // this.parentsList.push({ name: this.parentName, type: this.parentType });
       this.clearFields(this.parentType);  // Clear the input fields after adding
+      console.log(this.parentsList.length);
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -48,8 +75,12 @@ export class AddToFamilyTreePage implements OnInit {
   //gets the grandparents name and type
   async getGrandParents(event: Event){
     if (this.grandParentName && this.grandParentType) {
-      this.grandParentList.push({ name: this.grandParentName, type: this.grandParentType });
+      const person = new Person(this.grandParentName.split(' ')[0], this.grandParentName.split(' ')[1],45);
+      const familyMember = new FamilyMember(NameType.FULL_NAME, this.grandParentType, person)
+      this.grandParentList.push(familyMember);
+      // this.grandParentList.push({ name: this.grandParentName, type: this.grandParentType });
       this.clearFields(this.grandParentType);  // Clear the input fields after adding
+      console.log(this.grandParentList.length);
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
@@ -64,7 +95,10 @@ export class AddToFamilyTreePage implements OnInit {
   //gets the name of siblings and type
   async getSiblings(event: Event){
     if (this.siblingName && this.siblingType) {
-      this.siblingList.push({ name: this.siblingName, type: this.siblingType });
+      const person = new Person(this.siblingName.split(' ')[0], this.siblingName.split(' ')[1],45);
+      const familyMember = new FamilyMember(NameType.FULL_NAME, this.siblingType, person)
+      this.siblingList.push(familyMember);
+      // this.siblingList.push({ name: this.siblingName, type: this.siblingType });
       this.clearFields(this.siblingType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
@@ -80,7 +114,10 @@ export class AddToFamilyTreePage implements OnInit {
   //this gets the name of the spouse and spouse type
   async getSpouse(event: Event){
     if (this.spouseName && this.spouseType) {
-      this.spouseList.push({ name: this.spouseName, type: this.spouseType });
+      const person = new Person(this.spouseName.split(' ')[0], this.spouseName.split(' ')[1],45);
+      const familyMember = new FamilyMember(NameType.FULL_NAME, this.spouseType, person)
+      this.spouseList.push(familyMember);
+      // this.spouseList.push({ name: this.spouseName, type: this.spouseType });
       this.clearFields(this.spouseType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
@@ -96,7 +133,10 @@ export class AddToFamilyTreePage implements OnInit {
   // this gets children name and children type
   async getChildren(event: Event){
     if (this.childrenName && this.childrenType) {
-      this.childrenList.push({ name: this.childrenName, type: this.childrenType });
+      const person = new Person(this.childrenName.split(' ')[0], this.childrenName.split(' ')[1],45);
+      const familyMember = new FamilyMember(NameType.FULL_NAME, this.childrenType, person)
+      this.childrenList.push(familyMember);
+      // this.childrenList.push({ name: this.childrenName, type: this.childrenType });
       this.clearFields(this.childrenType);  // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
@@ -156,16 +196,13 @@ export class AddToFamilyTreePage implements OnInit {
       this.childrenName='';
       this.childrenType='';
     }
+    console.log(this.parentsList)
   }
 
   ngOnInit() {
   }
 
-  something() {
-    console.log("it is clicking")
-  }
-
-
   protected readonly event = event;
   protected readonly Event = Event;
+  protected readonly parent = parent;
 }
