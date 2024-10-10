@@ -8,7 +8,7 @@
 #### Creating new/overwriting existing stubs & proxy configs
 
 <details>
-<summary><code>POST</code><code><b>/api/users</b></code><code>Register User API</code></summary>
+<summary><code>GET</code><code><b>/api/family-tree</b></code><code>Register family-tree API</code></summary>
 
 ##### Request Headers
 
@@ -27,21 +27,33 @@
 
 ```
 {
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "accountInfo": {
-        "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": [string, optional, alphanumeric] | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined
-    }
+	"user": {
+      "username": "string",
+      "password": "string",
+      "roles": [
+        {
+          "name": "string",
+          "permissions": [
+            {
+              "name": "string"
+            }
+          ]
+        }
+      ],
+      "familyMembers": [
+          {
+              "relationship": "string",
+              "person": {
+                  "familyMembers": [
+                      {
+                          "relationship": "string",
+                          "person": {}
+                      }
+                  ]
+              }
+          }
+      ]	
+	}
 }
 ```
 ##### Response Headers
@@ -82,7 +94,11 @@
 </details>
 
 <details>
-<summary><code>POST</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary><code>POST</code><code><b>/api/family-tree</b></code><code>User family-tree API</code></summary>
+
+<details>
+<summary><code>POST</code><code><b>/api/family-tree</b></code><code>User family-tree API</code></summary>
+</details>
 
 ##### Headers
 
@@ -100,13 +116,19 @@
 ##### Request Body
 
 ```
-{
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "credentials": {
-        "username": [string, required], // user name
-        "password": [string (base64 encoded), required] // user password
+[
+    {
+        "relationship": "string",
+        "person": {
+            "familyMembers": [
+                {
+                    "relationship": "string",
+                    "person": {}
+                }
+            ]
+        }
     }
-}
+]
 ```
 
 ##### Response Headers
@@ -147,3 +169,11 @@
 
 </details>
 ------------------------------------------------------------------------------------------
+<details>
+<summary><code>PUT</code><code><b>/api/family-tree</b></code><code>Put family-tree API</code></summary>
+</details>
+
+<details>
+<summary><code>DELETE</code><code><b>/api/family-tree</b></code><code>Delete family-tree API</code></summary>
+</details>
+</details>
