@@ -24,13 +24,13 @@ public class SecurityConfig {
         this.userService = userService;
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//        //DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+////        authProvider.setUserDetailsService(userService);
+//        authProvider.setPasswordEncoder(passwordEncoder());
+//        return authProvider;
+//    }
 
 
     @Bean

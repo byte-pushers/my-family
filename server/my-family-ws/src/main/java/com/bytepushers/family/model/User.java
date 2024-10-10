@@ -1,34 +1,37 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.*;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import jakarta.persistence.*; // Ensure you're using the correct JPA annotations
 
 @Entity
-@Table(name = "users")
+@Table(name = "users") // Add the table name if it differs from the entity name
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // This makes the id auto-increment
+    private Long id;
+
+    @Column(nullable = false, unique = true) // Ensure email is unique and not null
     private String email;
 
-    private String password;  // Store hashed passwords
+    @Column(nullable = false) // Ensure password is not null
+    private String password;
 
     // Default constructor
     public User() {
     }
 
+    // Parameterized constructor
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
     // Getters and Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,7 +60,24 @@ public class User {
                 '}';
     }
 
-    public Object get() {
-        return this;
+    // Override equals and hashCode methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!id.equals(user.id)) return false;
+        if (!email.equals(user.email)) return false;
+        return password.equals(user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + password.hashCode();
+        return result;
     }
 }
