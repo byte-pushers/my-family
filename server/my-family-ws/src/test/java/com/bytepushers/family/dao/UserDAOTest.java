@@ -1,6 +1,6 @@
 package com.bytepushers.family.dao;
 
-import com.bytepushers.family.exception.UserNotFoundException;
+import com.bytepushers.family.GlobalErrorHandler.UserNotFoundException;
 import com.bytepushers.family.model.User;
 
 import org.junit.jupiter.api.*;
@@ -9,19 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Disabled
 public class UserDAOTest {
     private static final Logger logger = LoggerFactory.getLogger(UserDAOTest.class);
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
 
     private User testUser;
 
@@ -32,7 +29,7 @@ public class UserDAOTest {
         testUser.setEmail("test@test.com");
         testUser.setPassword("password");
 
-        testUser = userDAO.createUser(testUser);
+        testUser = userRepo.createUser(testUser);
     }
 
 
@@ -42,7 +39,7 @@ public class UserDAOTest {
         if (testUser.getId() != null) {
             try {
                 logger.info("Cleaning up: deleting user with ID " + testUser.getId());
-                userDAO.deleteUser(testUser.getId());
+                userRepo.deleteUser(testUser.getId());
             } catch (UserNotFoundException e) {
                 logger.warn("Test user with ID " + testUser.getId() + " was already deleted.");
             }
@@ -57,7 +54,7 @@ public class UserDAOTest {
     public void createUserTest() {
         String expectedUserEmail = "test@test.com";
 
-        User createdUser = userDAO.createUser(testUser);
+        User createdUser = userRepo.createUser(testUser);
 
         assertNotNull(createdUser.getId(), "The user ID should not be null after creation.");
         assertEquals(expectedUserEmail, createdUser.getEmail(), "The user email should match the input email.");
@@ -69,10 +66,11 @@ public class UserDAOTest {
     @Test
     @Order(2)
     public void readUserTest() {
-        User foundUser = userDAO.findUserById(testUser.getId());
+        User foundUser = userRepo.findUserById(testUser.getId());
 
         assertNotNull(foundUser, "The user ID should not be null.");
         assertEquals(testUser.getEmail(), foundUser.getEmail(), "The user email should match the input email.");
+
         logger.info("Read User Test passed: Found user with ID {}", foundUser.getId());
     }
 
@@ -83,9 +81,9 @@ public class UserDAOTest {
         String newPassword = "omg";
 
         testUser.setPassword(newPassword);
-        userDAO.updateUser(testUser);
+        userRepo.updateUser(testUser);
 
-        User updatedUser = userDAO.findUserById(testUser.getId());
+        User updatedUser = userRepo.findUserById(testUser.getId());
 
         assertNotNull(updatedUser.getId(), "The user ID should not be null.");
         assertEquals(newPassword, updatedUser.getPassword(), "The user password should be updated.");
@@ -97,7 +95,7 @@ public class UserDAOTest {
     @Test
     @Order(4)
     public void deleteUserTest() {
-        userDAO.deleteUser(testUser.getId());
+        userRepo.deleteUser(testUser.getId());
 
         logger.info("Delete User Test passed: Deleted user with ID {}", testUser.getId());
     }
