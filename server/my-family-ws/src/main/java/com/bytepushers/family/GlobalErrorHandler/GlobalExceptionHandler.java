@@ -1,8 +1,8 @@
 package com.bytepushers.family.GlobalErrorHandler;
 
-import com.bytepushers.family.ApiResponse.ErrorDetail;
-import com.bytepushers.family.ApiResponse.ErrorResponse;
-import com.bytepushers.family.ApiResponse.ValidationErrorResponse;
+import com.bytepushers.family.logs.ErrorDetail;
+import com.bytepushers.family.logs.ErrorResponse;
+import com.bytepushers.family.logs.ValidationErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

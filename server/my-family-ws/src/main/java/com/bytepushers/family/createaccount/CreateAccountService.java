@@ -1,7 +1,7 @@
 package com.bytepushers.family.createaccount;
 
-import com.bytepushers.family.ApiResponse.ErrorDetail;
-import com.bytepushers.family.ApiResponse.ErrorResponse;
+import com.bytepushers.family.logs.ErrorDetail;
+import com.bytepushers.family.logs.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
