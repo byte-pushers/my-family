@@ -1,6 +1,6 @@
 package com.bytepushers.family.dao;
 
-import com.bytepushers.family.GlobalErrorHandler.UserNotFoundException;
+import com.bytepushers.family.exception.UserNotFoundException;
 import com.bytepushers.family.model.User;
 
 import org.junit.jupiter.api.*;

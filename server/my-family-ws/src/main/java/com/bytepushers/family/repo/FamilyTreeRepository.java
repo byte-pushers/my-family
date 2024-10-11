@@ -1,5 +1,6 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.repo;
 
+import com.bytepushers.family.model.FamilyTree;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

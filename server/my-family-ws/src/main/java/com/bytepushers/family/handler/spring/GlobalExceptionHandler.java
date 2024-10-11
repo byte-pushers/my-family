@@ -1,13 +1,19 @@
-package com.bytepushers.family.GlobalErrorHandler;
+package com.bytepushers.family.handler.spring;
 
-import com.bytepushers.family.logs.ErrorDetail;
-import com.bytepushers.family.logs.ErrorResponse;
-import com.bytepushers.family.logs.ValidationErrorResponse;
+import com.bytepushers.family.exception.AuthorizationException;
+import com.bytepushers.family.exception.DatabaseConnectionException;
+import com.bytepushers.family.exception.DatabaseOperationException;
+import com.bytepushers.family.exception.DuplicateUserException;
+import com.bytepushers.family.exception.InvalidUserException;
+import com.bytepushers.family.exception.UserDeletionFailedException;
+import com.bytepushers.family.exception.UserNotFoundException;
+import com.bytepushers.family.model.ErrorDetail;
+import com.bytepushers.family.api.ErrorResponse;
+import com.bytepushers.family.api.ValidationErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

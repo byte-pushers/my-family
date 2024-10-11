@@ -1,18 +1,16 @@
-package com.bytepushers.family.createaccount;
+package com.bytepushers.family.service;
 
-import com.bytepushers.family.logs.ErrorDetail;
-import com.bytepushers.family.logs.ErrorResponse;
-import jakarta.validation.ConstraintViolationException;
+import com.bytepushers.family.repo.AccountRepository;
+import com.bytepushers.family.model.CreateAccount;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class CreateAccountService {
-    private final CreateAccountRepository createAccountRepository;
-    public CreateAccountService(CreateAccountRepository createAccountRepository) {
+public class AccountService {
+    private final AccountRepository createAccountRepository;
+    public AccountService(AccountRepository createAccountRepository) {
         this.createAccountRepository = createAccountRepository;
 
     }
