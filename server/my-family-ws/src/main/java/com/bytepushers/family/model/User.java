@@ -1,7 +1,6 @@
 package com.bytepushers.family.model;
 
 import jakarta.persistence.*;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 
 @Entity
 @Table(name = "users")

@@ -10,16 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
-
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api", consumes = "application/json")
+@CrossOrigin(origins="*")
 public class CreateAccountController {
-
     private final CreateAccountRepository createAccountRepository;
     private final AccountService accountService;
-
 
     //constructor injection
     public CreateAccountController(CreateAccountRepository createAccountRepository, AccountService accountService) {
@@ -28,12 +24,8 @@ public class CreateAccountController {
     }
 
     //create-account post api
-    @PostMapping("/create-account")
-    public ResponseEntity<Object> createAccount(
-           @Valid @RequestBody CreateAccount createAccount,
-           BindingResult bindingResult
-    ) {
-
+    @PostMapping(value = "/create-account")
+    public ResponseEntity<?> createAccount(@Valid @RequestBody CreateAccount createAccount, BindingResult bindingResult) {
         CreateAccount userCreated = accountService.createAccount(createAccount);
 
         //if user create successfully
@@ -44,6 +36,4 @@ public class CreateAccountController {
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-
 }
