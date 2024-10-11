@@ -30,7 +30,7 @@ public class CreateAccountController {
 
         //if user create successfully
         ApiResponse response = new ApiResponse(
-                null,
+                userCreated,
                 "user created successfully",
                 201
         );
