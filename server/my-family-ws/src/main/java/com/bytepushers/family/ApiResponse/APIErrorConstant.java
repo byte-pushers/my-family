@@ -21,4 +21,5 @@ public class APIErrorConstant {
     public static final String API_ERROR_INTERNAL_SERVER_ERROR = "E500"; // Internal server error
     public static final String API_ERROR_SERVICE_UNAVAILABLE = "E503";   // Service unavailable
 
+
 }

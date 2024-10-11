@@ -21,10 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleException(DuplicateKeyException ex) {
 
         ErrorResponse errorResponse = new ErrorResponse(
-                "409",
+                APIErrorConstant.API_ERROR_USER_ALREADY_EXIST,
                 "USER ALREADY EXISTS",
-                APIErrorConstant.API_ERROR_USER_ALREADY_EXIST
-
+                null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
