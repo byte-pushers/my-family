@@ -236,14 +236,7 @@ export class AddToFamilyTreePage implements OnInit {
             })
             await alert.present()
         } else {
-
         }
-
-
-        console.log(this.parentsList)
-        console.log(this.grandParentList)
-        console.log(this.spouseList)
-        console.log(this.siblingList)
     }
 
     ngOnInit() {
