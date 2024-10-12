@@ -1,13 +1,8 @@
-
-/*constructor(private router: Router) {
-    this.router.navigate(['./add-family-step-3']);
-    this.addFamilyForm = new FormGroup({});
-  }*/
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+// import { FamilyMemberModel } from '../models/family-member'
 
 @Component({
   selector: 'app-add-family-step-3',
@@ -24,6 +19,8 @@ export class AddFamilyStep3Page implements OnInit {
   cousinsList: Array<{name: string}> = [];
   unclesList: Array<{name: string}> = [];
   auntsList: Array<{name:string}>=[];
+
+  selectedImage: string | ArrayBuffer | null = null;
 
   constructor(public alertCtrl: AlertController) {
   }
@@ -96,6 +93,47 @@ export class AddFamilyStep3Page implements OnInit {
     if (familyType=='aunt') {
       this.auntName = '';
     }
+  }
+
+  onFileChange(event: any): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  clearPage(): void {
+    this.cousinsList = [];
+    this.unclesList = [];
+    this.auntsList = [];
+  }
+
+  addToFamily(): void {
+    /*for (let i = 0; i < this.cousinsList.length; i++) {
+      const person = new Person(this.cousinsList[i], 'lastNameFiller', 7);
+      const familyMember = new FamilyMember('nameType', 'Cousin', person);
+    }
+    for (let i = 0; i < this.unclesList.length; i++) {
+      const person = new Person(this.unclesList[i], 'lastNameFiller', 7);
+      const familyMember = new FamilyMember('nameType', 'Uncle', person);
+    }
+    for (let i = 0; i < this.auntsList.length; i++) {
+      const person = new Person(this.auntsList[i], 'lastNameFiller', 7);
+      const familyMember = new FamilyMember('nameType', 'Aunt', person);
+    }*/
+
+    // route next page
   }
 
   ngOnInit() {
