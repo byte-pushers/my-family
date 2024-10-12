@@ -13,6 +13,11 @@ export const routes: Routes = [
     path: 'login-page',
     loadComponent: () => import('./login-page/login-page.page').then(m => m.LoginPagePage)
   },
+
+  {
+    path: 'welcome-page',
+    loadComponent: () => import('./welcome-page/welcome-page.page').then(m => m.WelcomePagePage)
+  },
   {
     path: 'add-family-step-3',
     loadComponent: () => import('./add-family-step-3/add-family-step-3.page').then( m => m.AddFamilyStep3Page)
