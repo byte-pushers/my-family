@@ -43,3 +43,14 @@ export const errorMessagesMap: { [key: string]: string } = {
   'E042': 'Account is disabled. Please contact support for further assistance',
   'E043': 'Profile update failed. Please check your input and try again',
 };
+
+//TODO: make map of error
+//
+// export const errorMessagesMap = new Map<string, string>([
+//   ["E001", "User already exists"],
+//   ["E002", "User not found"],
+//   ["E003", "Invalid username or password"],
+//   ["E004", "Unauthorized access. Please log in to continue"],
+//   ["E005", "Access denied. You do not have permission to perform this action"],
+//   ["E006", "Session expired. Please log in again"],
+// ]);
