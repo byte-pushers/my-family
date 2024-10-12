@@ -29,8 +29,45 @@
 ```
 {
     "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "accountInfo": {
-        "firstName": [string, required, alpha],
+	"user": {
+      "username": "string",
+      "password": "string",
+      "roles": [
+        {
+          "name": "string",
+          "permissions": [
+            {
+              "name": "string"
+            }
+          ]
+        }
+      ],
+      "familyMembers": [
+          {
+              "relationship": "string",
+              "person": {
+                  "firstName": [string, required, alpha],
+        "middleName": [string, optional, alpha] | null | undefined,
+        "lastName": [string, alpha],
+        "email": [string, optional] | null,
+        "phoneNumber": {
+            "type": [string, alpha],
+            "country code": [string, numeric]
+            "area code": [string, numeric]
+            "subscriber number": [string, numeric] 
+        } | null | undefined,
+        "address": {
+            "address line1": [string, alphanumerica],
+            "address line2": [string, optional, alphanumerica] | null | undefined,
+            "city": [string],
+            "state": [string],
+            "zipcode": [string, alpha numeric hyphen]
+        } | null | undefined  
+                  "familyMembers": [
+                      {
+                          "relationship": "string",
+                          "person": {
+                          "firstName": [string, required, alpha],
         "middleName": [string, optional, alpha] | null | undefined,
         "lastName": [string, alpha],
         "email": [string, optional] | null,
@@ -47,7 +84,13 @@
             "state": [string],
             "zipcode": [string, alpha numeric hyphen]
         } | null | undefined
-    }
+                          }
+                      }
+                  ]
+              }
+          }
+      ]	
+	}
 }
 ```
 ##### Response Headers
@@ -113,13 +156,19 @@
 ##### Request Body
 
 ```
-{
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "credentials": {
-        "username": [string, required], // user name
-        "password": [string (base64 encoded), required] // user password
+[
+    {
+        "relationship": "string",
+        "person": {
+            "familyMembers": [
+                {
+                    "relationship": "string",
+                    "person": {}
+                }
+            ]
+        }
     }
-}
+]
 ```
 
 ##### Response Headers
