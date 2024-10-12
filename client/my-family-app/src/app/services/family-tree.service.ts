@@ -27,6 +27,11 @@ export class FamilyTreeService {
   // Error handling logic
   #handleError(error: any): Observable<never> {
     console.error('Family Tree API error:', error);  // Log error for debugging
+    //TODO: create a error object has a list of error errors
+    //TODO: loop through the errors get the error code and search the user friendly error message map (key:E001, value:"user friendly message")
+    //TODO: create new error message that will be data bind to the view, which should display in the model
+    //TODO: hint- create global error handler that will publish an event (subject or behaviour event) of errors
+    //TODO: hint- the view and component will be listening for this event via event.subscribe  method - which will take the errors and data bind to the model
     return throwError(() => new Error('Submission failed. Please try again later.'));
   }
 }
