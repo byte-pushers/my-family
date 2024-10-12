@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <h1 class="m-9 text-2xl font-bold font-inter size">Add To Family Tree</h1>
+  <h1 class="m-9 text-3xl font-bold font-inter size">Add To Family Tree</h1>
   <form class="">
     <h2 class="text-base text-center mt-4 font-bold text-blue-800">Step 3 of 4</h2>
     <div class="flex justify-center mt-2">
@@ -9,12 +9,12 @@
     </div>
 
     <!-- This is for cousins -->
-    <div class="mr-5 ml-5 flex gap-x-6 g">
-      <div class="w-5/6">
+    <div class="ml-9 mr-9 flex gap-x-6 g justify-center">
+      <div class="w-full">
         <div class="flex justify-between">
-          <label for="cousin-name" class="block text-sm font-medium leading-6">Cousins</label>
+          <label for="cousin-name" class="block font-medium leading-6">Cousins</label>
           <button class="color-blue" (click)="getCousins($event)">
-            <div class="sub-header text-blue-800">Add Cousins +</div>
+            <div class="sub-header text-sm text-blue-800">Add Cousins +</div>
           </button>
         </div>
         <input type="text"
@@ -24,18 +24,7 @@
                id="cousin-name"
                autocomplete="given-name"
                class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
-
       </div>
-      <!-- ignore because there is no type option -->
-      <!--<div class="flex m-5 w-1/6">
-        <select id="parent"
-                name="parent"
-                [(ngModel)]="parentType"
-                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
-          <option value="mom">MOM</option>
-          <option value="dad">DAD</option>
-        </select>
-      </div>-->
     </div>
 
     <div
@@ -51,12 +40,12 @@
     </div>
 
     <!-- This is for uncles -->
-    <div class="mr-5 ml-5 flex gap-x-6">
-      <div class="w-5/6">
+    <div class="ml-9 mr-9 flex gap-x-6 g justify-center">
+      <div class="w-full">
         <div class="flex justify-between">
-          <label for="uncle-name" class="block text-sm font-medium leading-6 text-gray-900">Uncles</label>
+          <label for="uncle-name" class="block font-medium leading-6 text-gray-900">Uncles</label>
           <button class="color-blue" (click)="getUncles($event)">
-            <div class="sub-header text-blue-800">Add Uncles +</div>
+            <div class="sub-header text-sm text-blue-800">Add Uncles +</div>
           </button>
         </div>
         <input type="text"
@@ -67,15 +56,6 @@
                autocomplete="given-name"
                class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
       </div>
-      <!--<div class="m-5 w-1/6">
-        <select id="grand-parent"
-                name="parent"
-                [(ngModel)]="grandParentType"
-                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
-          <option value="Grandma">Grandma</option>
-          <option value="Grandpa">Grandpa</option>
-        </select>
-      </div>-->
     </div>
 
     <div
@@ -92,12 +72,12 @@
 
 
     <!-- This is for aunts -->
-    <div class="mr-5 ml-5 flex gap-x-6">
-      <div class="w-5/6">
+    <div class="ml-9 mr-9 flex gap-x-6 g justify-center">
+      <div class="w-full">
         <div class="flex justify-between">
-          <label for="aunt-name" class="block text-sm font-medium leading-6 text-gray-900">Aunts</label>
+          <label for="aunt-name" class="block font-medium leading-6 text-gray-900">Aunts</label>
           <button class="color-blue" (click)="getAunts($event)">
-            <div class="sub-header text-blue-800">Add Aunts +</div>
+            <div class="sub-header text-sm text-blue-800">Add Aunts +</div>
           </button>
         </div>
         <input type="text"
@@ -107,17 +87,6 @@
                id="aunt-name"
                autocomplete="given-name"
                class="input-create-account  block w-full rounded-md border-[#97d2ec] py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
-
-      <!--</div>
-      <div class="m-5 w-1/6">
-        <select id="Sibling"
-                name="parent"
-                [(ngModel)]="siblingType"
-                class="flex rounded-md border-0 py-2 bg-gray-100  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm">
-          <option value="Brother">Brother</option>
-          <option value="Sister">Sister</option>
-        </select>
-      </div>-->
       </div>
     </div>
 
@@ -133,14 +102,33 @@
       </ul>
     </div>
 
+    <!-- Crest Upload Option -->
+    <div class="flex justify-center items-center space-x-4 m-7">
+      <!-- Upload box -->
+      <div class="w-72 h-72 bg-gray-100 border-2 border-dashed flex flex-col justify-end" (click)="fileInput.click()">
+        <div class="font-inter font-bold text-2xl text-center text-black mb-3">Upload Crest (optional)</div>
+        <div class="font-inter text-xl text-center text-gray-400 mb-3">Click here to upload image</div>
+        <input type="file" #fileInput (change)="onFileChange($event)" accept="image/" class="hidden"/>
+      </div>
+
+      <input id="crest-upload" type="file" class="hidden"/>
+
+      <!-- Preview box -->
+      <div class="crest-photo grid col-span-full place-items-center w-72 h-72 bg-gray-100">
+        <img *ngIf="selectedImage" [src]="selectedImage" alt="Uploaded Image" class="h-full w-full object-cover"/>
+
+      </div>
+    </div>
+
     <!-- buttons -->
     <div class="mt-10 flex items-center justify-center gap-x-6">
       <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200">
         Back
       </button>
-      <button type="submit"  class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow">Add to family
+      <button type="submit"  class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow">
+        Add to family
       </button>
-      <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200">
+      <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearPage()">
         Clear
       </button>
     </div>
