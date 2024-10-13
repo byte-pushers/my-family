@@ -11,7 +11,6 @@ export class FamilyTreeRequestPayload {
   #uncles: FamilyMember[];
   #aunts: FamilyMember[];
 
-  // Constructor to initialize the fields
   constructor(
     parents: FamilyMember[],
     grandparents: FamilyMember[],
@@ -22,6 +21,7 @@ export class FamilyTreeRequestPayload {
     uncles: FamilyMember[],
     aunts: FamilyMember[]
   ) {
+    // Initialize private fields without using the spread operator
     this.#parents = parents;
     this.#grandparents = grandparents;
     this.#siblings = siblings;
@@ -32,40 +32,7 @@ export class FamilyTreeRequestPayload {
     this.#aunts = aunts;
   }
 
-  // Property-style getters
-  public get parents(): FamilyMember[] {
-    return this.#parents;
-  }
-
-  public get grandparents(): FamilyMember[] {
-    return this.#grandparents;
-  }
-
-  public get siblings(): FamilyMember[] {
-    return this.#siblings;
-  }
-
-  public get spouse(): FamilyMember {
-    return this.#spouse;
-  }
-
-  public get children(): FamilyMember[] {
-    return this.#children;
-  }
-
-  public get cousins(): FamilyMember[] {
-    return this.#cousins;
-  }
-
-  public get uncles(): FamilyMember[] {
-    return this.#uncles;
-  }
-
-  public get aunts(): FamilyMember[] {
-    return this.#aunts;
-  }
-
-  // Method-style getters
+  // Method-style getters for each property
   public getParents(): FamilyMember[] {
     return this.#parents;
   }
@@ -98,4 +65,36 @@ export class FamilyTreeRequestPayload {
     return this.#aunts;
   }
 
+  // Property-style getters for each property
+  public get parents(): FamilyMember[] {
+    return this.#parents;
+  }
+
+  public get grandparents(): FamilyMember[] {
+    return this.#grandparents;
+  }
+
+  public get siblings(): FamilyMember[] {
+    return this.#siblings;
+  }
+
+  public get spouse(): FamilyMember {
+    return this.#spouse;
+  }
+
+  public get children(): FamilyMember[] {
+    return this.#children;
+  }
+
+  public get cousins(): FamilyMember[] {
+    return this.#cousins;
+  }
+
+  public get uncles(): FamilyMember[] {
+    return this.#uncles;
+  }
+
+  public get aunts(): FamilyMember[] {
+    return this.#aunts;
+  }
 }

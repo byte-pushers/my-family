@@ -22,8 +22,7 @@ export class Person {
   constructor(
     public firstName: string,
     public lastName: string,
-    public age: number,
-    public familyMembers: FamilyMember[] = [] // Add familyMembers array for nested structure
+    public age: number
   ) {}
 }
 
@@ -59,3 +58,5 @@ export class FamilyMember {
     return `${this.#person.firstName} is a ${this.#relationship}`;
   }
 }
+
+

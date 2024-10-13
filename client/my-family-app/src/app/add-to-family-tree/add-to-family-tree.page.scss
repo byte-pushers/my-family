@@ -1,0 +1,44 @@
+$alert-md-background-color:#F35E5D;
+
+.sub-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sub-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: #0D4C92;
+
+}
+
+.progress-dots {
+  margin-top: 10px;
+  display: flex;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  border-radius: 50%; // rounds the corners
+}
+
+.completed {
+  background-color: #0D4C92;
+
+}
+
+.incomplete {
+  background-color: #BAD7E9;
+
+}
+
+.custom-alert{
+  color: red;
+  font-size: 16px;
+}
+

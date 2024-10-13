@@ -5,6 +5,12 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    listStyleType: {
+      disc: 'disc',
+      decimal: 'decimal',
+      square: 'square',
+      roman: 'upper-roman',
+    }
   },
   plugins: [
     require('@tailwindcss/forms'), // Adding the forms plugin

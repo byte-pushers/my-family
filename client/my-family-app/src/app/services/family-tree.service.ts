@@ -8,31 +8,30 @@ import { FamilyTreeRequestPayload } from '../models/family-tree-request.payload'
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiUrl = 'http://localhost:8100/api/v1/family-tree'; // Replace with actual API URL
+  // Use JavaScript true private variable
+  #apiUrl = 'https://your-backend-url.com/family-tree';  // Replace with actual API URL
 
   constructor(private http: HttpClient) {}
 
   // Method to submit the family tree data
-  public submitFamilyTree(payload: FamilyTreeRequestPayload): Observable<any> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Accept-Version': '0.0.0.1' // Add more version numbers as needed
-    });
+  submitFamilyTree(payload: FamilyTreeRequestPayload): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    console.log(`payload: ${JSON.stringify(payload)}`, payload);
-
-    return this.http.post<any>(this.apiUrl, payload, {
-      headers: headers,
-      responseType: 'json',
-    }).pipe(
-      catchError(this.handleError)  // Handle errors
-    );
+    // Use the true private variable #apiUrl
+    return this.http.post(this.#apiUrl, payload, { headers })
+      .pipe(
+        catchError(this.#handleError.bind(this))  // Handle errors
+      );
   }
 
   // Error handling logic
-  private handleError(error: any): Observable<never> {
+  #handleError(error: any): Observable<never> {
     console.error('Family Tree API error:', error);  // Log error for debugging
+    //TODO: create a error object has a list of error errors
+    //TODO: loop through the errors get the error code and search the user friendly error message map (key:E001, value:"user friendly message")
+    //TODO: create new error message that will be data bind to the view, which should display in the model
+    //TODO: hint- create global error handler that will publish an event (subject or behaviour event) of errors
+    //TODO: hint- the view and component will be listening for this event via event.subscribe  method - which will take the errors and data bind to the model
     return throwError(() => new Error('Submission failed. Please try again later.'));
   }
 }
