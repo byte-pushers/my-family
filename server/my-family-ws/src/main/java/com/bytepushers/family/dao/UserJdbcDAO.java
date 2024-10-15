@@ -83,7 +83,7 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     @Override
-    public User findUserById(Long id) {
+    public User findUserById(Integer id) {
         String sql = "SELECT * FROM users WHERE id = ?";
 
         try (Connection conn = getConnection();
@@ -159,7 +159,7 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(Integer id) {
         String sql = "DELETE FROM users WHERE id = ?";
 
         try (Connection conn = getConnection();
