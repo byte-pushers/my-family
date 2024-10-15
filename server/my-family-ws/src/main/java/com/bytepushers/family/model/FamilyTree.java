@@ -1,9 +1,7 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import jdk.jfr.DataAmount;
-import org.hibernate.mapping.Value;
-import org.hibernate.validator.constraints.Length;
+
 import java.util.ArrayList;
 import java.util.List;
 

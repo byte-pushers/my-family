@@ -1,4 +1,4 @@
-package com.bytepushers.family.logs;
+package com.bytepushers.family.api;
 
 public class LoginResponse {
     String message;

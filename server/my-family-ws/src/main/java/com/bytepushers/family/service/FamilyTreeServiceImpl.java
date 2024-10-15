@@ -1,5 +1,7 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.service;
 
+import com.bytepushers.family.model.FamilyTree;
+import com.bytepushers.family.repo.FamilyTreeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
