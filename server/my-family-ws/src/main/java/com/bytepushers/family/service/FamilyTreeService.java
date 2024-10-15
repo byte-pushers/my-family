@@ -1,5 +1,6 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.service;
 
+import com.bytepushers.family.model.FamilyTree;
 import jakarta.validation.Valid;
 
 public interface FamilyTreeService {

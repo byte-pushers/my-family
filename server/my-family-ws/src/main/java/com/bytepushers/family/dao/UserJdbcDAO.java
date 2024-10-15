@@ -1,6 +1,6 @@
 package com.bytepushers.family.dao;
 
-import com.bytepushers.family.GlobalErrorHandler.*;
+import com.bytepushers.family.exception.*;
 import com.bytepushers.family.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -59,7 +59,7 @@ public class UserJdbcDAO implements UserDAO {
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 createdUser = new User(someUser.getEmail(), someUser.getPassword()); // TODO: Create a findUserByID, pass in PK
-                createdUser.setId(rs.getLong(1));  // Get the generated ID and set it
+                createdUser.setId(rs.getInt(1));  // Get the generated ID and set it
                 logger.info("User created with id: {}", createdUser.getId());  // Happy path log
             }
         } catch (SQLException e) {
@@ -182,7 +182,7 @@ public class UserJdbcDAO implements UserDAO {
     // Helper method to map a ResultSet row to a User object
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setId(rs.getLong("id"));
+        user.setId(rs.getInt("id"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
         return user;

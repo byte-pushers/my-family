@@ -1,4 +1,4 @@
-package com.bytepushers.family.GlobalErrorHandler;
+package com.bytepushers.family.exception;
 
 public class DatabaseConnectionException extends RuntimeException {
     public DatabaseConnectionException(String message) {

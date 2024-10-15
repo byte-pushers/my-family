@@ -1,4 +1,4 @@
-package com.bytepushers.family.GlobalErrorHandler;
+package com.bytepushers.family.exception;
 
 public class UserDeletionFailedException extends RuntimeException {
     public UserDeletionFailedException(String message) {

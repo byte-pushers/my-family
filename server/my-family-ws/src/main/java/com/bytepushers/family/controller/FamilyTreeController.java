@@ -1,6 +1,8 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.controller;
 
-import com.bytepushers.family.ApiResponse.ApiResponse;
+import com.bytepushers.family.model.FamilyTree;
+import com.bytepushers.family.service.FamilyTreeService;
+import com.bytepushers.family.api.ApiResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
