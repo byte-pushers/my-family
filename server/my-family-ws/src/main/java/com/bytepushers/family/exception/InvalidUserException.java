@@ -1,4 +1,4 @@
-package com.bytepushers.family.GlobalErrorHandler;
+package com.bytepushers.family.exception;
 
 public class InvalidUserException extends RuntimeException {
     public InvalidUserException(String message) {

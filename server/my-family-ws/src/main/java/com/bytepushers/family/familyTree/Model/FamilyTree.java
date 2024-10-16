@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/familyTree/Model/FamilyTree.java
 package com.bytepushers.family.familyTree.Model;
+========
+package com.bytepushers.family.model;
+>>>>>>>> cf6843c4efebfd72e41a49c2ebd81480725ba246:server/my-family-ws/src/main/java/com/bytepushers/family/model/FamilyTree.java
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 

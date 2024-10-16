@@ -1,4 +1,4 @@
-package com.bytepushers.family.GlobalErrorHandler;
+package com.bytepushers.family.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

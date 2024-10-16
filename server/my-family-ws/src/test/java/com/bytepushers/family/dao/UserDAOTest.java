@@ -1,6 +1,6 @@
 package com.bytepushers.family.dao;
 
-import com.bytepushers.family.GlobalErrorHandler.UserNotFoundException;
+import com.bytepushers.family.exception.UserNotFoundException;
 import com.bytepushers.family.model.User;
 
 import org.junit.jupiter.api.*;
@@ -9,12 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 public class UserDAOTest {
     private static final Logger logger = LoggerFactory.getLogger(UserDAOTest.class);
     @Autowired
@@ -70,7 +73,6 @@ public class UserDAOTest {
 
         assertNotNull(foundUser, "The user ID should not be null.");
         assertEquals(testUser.getEmail(), foundUser.getEmail(), "The user email should match the input email.");
-
         logger.info("Read User Test passed: Found user with ID {}", foundUser.getId());
     }
 

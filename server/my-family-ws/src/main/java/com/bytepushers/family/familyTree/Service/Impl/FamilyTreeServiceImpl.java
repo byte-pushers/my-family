@@ -1,8 +1,15 @@
+<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/familyTree/Service/Impl/FamilyTreeServiceImpl.java
 package com.bytepushers.family.familyTree.Service.Impl;
 
 import com.bytepushers.family.familyTree.Model.FamilyTree;
 import com.bytepushers.family.familyTree.Repository.FamilyTreeRepository;
 import com.bytepushers.family.familyTree.Service.FamilyTreeService;
+========
+package com.bytepushers.family.service;
+
+import com.bytepushers.family.model.FamilyTree;
+import com.bytepushers.family.repo.FamilyTreeRepository;
+>>>>>>>> cf6843c4efebfd72e41a49c2ebd81480725ba246:server/my-family-ws/src/main/java/com/bytepushers/family/service/FamilyTreeServiceImpl.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
