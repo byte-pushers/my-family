@@ -1,9 +1,7 @@
-package com.bytepushers.family.familyTree;
+package com.bytepushers.family.familyTree.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import jdk.jfr.DataAmount;
-import org.hibernate.mapping.Value;
-import org.hibernate.validator.constraints.Length;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,24 +13,57 @@ public class FamilyTree {
     private long id;
 
     // Immediate family
-    @NotEmpty
+    @NotEmpty(message = "Parent name is required")
+    @Size(min = 2, max = 20, message = "Parent name must be between 2 and 20 characters")
     @Column( name ="parentName")
     private String parentName = "";
-    @NotEmpty
+    @NotEmpty(message = "ParentType is required")
+    @Size(min = 2, max = 20, message = "ParentType must be between 2 and 20 characters")
     @Column( name ="parentType")
     private String parentType = "";
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "GrandParentName is required")
+    @Column( name ="grandParentName")
     private String grandParentName = "";
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "GrantParentType must be between 2 and 20 characters")
+    @Column( name ="grandParentType")
     private String grandParentType = "";
+    @Size(min = 2, max = 20, message = "Sibling name must be between 2 and 20 characters")
+    @Column(name = "siblingName")
     private String siblingName = "";
+
+    @Size(min = 2, max = 20, message = "Sibling type must be between 2 and 20 characters")
+    @Column(name = "siblingType")
     private String siblingType = "";
+
+    @Size(min = 2, max = 20, message = "Spouse name must be between 2 and 20 characters")
+    @Column(name = "spouseName")
     private String spouseName = "";
+
+    @Size(min = 2, max = 20, message = "Spouse type must be between 2 and 20 characters")
+    @Column(name = "spouseType")
     private String spouseType = "";
+
+    @Size(min = 2, max = 20, message = "Children name must be between 2 and 20 characters")
+    @Column(name = "childrenName")
     private String childrenName = "";
+
+    @Size(min = 2, max = 20, message = "Children type must be between 2 and 20 characters")
+    @Column(name = "childrenType")
     private String childrenType = "";
 
-    // Extended family
+    // Extended family - Optional fields
+    @Size(min = 2, max = 20, message = "Cousin name must be between 2 and 20 characters")
+    @Column(name = "cousinName")
     private String cousinName = "";
+
+    @Size(min = 2, max = 20, message = "Uncle name must be between 2 and 20 characters")
+    @Column(name = "uncleName")
     private String uncleName = "";
+
+    @Size(min = 2, max = 20, message = "Aunt name must be between 2 and 20 characters")
+    @Column(name = "auntName")
     private String auntName = "";
 
     // Lists for family members
