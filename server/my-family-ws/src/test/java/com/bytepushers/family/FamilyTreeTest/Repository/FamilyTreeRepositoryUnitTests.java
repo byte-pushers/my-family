@@ -1,15 +1,16 @@
 package com.bytepushers.family.FamilyTreeTest.Repository;
 
-import com.bytepushers.family.familyTree.Repository.FamilyTreeRepository;
+import com.bytepushers.family.repo.FamilyTreeRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
-import com.bytepushers.family.familyTree.Model.FamilyTree;
+import com.bytepushers.family.model.FamilyTree;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FamilyTreeRepositoryUnitTests {

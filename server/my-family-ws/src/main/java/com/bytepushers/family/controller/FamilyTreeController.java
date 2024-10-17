@@ -1,16 +1,8 @@
-<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/familyTree/Controller/FamilyTreeController.java
-package com.bytepushers.family.familyTree.Controller;
-
-import com.bytepushers.family.ApiResponse.ApiResponse;
-import com.bytepushers.family.familyTree.Model.FamilyTree;
-import com.bytepushers.family.familyTree.Service.FamilyTreeService;
-========
 package com.bytepushers.family.controller;
 
-import com.bytepushers.family.model.FamilyTree;
-import com.bytepushers.family.service.FamilyTreeService;
 import com.bytepushers.family.api.ApiResponse;
->>>>>>>> cf6843c4efebfd72e41a49c2ebd81480725ba246:server/my-family-ws/src/main/java/com/bytepushers/family/controller/FamilyTreeController.java
+import com.bytepushers.family.service.FamilyTreeService;
+import com.bytepushers.family.model.FamilyTree;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +75,7 @@ public class FamilyTreeController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        FamilyTree updatedTree = familyTreeService.updateFamilyTree(id, updatedFamilyTree);
+        FamilyTree updatedTree = familyTreeService.updateFamilyTree(updatedFamilyTree, id);
         if (updatedTree == null) {
             ApiResponse errorResponse = new ApiResponse(
                     null,

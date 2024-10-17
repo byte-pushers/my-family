@@ -1,16 +1,14 @@
-<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/familyTree/Model/FamilyTree.java
-package com.bytepushers.family.familyTree.Model;
-========
 package com.bytepushers.family.model;
->>>>>>>> cf6843c4efebfd72e41a49c2ebd81480725ba246:server/my-family-ws/src/main/java/com/bytepushers/family/model/FamilyTree.java
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Entity
-@Table( name = "FamilyTreeMember")
+@Table( name = "family_tree")
 public class FamilyTree {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,59 +17,39 @@ public class FamilyTree {
     // Immediate family
     @NotEmpty(message = "Parent name is required")
     @Size(min = 2, max = 20, message = "Parent name must be between 2 and 20 characters")
-    @Column( name ="parentName")
     private String parentName = "";
-    @NotEmpty(message = "ParentType is required")
-    @Size(min = 2, max = 20, message = "ParentType must be between 2 and 20 characters")
-    @Column( name ="parentType")
+
+    @NotEmpty(message = "Parent Type is required")
+    @Size(min = 2, max = 20, message = "Parent type must be between 2 and 20 characters")
     private String parentType = "";
-    @NotEmpty
-    @Size(min = 2, max = 20, message = "GrandParentName is required")
-    @Column( name ="grandParentName")
+
+    @NotEmpty(message = "GrandParent name is required")
+    @Size(min = 2, max = 20, message = "GrandParent name must be between 2 and 20 characters")
     private String grandParentName = "";
-    @NotEmpty
-    @Size(min = 2, max = 20, message = "GrantParentType must be between 2 and 20 characters")
-    @Column( name ="grandParentType")
+
+    @NotEmpty(message = "GrandParent Type is required")
+    @Size(min = 2, max = 20, message = "Parent name must be between 2 and 20 characters")
+
     private String grandParentType = "";
-    @Size(min = 2, max = 20, message = "Sibling name must be between 2 and 20 characters")
-    @Column(name = "siblingName")
     private String siblingName = "";
-
-    @Size(min = 2, max = 20, message = "Sibling type must be between 2 and 20 characters")
-    @Column(name = "siblingType")
     private String siblingType = "";
-
-    @Size(min = 2, max = 20, message = "Spouse name must be between 2 and 20 characters")
-    @Column(name = "spouseName")
     private String spouseName = "";
-
-    @Size(min = 2, max = 20, message = "Spouse type must be between 2 and 20 characters")
-    @Column(name = "spouseType")
     private String spouseType = "";
-
-    @Size(min = 2, max = 20, message = "Children name must be between 2 and 20 characters")
-    @Column(name = "childrenName")
     private String childrenName = "";
-
-    @Size(min = 2, max = 20, message = "Children type must be between 2 and 20 characters")
-    @Column(name = "childrenType")
     private String childrenType = "";
 
-    // Extended family - Optional fields
-    @Size(min = 2, max = 20, message = "Cousin name must be between 2 and 20 characters")
-    @Column(name = "cousinName")
+    // Extended family
     private String cousinName = "";
-
-    @Size(min = 2, max = 20, message = "Uncle name must be between 2 and 20 characters")
-    @Column(name = "uncleName")
     private String uncleName = "";
-
-    @Size(min = 2, max = 20, message = "Aunt name must be between 2 and 20 characters")
-    @Column(name = "auntName")
     private String auntName = "";
 
     // Lists for family members
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "familyTree")
+    private List<FamilyMember> familyMembers;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private List<String> parentsList = new ArrayList<>();
     private List<String> grandParentList = new ArrayList<>();
     private List<String> siblingList = new ArrayList<>();
@@ -81,7 +59,15 @@ public class FamilyTree {
     private List<String> unclesList = new ArrayList<>();
     private List<String> auntsList = new ArrayList<>();
 
-    public FamilyTree(String parentName, String parentType, String grandParentName, String grandParentType, String siblingName, String siblingType, String spouseName, String spouseType, String childrenName, String childrenType, String cousinName, String uncleName, String auntName, List<String> parentsList, List<String> grandParentList, List<String> siblingList, List<String> spouseList, List<String> childrenList, List<String> cousinsList, List<String> unclesList, List<String> auntsList) {
+    public FamilyTree(Long id,String parentName, String parentType, String grandParentName, String grandParentType,
+                      String siblingName, String siblingType, String spouseName, String spouseType,
+                      String childrenName, String childrenType, String cousinName, String uncleName,
+                      String auntName, List<FamilyMember> familyMembers, User user, List<String> parentsList,
+                      List<String> grandParentList, List<String> siblingList, List<String> spouseList,
+                      List<String> childrenList, List<String> cousinsList, List<String> unclesList,
+                      List<String> auntsList) {
+        this.id = id;
+        this.user = user;
         this.parentName = parentName;
         this.parentType = parentType;
         this.grandParentName = grandParentName;
@@ -95,6 +81,7 @@ public class FamilyTree {
         this.cousinName = cousinName;
         this.uncleName = uncleName;
         this.auntName = auntName;
+        this.familyMembers = familyMembers; // Correctly set to List<FamilyMember>
         this.parentsList = parentsList;
         this.grandParentList = grandParentList;
         this.siblingList = siblingList;

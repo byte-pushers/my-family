@@ -1,18 +1,12 @@
-<<<<<<<< HEAD:server/my-family-ws/src/main/java/com/bytepushers/family/familyTree/Service/Impl/FamilyTreeServiceImpl.java
-package com.bytepushers.family.familyTree.Service.Impl;
+package com.bytepushers.family.service.Impl;
 
-import com.bytepushers.family.familyTree.Model.FamilyTree;
-import com.bytepushers.family.familyTree.Repository.FamilyTreeRepository;
-import com.bytepushers.family.familyTree.Service.FamilyTreeService;
-========
-package com.bytepushers.family.service;
-
+import com.bytepushers.family.service.FamilyTreeService;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.repo.FamilyTreeRepository;
->>>>>>>> cf6843c4efebfd72e41a49c2ebd81480725ba246:server/my-family-ws/src/main/java/com/bytepushers/family/service/FamilyTreeServiceImpl.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,15 +33,34 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
     }
 
     @Override
+    public FamilyTree saveFamilyTree(FamilyTree familyTree) {
+        return null;
+    }
+
+    @Override
+    public List<FamilyTree> getAllFamilyTrees() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<FamilyTree> getFamilyTreeById(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public FamilyTree updateFamilyTree(FamilyTree familyTree, long id) {
+        return null;
+    }
+
+    @Override
     public boolean deleteFamilyTree(Long id) {
         // Check if the family tree exists before deleting
         Optional<FamilyTree> familyTree = familyTreeRepository.findById(id);
         if (familyTree.isPresent()) {
             familyTreeRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     @Override
