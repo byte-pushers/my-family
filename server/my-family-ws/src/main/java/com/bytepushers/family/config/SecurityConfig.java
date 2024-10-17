@@ -35,8 +35,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(httpForm -> httpForm.loginPage("/login-page").permitAll())
-                .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
+                .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers(
+                                    "/login",
+                                    "/api/v1/create-account",
+                                    "/api/users/**")
+                            .permitAll();
+                    registry.anyRequest().authenticated();  // Make sure this is the last matcher
+                })
                 .httpBasic(withDefaults())
                 .build();
     }
