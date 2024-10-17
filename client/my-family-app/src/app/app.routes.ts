@@ -21,6 +21,10 @@ export const routes: Routes = [
   {
     path: 'add-family-step-3',
     loadComponent: () => import('./add-family-step-3/add-family-step-3.page').then( m => m.AddFamilyStep3Page)
+  },
+  {
+    path: 'family-member-form',
+    loadComponent: () => import('./components/family-member-form/family-member-form.component').then( m => m.FamilyMemberFormComponent)
   }
 
 ];
