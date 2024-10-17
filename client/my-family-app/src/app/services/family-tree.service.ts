@@ -8,7 +8,7 @@ import { FamilyTreeRequestPayload } from '../models/family-tree-request.payload'
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiUrl = 'http://localhost:8100/api/v1/family-tree'; // Replace with actual API URL (ask whose working on it)
+  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
 
   constructor(private http: HttpClient) {}
 
@@ -17,14 +17,14 @@ export class FamilyTreeService {
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Accept-Version': '0.0.0.1' // Add more version numbers as needed
+      'Accept-Version': '0.0.0.1',
+      'Authorization': 'Basic ' + btoa('john:12345')
     });
 
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
 
-    return this.http.post<any>(this.apiUrl, payload, {
-      headers: headers,
-      responseType: 'json',
+    return this.http.post<any>(this.apiBaseUrl + 'family-tree', payload, {
+      headers: headers
     }).pipe(
       catchError(this.handleError)  // Handle errors
     );
