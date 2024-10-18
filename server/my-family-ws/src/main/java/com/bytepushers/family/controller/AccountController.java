@@ -2,7 +2,7 @@ package com.bytepushers.family.controller;
 
 import com.bytepushers.family.api.ApiResponse;
 import com.bytepushers.family.repo.AccountRepository;
-import com.bytepushers.family.model.CreateAccount;
+import com.bytepushers.family.model.Account;
 import jakarta.validation.Valid;
 import com.bytepushers.family.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -25,8 +25,8 @@ public class AccountController {
 
     //create-account post api
     @PostMapping(value = "/create-account")
-    public ResponseEntity<?> createAccount(@Valid @RequestBody CreateAccount createAccount, BindingResult bindingResult) {
-        CreateAccount userCreated = accountService.createAccount(createAccount);
+    public ResponseEntity<?> createAccount(@Valid @RequestBody Account account, BindingResult bindingResult) {
+        Account userCreated = accountService.createAccount(account);
 
         //if user create successfully
         ApiResponse response = new ApiResponse(

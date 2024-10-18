@@ -37,7 +37,7 @@ public class LoginController {
             bindingResult.getAllErrors().forEach(error -> {
                 errors.add(error.getDefaultMessage());
             });
-            return new ResponseEntity<>(new ErrorResponse(400, "Invalid Request", new ErrorDetail("LOGIN_VALIDATION_ERROR", String.join(", ", errors))), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorResponse("400", "Invalid Request", new ErrorDetail("LOGIN_VALIDATION_ERROR", String.join(", ", errors))), HttpStatus.BAD_REQUEST);
         }
 
         boolean isValid = userService.login(login.getEmail(), login.getPassword());
@@ -45,7 +45,7 @@ public class LoginController {
             ApiResponse response = new ApiResponse(null, "Login successful", 200);
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, "Unauthorized", new ErrorDetail("LOGIN_FAILED", "Invalid email or password")));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("401", "Unauthorized", new ErrorDetail("LOGIN_FAILED", "Invalid email or password")));
         }
     }
 }
