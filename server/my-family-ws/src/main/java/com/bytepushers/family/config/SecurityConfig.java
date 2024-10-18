@@ -35,10 +35,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(
                                     "/login",
-                                    "/api/v1/create-account",
+                                    "/api/create-account",
                                     "/api/users/**")
                             .permitAll();
                     registry.anyRequest().authenticated();  // Make sure this is the last matcher

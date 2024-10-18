@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {LoginService} from "../services/login-service";
+import {GlobalErrorService} from "../services/global-error.service";
+import {GlobalErrorHandler} from "../GlobalExceptionHandler/global-error-handler";
+import {ApiError} from "../models/api-error";
+
 import {
   IonContent,
   IonHeader,
@@ -18,6 +23,7 @@ import {
   templateUrl: './login-page.page.html',
   styleUrls: ['./login-page.page.scss'],
   standalone: true,
+  providers: [GlobalErrorService, GlobalErrorHandler],
   imports: [
     IonContent,
     IonHeader,
@@ -35,29 +41,21 @@ export class LoginPagePage implements OnInit {
   username: string = '';
   password: string = '';
   passwordType: string = 'password';  // Default is hidden
+  errorMessages: ApiError[] = [];
 
-  constructor(private alertCtrl: AlertController) {}
+  constructor(private alertCtrl: AlertController, private loginService: LoginService, private globalError: GlobalErrorHandler,
+              private globalErrorService: GlobalErrorService) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   async onSignIn() {
-    // Ensure both username and password are provided
-    if (!this.username || !this.password) {
+    if (!this.username) {
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'Username and password are required',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
-    //Minimal validation for demonstration
-    if (this.password.length < 8) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Password must be at least 8 characters long.',
-        buttons: ['OK'],
+        // buttons: ['OK'],
       });
       await alert.present();
       return;
@@ -67,12 +65,37 @@ export class LoginPagePage implements OnInit {
     console.log('Username:', this.username);
     console.log('Password:', this.password);
 
-    // Show a success alert or navigate to another page
-    const successAlert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Login successful!',
-      buttons: ['OK'],
-    });
-    await successAlert.present();
+    //call login service from backend to get data
+    this.loginService.login(this.username, this.password)
+      .subscribe(
+        async (response) => {
+          console.log('Response from API:', response);
+          // Assuming a successful response means account creation was successful
+          const successAlert = await this.alertCtrl.create({
+            header: 'Success',
+            message: 'Account created successfully!',
+          });
+          await successAlert.present();
+        },
+        async (error) => {
+          console.error('Error occurred:', error.error);
+
+          this.globalError.handleError(error.error);
+
+          this.globalErrorService.getErrorMessages().subscribe(async (errors: ApiError[]) => {
+            this.errorMessages = errors;
+            console.log(this.errorMessages);
+            const alert = await this.alertCtrl.create({
+              header: 'Error',
+              message: this.errorMessages.map(err => err.message).join(' --- '),
+              buttons: ['OK'],
+              cssClass: 'custom-alert',
+            });
+            await alert.present();
+          });
+        }
+      );
+
   }
 }
+
