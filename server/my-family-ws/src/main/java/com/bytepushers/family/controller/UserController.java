@@ -22,7 +22,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserRepo userDao;
+    private UserRepo userRepo;
 
     // Create User Error with /{id} in URL
     @PostMapping("/{id}")
@@ -61,7 +61,7 @@ public class UserController {
 
         try {
             // Create the user
-            User createdUser = userDao.save(user);
+            User createdUser = userRepo.save(user);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
             // TODO: Add duplicate functionality
         } catch (DuplicateUserException e) {
@@ -104,7 +104,7 @@ public class UserController {
         }
 
         try {
-            User user = userDao.findById(id).orElse(null);
+            User user = userRepo.findById(id).orElse(null);
             if (user == null) {
                 errors.add(Map.of(
                         "code", "USER_NOT_FOUND",
@@ -158,7 +158,7 @@ public class UserController {
 
         try {
             // Check if user exists in the DB
-            if (!userDao.existsById(id)) {
+            if (!userRepo.existsById(id)) {
                 throw new UserNotFoundException("User with ID " + id + " not found");
             }
 
@@ -166,7 +166,7 @@ public class UserController {
             user.setId(id);
 
             // Call the DAO to update the user
-            User updatedUser = userDao.save(user);
+            User updatedUser = userRepo.save(user);
 //            if (updatedUser == null) {
 //                throw new UserNotFoundException("User with ID " + id + " not found");
 //            }
@@ -212,13 +212,13 @@ public class UserController {
 
         try {
             // Check if the user exists
-            boolean userExists = userDao.existsById(id);
+            boolean userExists = userRepo.existsById(id);
             if (!userExists) {
                 throw new UserNotFoundException("User with ID " + id + " not found");
             }
 
             // Delete the user
-            userDao.deleteById(id);  // This will delete the user from the database
+            userRepo.deleteById(id);  // This will delete the user from the database
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // Success, no content response
 

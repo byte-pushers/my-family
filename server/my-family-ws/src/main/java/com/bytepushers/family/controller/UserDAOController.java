@@ -1,5 +1,6 @@
-package com.bytepushers.family.dao;
+package com.bytepushers.family.controller;
 
+import com.bytepushers.family.dao.UserJdbcDAO;
 import com.bytepushers.family.exception.DatabaseOperationException;
 import com.bytepushers.family.exception.DuplicateUserException;
 import com.bytepushers.family.exception.UserDeletionFailedException;
