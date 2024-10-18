@@ -46,6 +46,14 @@ public class UserJdbcDAO implements UserDAO {
 //            throw new InvalidUserException("Password must be at least 8 characters long.");
 //        }
 
+        User existingUser = findUserByEmail(someUser.getEmail());
+        if (existingUser != null) {
+            logger.info("Existing user found: " + existingUser.getEmail());
+            throw new DuplicateUserException("A user with email " + someUser.getEmail() + " already exists.");
+        } else {
+            logger.info("No existing user found with email: " + someUser.getEmail());
+        }
+
         Connection conn = null;
         User createdUser = null;
         String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
@@ -139,8 +147,10 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         String sql = "UPDATE users SET email = ?, password = ? WHERE id = ?";
+        User updatedUser = null;
+
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
@@ -150,6 +160,7 @@ public class UserJdbcDAO implements UserDAO {
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 logger.info("User with id {} has been updated", user.getId());  // Happy path log
+                updatedUser = user; // Assign the input as the updated user
             } else {
                 logger.warn("No user found with id {} to update", user.getId());
             }
@@ -157,10 +168,11 @@ public class UserJdbcDAO implements UserDAO {
             logger.error("Database operation failed", e);
             throw new DatabaseOperationException("Database error occurred during operation.", e);
         }
+        return updatedUser;
     }
 
     @Override
-    public void deleteUser(Integer id) {
+    public boolean deleteUser(Integer id) {
         String sql = "DELETE FROM users WHERE id = ?";
 
         try (Connection conn = getConnection();
@@ -170,6 +182,7 @@ public class UserJdbcDAO implements UserDAO {
             int rowsAffected = stmt.executeUpdate();
             if(rowsAffected > 0) {
                 logger.info("User with id {} has been deleted", id);
+                return true;
             } else {
 //                logger.warn("No user found with id {} to delete", id);
                 throw new UserNotFoundException("No such user found with id " + id);

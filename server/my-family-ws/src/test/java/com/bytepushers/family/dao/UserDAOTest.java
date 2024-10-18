@@ -12,12 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
 
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Disabled
 public class UserDAOTest {
     private static final Logger logger = LoggerFactory.getLogger(UserDAOTest.class);
     @Autowired
@@ -27,9 +28,10 @@ public class UserDAOTest {
 
     @BeforeEach
     public void setUp() {
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 6);
         // creating a user before each test
         testUser = new User();
-        testUser.setEmail("test@test.com");
+        testUser.setEmail("test" + uniqueSuffix + "@example.com");  // Unique email
         testUser.setPassword("password");
 
         testUser = userDAO.createUser(testUser);
@@ -55,7 +57,13 @@ public class UserDAOTest {
     @Test
     @Order(1)
     public void createUserTest() {
-        String expectedUserEmail = "test@test.com";
+        // Create a unique email for each test run
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 6);
+        String expectedUserEmail = "example" + uniqueSuffix + "@test.com";
+
+        User testUser = new User();
+        testUser.setEmail(expectedUserEmail);
+        testUser.setPassword("password");
 
         User createdUser = userDAO.createUser(testUser);
 

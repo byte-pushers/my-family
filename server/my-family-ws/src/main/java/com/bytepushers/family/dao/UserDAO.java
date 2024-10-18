@@ -11,8 +11,8 @@ public interface UserDAO {
     User createUser(User user);
     User findUserById(Integer id);
     List<User> findAllUsers();
-    void updateUser(User user);
-    void deleteUser(Integer id);
+    User updateUser(User user);
+    boolean deleteUser(Integer id);
 
     User findUserByEmail(String email);
 }
