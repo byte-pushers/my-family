@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "922877fa-b25d-442b-9407-04ef3fccb985",
+		"_postman_id": "f45ac2c4-6586-4def-875a-13bd27659760",
 		"name": "my-family-reunion-app",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38160132"
 	},
 	"item": [
 		{
@@ -224,16 +225,10 @@
 							]
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"parentName\": \"John you\",\n    \"parentType\": \"no Father\",\n    \"grandParentName\": \"Robert Doe\",\n    \"grandParentType\": \"Grandfather\",\n    \"siblingName\": \"Jane Doe\",\n    \"siblingType\": \"Sister\",\n    \"spouseName\": \"Mary Doe\",\n    \"spouseType\": \"Wife\",\n    \"childrenName\": \"Jack Doe\",\n    \"childrenType\": \"Son\"\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"familyMembers\": [\r\n        {\r\n            \"relationship\": \"Father\",\r\n            \"person\": {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"familyMembers\": [\r\n                    {\r\n                        \"relationship\": \"Son\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Mike\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2000-05-12\",\r\n                            \"gender\": \"Male\",\r\n                            \"familyMembers\": [],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"relationship\": \"Daughter\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Anna\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2005-08-20\",\r\n                            \"gender\": \"Female\",\r\n                            \"familyMembers\": [\r\n                                {\r\n                                    \"relationship\": \"Child\",\r\n                                    \"person\": {\r\n                                        \"firstName\": \"Emily\",\r\n                                        \"lastName\": \"Smith\",\r\n                                        \"birthDate\": \"2023-03-15\",\r\n                                        \"gender\": \"Female\",\r\n                                        \"familyMembers\": []\r\n                                    },\r\n                                    \"createdBy\": \"adminUser\",\r\n                                    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                                }\r\n                            ],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ], \r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        }\r\n    ],\r\n    \"parentType\": \"Nuclear\",\r\n    \"parentName\": \"Smith Family\",\r\n    \"grandParentType\": \"Extended\",\r\n    \"grandParentName\": \"Doe Family\",\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -29,11 +29,7 @@ public class AccountController {
         Account userCreated = accountService.createAccount(account);
 
         //if user create successfully
-        ApiResponse response = new ApiResponse(
-                userCreated,
-                "user created successfully",
-                201
-        );
+        ApiResponse<Account> response = new ApiResponse<>(userCreated);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
