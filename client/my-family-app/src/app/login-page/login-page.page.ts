@@ -41,11 +41,23 @@ export class LoginPagePage implements OnInit {
   ngOnInit() {}
 
   async onSignIn() {
-    if (!this.username ) {
+    // Ensure both username and password are provided
+    if (!this.username || !this.password) {
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'Username and password are required',
-       // buttons: ['OK'],
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+
+    //Minimal validation for demonstration
+    if (this.password.length < 8) {
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'Password must be at least 8 characters long.',
+        buttons: ['OK'],
       });
       await alert.present();
       return;
@@ -59,7 +71,7 @@ export class LoginPagePage implements OnInit {
     const successAlert = await this.alertCtrl.create({
       header: 'Success',
       message: 'Login successful!',
-      //buttons: ['OK'],
+      buttons: ['OK'],
     });
     await successAlert.present();
   }

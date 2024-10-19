@@ -12,6 +12,7 @@ import {
   IonButton,
   AlertController
 } from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';  // <-- Import RouterModule for routing
 
 @Component({
   selector: 'app-welcome-page',
@@ -28,7 +29,8 @@ import {
     IonInput,
     IonButton,
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterModule  // <-- Add RouterModule to imports array
   ]
 })
 export class WelcomePagePage implements OnInit {
@@ -42,25 +44,7 @@ export class WelcomePagePage implements OnInit {
 
   async onSignIn() {
     if (!this.username ) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'This does not work yet sorry',
-       // buttons: ['OK'],
-      });
-      await alert.present();
       return;
     }
-
-    // Note to self: The  login logic to call an API or perform authentication)
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    // Show a success alert or navigate to another page
-    const successAlert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Login successful!',
-      //buttons: ['OK'],
-    });
-    await successAlert.present();
   }
 }
