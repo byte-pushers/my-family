@@ -28,70 +28,100 @@
 
 ```
 {
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-	"user": {
-      "username": "string",
-      "password": "string",
-      "roles": [
-        {
-          "name": "string",
-          "permissions": [
-            {
-              "name": "string"
-            }
-          ]
-        }
-      ],
-      "familyMembers": [
+  "userId": 1,
+  "familyMembers": [
+    {
+      "relationship": "string",
+      "person": {
+        "familyMembers": [
           {
-              "relationship": "string",
-              "person": {
-                  "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": {
-            "type": [string, alpha],
-            "country code": [string, numeric]
-            "area code": [string, numeric]
-            "subscriber number": [string, numeric] 
-        } | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined  
-                  "familyMembers": [
-                      {
-                          "relationship": "string",
-                          "person": {
-                          "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": {
-            "type": [string, alpha],
-            "country code": [string, numeric]
-            "area code": [string, numeric]
-            "subscriber number": [string, numeric] 
-        } | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined
-                          }
-                      }
-                  ]
-              }
+            "relationship": "string",
+            "person": {}
           }
-      ]	
-	}
+        ]
+      }
+    }
+  ],
+  "createdBy": "string",
+  "updatedBy": "string",
+  "createdDate": "String in ISO 8601 Date Format",
+  "updatedDate": "String in ISO 8601 Date Format"
 }
+
+```
+##### Request Body Example
+```
+{
+    "userId": 1,
+    "familyMembers": [
+        {
+            "relationship": "Father",
+            "person": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "birthDate": "1970-01-01",
+                "gender": "Male",
+                "familyMembers": [
+                    {
+                        "relationship": "Son",
+                        "person": {
+                            "firstName": "Mike",
+                            "lastName": "Doe",
+                            "birthDate": "2000-05-12",
+                            "gender": "Male",
+                            "familyMembers": [],
+                            "createdBy": "adminUser",
+                            "createdDate": "2024-10-16T10:00:00Z"
+                        },
+                        "createdBy": "adminUser",
+                        "createdDate": "2024-10-16T10:00:00Z"
+                    },
+                    {
+                        "relationship": "Daughter",
+                        "person": {
+                            "firstName": "Anna",
+                            "lastName": "Doe",
+                            "birthDate": "2005-08-20",
+                            "gender": "Female",
+                            "familyMembers": [
+                                {
+                                    "relationship": "Child",
+                                    "person": {
+                                        "firstName": "Emily",
+                                        "lastName": "Smith",
+                                        "birthDate": "2023-03-15",
+                                        "gender": "Female",
+                                        "familyMembers": []
+                                    },
+                                    "createdBy": "adminUser",
+                                    "createdDate": "2024-10-16T10:00:00Z"
+                                }
+                            ],
+                            "createdBy": "adminUser",
+                            "createdDate": "2024-10-16T10:00:00Z"
+                        },
+                        "createdBy": "adminUser",
+                        "createdDate": "2024-10-16T10:00:00Z"
+                    }
+                ], 
+                "createdBy": "adminUser",
+                "createdDate": "2024-10-16T10:00:00Z"
+            }
+        },
+        {
+          "relationship": "GrandFather",
+          "person":{}
+        },
+        {
+          "relationship": "GrandMother",
+          "person":{}
+        }
+    ],
+    "createdBy": "adminUser",
+    "createdDate": "2024-10-16T10:00:00Z"
+}
+
+
 ```
 ##### Response Headers
 
@@ -153,7 +183,7 @@
 > |-----------|------|-----------|-------------|
 > | None      | NA   | NA        | N/A         |
 
-##### Request Body
+##### Response Body
 
 ```
 [
@@ -170,7 +200,156 @@
     }
 ]
 ```
+##### Response Body
 
+```
+[
+    {
+        "id": 5,
+        "createdBy": "defaultUser",
+        "updatedBy": "defaultUser",
+        "createdDate": "2024-10-26T12:39:51.8716034",
+        "updatedDate": "2024-10-26T12:39:51.8716034",
+        "relationship": "Father",
+        "person": {
+            "id": 6,
+            "createdBy": "adminUser",
+            "updatedBy": "adminUser",
+            "createdDate": "2024-10-16T10:00:00",
+            "updatedDate": "2024-10-26T12:39:51.8716034",
+            "firstName": "John",
+            "lastName": "Doe",
+            "birthDate": "1970-01-01",
+            "gender": "Male",
+            "familyMembers": [
+                {
+                    "id": null,
+                    "createdBy": "adminUser",
+                    "updatedBy": null,
+                    "createdDate": "2024-10-16T10:00:00",
+                    "updatedDate": null,
+                    "relationship": "Son",
+                    "person": {
+                        "id": null,
+                        "createdBy": "adminUser",
+                        "updatedBy": null,
+                        "createdDate": "2024-10-16T10:00:00",
+                        "updatedDate": null,
+                        "firstName": "Mike",
+                        "lastName": "Doe",
+                        "birthDate": "2000-05-12",
+                        "gender": "Male",
+                        "familyMembers": []
+                    },
+                    "parent": null,
+                    "familyMembers": null,
+                    "familyTree": null
+                },
+                {
+                    "id": null,
+                    "createdBy": "adminUser",
+                    "updatedBy": null,
+                    "createdDate": "2024-10-16T10:00:00",
+                    "updatedDate": null,
+                    "relationship": "Daughter",
+                    "person": {
+                        "id": null,
+                        "createdBy": "adminUser",
+                        "updatedBy": null,
+                        "createdDate": "2024-10-16T10:00:00",
+                        "updatedDate": null,
+                        "firstName": "Anna",
+                        "lastName": "Doe",
+                        "birthDate": "2005-08-20",
+                        "gender": "Female",
+                        "familyMembers": [
+                            {
+                                "id": null,
+                                "createdBy": "adminUser",
+                                "updatedBy": null,
+                                "createdDate": "2024-10-16T10:00:00",
+                                "updatedDate": null,
+                                "relationship": "Child",
+                                "person": {
+                                    "id": null,
+                                    "createdBy": null,
+                                    "updatedBy": null,
+                                    "createdDate": null,
+                                    "updatedDate": null,
+                                    "firstName": "Emily",
+                                    "lastName": "Smith",
+                                    "birthDate": "2023-03-15",
+                                    "gender": "Female",
+                                    "familyMembers": []
+                                },
+                                "parent": null,
+                                "familyMembers": null,
+                                "familyTree": null
+                            }
+                        ]
+                    },
+                    "parent": null,
+                    "familyMembers": null,
+                    "familyTree": null
+                }
+            ]
+        },
+        "parent": null,
+        "familyMembers": null,
+        "familyTree": null
+    },
+    {
+        "id": 7,
+        "createdBy": "defaultUser",
+        "updatedBy": "defaultUser",
+        "createdDate": "2024-10-26T12:39:51.8716034",
+        "updatedDate": "2024-10-26T12:39:51.8716034",
+        "relationship": "GrandFather",
+        "person": {
+            "id": 8,
+            "createdBy": "defaultUser",
+            "updatedBy": "defaultUser",
+            "createdDate": "2024-10-26T12:39:51.8716034",
+            "updatedDate": "2024-10-26T12:39:51.8716034",
+            "firstName": null,
+            "lastName": null,
+            "birthDate": null,
+            "gender": null,
+            "familyMembers": null
+        },
+        "parent": null,
+        "familyMembers": null,
+        "familyTree": null
+    },
+    {
+        "id": 9,
+        "createdBy": "defaultUser",
+        "updatedBy": "defaultUser",
+        "createdDate": "2024-10-26T12:39:51.8716034",
+        "updatedDate": "2024-10-26T12:39:51.8716034",
+        "relationship": "GrandMother",
+        "person": {
+            "id": 10,
+            "createdBy": "defaultUser",
+            "updatedBy": "defaultUser",
+            "createdDate": "2024-10-26T12:39:51.8716034",
+            "updatedDate": "2024-10-26T12:39:51.8716034",
+            "firstName": null,
+            "lastName": null,
+            "birthDate": null,
+            "gender": null,
+            "familyMembers": null
+        },
+        "parent": null,
+        "familyMembers": null,
+        "familyTree": null
+    }
+]
+```
+#### Response Example
+'''
+
+'''
 ##### Response Headers
 
 > | name            | value                | description     |

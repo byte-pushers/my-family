@@ -8,6 +8,4 @@ import java.util.List;
 
 @Repository
 public interface FamilyTreeRepository extends JpaRepository<FamilyTree, Long> {
-    // method to find by parentName
-    List<FamilyTree> findByParentName(String parentName);
 }
