@@ -46,3 +46,10 @@ ion-input {
   font-size: 16px;           // Adjust font size for the "sign up" link
   color: #888;
 }
+
+.error {                    // error messages
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
