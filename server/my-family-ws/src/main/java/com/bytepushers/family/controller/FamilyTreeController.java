@@ -7,22 +7,24 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/api/family-tree") // Group all family-tree APIs under this base path
+@RequestMapping("/api/family-tree")
 public class FamilyTreeController {
 
     private static final Logger logger = LoggerFactory.getLogger(FamilyTreeController.class);
 
     private final FamilyTreeService familyTreeService;
 
-    // Constructor injection
     @Autowired
-    public FamilyTreeController(FamilyTreeService familyTreeService) {
+    public FamilyTreeController(@Qualifier("familyTreeMockService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
 
@@ -54,7 +56,12 @@ public class FamilyTreeController {
     // Family Tree GET API (retrieve by ID)
     @GetMapping("/{id}")
     public ResponseEntity<Object> getFamilyTree(@PathVariable Long id) {
-        FamilyTree familyTree = familyTreeService.getFamilyTreeById(id);  // Throws exception if not found
+        Optional<FamilyTree> familyTree = Optional.ofNullable(familyTreeService.getFamilyTreeById(id));
+        if (familyTree.isEmpty()) {
+            ApiResponse errorResponse = new ApiResponse(null, "Family tree not found", HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
         ApiResponse response = new ApiResponse(familyTree, "Family tree found", HttpStatus.OK.value());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -106,6 +113,6 @@ public class FamilyTreeController {
         }
 
         logger.info("Family tree with ID {} deleted successfully", id);
-        return ResponseEntity.noContent().build(); // No content for 204 status
+        return ResponseEntity.noContent().build();
     }
 }

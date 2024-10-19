@@ -33,7 +33,7 @@ public class User {
     public User(String email, String password, List<Role> roles, List<FamilyMember> familyMembers, FamilyTree familyTrees) {
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.roles = roles;// will not be used for a while
         this.familyMembers = familyMembers;
         this.familyTrees = (List<FamilyTree>) familyTrees;
     }

@@ -1,11 +1,13 @@
 package com.bytepushers.family.api;
 
+import com.bytepushers.family.model.FamilyTree;
+
 public class ApiResponse {
     private int status;
     private String message;
     private Object data;
 
-    public ApiResponse() {
+    public ApiResponse(int data, String familyTreeWasCreatedSuccessfully, FamilyTree familyTree) {
     }
 
     public ApiResponse(Object data, String message, int status) {

@@ -33,42 +33,28 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
     }
 
     @Override
-    public FamilyTree saveFamilyTree(FamilyTree familyTree) {
-        return null;
-    }
-
-    @Override
-    public List<FamilyTree> getAllFamilyTrees() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<FamilyTree> getFamilyTreeById(long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public FamilyTree updateFamilyTree(FamilyTree familyTree, long id) {
-        return null;
-    }
-
-    @Override
     public boolean deleteFamilyTree(Long id) {
         // Check if the family tree exists before deleting
         Optional<FamilyTree> familyTree = familyTreeRepository.findById(id);
         if (familyTree.isPresent()) {
             familyTreeRepository.deleteById(id);
+            return true;
         }
-
         return false;
+    }
+    @Override
+    public List<FamilyTree> getAllFamilyTrees() {
+        // Assuming you have a repository to fetch the data
+        return familyTreeRepository.findAll();
     }
 
     @Override
-    public FamilyTree updateFamilyTree(Long id, FamilyTree updatedFamilyTree) {
+    public FamilyTree updateFamilyTree(FamilyTree updatedFamilyTree, long id) {
         // Check if the family tree exists before updating
         Optional<FamilyTree> existingFamilyTree = familyTreeRepository.findById(id);
         if (existingFamilyTree.isPresent()) {
             FamilyTree familyTreeToUpdate = existingFamilyTree.get();
+
             // Perform updates on the existing family tree
             familyTreeToUpdate.setParentName(updatedFamilyTree.getParentName());
             familyTreeToUpdate.setParentType(updatedFamilyTree.getParentType());
@@ -83,12 +69,13 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
             familyTreeToUpdate.setCousinName(updatedFamilyTree.getCousinName());
             familyTreeToUpdate.setUncleName(updatedFamilyTree.getUncleName());
             familyTreeToUpdate.setAuntName(updatedFamilyTree.getAuntName());
+
+            // Update lists
             familyTreeToUpdate.setParentsList(updatedFamilyTree.getParentsList());
             familyTreeToUpdate.setGrandParentList(updatedFamilyTree.getGrandParentList());
             familyTreeToUpdate.setSiblingList(updatedFamilyTree.getSiblingList());
             familyTreeToUpdate.setSpouseList(updatedFamilyTree.getSpouseList());
             familyTreeToUpdate.setChildrenList(updatedFamilyTree.getChildrenList());
-
 
             // Save the updated entity
             return familyTreeRepository.save(familyTreeToUpdate);

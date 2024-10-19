@@ -6,14 +6,24 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Builder
 @Entity
 @Table( name = "family_tree")
-public class FamilyTree {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class FamilyTree extends BaseEntity {
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     // Immediate family
     @NotEmpty(message = "Parent name is required")
     @Size(min = 2, max = 20, message = "Parent name must be between 2 and 20 characters")
@@ -59,13 +69,14 @@ public class FamilyTree {
     private List<String> unclesList = new ArrayList<>();
     private List<String> auntsList = new ArrayList<>();
 
-    public FamilyTree(Long id,String parentName, String parentType, String grandParentName, String grandParentType,
+    public FamilyTree(Long id, String parentName, String parentType, String grandParentName, String grandParentType,
                       String siblingName, String siblingType, String spouseName, String spouseType,
                       String childrenName, String childrenType, String cousinName, String uncleName,
                       String auntName, List<FamilyMember> familyMembers, User user, List<String> parentsList,
                       List<String> grandParentList, List<String> siblingList, List<String> spouseList,
                       List<String> childrenList, List<String> cousinsList, List<String> unclesList,
                       List<String> auntsList) {
+        super();
         this.id = id;
         this.user = user;
         this.parentName = parentName;
@@ -264,9 +275,7 @@ public class FamilyTree {
         this.auntsList = auntsList;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
     @Override
     public String toString() {
@@ -322,7 +331,5 @@ public class FamilyTree {
             this.type = type;
         }
     }
-    public long getId() {
-        return id;
-    }
+
 }

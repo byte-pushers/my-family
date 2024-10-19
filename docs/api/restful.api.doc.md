@@ -156,19 +156,64 @@
 ##### Request Body
 
 ```
-[
-    {
-        "relationship": "string",
-        "person": {
-            "familyMembers": [
-                {
-                    "relationship": "string",
-                    "person": {}
+{
+    "status": "integer",              // HTTP status code
+    "message": "string",              // Response message
+    "data": {
+        "id": "integer",              // Family tree unique identifier
+        "createdBy": "string",        // User who created the family tree
+        "updatedBy": "string",        // User who last updated the family tree
+        "createdDate": "string",      // ISO 8601 format date of creation
+        "updatedDate": "string",      // ISO 8601 format date of last update
+        "parentName": "string",       // Name of the parent family
+        "parentType": "string",       // Type of the parent family (e.g., "Nuclear")
+        "grandParentName": "string",  // Name of the grandparent family
+        "grandParentType": "string",  // Type of the grandparent family (e.g., "Extended")
+        "siblingName": "string",      // Name of the sibling (optional)
+        "siblingType": "string",      // Type of sibling relationship (optional)
+        "spouseName": "string",       // Name of the spouse (optional)
+        "spouseType": "string",       // Type of spouse relationship (optional)
+        "childrenName": "string",     // Name of the children (optional)
+        "childrenType": "string",     // Type of children relationship (optional)
+        "cousinName": "string",       // Name of the cousins (optional)
+        "uncleName": "string",        // Name of the uncles (optional)
+        "auntName": "string",         // Name of the aunts (optional)
+        "familyMembers": [            // Array of family members
+            {
+                "id": "integer",      // Unique identifier for the family member
+                "relationship": "string", // Relationship of the family member (e.g., "Father")
+                "person": {
+                    "firstName": "string",  // First name of the person
+                    "lastName": "string",   // Last name of the person
+                    "birthDate": "string",  // Birthdate of the person (in YYYY-MM-DD format)
+                    "gender": "string",     // Gender of the person (e.g., "Male")
+                    "familyMembers": [      // Nested family members (recursive structure)
+                        {
+                            "relationship": "string",  // Nested family member's relationship
+                            "person": {
+                                "firstName": "string",  // First name of the nested person
+                                "lastName": "string",   // Last name of the nested person
+                                "birthDate": "string",  // Birthdate of the nested person
+                                "gender": "string",     // Gender of the nested person
+                                "familyMembers": []     // Further nested family members (optional)
+                            }
+                        }
+                    ]
                 }
-            ]
-        }
+            }
+        ],
+        "user": "object",              // Optional user object linked to the family tree
+        "parentsList": "array",        // Array of parent family members (optional)
+        "grandParentList": "array",    // Array of grandparent family members (optional)
+        "siblingList": "array",        // Array of sibling family members (optional)
+        "spouseList": "array",         // Array of spouse family members (optional)
+        "childrenList": "array",       // Array of children family members (optional)
+        "cousinsList": "array",        // Array of cousin family members (optional)
+        "unclesList": "array",         // Array of uncle family members (optional)
+        "auntsList": "array"           // Array of aunt family members (optional)
     }
-]
+}
+
 ```
 
 ##### Response Headers
