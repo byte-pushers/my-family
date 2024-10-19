@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { FamilyMemberFormComponent } from "../components/family-member-form/family-member-form.component";
 // import { FamilyMemberModel } from '../models/family-member'
 
 @Component({
@@ -9,90 +10,20 @@ import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar
   templateUrl: './add-family-step-3.page.html',
   styleUrls: ['./add-family-step-3.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, FamilyMemberFormComponent]
 })
 
 export class AddFamilyStep3Page implements OnInit {
-  cousinName: string = '';
-  uncleName:string = '';
-  auntName:string = '';
-  cousinsList: Array<{name: string}> = [];
-  unclesList: Array<{name: string}> = [];
-  auntsList: Array<{name:string}>=[];
-
   selectedImage: string | ArrayBuffer | null = null;
 
+  @ViewChildren(FamilyMemberFormComponent) viewChildren: QueryList<FamilyMemberFormComponent> | undefined;
+  parentsForm: NgForm | undefined;
+  grandparentsForm: NgForm | undefined;
+  siblingsForm: NgForm | undefined;
+  spouseForm: NgForm | undefined;
+  childrenForm: NgForm | undefined;
+
   constructor(public alertCtrl: AlertController) {
-  }
-
-  async getCousins(event: Event){
-    if (this.cousinName) {
-      this.cousinsList.push({name: this.cousinName});
-      this.clearFields('cousin');  // Clear the input fields after adding
-    } else {
-      const alert = await this.alertCtrl.create({
-        header:'Error',
-        message:"Please fill in cousin name",
-        buttons:['OK'],
-        cssClass: 'custom-alert',
-      })
-      await alert.present()
-    }
-  }
-
-  async getUncles(event: Event){
-    if (this.uncleName) {
-      this.unclesList.push({ name: this.uncleName});
-      this.clearFields('uncle');  // Clear the input fields after adding
-    } else {
-      const alert = await this.alertCtrl.create({
-        header:'Error',
-        message:"Please fill in uncle name",
-        buttons:['OK'],
-        cssClass: 'custom-alert',
-      })
-      await alert.present()
-    }
-  }
-
-  async getAunts(event: Event){
-    if (this.auntName) {
-      this.auntsList.push({ name: this.auntName});
-      this.clearFields('aunt');  // Clear the input fields after adding
-    } else {
-      const alert = await this.alertCtrl.create({
-        header:'Error',
-        message:"Please fill in aunt name",
-        buttons:['OK'],
-        cssClass: 'custom-alert',
-      })
-      await alert.present()
-    }
-  }
-
-  removeCousin(index: number) {
-    this.cousinsList.splice(index, 1);
-  }
-
-  removeUncle(index: number) {
-    this.unclesList.splice(index, 1);
-  }
-
-  removeAunt(index:number){
-    this.auntsList.splice(index,1)
-  }
-
-  // clears all input fields
-  clearFields(familyType: string) {
-    if (familyType=='cousin') {
-      this.cousinName = '';
-    }
-    if (familyType=='uncle') {
-      this.uncleName = '';
-    }
-    if (familyType=='aunt') {
-      this.auntName = '';
-    }
   }
 
   onFileChange(event: any): void {
@@ -113,12 +44,13 @@ export class AddFamilyStep3Page implements OnInit {
     }
   }
 
+  // Clear button call
   clearPage(): void {
-    this.cousinsList = [];
-    this.unclesList = [];
-    this.auntsList = [];
+    // loop through each form component and call clear method?
+    this.viewChildren?.forEach(form => form.removeAllFamilyMembers());
   }
 
+  // Add To Family button call
   addToFamily(): void {
     /*for (let i = 0; i < this.cousinsList.length; i++) {
       const person = new Person(this.cousinsList[i], 'lastNameFiller', 7);
@@ -139,10 +71,5 @@ export class AddFamilyStep3Page implements OnInit {
   ngOnInit() {
   }
 
-  something() {
-    console.log("it is clicking")
-  }
-
-  protected readonly event = event;
-  protected readonly Event = Event;
+  protected readonly FamilyMemberFormComponent = FamilyMemberFormComponent;
 }

@@ -1,25 +1,22 @@
 package com.bytepushers.family.api;
 
-import java.util.List;
-
 public class ValidationErrorResponse {
-    private int status;
+    private int code;
     private String message;
-    private List<String> errors;
+    private String messageKey;
 
-    public ValidationErrorResponse(int status, String message, List<String> errors) {
-        this.status = status;
+    public ValidationErrorResponse(int code, String message, String messageKey) {
+        this.code = code;
         this.message = message;
-        this.errors = errors;
+        this.messageKey = messageKey;
     }
 
-
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMessage() {
@@ -30,12 +27,20 @@ public class ValidationErrorResponse {
         this.message = message;
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public Object getMessageKey() {
+        return messageKey;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
 
+    @Override
+    public String toString() {
+        return "ValidationErrorResponse{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", messageKey='" + messageKey + '\'' +
+                '}';
+    }
 }

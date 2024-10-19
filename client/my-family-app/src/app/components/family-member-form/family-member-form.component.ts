@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AlertController, IonContent, } from "@ionic/angular/standalone";
-import {CommonModule, NgForOf, NgIf} from '@angular/common';
-import { FamilyMember } from "./../../models/family-member.model"
-import { FormGroup, FormsModule } from "@angular/forms";
+import { CommonModule, NgForOf, NgIf } from '@angular/common';
+//import { FamilyMember, Person } from "./../../models/family-member.model"
+import {FormGroup, FormsModule, NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-family-member-form',
@@ -17,25 +17,33 @@ import { FormGroup, FormsModule } from "@angular/forms";
   standalone: true
 })
 export class FamilyMemberFormComponent implements OnInit {
-  relationshipType: string = 'cousin';
-  //familyMemberForm: FormGroup;
+  @Input({ required: true }) relationshipType: string = '';
+  @Input() relationshipTypeDropdownArray: string[] = [];
+  @Input() familyMemberForm: NgForm | undefined;
 
-  cousinName: string = '';
-  cousinsList: Array<{name: string}> = [];
-  cousinType: string = '';
+  familyMemberName: string = '';
+  familyMemberList: Array<string> = [];
+  specificRelationshipType: string = '';
+
 
   constructor(public alertCtrl: AlertController) {
 
   }
 
-  async getCousins(event: Event){
-    if (this.cousinName) {
-      this.cousinsList.push({name: this.cousinName});
-      this.clearFields('cousin');  // Clear the input fields after adding
+  async addNewFamilyMember(name: string, type: string) {
+    if (name && type) {
+      /*new Person('firstName', 'lastname', 13, )
+      new FamilyMember(this.relationshipType,)
+      this.familyMemberList.push({});*/
+      //this.newFamilyMember.emit(value);
+
+      //this.cousinsList.push({name: this.cousinName});
+      this.familyMemberList.push(`${name} (${type})`);
+      this.clearFields(); // Clear the input fields after adding
     } else {
       const alert = await this.alertCtrl.create({
         header:'Error',
-        message:"Please fill in cousin name",
+        message:"Please enter a name and select the specific relation",
         buttons:['OK'],
         cssClass: 'custom-alert',
       })
@@ -43,14 +51,17 @@ export class FamilyMemberFormComponent implements OnInit {
     }
   }
 
-  removeCousin(index: number) {
-    this.cousinsList.splice(index, 1);
+  removeFamilyMember(index: number) {
+    this.familyMemberList.splice(index, 1);
   }
 
-  clearFields(familyType: string) {
-    if (familyType=='cousin') {
-      this.cousinName = '';
-    }
+  removeAllFamilyMembers() {
+    this.familyMemberList = [];
+  }
+
+  clearFields() {
+    this.familyMemberName = '';
+    this.specificRelationshipType = '';
   }
 
   ngOnInit() {}
