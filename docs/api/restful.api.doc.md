@@ -28,70 +28,86 @@
 
 ```
 {
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-	"user": {
-      "username": "string",
-      "password": "string",
-      "roles": [
-        {
-          "name": "string",
-          "permissions": [
-            {
-              "name": "string"
-            }
-          ]
-        }
-      ],
-      "familyMembers": [
+  "userId": 1,
+  "familyMembers": [
+    {
+      "relationship": "string",
+      "person": {
+        "familyMembers": [
           {
-              "relationship": "string",
-              "person": {
-                  "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": {
-            "type": [string, alpha],
-            "country code": [string, numeric]
-            "area code": [string, numeric]
-            "subscriber number": [string, numeric] 
-        } | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined  
-                  "familyMembers": [
-                      {
-                          "relationship": "string",
-                          "person": {
-                          "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": {
-            "type": [string, alpha],
-            "country code": [string, numeric]
-            "area code": [string, numeric]
-            "subscriber number": [string, numeric] 
-        } | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined
-                          }
-                      }
-                  ]
-              }
+            "relationship": "string",
+            "person": {}
           }
-      ]	
-	}
+        ]
+      }
+    }
+  ],
+  "createdBy": "string",
+  "updatedBy": "string",
+  "createdDate": "String in ISO 8601 Date Format",
+  "updatedDate": "String in ISO 8601 Date Format"
 }
+
+```
+##### Request Body Example
+```
+{
+    "userId": 1,
+    "familyMembers": [
+        {
+            "relationship": "Father",
+            "person": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "birthDate": "1970-01-01",
+                "gender": "Male",
+                "familyMembers": [
+                    {
+                        "relationship": "Son",
+                        "person": {
+                            "firstName": "Mike",
+                            "lastName": "Doe",
+                            "birthDate": "2000-05-12",
+                            "gender": "Male",
+                            "familyMembers": []
+                        }
+                    },
+                    {
+                        "relationship": "Daughter",
+                        "person": {
+                            "firstName": "Anna",
+                            "lastName": "Doe",
+                            "birthDate": "2005-08-20",
+                            "gender": "Female",
+                            "familyMembers": [
+                                {
+                                    "relationship": "Child",
+                                    "person": {
+                                        "firstName": "Emily",
+                                        "lastName": "Smith",
+                                        "birthDate": "2023-03-15",
+                                        "gender": "Female",
+                                        "familyMembers": []
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "parentType": "Nuclear",
+    "parentName": "Smith Family",
+    "grandParentType": "Extended",
+    "grandParentName": "Doe Family",
+    "createdBy": "adminUser",
+    "updatedBy": "adminUser",
+    "createdDate": "2024-10-16T10:00:00Z",
+    "updatedDate": "2024-10-16T10:00:00Z"
+}
+
+
 ```
 ##### Response Headers
 
@@ -153,7 +169,7 @@
 > |-----------|------|-----------|-------------|
 > | None      | NA   | NA        | N/A         |
 
-##### Request Body
+##### Response Body
 
 ```
 [
