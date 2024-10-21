@@ -13,14 +13,14 @@ export class FamilyTreeRequestPayload {
 
   // Constructor to initialize the fields
   constructor(
-    parents: FamilyMember[],
-    grandparents: FamilyMember[],
-    siblings: FamilyMember[],
-    spouse: FamilyMember,
-    children: FamilyMember[],
-    cousins: FamilyMember[],
-    uncles: FamilyMember[],
-    aunts: FamilyMember[]
+      parents: FamilyMember[],
+      grandparents: FamilyMember[],
+      siblings: FamilyMember[],
+      spouse: FamilyMember,
+      children: FamilyMember[],
+      cousins: FamilyMember[],
+      uncles: FamilyMember[],
+      aunts: FamilyMember[]
   ) {
     this.#parents = parents;
     this.#grandparents = grandparents;
@@ -65,37 +65,33 @@ export class FamilyTreeRequestPayload {
     return this.#aunts;
   }
 
-  // Method-style getters
-  public getParents(): FamilyMember[] {
-    return this.#parents;
+  // Method to generate the payload (organizes and gathers each family into the right format)
+  public generatePayload() {
+    return {
+      parents: this.parents.map(fm => this.mapFamilyMember(fm)),
+      grandparents: this.grandparents.map(fm => this.mapFamilyMember(fm)),
+      siblings: this.siblings.map(fm => this.mapFamilyMember(fm)),
+      spouse: this.spouse ? this.mapFamilyMember(this.spouse) : null, // Handle possible null spouse
+      children: this.children.map(fm => this.mapFamilyMember(fm)),
+      cousins: this.cousins.map(fm => this.mapFamilyMember(fm)),
+      uncles: this.uncles.map(fm => this.mapFamilyMember(fm)),
+      aunts: this.aunts.map(fm => this.mapFamilyMember(fm)),
+    };
   }
 
-  public getGrandparents(): FamilyMember[] {
-    return this.#grandparents;
+  // Helper method to format each family member object into the appropriate structure
+  private mapFamilyMember(familyMember: FamilyMember) {
+    return {
+      relationship: familyMember.relationship,
+      person: {
+        firstName: familyMember.person.firstName,
+        lastName: familyMember.person.lastName,
+        birthDate: familyMember.person.birthDate,  // Now references the getter for birthDate
+        familyMembers: familyMember.person.familyMembers.map(fm => ({
+          relationship: fm.relationship, // For each nested family member (fm), it recursively processes them in the same way
+          person: {} // Empty object for nested family members, as specified
+        }))
+      }
+    }
   }
-
-  public getSiblings(): FamilyMember[] {
-    return this.#siblings;
-  }
-
-  public getSpouse(): FamilyMember {
-    return this.#spouse;
-  }
-
-  public getChildren(): FamilyMember[] {
-    return this.#children;
-  }
-
-  public getCousins(): FamilyMember[] {
-    return this.#cousins;
-  }
-
-  public getUncles(): FamilyMember[] {
-    return this.#uncles;
-  }
-
-  public getAunts(): FamilyMember[] {
-    return this.#aunts;
-  }
-
 }
