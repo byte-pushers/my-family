@@ -1,61 +1,39 @@
-// Here are my Enums for NameType and RelationshipType based on tonte's request
-export enum NameType {
-  FIRST_NAME = 'First Name',
-  LAST_NAME = 'Last Name',
-  FULL_NAME = 'Full Name'
-}
+import { BaseDomainModel } from './base-domain-model';  // Import BaseDomainModel
+import { Person } from './person';                      // Import Person
+import { RelationshipType } from './relationship-type'; // Import RelationshipType
 
-export enum RelationshipType {
-  FATHER = 'Father',
-  MOTHER = 'Mother',
-  SIBLING = 'Sibling',
-  SPOUSE = 'Spouse',
-  CHILD = 'Child',
-  COUSIN = 'Cousin',
-  UNCLE = 'Uncle',
-  AUNT = 'Aunt',
-  GRANDPARENT = 'Grandparent'
-}
-
-// Person class definition
-export class Person {
-  constructor(
-    public firstName: string,
-    public lastName: string,
-    public age: number,
-    public familyMembers: FamilyMember[] = [] // Add familyMembers array for nested structure
-  ) {}
-}
-
-// FamilyMember class definition
-export class FamilyMember {
-  #name: NameType;
+export class FamilyMember extends BaseDomainModel {
   #relationship: RelationshipType;
   #person: Person;
 
-  constructor(name: NameType, relationship: RelationshipType, person: Person) {
-    this.#name = name;
+  constructor(
+      id: number,
+      relationship: RelationshipType,
+      person: Person,
+      createdBy: string,
+      updatedBy: string,
+      createdDate: Date,
+      updatedDate: Date
+  ) {
+    super(id, createdBy, createdDate, updatedBy, updatedDate);  // Initialize BaseDomainModel fields
     this.#relationship = relationship;
     this.#person = person;
   }
 
-  // Getter for name
-  public get name(): NameType {
-    return this.#name;
-  }
-
-  // Getter for relationship
+  // Getters
   public get relationship(): RelationshipType {
     return this.#relationship;
   }
 
-  // Getter for person
   public get person(): Person {
     return this.#person;
   }
 
-  // Special getter method that returns a formatted description
-  public get description(): string {
-    return `${this.#person.firstName} is a ${this.#relationship}`;
+  //added overide since it overrides the method in BaseDomainModel
+  public override toString(): string {  // Added 'override' here
+    return `{
+      "relationship": "${this.#relationship}",
+      "person": ${this.#person.toString()}
+    }`;
   }
 }
