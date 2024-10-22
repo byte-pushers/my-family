@@ -16,6 +16,8 @@ public class APIErrorConstant {
     // Input validation errors
     public static final String API_ERROR_INVALID_INPUT = "E008"; // Invalid input data
     public static final String API_ERROR_MISSING_REQUIRED_FIELDS = "E009"; // Missing required fields
+    public static final String API_ERROR_USER_DELETION_FAILED = "E010";    // User deletion failed
+    public static final String API_ERROR_LOGIN_VALIDATION_FAILED = "E011"; // Login validation error
 
     // General server errors
     public static final String API_ERROR_INTERNAL_SERVER_ERROR = "E500"; // Internal server error
