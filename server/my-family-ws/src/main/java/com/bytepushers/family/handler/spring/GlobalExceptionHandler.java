@@ -28,12 +28,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthorizationException.class)
     public ResponseEntity<ErrorResponse> handleAuthorizationException(AuthorizationException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-                "403",
+                APIErrorConstant.API_ERROR_UNAUTHORIZED_ACCESS,
                 "Unauthorized Access",
-                new ErrorDetail(
-                        "AUTHORIZATION_ERROR",
-                        ex.getMessage()
-                )
+                null
+
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -56,14 +54,9 @@ public class GlobalExceptionHandler {
         List<ErrorResponse> errors = new ArrayList<>();
         ex.getConstraintViolations().forEach(fieldError -> {
             ErrorResponse validationResponse = new ErrorResponse(
-                    "400",
+                    APIErrorConstant.API_ERROR_INVALID_INPUT,
                     fieldError.getMessage(),
-                    new ErrorDetail(
-                            APIErrorConstant.API_ERROR_INVALID_INPUT,
-                            ex.getMessage()
-                    )
-
-
+                    null
             );
             errors.add(validationResponse);
         });
@@ -76,12 +69,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex){
         ErrorResponse errorResponse = new ErrorResponse(
-                "404",
+                APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "User Not Found",
-                new ErrorDetail(
-                        "USER_NOT_FOUND",
-                        ex.getMessage()
-                )
+                null
+
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
@@ -89,12 +80,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<Object> handleDuplicateUserException(DuplicateUserException ex){
         ErrorResponse errorResponse = new ErrorResponse(
-                "400",
+                APIErrorConstant.API_ERROR_USER_ALREADY_EXIST,
                 "Duplicate User",
-                new ErrorDetail(
-                        "USER_DUPLICATE",
-                        ex.getMessage()
-                )
+                null
+
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -102,12 +91,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidUserException.class)
     public ResponseEntity<Object> handleInvalidUserException(InvalidUserException ex){
         ErrorResponse errorResponse = new ErrorResponse(
-                "400",
+                APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "Invalid User Data",
-                new ErrorDetail(
-                        "INVALID_USER_DATA",
-                        ex.getMessage()
-                )
+                null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -115,12 +101,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserDeletionFailedException.class)
     public ResponseEntity<Object> handleUserDeletionFailedException(Exception ex){
         ErrorResponse errorResponse = new ErrorResponse(
-                "500",
+                APIErrorConstant.API_ERROR_USER_DELETION_FAILED,
                 "User Deletion Failed",
-                new ErrorDetail(
-                        "USER_DELETION_ERROR",
-                        ex.getMessage()
-                )
+                null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -1,27 +1,34 @@
 package com.bytepushers.family.api;
 
-import com.bytepushers.family.model.ErrorDetail;
+import java.util.List;
 
 public class ErrorResponse {
-    private String status;
+    private String code;
     private String message;
-    private ErrorDetail error;
+    private String messageKey;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(String status, String message, ErrorDetail error) {
-        this.status = status;
+    public ErrorResponse(String code, String message, String messageKey) {
+        this.code = code;
         this.message = message;
-        this.error = error;
+        this.messageKey = messageKey;
     }
 
-    public String getStatus() {
-        return status;
+    public ErrorResponse(String code, String message, String messageKey, List<ValidationErrorResponse> validationErrors) {
+        this.code = code;
+        this.message = message;
+        this.messageKey = messageKey;
+//        this.validationErrors = validationErrors;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getMessage() {
@@ -32,11 +39,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public ErrorDetail getError() {
-        return error;
+    public String getMessageKey() {
+        return messageKey;
     }
 
-    public void setError(ErrorDetail error) {
-        this.error = error;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
 }
