@@ -25,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'family-member-form',
     loadComponent: () => import('./components/family-member-form/family-member-form.component').then( m => m.FamilyMemberFormComponent)
+  },
+  {
+    path: 'family-tree',
+    loadComponent: () => import('./components/family-tree-visualization/family-tree-visualization.component').then(m => m.FamilyTreeVisualizationComponent)
   }
 
 ];
