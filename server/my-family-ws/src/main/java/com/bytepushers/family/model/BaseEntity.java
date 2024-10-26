@@ -1,4 +1,5 @@
 package com.bytepushers.family.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public abstract class BaseEntity {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
-
+    // Constructors
     public BaseEntity(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.createdBy = createdBy;
@@ -33,10 +34,9 @@ public abstract class BaseEntity {
     }
 
     public BaseEntity() {
-
     }
 
-
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -93,7 +93,11 @@ public abstract class BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(createdBy, that.createdBy) && Objects.equals(updatedBy, that.updatedBy) && Objects.equals(createdDate, that.createdDate) && Objects.equals(updatedDate, that.updatedDate);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(updatedBy, that.updatedBy) &&
+                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(updatedDate, that.updatedDate);
     }
 
     @Override
