@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { CreateAccountPage} from "./create-account/create-account.page";
+import { CreateAccountPage} from "../../pages/create-account/create-account.page";
 
 @Component({
   selector: 'app-root',

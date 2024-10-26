@@ -1,8 +1,8 @@
-import {Component, ContentChild, OnInit, QueryList, ViewChild} from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { FamilyMemberFormComponent } from "../components/family-member-form/family-member-form.component";
+import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
 // import { FamilyMemberModel } from '../models/family-member'
 
 @Component({
@@ -16,7 +16,7 @@ import { FamilyMemberFormComponent } from "../components/family-member-form/fami
 export class AddFamilyStep3Page implements OnInit {
   selectedImage: string | ArrayBuffer | null = null;
 
-  familyMemberForms: FamilyMemberFormComponent[] = [];
+  @ViewChildren(FamilyMemberFormComponent) viewChildren: QueryList<FamilyMemberFormComponent> | undefined;
   parentsForm: NgForm | undefined;
   grandparentsForm: NgForm | undefined;
   siblingsForm: NgForm | undefined;
@@ -25,10 +25,6 @@ export class AddFamilyStep3Page implements OnInit {
 
   constructor(public alertCtrl: AlertController) {
   }
-
-  addToFamilyMemberForms(form: FamilyMemberFormComponent): void {
-    this.familyMemberForms.push(form);
-}
 
   onFileChange(event: any): void {
     const input = event.target as HTMLInputElement;
@@ -51,7 +47,7 @@ export class AddFamilyStep3Page implements OnInit {
   // Clear button call
   clearPage(): void {
     // loop through each form component and call clear method?
-    this.familyMemberForms.forEach(form => form.removeAllFamilyMembers());
+    this.viewChildren?.forEach(form => form.removeAllFamilyMembers());
   }
 
   // Add To Family button call

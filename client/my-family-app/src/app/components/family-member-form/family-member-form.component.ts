@@ -1,8 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AlertController, IonContent, } from "@ionic/angular/standalone";
-import { CommonModule, NgForOf, NgIf } from '@angular/common';
+import { IonContent, } from "@ionic/angular/standalone";
+import { NgForOf, NgIf } from '@angular/common';
 //import { FamilyMember, Person } from "./../../models/family-member.model"
-import {FormGroup, FormsModule, NgForm} from "@angular/forms";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 
 @Component({
   selector: 'app-family-member-form',
@@ -12,57 +21,58 @@ import {FormGroup, FormsModule, NgForm} from "@angular/forms";
     IonContent,
     FormsModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule
   ],
   standalone: true
 })
 export class FamilyMemberFormComponent implements OnInit {
-  @Input({ required: true }) relationshipType: string = '';
+  @Input({ required: true }) relationshipType: string = ''; // Title
   @Input() relationshipTypeDropdownArray: string[] = [];
   @Input() familyMemberForm: NgForm | undefined;
 
-  familyMemberName: string = '';
-  familyMemberList: Array<string> = [];
-  specificRelationshipType: string = '';
+  submitted: boolean = false;
+  addFamilyMemberForm: FormGroup;
 
-
-  constructor(public alertCtrl: AlertController) {
-
+  constructor(private fb: FormBuilder) {
+    this.addFamilyMemberForm = this.fb.group({
+      name: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      familyMembers: this.fb.array([])
+    });
   }
 
-  async addNewFamilyMember(name: string, type: string) {
-    if (name && type) {
-      /*new Person('firstName', 'lastname', 13, )
-      new FamilyMember(this.relationshipType,)
-      this.familyMemberList.push({});*/
-      //this.newFamilyMember.emit(value);
+  get familyMembers(): FormArray {
+    return this.addFamilyMemberForm.controls['familyMembers'] as FormArray;
+  }
 
-      //this.cousinsList.push({name: this.cousinName});
-      this.familyMemberList.push(`${name} (${type})`);
-      this.clearFields(); // Clear the input fields after adding
-    } else {
-      const alert = await this.alertCtrl.create({
-        header:'Error',
-        message:"Please enter a name and select the specific relation",
-        buttons:['OK'],
-        cssClass: 'custom-alert',
-      })
-      await alert.present()
+  addFamilyMember() {
+    const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
+    const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+
+    if (familyMemberName && familyMemberType) {
+      const member = this.fb.group({
+        name: new FormControl(familyMemberName, Validators.required),
+        type: new FormControl(familyMemberType, Validators.required)
+      });
+
+      this.familyMembers.push(member);
     }
+
+    this.addFamilyMemberForm.get('name')?.setValue('');
+    this.addFamilyMemberForm.get('type')?.setValue('');
   }
 
-  removeFamilyMember(index: number) {
-    this.familyMemberList.splice(index, 1);
+  removeFamilyMember(index: number): void {
+    this.familyMembers.removeAt(index);
+  }
+
+  ngOnInit() {
   }
 
   removeAllFamilyMembers() {
-    this.familyMemberList = [];
+    this.familyMembers.clear();
+    this.addFamilyMemberForm.get('name')?.setValue('');
+    this.addFamilyMemberForm.get('type')?.setValue('');
   }
-
-  clearFields() {
-    this.familyMemberName = '';
-    this.specificRelationshipType = '';
-  }
-
-  ngOnInit() {}
 }
