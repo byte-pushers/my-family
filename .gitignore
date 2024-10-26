@@ -1,6 +1,12 @@
 ./**/.DS_Store
+./**/.angular
+./**/node_modules
+client/my-family-app/www/
+
 # Compiled class file
 *.class
+
+.DS_Store
 
 # Log file
 *.log

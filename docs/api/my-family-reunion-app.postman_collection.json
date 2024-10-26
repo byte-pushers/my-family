@@ -1,0 +1,514 @@
+{
+	"info": {
+		"_postman_id": "f45ac2c4-6586-4def-875a-13bd27659760",
+		"name": "my-family-reunion-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38160132"
+	},
+	"item": [
+		{
+			"name": "Account & Authentication",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/94",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"94"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Versions",
+								"value": "0.0.0.1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"username\": \"user@example.com\",\r\n        \"password\": \"cGFzc3dvcmQxMjM=\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.com\",\n    \"password\": \"test2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/94",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"94"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password Reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/93",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"93"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Family Tree/Members",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Add Family Member",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"familyMembers\": [\r\n        {\r\n            \"relationship\": \"Father\",\r\n            \"person\": {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"familyMembers\": [\r\n                    {\r\n                        \"relationship\": \"Son\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Mike\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2000-05-12\",\r\n                            \"gender\": \"Male\",\r\n                            \"familyMembers\": [],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"relationship\": \"Daughter\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Anna\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2005-08-20\",\r\n                            \"gender\": \"Female\",\r\n                            \"familyMembers\": [\r\n                                {\r\n                                    \"relationship\": \"Child\",\r\n                                    \"person\": {\r\n                                        \"firstName\": \"Emily\",\r\n                                        \"lastName\": \"Smith\",\r\n                                        \"birthDate\": \"2023-03-15\",\r\n                                        \"gender\": \"Female\",\r\n                                        \"familyMembers\": []\r\n                                    },\r\n                                    \"createdBy\": \"adminUser\",\r\n                                    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                                }\r\n                            ],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ], \r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        }\r\n    ],\r\n    \"parentType\": \"Nuclear\",\r\n    \"parentName\": \"Smith Family\",\r\n    \"grandParentType\": \"Extended\",\r\n    \"grandParentName\": \"Doe Family\",\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-tree",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-tree"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family Member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Tree",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Family Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "GET with filters such as age, gender, lineage, etc."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "GET with filters such as date, location, etc."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media/Content",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Upload Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Media",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Media",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription/Payment",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create Subscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Processing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Subscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "http://localhost:8080/api/create-account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"\",\n    \"middleName\":\"middleName\",\n    \"lastName\":\"\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2000-10-10\",\n    \"age\":89,\n    \"password\":\"dhj\",\n    \"email\":\"dsds@gmail.com\",\n    \"address\":\"1234 N road CA\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/create-account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"create-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/home",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"home"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

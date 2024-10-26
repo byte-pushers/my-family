@@ -1,0 +1,134 @@
+{
+  "name": "John Doe",
+  "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam",
+  "children": [
+    {
+      "name": "Jane Doe",
+      "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine",
+      "children": [
+        {
+          "name": "Sam Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Jessica",
+          "children": [
+            { "name": "Tommy Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Sarah Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] },
+            { "name": "Peter Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian", "children": [] }
+          ]
+        },
+        {
+          "name": "Sally Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie",
+          "children": [
+            { "name": "Emma Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] },
+            { "name": "Oliver Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] }
+          ]
+        },
+        {
+          "name": "Lucy Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine",
+          "children": [
+            { "name": "Jack Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Sophie Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie", "children": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mike Doe",
+      "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+      "children": [
+        {
+          "name": "Jake Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Jessica",
+          "children": [
+            { "name": "Alex Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Emily Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        },
+        {
+          "name": "Mia Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie",
+          "children": [
+            { "name": "Noah Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian", "children": [] },
+            { "name": "Ava Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        },
+        {
+          "name": "William Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+          "children": [
+            { "name": "James Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Isabella Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alice Doe",
+      "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine",
+      "children": [
+        {
+          "name": "Bob Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam",
+          "children": [
+            { "name": "Lucas Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian", "children": [] },
+            { "name": "Sophia Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie", "children": [] },
+            { "name": "Benjamin Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Jessica", "children": [] }
+          ]
+        },
+        {
+          "name": "Charlie Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+          "children": [
+            { "name": "Henry Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Amelia Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Emma Doe",
+      "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine",
+      "children": [
+        {
+          "name": "Daniel Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+          "children": [
+            { "name": "Mason Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Evelyn Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie", "children": [] }
+          ]
+        },
+        {
+          "name": "David Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam",
+          "children": [
+            { "name": "Alexander Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian", "children": [] },
+            { "name": "Charlotte Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Oliver Doe",
+      "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+      "children": [
+        {
+          "name": "Ethan Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Jessica",
+          "children": [
+            { "name": "Sebastian Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Liam", "children": [] },
+            { "name": "Victoria Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Katherine", "children": [] }
+          ]
+        },
+        {
+          "name": "Aiden Doe",
+          "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Christian",
+          "children": [
+            { "name": "Joseph Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Jessica", "children": [] },
+            { "name": "Grace Doe", "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Sadie", "children": [] }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>Welcome Page!</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <!-- Centralized Login Form -->
+    <div class="login-container">
+        <h2 class="login-title">Welcome to My Family!</h2>
+      <p class="welcome-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+      <img src="assets/myfamilywelcomepagepicture.png" alt="my family welcome picture" width="500" height="600">
+
+        <!-- Sign In Button -->
+      <ion-button expand="block" class="login-button" [routerLink]="['/login-page']" color="#0D4C92">
+        Sign In
+      </ion-button>
+
+      <!-- Create Account Button -->
+      <ion-button expand="block" class="create-account-button" [routerLink]="['/create-account']" color="white" fill="outline">
+        Create Account
+      </ion-button>
+
+    </div>
+</ion-content>

@@ -12,10 +12,11 @@
 
 ##### Request Headers
 
-> | name            | value                | description                                                              |
-> |-----------------|----------------------|--------------------------------------------------------------------------|
-> | Content-Type    | "application/json"   | accepts json                                                             |
-> | Accept-Versions | "1.5.0.0"            | comma seperated list of semantic verisions, used for semantic versioning |
+> | name            | value              | description                                                             |
+> |-----------------|--------------------|-------------------------------------------------------------------------|
+> | Content-Type    | "application/json" | accepts json                                                            |
+> | Accept          | "application/json" | accepts json                                                            |
+> | Accept-Versions | "0.0.0.1"          | comma seperated list of semantic versions, used for semantic versioning |
 
 ##### Parameters
 
@@ -27,22 +28,86 @@
 
 ```
 {
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "accountInfo": {
-        "firstName": [string, required, alpha],
-        "middleName": [string, optional, alpha] | null | undefined,
-        "lastName": [string, alpha],
-        "email": [string, optional] | null,
-        "phoneNumber": [string, optional, alphanumeric] | null | undefined,
-        "address": {
-            "address line1": [string, alphanumerica],
-            "address line2": [string, optional, alphanumerica] | null | undefined,
-            "city": [string],
-            "state": [string],
-            "zipcode": [string, alpha numeric hyphen]
-        } | null | undefined
+  "userId": 1,
+  "familyMembers": [
+    {
+      "relationship": "string",
+      "person": {
+        "familyMembers": [
+          {
+            "relationship": "string",
+            "person": {}
+          }
+        ]
+      }
     }
+  ],
+  "createdBy": "string",
+  "updatedBy": "string",
+  "createdDate": "String in ISO 8601 Date Format",
+  "updatedDate": "String in ISO 8601 Date Format"
 }
+
+```
+##### Request Body Example
+```
+{
+    "userId": 1,
+    "familyMembers": [
+        {
+            "relationship": "Father",
+            "person": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "birthDate": "1970-01-01",
+                "gender": "Male",
+                "familyMembers": [
+                    {
+                        "relationship": "Son",
+                        "person": {
+                            "firstName": "Mike",
+                            "lastName": "Doe",
+                            "birthDate": "2000-05-12",
+                            "gender": "Male",
+                            "familyMembers": []
+                        }
+                    },
+                    {
+                        "relationship": "Daughter",
+                        "person": {
+                            "firstName": "Anna",
+                            "lastName": "Doe",
+                            "birthDate": "2005-08-20",
+                            "gender": "Female",
+                            "familyMembers": [
+                                {
+                                    "relationship": "Child",
+                                    "person": {
+                                        "firstName": "Emily",
+                                        "lastName": "Smith",
+                                        "birthDate": "2023-03-15",
+                                        "gender": "Female",
+                                        "familyMembers": []
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "parentType": "Nuclear",
+    "parentName": "Smith Family",
+    "grandParentType": "Extended",
+    "grandParentName": "Doe Family",
+    "createdBy": "adminUser",
+    "updatedBy": "adminUser",
+    "createdDate": "2024-10-16T10:00:00Z",
+    "updatedDate": "2024-10-16T10:00:00Z"
+}
+
+
 ```
 ##### Response Headers
 
@@ -67,11 +132,18 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string] | null | undefined, // server error code
-  "message": [string] | null | undefined, // server error message
-  "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string] | null | undefined, // server error code
+      "message": [string] | null | undefined, // server error message
+      "messageKey": [string] | null | undefined // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
@@ -82,7 +154,7 @@
 </details>
 
 <details>
-<summary><code>POST</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary><code>GET</code><code><b>/api/session</b></code><code>User Login API</code></summary>
 
 ##### Headers
 
@@ -97,16 +169,22 @@
 > |-----------|------|-----------|-------------|
 > | None      | NA   | NA        | N/A         |
 
-##### Request Body
+##### Response Body
 
 ```
-{
-    "transactionId": [GUID, required], // used for logging and tracking transaction from front-end to back-end
-    "credentials": {
-        "username": [string, required], // user name
-        "password": [string (base64 encoded), required] // user password
+[
+    {
+        "relationship": "string",
+        "person": {
+            "familyMembers": [
+                {
+                    "relationship": "string",
+                    "person": {}
+                }
+            ]
+        }
     }
-}
+]
 ```
 
 ##### Response Headers
@@ -132,17 +210,24 @@
 ##### JSON Error Response Body
 
 ```
-{
-  "code": [string], // server error code
-  "message": [string], // server error message
-  "messageKey": [string] // server error message key to display user friendly error message on client
-}
+[
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    },
+    {
+      "code": [string], // server error code
+      "message": [string], // server error message
+      "messageKey": [string] // server error message key to display user friendly error message on client
+    }
+]
 ```
 
 ##### Example cURL
 
 > ```curl
->  curl -X POST -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
+>  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
 > ```
 
 </details>
