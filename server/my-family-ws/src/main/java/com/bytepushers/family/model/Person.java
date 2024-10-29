@@ -1,12 +1,17 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.Embeddable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import java.time.LocalDate; // Use LocalDate instead of String
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-@Embeddable
-public class Person {
+@Entity
+@Table(name = "Person")
+public class Person extends BaseEntity {
 
     @NotEmpty(message = "First name is required")
     private String firstName;
@@ -15,24 +20,34 @@ public class Person {
     private String lastName;
 
     @NotEmpty(message = "Birth date is required")
-    private LocalDate birthDate; // Change to LocalDate
+    private LocalDate birthDate;
 
     @NotEmpty(message = "Gender is required")
     private String gender;
 
-    // Default constructor
-    public Person(String john, String doe, String date, String male) {
+    // One-to-Many relationship with FamilyMember (if needed)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<FamilyMember> familyMembers = new ArrayList<>();
+
+    // Constructors
+    public Person() {
     }
 
     public Person(String firstName, String lastName, LocalDate birthDate, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthDate = birthDate; // Adjusted
+        this.birthDate = birthDate;
         this.gender = gender;
     }
 
-    public Person() {
-
+    public Person(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String firstName, String lastName, LocalDate birthDate, String gender, List<FamilyMember> familyMembers) {
+        super(id, createdBy, updatedBy, createdDate, updatedDate);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.familyMembers = familyMembers;
     }
 
     // Getters and Setters
@@ -52,11 +67,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() { // Adjusted return type
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) { // Adjusted parameter type
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -68,12 +83,21 @@ public class Person {
         this.gender = gender;
     }
 
+    public List<FamilyMember> getFamilyMembers() {
+        return familyMembers;
+    }
+
+    public void setFamilyMembers(List<FamilyMember> familyMembers) {
+        this.familyMembers = familyMembers;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + getId() +  // Calls inherited getId() from BaseEntity
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate + // Adjusted
+                ", birthDate=" + birthDate +
                 ", gender='" + gender + '\'' +
                 '}';
     }
@@ -82,15 +106,17 @@ public class Person {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
+        if (!super.equals(o)) return false;  // Call to BaseEntity's equals()
+
         Person person = (Person) o;
         return firstName.equals(person.firstName) &&
                 lastName.equals(person.lastName) &&
-                birthDate.equals(person.birthDate) && // Include comparison for birthDate
+                birthDate.equals(person.birthDate) &&
                 gender.equals(person.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, birthDate, gender); // Use fields in hashCode
+        return Objects.hash(super.hashCode(), firstName, lastName, birthDate, gender);  // Include both BaseEntity and Person fields
     }
 }
