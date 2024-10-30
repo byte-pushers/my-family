@@ -29,7 +29,10 @@ export const routes: Routes = [
   {
     path: 'family-tree',
     loadComponent: () => import('./pages/family-tree/family-tree.page').then( m => m.FamilyTreePage)
+  },
+  {
+    path: 'event-signup',
+    loadComponent: () => import('./pages/event-signup/event-signup.page').then( m => m.EventSignupPage)
   }
-
 
 ];

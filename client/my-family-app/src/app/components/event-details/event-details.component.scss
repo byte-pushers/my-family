@@ -1,0 +1,59 @@
+ion-card {
+  display: block;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: left;       // Align text to the left for a clean look
+}
+
+ion-card-title {
+  font-weight: 700; // Bold weight for Inter
+  font-size: 1.4rem; // Adjust size as needed
+  color: #333;       // Optional: set color to match Figma/design
+}
+
+
+ion-img {
+  width: 100%;              // Full width for the image to match the card
+  height: auto;
+  object-fit: cover;        // Ensures the image scales to fit without distortion
+  border-radius: 8px;       // Apply rounded corners to the entire image
+  overflow: hidden;         // Ensure content doesn't overflow rounded corners
+  display: block;           // Make sure the image behaves as a block element
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+
+h2{
+  font-weight: 600; // Bold weight for Inter
+  color: #333;       // Optional: set color to match Figma/design
+  margin-top: 1rem;
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;      // Adjust font size as needed to match design
+
+  .icon {
+    width: 1.2rem;          // Adjust icon size as needed
+    height: 1.2rem;
+    margin-right: 0.5rem;   // Space between icon and text
+    object-fit: contain;    // Ensures the image fits within the specified dimensions
+  }
+
+  span {
+    color: #8c8c8c;          // Text color to match Figma
+  }
+}
+
+.event-description {
+  margin-top: 2rem;
+  font-size: 0.9rem;      // Adjust as needed
+  color: #666;            // Description text color
+}
