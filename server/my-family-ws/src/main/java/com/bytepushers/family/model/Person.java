@@ -94,13 +94,14 @@ public class Person extends BaseEntity {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + getId() +  // Calls inherited getId() from BaseEntity
+                super.toString() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 ", gender='" + gender + '\'' +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o) {

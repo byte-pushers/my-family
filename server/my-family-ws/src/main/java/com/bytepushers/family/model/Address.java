@@ -1,6 +1,6 @@
 package com.bytepushers.family.model;
 
-public class Address {
+public class Address extends BaseEntity{
     private String addressLine1;
     private String addressLine2;
     private String city;
@@ -8,6 +8,7 @@ public class Address {
     private String zipcode;
 
     public Address(String addressLine1, String addressLine2, String city, String state, String zipcode) {
+        super();
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.city = city;
@@ -57,8 +58,8 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "addressLine1='" + addressLine1 + '\'' +
+        return super.toString().replaceFirst("}$", "") +
+                ", addressLine1='" + addressLine1 + '\'' +
                 ", addressLine2='" + addressLine2 + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +

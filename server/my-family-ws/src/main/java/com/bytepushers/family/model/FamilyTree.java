@@ -55,9 +55,10 @@ public class FamilyTree extends BaseEntity {
 
     @Override
     public String toString() {
-        return "FamilyTree{" +
-                "relationship='" + relationship + '\'' +
+        return super.toString().replaceFirst("}$", "") +
+                ", relationship='" + relationship + '\'' +
                 ", person=" + person +
+                ", familyMembers=" + familyMembers +
                 '}';
     }
 }

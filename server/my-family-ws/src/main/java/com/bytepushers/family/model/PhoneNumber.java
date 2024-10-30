@@ -1,6 +1,6 @@
 package com.bytepushers.family.model;
 
-public class PhoneNumber {
+public class PhoneNumber extends BaseEntity{
     private String phoneType;
     private String countryCode;
     private String areaCode;
@@ -48,10 +48,12 @@ public class PhoneNumber {
     @Override
     public String toString() {
         return "PhoneNumber{" +
-                "phoneType='" + phoneType + '\'' +
+                super.toString() +
+                ", phoneType='" + phoneType + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 ", areaCode='" + areaCode + '\'' +
                 ", subscriberNumber='" + subscriberNumber + '\'' +
                 '}';
     }
+
 }
