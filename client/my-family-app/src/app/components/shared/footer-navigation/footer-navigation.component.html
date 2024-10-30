@@ -1,0 +1,49 @@
+<!-- navigation-footer.component.html -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <!-- With routing (commented out for now) -->
+        <!-- <ion-tab-button tab="home" [routerLink]="['/home']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
+          <img src="assets/icon/home.png" alt="Home">
+          <ion-label>Home</ion-label>
+        </ion-tab-button> -->
+
+        <ion-tab-button tab="home" (click)="selectTab('home')" [class.selected]="selectedTab === 'home'">
+          <img src="assets/icon/home.png" alt="Home">
+          <ion-label>Home</ion-label>
+        </ion-tab-button>
+
+        <!-- <ion-tab-button tab="family" [routerLink]="['/family']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
+          <img src="assets/icon/family.png" alt="Family">
+          <ion-label>Family</ion-label>
+        </ion-tab-button> -->
+
+        <ion-tab-button tab="family" (click)="selectTab('family')" [class.selected]="selectedTab === 'family'">
+          <img src="assets/icon/family-icon.png" alt="Family">
+          <ion-label>Family</ion-label>
+        </ion-tab-button>
+
+        <!-- <ion-tab-button tab="profile" [routerLink]="['/profile']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
+          <img src="assets/icon/profile.png" alt="Profile">
+          <ion-label>Profile</ion-label>
+        </ion-tab-button> -->
+
+        <ion-tab-button tab="profile" (click)="selectTab('profile')" [class.selected]="selectedTab === 'profile'">
+          <img src="assets/icon/profile.png" alt="Profile">
+          <ion-label>Profile</ion-label>
+        </ion-tab-button>
+
+        <!-- <ion-tab-button tab="chat" [routerLink]="['/chat']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
+          <img src="assets/icon/chat.png" alt="Chat">
+          <ion-label>Chat</ion-label>
+        </ion-tab-button> -->
+
+        <ion-tab-button tab="chat" (click)="selectTab('chat')" [class.selected]="selectedTab === 'chat'">
+          <img src="assets/icon/chat.png" alt="Chat">
+          <ion-label>Chat</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>
