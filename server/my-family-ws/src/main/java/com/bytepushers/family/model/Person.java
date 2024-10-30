@@ -1,8 +1,12 @@
 package com.bytepushers.family.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,21 +17,21 @@ import java.util.Objects;
 @Table(name = "Person")
 public class Person extends BaseEntity {
 
-    @NotEmpty(message = "First name is required")
+    @NotNull(message = "First name is required")
     private String firstName;
 
-    @NotEmpty(message = "Last name is required")
+    @NotNull(message = "Last name is required")
     private String lastName;
 
-    @NotEmpty(message = "Birth date is required")
+    @NotNull(message = "Birth date is required")
     private LocalDate birthDate;
 
-    @NotEmpty(message = "Gender is required")
+    @NotNull(message = "Gender is required")
     private String gender;
 
     // One-to-Many relationship with FamilyMember (if needed)
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnoreProperties("person")
     private List<FamilyMember> familyMembers = new ArrayList<>();
 
     // Constructors

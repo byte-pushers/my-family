@@ -7,6 +7,8 @@ import com.bytepushers.family.model.Person;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class FamilyTreeMockService implements FamilyTreeService {
@@ -27,6 +29,26 @@ public class FamilyTreeMockService implements FamilyTreeService {
         return familyTree;
     }
 
+    @Override
+    public Optional<FamilyTree> getFamilyTreeById(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<FamilyTree> getAllFamilyTrees() {
+        return List.of();
+    }
+
+    @Override
+    public FamilyTree updateFamilyTree(long id, FamilyTree familyTree) {
+        return null;
+    }
+
+    @Override
+    public void deleteFamilyTree(long id) {
+
+    }
+
     private void assignIdsAndSetAuditFields(FamilyMember familyMember) {
         familyMember.setId(idGenerator.getAndIncrement());
         setAuditFields(familyMember);
@@ -37,11 +59,11 @@ public class FamilyTreeMockService implements FamilyTreeService {
             setAuditFields(person);
         }
 
-        if (familyMember.getFamilyMembers() != null) {
+        /*if (familyMember.getFamilyMembers() != null) {
             for (FamilyMember child : familyMember.getFamilyMembers()) {
                 assignIdsAndSetAuditFields(child);
             }
-        }
+        }*/
     }
 
     private void setAuditFields(BaseEntity entity) {

@@ -43,9 +43,7 @@
     }
   ],
   "createdBy": "string",
-  "updatedBy": "string",
   "createdDate": "String in ISO 8601 Date Format",
-  "updatedDate": "String in ISO 8601 Date Format"
 }
 
 ```
@@ -55,7 +53,7 @@
     "userId": 1,
     "familyMembers": [
         {
-            "relationship": "Father",
+            "relationship": "FATHER",
             "person": {
                 "firstName": "John",
                 "lastName": "Doe",
@@ -63,17 +61,21 @@
                 "gender": "Male",
                 "familyMembers": [
                     {
-                        "relationship": "Son",
+                        "relationship": "SON",
                         "person": {
                             "firstName": "Mike",
                             "lastName": "Doe",
                             "birthDate": "2000-05-12",
                             "gender": "Male",
-                            "familyMembers": []
-                        }
+                            "familyMembers": [],
+                            "createdBy": "adminUser",
+                            "createdDate": "2024-10-16T10:00:00Z"
+                        },
+                        "createdBy": "adminUser",
+                        "createdDate": "2024-10-16T10:00:00Z"
                     },
                     {
-                        "relationship": "Daughter",
+                        "relationship": "DAUGHTER",
                         "person": {
                             "firstName": "Anna",
                             "lastName": "Doe",
@@ -81,30 +83,40 @@
                             "gender": "Female",
                             "familyMembers": [
                                 {
-                                    "relationship": "Child",
+                                    "relationship": "CHILD",
                                     "person": {
                                         "firstName": "Emily",
                                         "lastName": "Smith",
                                         "birthDate": "2023-03-15",
                                         "gender": "Female",
                                         "familyMembers": []
-                                    }
+                                    },
+                                    "createdBy": "adminUser",
+                                    "createdDate": "2024-10-16T10:00:00Z"
                                 }
-                            ]
-                        }
+                            ],
+                            "createdBy": "adminUser",
+                            "createdDate": "2024-10-16T10:00:00Z"
+                        },
+                        "createdBy": "adminUser",
+                        "createdDate": "2024-10-16T10:00:00Z"
                     }
-                ]
+                ], 
+                "createdBy": "adminUser",
+                "createdDate": "2024-10-16T10:00:00Z"
             }
+        },
+        {
+          "relationship": "GRAND_FATHER",
+          "person": {}
+        },
+        {
+          "relationship": "GRAND_MOTHER",
+          "person": {}
         }
     ],
-    "parentType": "Nuclear",
-    "parentName": "Smith Family",
-    "grandParentType": "Extended",
-    "grandParentName": "Doe Family",
     "createdBy": "adminUser",
-    "updatedBy": "adminUser",
-    "createdDate": "2024-10-16T10:00:00Z",
-    "updatedDate": "2024-10-16T10:00:00Z"
+    "createdDate": "2024-10-16T10:00:00Z"
 }
 
 

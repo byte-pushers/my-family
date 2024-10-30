@@ -1,40 +1,30 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "family_members")
 public class FamilyMember extends BaseEntity {
 
-    @NotEmpty(message = "Relationship is required")
-    private String relationship;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Relationship is required")
+    private RelationshipType relationship;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
+    @JsonIgnoreProperties("familyMembers")  // Prevents circular serialization issues
     private Person person;
-
-    // Parent reference for the bidirectional relationship
-    @ManyToOne
-    @JoinColumn(name = "parent_member_id")
-    @JsonBackReference
-    private FamilyMember parent;
-
-    // Recursive reference for child members
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
-    @JsonManagedReference
-    private List<FamilyMember> familyMembers;
-
-    // Many-to-one relationship with FamilyTree (if needed)
-    @ManyToOne
-    @JoinColumn(name = "family_tree_id")
-    private FamilyTree familyTree;
 
     public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
@@ -44,25 +34,17 @@ public class FamilyMember extends BaseEntity {
     public FamilyMember() {
     }
 
-    public FamilyMember(String relationship, Person person) {
+    public FamilyMember(RelationshipType relationship, Person person) {
         this.relationship = relationship;
         this.person = person;
-    }
-
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
-        super(id, createdBy, updatedBy, createdDate, updatedDate);
-        this.relationship = relationship;
-        this.person = person;
-        this.parent = parent;
-        this.familyMembers = familyMembers;
     }
 
     // Getters and Setters
-    public String getRelationship() {
+    public RelationshipType getRelationship() {
         return relationship;
     }
 
-    public void setRelationship(String relationship) {
+    public void setRelationship(@NotEmpty(message = "Relationship is required") RelationshipType relationship) {
         this.relationship = relationship;
     }
 
@@ -74,37 +56,12 @@ public class FamilyMember extends BaseEntity {
         this.person = person;
     }
 
-    public FamilyMember getParent() {
-        return parent;
-    }
-
-    public void setParent(FamilyMember parent) {
-        this.parent = parent;
-    }
-
-    public List<FamilyMember> getFamilyMembers() {
-        return familyMembers;
-    }
-
-    public void setFamilyMembers(List<FamilyMember> familyMembers) {
-        this.familyMembers = familyMembers;
-    }
-
-    public FamilyTree getFamilyTree() {
-        return familyTree;
-    }
-
-    public void setFamilyTree(FamilyTree familyTree) {
-        this.familyTree = familyTree;
-    }
-
     @Override
     public String toString() {
         return "FamilyMember{" +
                 "id=" + getId() +
                 ", relationship='" + relationship + '\'' +
                 ", person=" + (person != null ? person.getFirstName() + " " + person.getLastName() : "null") +
-                ", parent=" + (parent != null ? parent.getId() : "null") +
                 '}';
     }
 
@@ -116,12 +73,11 @@ public class FamilyMember extends BaseEntity {
 
         FamilyMember that = (FamilyMember) o;
         return Objects.equals(relationship, that.relationship) &&
-                Objects.equals(person, that.person) &&
-                Objects.equals(parent, that.parent);
+                Objects.equals(person, that.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), relationship, person, parent);
+        return Objects.hash(super.hashCode(), relationship, person);
     }
 }

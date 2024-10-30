@@ -1,5 +1,7 @@
 package com.bytepushers.family.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -9,32 +11,34 @@ import java.util.List;
 @Table(name = "FamilyTreeMember")
 public class FamilyTree extends BaseEntity {
 
-    private String relationship;
+    private String crestImageUrl;
 
     // Assuming `Person` is meant to be embedded directly without an identifier of its own
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
-    @OneToMany(mappedBy = "familyTree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_tree_id")
+    @JsonIgnoreProperties("familyTree")
     private List<FamilyMember> familyMembers = new ArrayList<>();
 
     // Constructors
     public FamilyTree() {
     }
 
-    public FamilyTree(String relationship, Person person) {
-        this.relationship = relationship;
-        this.person = person;
+    public FamilyTree(String crestImageUrl, List<FamilyMember> familyMembers) {
+        this.crestImageUrl = crestImageUrl;
+        this.familyMembers = familyMembers;
     }
 
     // Getters and Setters
-    public String getRelationship() {
-        return relationship;
+    public String getCrestImageUrl() {
+        return crestImageUrl;
     }
 
-    public void setRelationship(String relationship) {
-        this.relationship = relationship;
+    public void setCrestImageUrl(String crestImageUrl) {
+        this.crestImageUrl = crestImageUrl;
     }
 
     public Person getPerson() {
@@ -56,9 +60,8 @@ public class FamilyTree extends BaseEntity {
     @Override
     public String toString() {
         return super.toString().replaceFirst("}$", "") +
-                ", relationship='" + relationship + '\'' +
-                ", person=" + person +
-                ", familyMembers=" + familyMembers +
-                '}';
+            ", crestImageUrl=" + crestImageUrl +
+            ", familyMembers=" + familyMembers +
+        '}';
     }
 }
