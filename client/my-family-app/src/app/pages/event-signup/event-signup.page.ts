@@ -4,13 +4,18 @@ import {FormsModule} from '@angular/forms';
 import {EventDetailsComponent} from "../../components/event-details/event-details.component";
 import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
 import {IonicModule} from "@ionic/angular";
+import {
+  EventRegistrationFormComponent
+} from "../../components/event-registration-form/event-registration-form.component";
+
 
 @Component({
   selector: 'app-event-signup',
   templateUrl: './event-signup.page.html',
   styleUrls: ['./event-signup.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, EventDetailsComponent, FooterNavigationComponent, IonicModule]
+  imports: [CommonModule, FormsModule, EventDetailsComponent, FooterNavigationComponent, IonicModule, EventRegistrationFormComponent
+  ]
 })
 export class EventSignupPage implements OnInit {
 
