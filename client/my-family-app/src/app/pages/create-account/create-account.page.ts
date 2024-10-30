@@ -8,11 +8,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'; */ // will be used for api call later
 import { DatePipe } from '@angular/common';
-import { CreateAccountService } from "../services/create-account.service";
-import { CreateAccountRequestPayload } from "../models/create-account-request.payload";
-import { AccountInfo } from "../models/account-info";
-import { Address } from "../models/address"
-import { PhoneNumber } from "../models/phone-number";
+import { CreateAccountService } from "../../services/create-account.service";
+import { CreateAccountRequestPayload } from "../../models/create-account-request.payload";
+import { AccountInfo } from "../../models/account-info";
+import { Address } from "../../models/address"
+import { PhoneNumber } from "../../models/phone-number";
 import {create} from "ionicons/icons";
 
 @Component({
