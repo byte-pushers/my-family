@@ -2,7 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { FamilyMemberFormComponent } from "../components/family-member-form/family-member-form.component";
+import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
 // import { FamilyMemberModel } from '../models/family-member'
 
 @Component({

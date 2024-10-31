@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {LoginService} from "../services/login-service";
-import {GlobalErrorService} from "../services/global-error.service";
-import {GlobalErrorHandler} from "../GlobalExceptionHandler/global-error-handler";
-import {ApiError} from "../models/api-error";
+import {LoginService} from "../../services/login-service";
+import {GlobalErrorService} from "../../services/global-error.service";
+import {GlobalErrorHandler} from "../../errors/global-error-handler";
+import {ApiError} from "../../models/api-error";
 
 import {
   IonContent,
