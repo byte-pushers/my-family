@@ -27,7 +27,8 @@ public class Account {
 
     private String nickName;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
+    @NotNull(message="Birthdate is required")
     private LocalDate birthday;
 
     @Column(nullable = false)
