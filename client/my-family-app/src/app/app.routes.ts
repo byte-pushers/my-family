@@ -28,7 +28,8 @@ export const routes: Routes = [
   },
   {
     path: 'family-tree',
-    loadComponent: () => import('./components/family-tree-visualization/family-tree-visualization.component').then(m => m.FamilyTreeVisualizationComponent)
+    loadComponent: () => import('./pages/family-tree/family-tree.page').then( m => m.FamilyTreePage)
   }
+
 
 ];

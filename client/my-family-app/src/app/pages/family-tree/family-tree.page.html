@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>family-tree</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">family-tree</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <input type="text" placeholder="Search family member" (input)="onSearch($event)" />
+  <app-family-tree-visualization></app-family-tree-visualization>
+</ion-content>
+
+
