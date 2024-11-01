@@ -5,7 +5,7 @@ export class FamilyTreeRequestPayload {
   #parents: FamilyMember[];
   #grandparents: FamilyMember[];
   #siblings: FamilyMember[];
-  #spouse: FamilyMember;
+  #spouse: FamilyMember | null;  // Make spouse optional
   #children: FamilyMember[];
   #cousins: FamilyMember[];
   #uncles: FamilyMember[];
@@ -13,14 +13,14 @@ export class FamilyTreeRequestPayload {
 
   // Constructor to initialize the fields
   constructor(
-      parents: FamilyMember[],
-      grandparents: FamilyMember[],
-      siblings: FamilyMember[],
-      spouse: FamilyMember,
-      children: FamilyMember[],
-      cousins: FamilyMember[],
-      uncles: FamilyMember[],
-      aunts: FamilyMember[]
+    parents: FamilyMember[],
+    grandparents: FamilyMember[],
+    siblings: FamilyMember[],
+    spouse: FamilyMember | null,  // Allow null for spouse
+    children: FamilyMember[],
+    cousins: FamilyMember[],
+    uncles: FamilyMember[],
+    aunts: FamilyMember[]
   ) {
     this.#parents = parents;
     this.#grandparents = grandparents;
@@ -45,7 +45,7 @@ export class FamilyTreeRequestPayload {
     return this.#siblings;
   }
 
-  public get spouse(): FamilyMember {
+  public get spouse(): FamilyMember | null {
     return this.#spouse;
   }
 
@@ -65,13 +65,46 @@ export class FamilyTreeRequestPayload {
     return this.#aunts;
   }
 
+  // Method-style getters
+  public getparents(): FamilyMember[] {
+    return this.#parents;
+  }
+
+  public getgrandparents(): FamilyMember[] {
+    return this.#grandparents;
+  }
+
+  public getsiblings(): FamilyMember[] {
+    return this.#siblings;
+  }
+
+  public getspouse(): FamilyMember | null {
+    return this.#spouse;
+  }
+
+  public getchildren(): FamilyMember[] {
+    return this.#children;
+  }
+
+  public getcousins(): FamilyMember[] {
+    return this.#cousins;
+  }
+
+  public getuncles(): FamilyMember[] {
+    return this.#uncles;
+  }
+
+  public getaunts(): FamilyMember[] {
+    return this.#aunts;
+  }
+
   // Method to generate the payload (organizes and gathers each family into the right format)
   public generatePayload() {
     return {
       parents: this.parents.map(fm => this.mapFamilyMember(fm)),
       grandparents: this.grandparents.map(fm => this.mapFamilyMember(fm)),
       siblings: this.siblings.map(fm => this.mapFamilyMember(fm)),
-      spouse: this.spouse ? this.mapFamilyMember(this.spouse) : null, // Handle possible null spouse
+      spouse: this.spouse ? this.mapFamilyMember(this.spouse) : null,  // Handle possible null spouse
       children: this.children.map(fm => this.mapFamilyMember(fm)),
       cousins: this.cousins.map(fm => this.mapFamilyMember(fm)),
       uncles: this.uncles.map(fm => this.mapFamilyMember(fm)),
