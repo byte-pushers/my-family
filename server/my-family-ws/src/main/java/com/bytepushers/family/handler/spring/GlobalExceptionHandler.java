@@ -1,8 +1,6 @@
 package com.bytepushers.family.handler.spring;
 
 import com.bytepushers.family.exception.AuthorizationException;
-import com.bytepushers.family.exception.DatabaseConnectionException;
-import com.bytepushers.family.exception.DatabaseOperationException;
 import com.bytepushers.family.exception.DuplicateUserException;
 import com.bytepushers.family.exception.InvalidUserException;
 import com.bytepushers.family.exception.UserDeletionFailedException;
@@ -10,7 +8,7 @@ import com.bytepushers.family.exception.UserNotFoundException;
 import com.bytepushers.family.model.ErrorDetail;
 import com.bytepushers.family.api.APIErrorConstant;
 import com.bytepushers.family.api.ErrorResponse;
-import com.bytepushers.family.api.ValidationErrorResponse;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -22,9 +20,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,8 +30,8 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_UNAUTHORIZED_ACCESS,
                 "Unauthorized Access",
+                null,
                 null
-
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -46,49 +42,74 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_ALREADY_EXIST,
                 "USER ALREADY EXISTS",
+                null,
                 null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-
-        // Collect all field errors from the exception
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        // Respond with a map containing all field errors
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<List<ErrorResponse>> handleConstrainViolationException(ConstraintViolationException ex) {
+    public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(ConstraintViolationException ex) {
+        List<ErrorResponse> errorResponses = new ArrayList<>();
 
-        List<ErrorResponse> errors = new ArrayList<>();
-        ex.getConstraintViolations().forEach(fieldError -> {
-            ErrorResponse validationResponse = new ErrorResponse(
-                    APIErrorConstant.API_ERROR_INVALID_INPUT,
-                    fieldError.getMessage(),
-                    null
-            );
-            errors.add(validationResponse);
-        });
+        List<String> requiredFields = new ArrayList<>();
+        List<String> minFields = new ArrayList<>();
+        List<String> maxFields = new ArrayList<>();
+        List<String> lengthFields = new ArrayList<>();
+        List<String> formatFields = new ArrayList<>();
 
-        //ErrorResponse errorResponse = new ErrorResponse(errors);
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+          String fieldName = violation.getPropertyPath().toString();
+          String messageTemplate = violation.getMessageTemplate();
+          String errorCode = violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+            // Check error types based on error codes
+            switch (errorCode) {
+                case "NotNull":
+                case "NotBlank":
+                    requiredFields.add(fieldName);
+                    break;
+                case "Min":
+                    minFields.add(fieldName);
+                case "Max":
+                    maxFields.add(fieldName);
+                    break;
+                case "Size":
+                    lengthFields.add(fieldName);
+                    break;
+                case "Email":
+                    formatFields.add(fieldName);
+                    break;
+            }
+        }
+
+        // Create ErrorResponses if there are any errors in each category
+        if (!requiredFields.isEmpty()) {
+            errorResponses.add(new ErrorResponse(APIErrorConstant.API_ERROR_REQUIRED_FIELD_INVALID_INPUT, ex.getMessage(), null, new ErrorDetail(requiredFields)));
+        }
+        if (!minFields.isEmpty()) {
+            errorResponses.add(new ErrorResponse(APIErrorConstant.API_ERROR_MIN_VALUE_INPUT, ex.getMessage(), null, new ErrorDetail(minFields)));
+        }
+        if (!maxFields.isEmpty()) {
+            errorResponses.add(new ErrorResponse(APIErrorConstant.API_ERROR_MAX_VALUE_INPUT, ex.getMessage(), null, new ErrorDetail(maxFields)));
+        }
+        if (!lengthFields.isEmpty()) {
+            errorResponses.add(new ErrorResponse(APIErrorConstant.API_ERROR_MIN_LENGTH_INPUT, ex.getMessage(), null, new ErrorDetail(lengthFields)));
+        }
+        if (!formatFields.isEmpty()) {
+            errorResponses.add(new ErrorResponse(APIErrorConstant.API_ERROR_INVALID_EMAIL_FORMAT, ex.getMessage(), null, new ErrorDetail(formatFields)));
+        }
+
+        return new ResponseEntity<>(errorResponses, HttpStatus.BAD_REQUEST);
     }
+
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex){
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "User Not Found",
+                null,
                 null
 
         );
@@ -100,6 +121,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_ALREADY_EXIST,
                 "Duplicate User",
+                null,
                 null
 
         );
@@ -111,6 +133,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "Invalid User Data",
+                null,
                 null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -121,6 +144,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_DELETION_FAILED,
                 "User Deletion Failed",
+                null,
                 null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

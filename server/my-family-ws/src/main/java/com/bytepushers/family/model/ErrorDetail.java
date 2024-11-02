@@ -1,29 +1,24 @@
 package com.bytepushers.family.model;
 
+
+import java.util.List;
+
 public class ErrorDetail {
-    private String code;
-    private String details;
+    private List<String> fieldName;
+
 
     // Constructor
-    public ErrorDetail(String code, String details) {
-        this.code = code;
-        this.details = details;
+    public ErrorDetail(List<String> fieldName) {
+        this.fieldName = fieldName;
     }
 
     // Getters and Setters
-    public String getCode() {
-        return code;
+
+    public List<String> getFieldName() {
+        return fieldName;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
+    public void setFieldName(List<String> fieldName) {
+        this.fieldName = fieldName;
     }
 }
