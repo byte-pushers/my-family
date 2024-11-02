@@ -1,14 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import * as familyData from './mock-data.json';
-
-interface FamilyNode {
-  name: string;
-  image?: string;
-  x?: number;
-  y?: number;
-  children?: FamilyNode[];
-}
+import { FamilyNode } from "../../interfaces/family-node";
 
 @Component({
   selector: 'app-family-tree-visualization',
@@ -28,7 +21,19 @@ export class FamilyTreeVisualizationComponent implements OnInit {
 
     // Apply d3.tree layout to create an initial structured layout
     const treeLayout = d3.tree<FamilyNode>().size([800, 600]); // Set width and height for tree spread
-    treeLayout(root); // This sets x and y on each node based on tree structure
+// Create a radial tree layout
+    const radialTreeLayout = d3.tree<FamilyNode>()
+      .size([2 * Math.PI, 400]) // Adjust the 400 to control the overall radius and spacing
+      .separation(() => 1.5); // Increase separation for more spacing between nodes
+
+    radialTreeLayout(root);
+
+// Convert polar coordinates (angle, radius) to Cartesian coordinates (x, y)
+    root.each(d => {
+      const angle = (d as any).x - Math.PI / 2; // Adjust angle to make the tree upright
+      d.x = Math.cos(angle) * d.y!;
+      d.y = Math.sin(angle) * d.y!;
+    });
 
     const nodes = root.descendants();
     const links = root.links();
@@ -44,7 +49,9 @@ export class FamilyTreeVisualizationComponent implements OnInit {
       .style('font', '10px sans-serif');
 
     // Create a zoomable group within the SVG
-    const zoomableGroup = svg.append('g').attr('class', 'zoomable-group');
+// Create a zoomable group within the SVG and center it
+    const zoomableGroup = svg.append('g')
+      .attr('class', 'zoomable-group')
 
     // Add links (lines) to the zoomable group
     const link = zoomableGroup.selectAll('line')
@@ -69,11 +76,20 @@ export class FamilyTreeVisualizationComponent implements OnInit {
 
     // Add circles to represent each node
     node.append('circle')
-      .attr('r', 25)
+      .attr('r', d => {
+        if (d.depth === 0) {
+          return 40; // Central node (biggest circle)
+        } else if (d.depth === 1) {
+          return 30; // First children (medium circle)
+        } else {
+          return 20; // Other descendants (smallest circle)
+        }
+      })
       .style('fill', '#19d3a2')
       .style('fill-opacity', 0.3)
       .attr('stroke', '#b3a2c8')
       .style('stroke-width', 4);
+
 
     // Add text labels for each node
     node.append('text')
