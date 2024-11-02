@@ -5,6 +5,8 @@ import * as familyData from './mock-data.json';
 interface FamilyNode {
   name: string;
   image?: string;
+  x?: number;
+  y?: number;
   children?: FamilyNode[];
 }
 
@@ -22,240 +24,122 @@ export class FamilyTreeVisualizationComponent implements OnInit {
   }
 
   createFamilyTree(): void {
-    const data: FamilyNode = familyData;
+    const root = d3.hierarchy(familyData as FamilyNode);
+
+    // Apply d3.tree layout to create an initial structured layout
+    const treeLayout = d3.tree<FamilyNode>().size([800, 600]); // Set width and height for tree spread
+    treeLayout(root); // This sets x and y on each node based on tree structure
+
+    const nodes = root.descendants();
+    const links = root.links();
 
     const element = this.el.nativeElement.querySelector('#family-tree');
     const width = 1000;
     const height = 1000;
-    const radius = Math.min(width, height) / 3 - 50;
-
-    // Scale factors for hover effect
-    const HOVER_SCALE = 1.3;
-    const NEIGHBOR_SCALE = 1.15;
-
-    const customSeparation = (a: d3.HierarchyPointNode<FamilyNode>, b: d3.HierarchyPointNode<FamilyNode>) => {
-      if (a.depth === 2 && b.depth === 2) {
-        return 0.3;
-      } else if (a.depth === 1 && b.depth === 1) {
-        return 1;
-      }
-      return a.parent === b.parent ? 1 : 2;
-    };
-
-    const tree = d3.tree<FamilyNode>()
-      .size([2 * Math.PI, radius])
-      .separation(customSeparation);
-
-    const root = tree(
-      d3.hierarchy(data)
-        .sort((a, b) => d3.ascending(a.data.name, b.data.name))
-    );
 
     const svg = d3.select(element)
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('viewBox', [-width / 2, -height / 2, width, height])
       .style('font', '10px sans-serif');
 
-    const linksGroup = svg.append('g').attr('class', 'links');
-    const nodesGroup = svg.append('g').attr('class', 'nodes');
+    // Create a zoomable group within the SVG
+    const zoomableGroup = svg.append('g').attr('class', 'zoomable-group');
 
-    const branchingLineGenerator = (d: d3.HierarchyPointLink<FamilyNode>) => {
-      const sourceX = Math.sin(d.source.x) * d.source.y;
-      const sourceY = -Math.cos(d.source.x) * d.source.y;
-      const targetX = Math.sin(d.target.x) * d.target.y;
-      const targetY = -Math.cos(d.target.x) * d.target.y;
-
-      if (d.source.children && d.source.children.length > 1) {
-        const siblings = d.source.children;
-        const midX = d3.mean(siblings, sibling => Math.sin(sibling.x) * sibling.y);
-        const midY = d3.mean(siblings, sibling => -Math.cos(sibling.x) * sibling.y);
-
-        // @ts-ignore
-        const junctionX = sourceX * 0.3 + midX * 0.7;
-        // @ts-ignore
-        const junctionY = sourceY * 0.3 + midY * 0.7;
-
-        return `M${targetX},${targetY} L${junctionX},${junctionY} L${sourceX},${sourceY}`;
-      }
-
-      return `M${sourceX},${sourceY}L${targetX},${targetY}`;
-    };
-
-    const links = linksGroup
-      .selectAll('path')
-      .data(root.links())
-      .join('path')
-      .attr('fill', 'none')
-      .attr('stroke', '#ccc')
-      .attr('stroke-width', d => d.source.depth === 0 ? 4 : 2)
-      .attr('d', d => {
-        const o = { x: 0, y: 0 };
-        return branchingLineGenerator({
-          target: o,
-          source: { ...o, children: [] }
-        } as any);
-      })
-      .style('opacity', 0);
-
-    const node = nodesGroup
-      .selectAll('g')
-      .data(root.descendants())
-      .join('g')
-      .attr('transform', 'translate(0,0)')
-      .style('opacity', 0);
-
-    // Add white circular background/border
-    node.append('circle')
-      .attr('r', d => {
-        switch (d.depth) {
-          case 0: return 52;
-          case 1: return 27;
-          default: return 17;
-        }
-      })
-      .attr('fill', 'white')
+    // Add links (lines) to the zoomable group
+    const link = zoomableGroup.selectAll('line')
+      .data(links)
+      .enter()
+      .append('line')
       .attr('stroke', '#ccc')
       .attr('stroke-width', 2);
 
-    // Add images with clip path
-    node.append('image')
-      .attr('xlink:href', d => d.data.image || '')
-      .attr('x', d => {
-        switch (d.depth) {
-          case 0: return -50;
-          case 1: return -25;
-          default: return -15;
-        }
-      })
-      .attr('y', d => {
-        switch (d.depth) {
-          case 0: return -50;
-          case 1: return -25;
-          default: return -15;
-        }
-      })
-      .attr('width', d => {
-        switch (d.depth) {
-          case 0: return 100;
-          case 1: return 50;
-          default: return 30;
-        }
-      })
-      .attr('height', d => {
-        switch (d.depth) {
-          case 0: return 100;
-          case 1: return 50;
-          default: return 30;
-        }
-      })
-      .attr('clip-path', 'circle(49%)');
+    // Initialize the nodes as circles within the zoomable group
+    const node = zoomableGroup.selectAll('g.node')
+      .data(nodes)
+      .enter()
+      .append('g')
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.x},${d.y})`)
+      .call(d3.drag<SVGGElement, d3.HierarchyNode<FamilyNode>>()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended)
+      );
 
-    // Add labels
+    // Add circles to represent each node
+    node.append('circle')
+      .attr('r', 25)
+      .style('fill', '#19d3a2')
+      .style('fill-opacity', 0.3)
+      .attr('stroke', '#b3a2c8')
+      .style('stroke-width', 4);
+
+    // Add text labels for each node
     node.append('text')
-      .attr('dy', d => d.depth === 0 ? 65 : 35)
-      .attr('text-anchor', 'middle')
-      .text(d => d.data.name)
-      .style('font-size', d => d.depth === 0 ? '14px' : '12px');
+      .attr('dy', 5) // Center text vertically on the node
+      .attr('x', 35) // Offset text to the right of each circle
+      .style('font-size', '12px')
+      .style('font-family', 'Arial, sans-serif')
+      .style('pointer-events', 'none') // Ensure text doesn't interfere with dragging
+      .text(d => d.data.name); // Use the name property from the data
 
-    // Helper function to get connected nodes
-    const getConnectedNodes = (d: d3.HierarchyPointNode<FamilyNode>) => {
-      const connected = new Set<d3.HierarchyPointNode<FamilyNode>>();
-      if (d.parent) connected.add(d.parent);
-      if (d.children) d.children.forEach(child => connected.add(child));
-      return connected;
-    };
+    // Set up the force simulation with nodes and links
+    const simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links)
+        .id(d => (d as d3.HierarchyNode<FamilyNode>).data.name)
+        .distance(d => {
+          // Layered link distances based on the source node's depth
+          if (d.source.depth === 0) return 250; // Grandparent to Parent link length
+          if (d.source.depth === 1) return 150; // Parent to Child link length
+          return 100; // Default shortest link length for further descendants
+        })
+        .strength(1) // Keep link force strong to enforce distances
+      )
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('charge', d3.forceManyBody().strength(-50)) // Gentle repulsive force to prevent overlap
+      .force('collide', d3.forceCollide().radius(40)) // Collision force to prevent overlapping
+      .alpha(0.2)
+      .on('tick', () => {
+        // Update link positions
+        link
+          .attr('x1', d => d.source.x!)
+          .attr('y1', d => d.source.y!)
+          .attr('x2', d => d.target.x!)
+          .attr('y2', d => d.target.y!);
 
-    // Add hover interactions
-    node.on('mouseover', function(event, d) {
-      const hoveredNode = d3.select(this);
-      const connectedNodes = getConnectedNodes(d);
+        // Update node positions
+        node.attr('transform', d => `translate(${d.x},${d.y})`);
+      });
 
-      // Scale up hovered node
-      hoveredNode
-        .transition()
-        .duration(300)
-        .attr('transform', n => {
-          const x = Math.sin(d.x) * d.y;
-          const y = -Math.cos(d.x) * d.y;
-          return `translate(${x},${y}) scale(${HOVER_SCALE})`;
-        });
+    // Drag functions
+    function dragstarted(event: any, d: d3.HierarchyNode<FamilyNode>) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d3.select(event.sourceEvent.target).raise().attr('stroke', 'black');
+      (d as any).fx = d.x;
+      (d as any).fy = d.y;
+    }
 
-      // Scale up connected nodes
-      node.filter(n => connectedNodes.has(n))
-        .transition()
-        .duration(300)
-        .attr('transform', n => {
-          const x = Math.sin(n.x) * n.y;
-          const y = -Math.cos(n.x) * n.y;
-          return `translate(${x},${y}) scale(${NEIGHBOR_SCALE})`;
-        });
+    function dragged(event: any, d: d3.HierarchyNode<FamilyNode>) {
+      (d as any).fx = event.x;
+      (d as any).fy = event.y;
+    }
 
-      // Highlight connected links
-      links
-        .transition()
-        .duration(300)
-        .style('stroke', l =>
-          (l.source === d || l.target === d) ? '#666' : '#ccc'
-        )
-        .style('stroke-width', l =>
-          (l.source === d || l.target === d) ?
-            (l.source.depth === 0 ? 6 : 3) :
-            (l.source.depth === 0 ? 4 : 2)
-        );
-    });
+    function dragended(event: any, d: d3.HierarchyNode<FamilyNode>) {
+      if (!event.active) simulation.alphaTarget(0);
+      d3.select(event.sourceEvent.target).attr('stroke', null);
+      (d as any).fx = null;
+      (d as any).fy = null;
+    }
 
-    // Add mouseout reset
-    node.on('mouseout', function(event, d) {
-      // Reset all nodes
-      node
-        .transition()
-        .duration(300)
-        .attr('transform', n => {
-          const x = Math.sin(n.x) * n.y;
-          const y = -Math.cos(n.x) * n.y;
-          return `translate(${x},${y}) scale(1)`;
-        });
-
-      // Reset all links
-      links
-        .transition()
-        .duration(300)
-        .style('stroke', '#ccc')
-        .style('stroke-width', l => l.source.depth === 0 ? 4 : 2);
-    });
-
-    // Animation sequence
-    const animateTree = () => {
-      links
-        .transition()
-        .duration(800)
-        .delay(d => d.source.depth * 500)
-        .style('opacity', 1)
-        .attr('d', branchingLineGenerator);
-
-      node
-        .transition()
-        .duration(800)
-        .delay(d => d.depth * 500)
-        .style('opacity', 1)
-        .attr('transform', d => {
-          const x = Math.sin(d.x) * d.y;
-          const y = -Math.cos(d.x) * d.y;
-          return `translate(${x},${y})`;
-        });
-    };
-
-    setTimeout(animateTree, 300);
-
+    // Set up zoom behavior
     const zoom = d3.zoom()
-      .scaleExtent([1, 3])
+      .scaleExtent([0.5, 3]) // Limits for zooming out and in
       .on('zoom', (event) => {
-        svg.attr('transform', event.transform);
+        zoomableGroup.attr('transform', event.transform); // Apply zoom to the group
       });
 
     // @ts-ignore
-    d3.select(element).select('svg').call(zoom);
+    svg.call(zoom); // Attach zoom to the SVG element
   }
 }
