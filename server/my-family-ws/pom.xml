@@ -11,7 +11,7 @@
 	<groupId>com.bytepushers.family</groupId>
 	<artifactId>my-family-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>my-family-ws</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -73,12 +73,49 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>-->
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 	</dependencies>
 
 	<build>
+		<finalName>my-family-ws</finalName>
 		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.45.1</version>
+				<configuration>
+					<!--<dockerHost>unix:///var/run/docker.sock</dockerHost>-->
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${project.artifactId}</name>
+							<build>
+								<dockerFile>Dockerfile</dockerFile>
+								<dockerFileDir>../../../</dockerFileDir>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
