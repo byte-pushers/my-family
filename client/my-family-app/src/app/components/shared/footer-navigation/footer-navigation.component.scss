@@ -1,0 +1,41 @@
+// navigation-footer.component.scss
+ion-tab-bar {
+  --background: var(--ion-color-light);
+  padding: 8px 0;
+}
+
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-selected: var(--ion-color-primary);
+
+  img {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+    opacity: 0.6;
+    // Convert black icon to gray when not selected
+    filter: brightness(0) saturate(100%) opacity(60%);
+  }
+
+  ion-label {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+}
+
+.selected {
+
+  img {
+    opacity: 1;
+    color: var(--ion-color-primary);
+
+    // This filter will make the image Ionic's primary blue color
+    filter: brightness(0) saturate(100%) invert(31%) sepia(98%)
+    saturate(1000%) hue-rotate(190deg) brightness(96%) contrast(107%);
+  }
+
+  ion-label {
+    color: var(--ion-color-primary);
+    font-weight: 500;
+  }
+}
