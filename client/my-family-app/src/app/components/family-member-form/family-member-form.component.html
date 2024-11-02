@@ -1,32 +1,27 @@
-<form (ngSubmit)="addNewFamilyMember(familyMemberName, specificRelationshipType)">
+<div class="add-family-form" [formGroup]="addFamilyMemberForm">
   <div class="mr-7 mt-4 flex g justify-center">
     <div class="w-full">
       <div class="flex justify-between">
-        <label for="relationship-input" class="block leading-6 text-sm">{{relationshipType}}</label>
-        <button class="color-blue" type="submit" >
+        <label for="input-box" class="block leading-6 text-sm">{{relationshipType}}</label>
+        <button class="color-blue" (click)="addFamilyMember()">
           <div class="sub-header font-semibold text-xs text-blue-800">Add {{relationshipType}} +</div>
         </button>
       </div>
 
-      <!-- Name input box with some form validation -->
+      <!-- Name input box with -->
       <input type="text"
              placeholder="Enter Name..."
-             [(ngModel)]="familyMemberName"
-             required
-             minlength="5"
-             pattern="^[A-Za-z]+$"
-             name="family-member-name"
-             id="relationship-input"
+             id="input-box"
              autocomplete="given-name"
+             formControlName="name"
              class="form-control text-sm block w-full rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
     </div>
 
-      <!-- Relationship type dropdown box -->
-    <div class="flex mt-6 ml-3 w-1/5 h-9">
+    <!-- Relationship type dropdown box -->
+    <div class="flex flex-col mt-6 ml-3 w-1/5 h-9">
       <select id="relationship-type-dropdown-array"
-              name="type"
-              [(ngModel)]="specificRelationshipType"
-              class="flex rounded-md border-0 py-2 bg-gray-100 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] text-xs font-inter font-semibold w-24 items-center">
+              formControlName="type"
+              class="form-control flex rounded-md border-0 py-2 bg-gray-100 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] text-xs font-inter font-semibold w-24 items-center">
         <option *ngFor="let specificRelation of relationshipTypeDropdownArray;" [value]="specificRelation" class="text-xs font-inter text-gray-500">
           {{specificRelation}}
         </option>
@@ -35,17 +30,18 @@
   </div>
 
   <!-- List of family members -->
-  <div *ngIf="familyMemberList.length>0"
-    class="show-parent text-align-center ml-11"
-    [(ngModel)]="familyMemberList">
+  <div class="text-align-center ml-11" formArrayName="newFamilyFormArray">
     <ul
-      *ngFor="let member of familyMemberList; let i = index"
+      *ngFor="let member of familyMembers.controls; let i = index"
       class="mt-3 flex items-center w-full">
-      <span class="ml-3 w-2 h-2 bg-blue-800 rounded-full"></span>
-      <li class="ml-4 flex-1 text-sm">{{member}}</li>
-      <button (click)="removeFamilyMember(i)" class="mr-1 text-[#0D4C92] text-xs text-semibold font-inter">
+      <div class="flex items-center">
+        <span class="ml-3 w-2 h-2 bg-blue-800 rounded-full"></span> <!-- Blue dot bullet point -->
+        <span class="ml-5 text-sm">{{member.get('name')?.value}}</span>
+        <span class="ml-1 text-gray-500 text-sm">({{member.get('type')?.value}})</span>
+      </div>
+      <button (click)="removeFamilyMember(i)" class="ml-auto mr-1 text-[#0D4C92] text-xs text-semibold font-inter">
         Remove
       </button>
     </ul>
   </div>
-</form>
+</div>
