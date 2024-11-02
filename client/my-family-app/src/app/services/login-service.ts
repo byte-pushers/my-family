@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 })
 
 export class LoginService {
-    private apiUrl = 'http://localhost:8080/api/create-account'; // Set your API URL
+    private apiUrl = 'http://localhost:8090/api/create-account'; // Set your API URL
 
     constructor(private http: HttpClient) {
     }

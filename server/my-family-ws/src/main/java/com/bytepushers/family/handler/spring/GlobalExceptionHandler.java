@@ -63,6 +63,8 @@ public class GlobalExceptionHandler {
           String messageTemplate = violation.getMessageTemplate();
           String errorCode = violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
 
+            System.out.println(errorCode + " " + fieldName + " " + messageTemplate);
+
             // Check error types based on error codes
             switch (errorCode) {
                 case "NotNull":
@@ -71,6 +73,7 @@ public class GlobalExceptionHandler {
                     break;
                 case "Min":
                     minFields.add(fieldName);
+                    break;
                 case "Max":
                     maxFields.add(fieldName);
                     break;
