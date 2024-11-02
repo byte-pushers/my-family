@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "FamilyTreeMember")
 public class FamilyTree extends BaseEntity {
 
-    private String relationship;
+    private String crestImageUrl;
 
     // Assuming `Person` is meant to be embedded directly without an identifier of its own
     @OneToOne(cascade = CascadeType.ALL)
@@ -22,19 +22,17 @@ public class FamilyTree extends BaseEntity {
     // Constructors
     public FamilyTree() {
     }
-
-    public FamilyTree(String relationship, Person person) {
-        this.relationship = relationship;
-        this.person = person;
+    public FamilyTree(String crestImageUrl) {
+        this.crestImageUrl = crestImageUrl;
     }
 
     // Getters and Setters
-    public String getRelationship() {
-        return relationship;
+    public String getCrestImageUrl() {
+        return crestImageUrl;
     }
 
-    public void setRelationship(String relationship) {
-        this.relationship = relationship;
+    public void setCrestImageUrl(String crestImageUrl) {
+        this.crestImageUrl = crestImageUrl;
     }
 
     public Person getPerson() {
@@ -56,7 +54,6 @@ public class FamilyTree extends BaseEntity {
     @Override
     public String toString() {
         return super.toString().replaceFirst("}$", "") +
-                ", relationship='" + relationship + '\'' +
                 ", person=" + person +
                 ", familyMembers=" + familyMembers +
                 '}';
