@@ -13,8 +13,10 @@ import java.util.Objects;
 @Table(name = "family_members")
 public class FamilyMember extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @NotEmpty(message = "Relationship is required")
-    private String relationship;
+    private RelationshipType relationship;
+
 
     @ManyToOne
     @JoinColumn(name = "person_id")
@@ -44,12 +46,12 @@ public class FamilyMember extends BaseEntity {
     public FamilyMember() {
     }
 
-    public FamilyMember(String relationship, Person person) {
+    public FamilyMember(RelationshipType relationship, Person person) {
         this.relationship = relationship;
         this.person = person;
     }
 
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
+    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, RelationshipType relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
         this.relationship = relationship;
         this.person = person;
@@ -58,13 +60,14 @@ public class FamilyMember extends BaseEntity {
     }
 
     // Getters and Setters
-    public String getRelationship() {
+    public RelationshipType getRelationship() {
         return relationship;
     }
 
-    public void setRelationship(String relationship) {
+    public void setRelationship(@NotEmpty(message = "Relationship is required") RelationshipType relationship) {
         this.relationship = relationship;
     }
+
 
     public Person getPerson() {
         return person;
