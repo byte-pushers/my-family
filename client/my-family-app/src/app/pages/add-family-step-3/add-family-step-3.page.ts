@@ -1,8 +1,11 @@
-import { Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
-import { AlertController, IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, NgForm} from '@angular/forms';
+import {IonicModule} from '@ionic/angular';
+import {FamilyMemberFormComponent} from "../../components/family-member-form/family-member-form.component";
+import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
+import {AlertController} from "@ionic/angular/standalone";
+
 // import { FamilyMemberModel } from '../models/family-member'
 
 @Component({
@@ -10,7 +13,7 @@ import { FamilyMemberFormComponent } from "../../components/family-member-form/f
   templateUrl: './add-family-step-3.page.html',
   styleUrls: ['./add-family-step-3.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, FamilyMemberFormComponent]
+  imports: [IonicModule, CommonModule, FormsModule, FamilyMemberFormComponent, FooterNavigationComponent]
 })
 
 export class AddFamilyStep3Page implements OnInit {
