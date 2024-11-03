@@ -1,17 +1,18 @@
 ion-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;   // Center content vertically
-  align-items: center;       // Center content horizontally
+  align-items: center; /* Center content horizontally */
   padding: 1rem;
-  min-height: 100vh;         // Full viewport height to vertically center content
 
-  ion-card {
-    max-width: 800px;        // Set a max width for the card content
-    width: 100%;             // Ensures the card doesn’t exceed the max width
-    padding: 2rem;           // Optional padding inside the card
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Optional shadow for depth
-    border-radius: 8px;      // Optional rounded corners for a clean look
-    margin: 0 auto;
-  }
+  /* Remove min-height to allow content and footer to fit in the viewport */
 }
+
+ion-card {
+  max-width: 800px;  /* Set a max width for the card content */
+  width: 100%;       /* Ensures the card doesn’t exceed the max width */
+  padding: 2rem;     /* Optional padding inside the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+  border-radius: 8px; /* Optional rounded corners for a clean look */
+  margin: 0 auto;
+}
+

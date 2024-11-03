@@ -1,11 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {Component, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {
   FamilyTreeVisualizationComponent
 } from "../../components/family-tree-visualization/family-tree-visualization.component";
 import * as d3 from 'd3';
+import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
+import {IonicModule} from "@ionic/angular";
 
 
 @Component({
@@ -13,7 +14,7 @@ import * as d3 from 'd3';
   templateUrl: './family-tree.page.html',
   styleUrls: ['./family-tree.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FamilyTreeVisualizationComponent]
+  imports: [ IonicModule, FooterNavigationComponent, FamilyTreeVisualizationComponent, CommonModule, FormsModule ]
 })
 export class FamilyTreePage {
   // Reference to the SVG group or nodes (modify as needed)
