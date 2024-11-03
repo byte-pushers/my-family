@@ -1,0 +1,109 @@
+<div class="container mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
+  <!-- Header -->
+  <h2 class="text-center text-2xl font-bold mb-6">Create New Event</h2>
+
+
+  <!-- Event Type Selection -->
+  <div class="mb-4">
+    <label class="block font-medium mb-2">Event Type</label>
+    <div class="flex items-center space-x-4">
+      <label class="flex items-center">
+        <input type="radio" [(ngModel)]="event.type" [value]="'Reunion'" class="mr-2" />
+        Reunion
+      </label>
+      <label class="flex items-center">
+        <input type="radio" [(ngModel)]="event.type" [value]="'Announcement'" class="mr-2" />
+        Announcement
+      </label>
+    </div>
+  </div>
+
+
+  <!-- Event Details Section -->
+  <div class="input-item mb-4">
+    <label class="block font-medium mb-2">Event Name</label>
+    <input [(ngModel)]="event.name" placeholder="Enter Name..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+  </div>
+
+
+  <!-- Date and Time -->
+  <div class="grid grid-cols-2 gap-4 mb-4">
+    <div>
+      <label class="block font-medium mb-2">Start Date</label>
+      <input type="date" [(ngModel)]="event.startDate" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block font-medium mb-2">End Date</label>
+      <input type="date" [(ngModel)]="event.endDate" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block font-medium mb-2">Start Time</label>
+      <input type="time" [(ngModel)]="event.startTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block font-medium mb-2">End Time</label>
+      <input type="time" [(ngModel)]="event.endTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+  </div>
+
+
+  <!-- Location -->
+  <div class="input-item mb-4">
+    <label class="block font-medium mb-2">Location</label>
+    <input [(ngModel)]="event.location" placeholder="Enter Address" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+  </div>
+
+
+  <!-- Agenda Section -->
+  <h3 class="text-lg font-semibold mb-2">Agenda</h3>
+  <div *ngFor="let agenda of event.agendas" class="border-b border-gray-200 pb-2 mb-4">
+    <app-agenda-item [agenda]="agenda"></app-agenda-item>
+  </div>
+
+
+  <!-- Add New Agenda Item -->
+  <div class="mb-4">
+    <label class="block font-medium mb-2">Agenda Description</label>
+    <input [(ngModel)]="agendaDescription" placeholder="Description..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-4">
+    <div>
+      <label class="block font-medium mb-2">Start Time</label>
+      <input type="time" [(ngModel)]="agendaStartTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block font-medium mb-2">End Time</label>
+      <input type="time" [(ngModel)]="agendaEndTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
+    </div>
+  </div>
+  <button (click)="addAgenda()" class="text-blue-500 hover:underline mt-2">+ Add Agenda</button>
+
+
+  <div class="flex items-center justify-center gap-4 mb-6">
+    <!-- Upload Section -->
+    <div class="upload-section flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-48 h-48 cursor-pointer">
+      <app-file-upload (fileSelected)="onFileSelected($event)" [reset]="resetFileInput"></app-file-upload>
+      <div *ngIf="!fileName">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500 mb-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3.5 3.5a1 1 0 11-1.414 1.414L11 6.414V13a1 1 0 11-2 0V6.414L7.207 8.207a1 1 0 11-1.414-1.414l3.5-3.5A1 1 0 0110 3zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+        <p class="text-gray-500 text-center font-medium">Upload Image (optional)</p>
+        <p class="text-sm text-gray-400 text-center">Click here to upload image</p>
+      </div>
+      <p *ngIf="fileName" class="text-gray-500 text-sm">{{ fileName }}</p>
+    </div>
+
+
+    <!-- Preview Section -->
+    <div *ngIf="imagePreview" class="image-preview flex justify-center">
+      <img [src]="imagePreview" alt="Image Preview" class="w-32 h-32 rounded-md object-cover" />
+    </div>
+  </div>
+
+
+  <!-- Action Buttons -->
+  <div class="flex justify-between">
+    <button (click)="saveEvent()" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Save Event</button>
+    <button (click)="clearForm()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Clear Form</button>
+  </div>
+</div>
