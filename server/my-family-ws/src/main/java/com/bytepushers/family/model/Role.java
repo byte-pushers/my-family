@@ -1,4 +1,4 @@
 package com.bytepushers.family.model;
 
-public class Role extends BaseEntity{
+public class Role extends BaseEntity {
 }

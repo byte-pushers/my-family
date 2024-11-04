@@ -123,6 +123,23 @@
 					<mainClass>com.bytepushers.family.MyFamilyWsApplication</mainClass>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<!-- Configures the content of the created manifest -->
+						<manifest>
+							<!-- Adds the classpath to the created manifest -->
+							<addClasspath>true</addClasspath>
+							<!-- Specifies that all dependencies of our application are found -->
+							<!-- Configures the main class of the application -->
+							<mainClass>com.bytepushers.family.MyFamilyWsApplication</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -145,7 +162,7 @@
 				<dependency>
 					<groupId>com.h2database</groupId>
 					<artifactId>h2</artifactId>
-					<scope>runtime</scope>
+					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -155,14 +172,14 @@
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>mysql</groupId>
 					<artifactId>mysql-connector-java</artifactId>
 					<version>8.0.33</version>
-					<scope>runtime</scope>
+					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 		</profile>

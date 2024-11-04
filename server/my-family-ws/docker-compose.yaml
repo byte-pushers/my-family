@@ -12,9 +12,9 @@ services:
       SPRING_DATASOURCE__PASSWORD: myfamily
     depends_on:
       - mysqldb
-      #volumes:
-      #- springboot-app:/var/app
-      #networks:
+    volumes:
+      - springboot-app:/var/app/my-family-ws
+    #networks:
       #- bp-network
 
   mysqldb:
@@ -29,20 +29,15 @@ services:
       MYSQL_USER: myfamily
       MYSQL_PASSWORD: myfamily
     volumes:
-      - mysql-data:/var/lib/mysql
-#      - ./mysql-init:/docker-entrypoint-initdb.d
+      - mysql-data:/var/app/mysql
+      #- ./mysql-init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
-      #networks:
+    #networks:
       #- bp-network
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8081:8080
 volumes:
   mysql-data:
-
-  #networks:
+  springboot-app:
+#networks:
   #bp-network:

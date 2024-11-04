@@ -56,18 +56,20 @@ public class UserJdbcDAO implements UserDAO {
 
         Connection conn = null;
         User createdUser = null;
-        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+        String sql = "INSERT INTO users (email, password, username, enabled) VALUES (?, ?, ?, ?)";
 
         try {
             conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, someUser.getEmail());
             stmt.setString(2, someUser.getPassword());
+            stmt.setString(3, someUser.getUsername());
+            stmt.setBoolean(4, someUser.getEnabled());
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                createdUser = new User(someUser.getEmail(), someUser.getPassword()); // TODO: Create a findUserByID, pass in PK
+                createdUser = new User(someUser.getEmail(), someUser.getPassword(), someUser.getUsername(), someUser.getEnabled()); // TODO: Create a findUserByID, pass in PK
                 createdUser.setId(rs.getInt(1));  // Get the generated ID and set it
                 logger.info("User created with id: {}", createdUser.getId());  // Happy path log
             }
@@ -148,14 +150,16 @@ public class UserJdbcDAO implements UserDAO {
 
     @Override
     public User updateUser(User user) {
-        String sql = "UPDATE users SET email = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE users SET email = ?, password = ?, username = ?, enabled = ? WHERE id = ?";
         User updatedUser = null;
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getPassword());
-            stmt.setLong(3, user.getId());
+            stmt.setString(3, user.getUsername());
+            stmt.setBoolean(4, user.getEnabled());
+            stmt.setLong(5, user.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -199,6 +203,8 @@ public class UserJdbcDAO implements UserDAO {
         user.setId(rs.getInt("id"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
+        user.setUsername(rs.getString("username"));
+        user.setEnabled(rs.getBoolean("enabled"));
         return user;
     }
 }
