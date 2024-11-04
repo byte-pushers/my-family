@@ -5,3 +5,11 @@ My Family Reunion App is a role based mobile-web application that will promote f
 - to build the docker image run the following command: `mvn clean install -P dev -DskipTests docker:build`
 - to start the application inside Docker container, run: `docker-compose up`
 - to stop the application running inside Docker container, run: `docker-compose down`
+
+
+
+## IDE Setup for IntelliJ
+### Run and debug a Spring Boot application using Docker Compose
+- https://www.jetbrains.com/help/idea/run-and-debug-a-spring-boot-application-using-docker-compose.html
+### Docker Plugin
+- https://www.jetbrains.com/help/idea/docker.html#olg6kf_13
