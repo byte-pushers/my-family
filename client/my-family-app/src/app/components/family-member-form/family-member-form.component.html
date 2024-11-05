@@ -15,10 +15,13 @@
              autocomplete="given-name"
              formControlName="name"
              class="form-control text-sm block w-full rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
+      <div *ngIf="addFamilyMemberForm.controls['name'].errors?.['required'] && submitted" class="text-red-700 text-xs">
+        Name required.
+      </div>
     </div>
 
     <!-- Relationship type dropdown box -->
-    <div class="flex flex-col mt-6 ml-3 w-1/5 h-9">
+    <div *ngIf="relationshipTypeDropdownArray && relationshipTypeDropdownArray.length > 0" class="flex flex-col mt-6 ml-3 w-1/5 h-13">
       <select id="relationship-type-dropdown-array"
               formControlName="type"
               class="form-control flex rounded-md border-0 py-2 bg-gray-100 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] text-xs font-inter font-semibold w-24 items-center">
@@ -26,11 +29,14 @@
           {{specificRelation}}
         </option>
       </select>
+      <div *ngIf="addFamilyMemberForm.controls['type'].errors?.['required'] && submitted" class="text-red-700 text-xs">
+        Type required.
+      </div>
     </div>
   </div>
 
   <!-- List of family members -->
-  <div class="text-align-center ml-11" formArrayName="newFamilyFormArray">
+  <div class="text-align-center ml-11" formArrayName="familyMembers">
     <ul
       *ngFor="let member of familyMembers.controls; let i = index"
       class="mt-3 flex items-center w-full">
