@@ -1,6 +1,6 @@
 package com.bytepushers.family.model;
 
-public class PhoneNumber extends BaseEntity{
+public class PhoneNumber extends BaseIdGeneratedValueEntity {
     private String phoneType;
     private String countryCode;
     private String areaCode;

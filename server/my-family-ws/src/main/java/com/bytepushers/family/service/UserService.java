@@ -1,7 +1,7 @@
 package com.bytepushers.family.service;
 
 
-import com.bytepushers.family.repo.UserRepo;
+import com.bytepushers.family.repo.UserRepository;
 import com.bytepushers.family.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -18,16 +17,16 @@ public class UserService {
 
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
     public boolean login(String email, String password) {
-        Optional<User> userOptional = userRepository.findUserByEmail(email);
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             logger.warn("User not found in DB for email: " + email);
             return false;

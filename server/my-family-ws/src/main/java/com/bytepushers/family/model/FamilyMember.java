@@ -15,7 +15,7 @@ import java.util.Objects;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id" // Unique identifier for managing references
 )
-public class FamilyMember extends BaseEntity {
+public class FamilyMember extends BaseIdGeneratedValueEntity {
 
     @Column(name = "relationship")
     @NotEmpty(message = "Relationship is required")
@@ -40,7 +40,7 @@ public class FamilyMember extends BaseEntity {
     @JsonIgnore
     private FamilyTree familyTree;
 
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public FamilyMember(Long id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
     }
 
@@ -53,7 +53,7 @@ public class FamilyMember extends BaseEntity {
         this.person = person;
     }
 
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
+    public FamilyMember(Long id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
         this.relationship = relationship;
         this.person = person;

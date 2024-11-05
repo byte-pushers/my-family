@@ -154,7 +154,7 @@
 </details>
 
 <details>
-<summary><code>GET</code><code><b>/api/session</b></code><code>User Login API</code></summary>
+<summary><code>GET</code><code><b>/api/sessions</b></code><code>User Login API</code></summary>
 
 ##### Headers
 
@@ -220,7 +220,7 @@
 ##### Example cURL
 
 > ```curl
->  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/session
+>  curl -X GET -H "Content-Type: application/json" -H "Accept-Versions: 1.0" --data "{'username': 'pouncilt', 'password': 'zZy16Amd1'}" http://localhost:8080/sessions
 > ```
 
 </details>

@@ -29,7 +29,7 @@ public class FamilyTreeController {
     private final FamilyTreeService familyTreeService;
 
     @Autowired
-    public FamilyTreeController(FamilyTreeService familyTreeService) {
+    public FamilyTreeController(@Qualifier("familyTreeMockService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
     // Simple GET test endpoint

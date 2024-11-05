@@ -1,10 +1,10 @@
 //        package com.bytepushers.family.controller;
 //
-//import com.bytepushers.family.dao.UserRepo;
+//import com.bytepushers.family.dao.UserRepository;
 //import com.bytepushers.family.exception.*;
 //import com.bytepushers.family.model.User;
 //
-//import com.bytepushers.family.repo.UserRepo;
+//import com.bytepushers.family.repo.UserRepository;
 //import jakarta.validation.Valid;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@
 //public class UserDAOController {
 //
 //    @Autowired
-//    private com.bytepushers.family.repo.UserRepo userDao;
+//    private com.bytepushers.family.repo.UserRepository userDao;
 //
 //    // Create User Error with /{id} in URL
 //    @PostMapping("/users/{id}")
