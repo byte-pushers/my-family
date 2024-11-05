@@ -34,6 +34,8 @@ export class FamilyMemberFormComponent implements OnInit {
   submitted: boolean = false;
   addFamilyMemberForm: FormGroup;
 
+  tempType: string = '';
+
   constructor(private fb: FormBuilder) {
     this.addFamilyMemberForm = this.fb.group({
       name: new FormControl('', Validators.required),
@@ -42,32 +44,56 @@ export class FamilyMemberFormComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    if (this.relationshipTypeDropdownArray.length == 0) {
+      // Getting rid of 's'
+      this.tempType = this.relationshipType.substring(0, this.relationshipType.length - 1);
+      console.log('hello? ' + this.tempType);
+    }
+  }
+
   get familyMembers(): FormArray {
     return this.addFamilyMemberForm.controls['familyMembers'] as FormArray;
   }
 
   addFamilyMember() {
-    const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-    const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+    this.submitted = true;
 
-    if (familyMemberName && familyMemberType) {
+    // Adding members with relationshipDropdownArray
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid) {
+      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
+      const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+
       const member = this.fb.group({
         name: new FormControl(familyMemberName, Validators.required),
         type: new FormControl(familyMemberType, Validators.required)
       });
 
       this.familyMembers.push(member);
+
+      this.addFamilyMemberForm.controls['name'].reset();
+      this.addFamilyMemberForm.controls['type'].reset();
+      this.submitted = false;
     }
 
-    this.addFamilyMemberForm.get('name')?.setValue('');
-    this.addFamilyMemberForm.get('type')?.setValue('');
+    // Adding members with no relationshipDropdownArray
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.relationshipTypeDropdownArray.length == 0) {
+      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
+
+      const member = this.fb.group({
+        name: new FormControl(familyMemberName, Validators.required),
+        type: new FormControl(this.tempType, Validators.required)
+      });
+
+      this.familyMembers.push(member);
+
+      this.addFamilyMemberForm.controls['name'].reset();
+      this.submitted = false;
+    }
   }
 
   removeFamilyMember(index: number): void {
     this.familyMembers.removeAt(index);
-  }
-
-  ngOnInit() {
   }
 
   removeAllFamilyMembers() {

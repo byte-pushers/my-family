@@ -25,6 +25,7 @@ export class AddFamilyStep3Page implements OnInit {
   siblingsForm: NgForm | undefined;
   spouseForm: NgForm | undefined;
   childrenForm: NgForm | undefined;
+  unclesForm: NgForm | undefined;
 
   constructor(public alertCtrl: AlertController) {
   }
