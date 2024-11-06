@@ -121,6 +121,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>com.bytepushers.family.MyFamilyWsApplication</mainClass>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
 				</configuration>
 			</plugin>
 			<plugin>
