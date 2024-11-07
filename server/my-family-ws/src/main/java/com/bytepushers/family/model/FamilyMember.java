@@ -1,7 +1,8 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "family_members")
 public class FamilyMember extends BaseEntity {
 
@@ -17,26 +19,15 @@ public class FamilyMember extends BaseEntity {
     @NotEmpty(message = "Relationship is required")
     private RelationshipType relationship;
 
-
     @ManyToOne
     @JoinColumn(name = "person_id")
+    @JsonIgnoreProperties("familyMembers")  // Prevents circular serialization issues
     private Person person;
 
-    // Parent reference for the bidirectional relationship
-    @ManyToOne
-    @JoinColumn(name = "parent_member_id")
-    @JsonBackReference
-    private FamilyMember parent;
-
     // Recursive reference for child members
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
-    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_member_id")  // Use this to link child members
     private List<FamilyMember> familyMembers;
-
-    // Many-to-one relationship with FamilyTree (if needed)
-    @ManyToOne
-    @JoinColumn(name = "family_tree_id")
-    private FamilyTree familyTree;
 
     public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
@@ -51,14 +42,6 @@ public class FamilyMember extends BaseEntity {
         this.person = person;
     }
 
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, RelationshipType relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
-        super(id, createdBy, updatedBy, createdDate, updatedDate);
-        this.relationship = relationship;
-        this.person = person;
-        this.parent = parent;
-        this.familyMembers = familyMembers;
-    }
-
     // Getters and Setters
     public RelationshipType getRelationship() {
         return relationship;
@@ -68,21 +51,12 @@ public class FamilyMember extends BaseEntity {
         this.relationship = relationship;
     }
 
-
     public Person getPerson() {
         return person;
     }
 
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-    public FamilyMember getParent() {
-        return parent;
-    }
-
-    public void setParent(FamilyMember parent) {
-        this.parent = parent;
     }
 
     public List<FamilyMember> getFamilyMembers() {
@@ -93,21 +67,12 @@ public class FamilyMember extends BaseEntity {
         this.familyMembers = familyMembers;
     }
 
-    public FamilyTree getFamilyTree() {
-        return familyTree;
-    }
-
-    public void setFamilyTree(FamilyTree familyTree) {
-        this.familyTree = familyTree;
-    }
-
     @Override
     public String toString() {
         return "FamilyMember{" +
                 "id=" + getId() +
                 ", relationship='" + relationship + '\'' +
                 ", person=" + (person != null ? person.getFirstName() + " " + person.getLastName() : "null") +
-                ", parent=" + (parent != null ? parent.getId() : "null") +
                 '}';
     }
 
@@ -119,12 +84,11 @@ public class FamilyMember extends BaseEntity {
 
         FamilyMember that = (FamilyMember) o;
         return Objects.equals(relationship, that.relationship) &&
-                Objects.equals(person, that.person) &&
-                Objects.equals(parent, that.parent);
+                Objects.equals(person, that.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), relationship, person, parent);
+        return Objects.hash(super.hashCode(), relationship, person);
     }
 }

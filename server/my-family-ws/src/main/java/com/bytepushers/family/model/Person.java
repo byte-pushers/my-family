@@ -1,6 +1,7 @@
 package com.bytepushers.family.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class Person extends BaseEntity {
 
     // One-to-Many relationship with FamilyMember (if needed)
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnoreProperties("person")
     private List<FamilyMember> familyMembers = new ArrayList<>();
 
     // Constructors

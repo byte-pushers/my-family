@@ -1,5 +1,6 @@
 package com.bytepushers.family.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -16,12 +17,24 @@ public class FamilyTree extends BaseEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
-    @OneToMany(mappedBy = "familyTree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @ManyToOne
+    @JoinColumn(name = "parent_tree_id")
+    private FamilyTree parentTree;
+
+    @OneToMany(mappedBy = "parentTree", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FamilyTree> subTrees = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_tree_id")
+    @JsonIgnoreProperties("familyTree")
     private List<FamilyMember> familyMembers = new ArrayList<>();
+
 
     // Constructors
     public FamilyTree() {
     }
+
     public FamilyTree(String crestImageUrl) {
         this.crestImageUrl = crestImageUrl;
     }
@@ -43,6 +56,22 @@ public class FamilyTree extends BaseEntity {
         this.person = person;
     }
 
+    public List<FamilyTree> getSubTrees() {
+        return subTrees;
+    }
+
+    public void setSubTrees(List<FamilyTree> subTrees) {
+        this.subTrees = subTrees;
+    }
+
+    public FamilyTree getParentTree() {
+        return parentTree;
+    }
+
+    public void setParentTree(FamilyTree parentTree) {
+        this.parentTree = parentTree;
+    }
+
     public List<FamilyMember> getFamilyMembers() {
         return familyMembers;
     }
@@ -56,6 +85,7 @@ public class FamilyTree extends BaseEntity {
         return super.toString().replaceFirst("}$", "") +
                 ", person=" + person +
                 ", familyMembers=" + familyMembers +
+                ", subTrees=" + subTrees +
                 '}';
     }
 }
