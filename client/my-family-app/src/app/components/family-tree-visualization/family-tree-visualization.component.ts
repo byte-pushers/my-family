@@ -1,7 +1,9 @@
+// family-tree-visualization.component.ts
 import { Component, OnInit, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import * as familyData from './mock-data.json';
 import { FamilyNode } from "../../interfaces/family-node";
+import { ForceSimulation } from './force-simulation';
 
 @Component({
   selector: 'app-family-tree-visualization',
@@ -10,7 +12,10 @@ import { FamilyNode } from "../../interfaces/family-node";
   styleUrls: ['./family-tree-visualization.component.scss']
 })
 export class FamilyTreeVisualizationComponent implements OnInit {
-  constructor(private el: ElementRef) {}
+  constructor(
+    private el: ElementRef,
+    private forceSimulation: ForceSimulation
+  ) {}
 
   ngOnInit(): void {
     this.createFamilyTree();
@@ -18,19 +23,14 @@ export class FamilyTreeVisualizationComponent implements OnInit {
 
   createFamilyTree(): void {
     const root = d3.hierarchy(familyData as FamilyNode);
-
-    // Apply d3.tree layout to create an initial structured layout
-    const treeLayout = d3.tree<FamilyNode>().size([800, 600]); // Set width and height for tree spread
-// Create a radial tree layout
     const radialTreeLayout = d3.tree<FamilyNode>()
-      .size([2 * Math.PI, 400]) // Adjust the 400 to control the overall radius and spacing
-      .separation(() => 1.5); // Increase separation for more spacing between nodes
+      .size([2 * Math.PI, 400])
+      .separation(() => 1.5);
 
     radialTreeLayout(root);
 
-// Convert polar coordinates (angle, radius) to Cartesian coordinates (x, y)
     root.each(d => {
-      const angle = (d as any).x - Math.PI / 2; // Adjust angle to make the tree upright
+      const angle = (d as any).x - Math.PI / 2;
       d.x = Math.cos(angle) * d.y!;
       d.y = Math.sin(angle) * d.y!;
     });
@@ -48,12 +48,11 @@ export class FamilyTreeVisualizationComponent implements OnInit {
       .attr('height', height)
       .style('font', '10px sans-serif');
 
-    // Create a zoomable group within the SVG
-// Create a zoomable group within the SVG and center it
+    // Create a container for zoom
     const zoomableGroup = svg.append('g')
-      .attr('class', 'zoomable-group')
+      .attr('class', 'zoomable-group');
 
-    // Add links (lines) to the zoomable group
+    // Setup links
     const link = zoomableGroup.selectAll('line')
       .data(links)
       .enter()
@@ -61,101 +60,56 @@ export class FamilyTreeVisualizationComponent implements OnInit {
       .attr('stroke', '#ccc')
       .attr('stroke-width', 2);
 
-    // Initialize the nodes as circles within the zoomable group
+    // Setup nodes
     const node = zoomableGroup.selectAll('g.node')
       .data(nodes)
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', d => `translate(${d.x},${d.y})`)
-      .call(d3.drag<SVGGElement, d3.HierarchyNode<FamilyNode>>()
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended)
-      );
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
-    // Add circles to represent each node
+    // Add circles
     node.append('circle')
       .attr('r', d => {
-        if (d.depth === 0) {
-          return 40; // Central node (biggest circle)
-        } else if (d.depth === 1) {
-          return 30; // First children (medium circle)
-        } else {
-          return 20; // Other descendants (smallest circle)
-        }
+        if (d.depth === 0) return 40;
+        else if (d.depth === 1) return 30;
+        else return 20;
       })
       .style('fill', '#19d3a2')
       .style('fill-opacity', 0.3)
       .attr('stroke', '#b3a2c8')
-      .style('stroke-width', 4);
+      .style('stroke-width', 4)
+      .style('cursor', 'pointer');
 
-
-    // Add text labels for each node
+    // Add text labels
     node.append('text')
-      .attr('dy', 5) // Center text vertically on the node
-      .attr('x', 35) // Offset text to the right of each circle
+      .attr('dy', 5)
+      .attr('x', 35)
       .style('font-size', '12px')
       .style('font-family', 'Arial, sans-serif')
-      .style('pointer-events', 'none') // Ensure text doesn't interfere with dragging
-      .text(d => d.data.name); // Use the name property from the data
+      .style('pointer-events', 'none')
+      .text(d => d.data.name);
 
-    // Set up the force simulation with nodes and links
-    const simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(links)
-        .id(d => (d as d3.HierarchyNode<FamilyNode>).data.name)
-        .distance(d => {
-          // Layered link distances based on the source node's depth
-          if (d.source.depth === 0) return 250; // Grandparent to Parent link length
-          if (d.source.depth === 1) return 150; // Parent to Child link length
-          return 100; // Default shortest link length for further descendants
-        })
-        .strength(1) // Keep link force strong to enforce distances
-      )
-      .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('charge', d3.forceManyBody().strength(-50)) // Gentle repulsive force to prevent overlap
-      .force('collide', d3.forceCollide().radius(40)) // Collision force to prevent overlapping
-      .alpha(0.2)
-      .on('tick', () => {
-        // Update link positions
-        link
-          .attr('x1', d => d.source.x!)
-          .attr('y1', d => d.source.y!)
-          .attr('x2', d => d.target.x!)
-          .attr('y2', d => d.target.y!);
+    // Setup force simulation
+    const simulation = this.forceSimulation.setupForceSimulation(
+      nodes, links, width, height, node, link
+    );
 
-        // Update node positions
-        node.attr('transform', d => `translate(${d.x},${d.y})`);
-      });
-
-    // Drag functions
-    function dragstarted(event: any, d: d3.HierarchyNode<FamilyNode>) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d3.select(event.sourceEvent.target).raise().attr('stroke', 'black');
-      (d as any).fx = d.x;
-      (d as any).fy = d.y;
-    }
-
-    function dragged(event: any, d: d3.HierarchyNode<FamilyNode>) {
-      (d as any).fx = event.x;
-      (d as any).fy = event.y;
-    }
-
-    function dragended(event: any, d: d3.HierarchyNode<FamilyNode>) {
-      if (!event.active) simulation.alphaTarget(0);
-      d3.select(event.sourceEvent.target).attr('stroke', null);
-      (d as any).fx = null;
-      (d as any).fy = null;
-    }
-
-    // Set up zoom behavior
-    const zoom = d3.zoom()
-      .scaleExtent([0.5, 3]) // Limits for zooming out and in
-      .on('zoom', (event) => {
-        zoomableGroup.attr('transform', event.transform); // Apply zoom to the group
-      });
-
+    // Enable dragging on nodes
     // @ts-ignore
-    svg.call(zoom); // Attach zoom to the SVG element
+    node.call(this.forceSimulation.setupDragBehavior(simulation) as any);
+
+    // Setup zoom behavior
+    const zoom = d3.zoom()
+      .scaleExtent([0.5, 3])
+      .on('zoom', (event) => {
+        zoomableGroup.attr('transform', event.transform);
+      });
+
+    // Add zoom behavior to SVG
+    svg.call(zoom as any);
+
+    // Double tap to reset zoom
+    svg.on('dblclick.zoom', null);
   }
 }
