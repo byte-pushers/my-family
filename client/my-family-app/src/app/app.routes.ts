@@ -19,6 +19,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/welcome-page/welcome-page.page').then(m => m.WelcomePagePage)
   },
   {
+    path: 'add-family-step-2',
+    loadComponent: () => import('./pages/add-family-step-2/add-family-step-2.page').then( m => m.AddFamilyStep2Page)
+  },
+  {
     path: 'add-family-step-3',
     loadComponent: () => import('./pages/add-family-step-3/add-family-step-3.page').then(m => m.AddFamilyStep3Page)
   },
