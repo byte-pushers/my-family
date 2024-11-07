@@ -33,20 +33,6 @@ public class FamilyTreeController {
 //    }
 
     // Family Tree POST API
-//    @PostMapping
-//    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            ApiResponse errorResponse = new ApiResponse(List.of());
-//            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-//        }
-//
-//        FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
-//        List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
-//        ApiResponse response = new ApiResponse(familyMembers);
-//        logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
-//        return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
-//    }
-    // Family Tree POST API
     @PostMapping
     public ResponseEntity<ApiResponse<List<FamilyMember>>> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
