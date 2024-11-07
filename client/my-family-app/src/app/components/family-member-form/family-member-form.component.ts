@@ -46,9 +46,8 @@ export class FamilyMemberFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.relationshipTypeDropdownArray.length == 0) {
-      // Getting rid of 's'
+      // Getting rid of 's' to use as type
       this.tempType = this.relationshipType.substring(0, this.relationshipType.length - 1);
-      console.log('hello? ' + this.tempType);
     }
   }
 
