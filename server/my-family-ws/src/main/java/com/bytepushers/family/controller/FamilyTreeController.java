@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,20 +34,36 @@ public class FamilyTreeController {
 //    }
 
     // Family Tree POST API
+//    @PostMapping
+//    public ResponseEntity<ApiResponse<List<FamilyMember>>> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            System.out.println(familyTree);
+//            System.out.println("Hello Spring");
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        // Create the family tree and retrieve only the family members for the response
+//        FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
+//        ApiResponse<List<FamilyMember>> response = new ApiResponse<>(createdFamilyTree.getFamilyMembers());
+//
+//        logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
+//
+//        // Return ApiResponse with familyMembers as the main data
+//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    }
     @PostMapping
-    public ResponseEntity<ApiResponse<List<FamilyMember>>> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
+    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            ApiResponse errorResponse = new ApiResponse(List.of());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        // Create the family tree and retrieve only the family members for the response
         FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
-        ApiResponse<List<FamilyMember>> response = new ApiResponse<>(createdFamilyTree.getFamilyMembers());
-
+        List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
+        ApiResponse response = new ApiResponse(familyMembers);
         logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
-
-        // Return ApiResponse with familyMembers as the main data
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
 
     // READ

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,10 +18,10 @@ import java.util.Objects;
 public class FamilyMember extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Relationship is required")
+    @NotNull(message = "Relationship is required")
     private RelationshipType relationship;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
     @JsonIgnoreProperties("familyMembers")  // Prevents circular serialization issues
     private Person person;
