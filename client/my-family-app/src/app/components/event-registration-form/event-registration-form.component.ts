@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MerchandiseItemModel} from "../../models/merchandise-item.model";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-event-registration-form',
   templateUrl: './event-registration-form.component.html',
   styleUrls: ['./event-registration-form.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, NgOptimizedImage],
 })
 export class EventRegistrationFormComponent implements OnInit {
   registrationForm: FormGroup;
   currentStep = 0;
-  steps = ['Personal Info', 'Agenda', 'Merchandise', 'Payment'];
+  isSubmitted = false;
+  steps = ['Personal Info', 'Agenda', 'Merchandise', 'Payment', 'Confirmation'];
   ageRange: number[] = [];
   paymentMethod: 'card' | 'paypal' = 'card';
 
@@ -33,7 +35,7 @@ export class EventRegistrationFormComponent implements OnInit {
     })
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.registrationForm = this.fb.group({
       firstName: [''],
       middleName: [''],
@@ -89,5 +91,11 @@ export class EventRegistrationFormComponent implements OnInit {
 
   onSubmit(): void {
     console.log('Form submitted:', this.registrationForm.value);
+    this.isSubmitted = true;
+    this.currentStep = 4;
+  }
+
+  returnHome() {
+    this.router.navigate(['/home']);
   }
 }

@@ -1,4 +1,12 @@
-<!-- Event Signup Page -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Event Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="flex flex-col justify-center items-center min-h-screen p-4">
   <app-event-details
     [eventTitle]="eventTitle"
@@ -10,7 +18,7 @@
     class="w-full max-w-4xl">
   </app-event-details>
 
-  <ion-card class="w-full max-w-4xl p-8 rounded-lg shadow-md mx-auto">
+  <ion-card class="max-w-md mx-auto shadow-none">
     <ion-card-header>
       <ion-card-title class="text-xl font-bold">Sign Up for the Event</ion-card-title>
     </ion-card-header>
