@@ -40,7 +40,16 @@ public class SecurityConfig {
                     registry.requestMatchers(
                                     "/login",
                                     "/api/create-account",
-                                    "/api/users/**")
+                                    "/api/users/**",
+                                    "/api/family-tree/**",
+                                    "/api-docs",
+                                    "/api-docs/**",
+                                    "/swagger-resources",
+                                    "/swagger-resources/**",
+                                    "/swagger-ui/**",
+                                    "/webjars/**",
+                                    "swagger-ui.html"
+                                    )
                             .permitAll();
                     registry.anyRequest().authenticated();  // Make sure this is the last matcher
                 })

@@ -2,7 +2,8 @@
   <!-- Header -->
   <h2 class="text-center text-2xl font-bold mb-6">Create New Event</h2>
 
-
+  <!-- Scrollable Form Content -->
+  <div style="height: 800px; overflow-y: auto;">
   <!-- Event Type Selection -->
   <div class="mb-4">
     <label class="block font-medium mb-2">Event Type</label>
@@ -36,14 +37,7 @@
       <label class="block font-medium mb-2">End Date</label>
       <input type="date" [(ngModel)]="event.endDate" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
     </div>
-    <div>
-      <label class="block font-medium mb-2">Start Time</label>
-      <input type="time" [(ngModel)]="event.startTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
-    </div>
-    <div>
-      <label class="block font-medium mb-2">End Time</label>
-      <input type="time" [(ngModel)]="event.endTime" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none" />
-    </div>
+
   </div>
 
 
@@ -106,4 +100,13 @@
     <button (click)="saveEvent()" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Save Event</button>
     <button (click)="clearForm()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Clear Form</button>
   </div>
+
+  <!-- Success and Error Messages -->
+  <div *ngIf="successMessage" class="text-green-500 text-center my-4">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="text-red-500 text-center my-4">
+    {{ errorMessage }}
+  </div>
+
 </div>

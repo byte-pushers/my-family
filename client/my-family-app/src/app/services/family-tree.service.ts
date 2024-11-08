@@ -1,58 +1,65 @@
-import { Role } from '../models/role';  // Import Role class
-import { FamilyMember } from '../models/family-member.model';  // Import FamilyMember class
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { FamilyTreeRequestPayload } from '../models/family-tree/family-tree-request.payload';
+import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
 
-export class User {
-  #username: string;
-  #password: string;
-  #roles: Role[];
-  #familyMembers: FamilyMember[];
+@Injectable({
+  providedIn: 'root'
+})
+export class FamilyTreeService {
+  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
 
-  constructor(username: string, password: string, roles: Role[], familyMembers: FamilyMember[]) {
-    this.#username = username;
-    this.#password = password;
-    this.#roles = roles;
-    this.#familyMembers = familyMembers;
+  constructor(private http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-API-Version': '1.0.0',
+      'Authorization': 'Basic ' + btoa('john:12345')
+    });
   }
 
-  // Getters
-  public getUsername(): string {
-    return this.#username;
+  // Method to submit the family tree data
+  public create(payload: FamilyTreeRequestPayload): Observable<any> {
+
+    console.log(`payload: ${JSON.stringify(payload)}`, payload);
+
+    return this.http.post<any>(this.apiBaseUrl + '/family-trees', payload, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  public get username(): string {
-    return this.#username;
+  // GET - Retrieve family tree by ID
+  public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
+    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`)
+      .pipe(
+        catchError(error => {
+          if (error.status === 404) {
+            // Handle not found
+            console.error('Family tree not found:', error);
+          }
+          return throwError(() => error);
+        })
+      );
   }
 
-  public getPassword(): string {
-    return this.#password;
-  }
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'An error occurred';
 
-  public get password(): string {
-    return this.#password;
-  }
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
 
-  public getRoles(): Role[] {
-    return this.#roles;
-  }
-
-  public get roles(): Role[] {
-    return this.#roles;
-  }
-
-  public getFamilyMembers(): FamilyMember[] {
-    return this.#familyMembers;
-  }
-
-  public get familyMembers(): FamilyMember[] {
-    return this.#familyMembers;
-  }
-
-  // toString method for debugging
-  public toString(): string {
-    return `"user": {
-              "username": "${this.#username}",
-              "roles": [${this.#roles.map(role => role.toString()).join(', ')}],
-              "familyMembers": [${this.#familyMembers.map(member => member.toString()).join(', ')}]
-            }`;
+    console.error('Family Tree API error:', errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }

@@ -1,0 +1,109 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="flex flex-col min-h-screen p-2">
+    <div class="text-black text-xl mt-2 p-2 font-inter font-bold">Add To Family Tree</div>
+    <div class="text-center text-xs mt-6 font-bold text-blue-800">Step {{currentStep + 1}} of {{totalSteps}}</div>
+    <div class="flex justify-center gap-2 mt-1 mb-5">
+      <span *ngFor="let step of [].constructor(totalSteps); let i = index"
+            [class]="'w-2 h-2 rounded-full ' + (i <= currentStep ? 'bg-blue-800' : 'bg-blue-400')">
+      </span>
+    </div>
+
+    <!-- Step 2 forms -->
+    <div *ngIf="currentStep == 1">
+      <app-family-member-form
+        [relationshipType]="'Parents'"
+        [relationshipTypeDropdownArray]="['Dad', 'Mom', 'Stepdad', 'Stepmom']"
+        [addFamilyMemberForm]="parentsForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Grandparents'"
+        [relationshipTypeDropdownArray]="['Grandma', 'Grandpa']"
+        [addFamilyMemberForm]="grandparentsForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Siblings'"
+        [relationshipTypeDropdownArray]="['Brother', 'Sister']"
+        [addFamilyMemberForm]="siblingsForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Spouse'"
+        [relationshipTypeDropdownArray]="['Husband', 'Wife']"
+        [addFamilyMemberForm]="spouseForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Children'"
+        [relationshipTypeDropdownArray]="['Daughter', 'Son']"
+        [addFamilyMemberForm]="childrenForm">
+      </app-family-member-form>
+
+      <!-- Buttons -->
+      <div class="mt-3 flex items-center justify-center gap-x-6">
+        <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200" [routerLink]="['/create-account']">
+          Back
+        </button>
+        <button type="submit" class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow" (click)="nextStep()">
+          Next
+        </button>
+        <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearButton()">
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3 forms -->
+    <div *ngIf="currentStep == 2">
+      <app-family-member-form
+        [relationshipType]="'Uncles'"
+        [addFamilyMemberForm]="unclesForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Aunts'"
+        [addFamilyMemberForm]="auntsForm">
+      </app-family-member-form>
+
+      <app-family-member-form
+        [relationshipType]="'Cousins'"
+        [addFamilyMemberForm]="cousinsForm">
+      </app-family-member-form>
+
+      <!-- Crest Upload Option -->
+      <div class="flex justify-center items-center space-x-4 mt-3">
+        <!-- Upload box -->
+        <div class="w-full h-48 bg-gray-100 border-2 border-dashed flex flex-col justify-end items-center" (click)="fileInput.click()">
+          <img src="assets/icon/upload-cloud.png" class="w-20 h-20 mt-2" alt="Upload Cloud icon"/>
+          <div class="font-inter font-bold text-xl text-center text-black mb-3">Upload Crest (optional)</div>
+          <div class="font-inter text-sm text-center text-gray-400 mb-3">Click here to upload image</div>
+          <input type="file" #fileInput (change)="onFileChange($event)" accept="image/" class="hidden"/>
+        </div>
+
+        <input id="crest-upload" type="file" class="hidden"/>
+
+        <!-- Preview box -->
+        <div class="crest-photo border-2 grid col-span-full place-items-center w-full h-48 bg-gray-200">
+          <img *ngIf="selectedImage" [src]="selectedImage" alt="Uploaded Image" class="h-full w-full object-cover"/>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-center justify-center gap-x-6">
+        <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200" (click)="previousStep()">
+          Back
+        </button>
+        <!-- TODO: route to family tree and create FamilyMember objects for all family members submitted -->
+        <!-- Add to family button for step 3 -->
+        <button type="submit" class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow" (click)="addToFamilyButton()" [routerLink]="['/family-tree']">
+          Add to family
+        </button>
+        <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearButton()">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>

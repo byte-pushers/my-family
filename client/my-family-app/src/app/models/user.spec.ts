@@ -2,9 +2,9 @@
 
 import { User } from './user';
 import { Role } from './role';
-import { FamilyMember } from './family-member.model';
-import { Person } from './person';
-import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-tree/family-member.model';
+import { Person } from './family-tree/person';
+import { RelationshipType } from './family-tree/relationship-type';
 import { Permission } from './permission';
 
 //jasmine describe which helps group related test cases, to be used

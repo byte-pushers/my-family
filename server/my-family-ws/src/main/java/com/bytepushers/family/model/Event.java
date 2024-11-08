@@ -1,21 +1,19 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Event {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     @NotBlank(message = "Type of event is required")
@@ -34,42 +32,48 @@ public class Event {
     private LocalDate eventEndDate;
 
     @Column(nullable = false)
-    @NotNull(message = "event start time is required")
-    private LocalTime eventStartTime;
-
-    @Column(nullable = false)
-    @NotNull(message = "event end time is required")
-    private LocalTime eventEndTime;
-
-    @Column(nullable = false)
     @NotBlank(message = "address is required")
     private String address;
 
-    @Column(nullable = false)
-    @NotBlank(message = "agenda is required")
-    private String agenda;
+    @ElementCollection
+    @CollectionTable(name = "event_agenda", joinColumns = @JoinColumn(name = "fk_agenda_id"))
+    private List<Agenda> agendas;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Merchandise> merchandise;
 
     public Event() {
     }
 
-    public Event(int id, String eventType, String eventName, LocalDate eventStartDate, LocalDate eventEndDate, LocalTime eventStartTime, LocalTime eventEndTime, String address, String agenda) {
+    public Event(Long id, String eventType, String eventName, LocalDate eventStartDate, LocalDate eventEndDate, LocalTime eventStartTime, LocalTime eventEndTime, String address, List<Agenda> agendas, List<Merchandise> merchandise) {
         this.id = id;
         this.eventType = eventType;
         this.eventName = eventName;
         this.eventStartDate = eventStartDate;
         this.eventEndDate = eventEndDate;
-        this.eventStartTime = eventStartTime;
-        this.eventEndTime = eventEndTime;
         this.address = address;
-        this.agenda = agenda;
+        this.agendas = agendas;
+        this.merchandise = merchandise;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMerchandise(List<Merchandise> merchandiseList) {
+        this.merchandise = merchandiseList;
+    }
+
+    public List<Merchandise> getMerchandise() {
+        return merchandise;
+    }
+
+    public List<Agenda> getAgendas() {
+        return agendas;
+    }
+
+    public void setAgendas(List<Agenda> agenda) {
+        this.agendas = agenda;
     }
 
     public String getEventType() {
@@ -104,22 +108,6 @@ public class Event {
         this.eventEndDate = eventEndDate;
     }
 
-    public LocalTime getEventStartTime() {
-        return eventStartTime;
-    }
-
-    public void setEventStartTime(LocalTime eventStartTime) {
-        this.eventStartTime = eventStartTime;
-    }
-
-    public LocalTime getEventEndTime() {
-        return eventEndTime;
-    }
-
-    public void setEventEndTime(LocalTime eventEndTime) {
-        this.eventEndTime = eventEndTime;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -128,25 +116,18 @@ public class Event {
         this.address = address;
     }
 
-    public String getAgenda() {
-        return agenda;
-    }
-
-    public void setAgenda(String agenda) {
-        this.agenda = agenda;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id) && Objects.equals(eventType, event.eventType) && Objects.equals(eventName, event.eventName) && Objects.equals(eventStartDate, event.eventStartDate) && Objects.equals(eventEndDate, event.eventEndDate) && Objects.equals(eventStartTime, event.eventStartTime) && Objects.equals(eventEndTime, event.eventEndTime) && Objects.equals(address, event.address) && Objects.equals(agenda, event.agenda);
+        return Objects.equals(id, event.id) && Objects.equals(eventType, event.eventType) && Objects.equals(eventName, event.eventName) && Objects.equals(eventStartDate, event.eventStartDate) && Objects.equals(eventEndDate, event.eventEndDate) && Objects.equals(address, event.address) && Objects.equals(agendas, event.agendas);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, eventType, eventName, eventStartDate, eventEndDate, eventStartTime, eventEndTime, address, agenda);
+        return Objects.hash(id, eventType, eventName, eventStartDate, eventEndDate, address, agendas);
     }
 
     @Override
@@ -157,10 +138,7 @@ public class Event {
                 ", eventName='" + eventName + '\'' +
                 ", eventStartDate=" + eventStartDate +
                 ", eventEndDate=" + eventEndDate +
-                ", eventStartTime=" + eventStartTime +
-                ", eventEndTime=" + eventEndTime +
                 ", address='" + address + '\'' +
-                ", agenda='" + agenda + '\'' +
                 '}';
     }
 }
