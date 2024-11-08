@@ -1,7 +1,11 @@
 package com.bytepushers.family.service;
 
+import com.bytepushers.family.model.Book;
 import com.bytepushers.family.model.Event;
+import com.bytepushers.family.model.Merchandise;
+import com.bytepushers.family.model.Wearable;
 import com.bytepushers.family.repo.EventRepository;
+import com.bytepushers.family.repo.MerchendiseRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +14,11 @@ import java.util.List;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
+    private final MerchendiseRepository merchendiseRepository;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, MerchendiseRepository merchendiseRepository) {
         this.eventRepository = eventRepository;
+        this.merchendiseRepository = merchendiseRepository;
     }
 
     //create new event method
@@ -49,10 +55,7 @@ public class EventService {
             existingEvent.setEventName(event.getEventName());
             existingEvent.setEventStartDate(event.getEventStartDate());
             existingEvent.setEventEndDate(event.getEventEndDate());
-            existingEvent.setEventStartTime(event.getEventStartTime());
-            existingEvent.setEventEndTime(event.getEventEndTime());
             existingEvent.setAddress(event.getAddress());
-            existingEvent.setAgenda(event.getAgenda());
             return eventRepository.save(existingEvent);
         }else{
             throw new Exception("Event Not found");
