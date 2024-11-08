@@ -65,7 +65,6 @@ public class FamilyTreeController {
         logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
         return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
-
     // READ
     @GetMapping("/{id}")
     public ResponseEntity<List<FamilyMember>> getFamilyTreeById(@PathVariable Long id) {
