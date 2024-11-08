@@ -1,29 +1,22 @@
-<ion-content>
-    <app-event-details
-      [eventTitle]="eventTitle"
-      [eventDate]="eventDate"
-      [eventTime]="eventTime"
-      [eventLocation]="eventLocation"
-      [eventDescription]="eventDescription"
-      [eventImageUrl]="eventImageUrl">
-    </app-event-details>
+<!-- Event Signup Page -->
+<ion-content class="flex flex-col justify-center items-center min-h-screen p-4">
+  <app-event-details
+    [eventTitle]="eventTitle"
+    [eventDate]="eventDate"
+    [eventTime]="eventTime"
+    [eventLocation]="eventLocation"
+    [eventDescription]="eventDescription"
+    [eventImageUrl]="eventImageUrl"
+    class="w-full max-w-4xl">
+  </app-event-details>
 
-<!--    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Sign Up for the Event</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        &lt;!&ndash; Example form fields &ndash;&gt;
-        <ion-item>
-          <ion-label position="floating">First Name</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Last Name</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-        <ion-button expand="full" color="primary">Submit</ion-button>
-      </ion-card-content>
-    </ion-card>-->
+  <ion-card class="w-full max-w-4xl p-8 rounded-lg shadow-md mx-auto">
+    <ion-card-header>
+      <ion-card-title class="text-xl font-bold">Sign Up for the Event</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-event-registration-form></app-event-registration-form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
-<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>
+<ion-footer class="w-full"><app-footer-navigation></app-footer-navigation></ion-footer>
