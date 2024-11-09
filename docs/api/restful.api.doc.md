@@ -47,7 +47,7 @@
 }
 
 ```
-##### Request Body Example
+##### Request Body Example for familyTree
 ```
 {
     "userId": 1,
@@ -190,6 +190,23 @@
     "password" : "base-64-encoding-string"
     }
  }
+```
+##### Response Body for FamilyTree
+
+```
+[
+    {
+        "relationship": "string",
+        "person": {
+            "familyMembers": [
+                {
+                    "relationship": "string",
+                    "person": {}
+                }
+            ]
+        }
+    }
+]
 ```
 
 ##### Response Headers

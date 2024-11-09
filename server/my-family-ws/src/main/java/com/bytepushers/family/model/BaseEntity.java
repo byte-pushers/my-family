@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
-
+/* ? maybe we can use lombok for getter, setter, equalsandhashcode and tostring or just @Data */
 @MappedSuperclass
 public abstract class BaseEntity {
 
