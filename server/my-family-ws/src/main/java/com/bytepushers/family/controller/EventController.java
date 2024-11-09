@@ -34,7 +34,7 @@ public class EventController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/event/list", consumes = {"*/*"})
+    @GetMapping(value = "/events", consumes = {"*/*"})
     public ResponseEntity<?> getEvents() {
 
         List<Event> events = eventService.getEvents();
