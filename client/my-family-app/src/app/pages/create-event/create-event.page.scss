@@ -1,0 +1,37 @@
+.container {
+  @apply mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg;
+}
+
+
+h2 {
+  @apply text-center text-2xl font-bold mb-6;
+}
+
+
+.input-item {
+  @apply mb-4;
+}
+
+
+button {
+  &:hover {
+    @apply bg-blue-600 text-white;
+  }
+}
+
+
+button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+
+.image-preview {
+  img {
+    @apply w-32 h-32 rounded-md object-cover;
+  }
+}
+
+
+
+

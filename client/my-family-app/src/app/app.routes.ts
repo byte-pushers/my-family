@@ -1,21 +1,27 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-/*  {
+  {
     path: '',
-    loadChildren: () => import('./pages/tabs/tabs.routes').then((m) => m.routes),
-  },*/
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
+  },
+  {
+    path: 'create-event',
+    loadComponent: () => import('./pages/create-event/create-event.page').then(m => m.CreateEventPage) // Set CreateEventPage as the default
+  },
+
   {
     path: 'create-account',
     loadComponent: () => import('./pages/create-account/create-account.page').then(m => m.CreateAccountPage)
-  },
-/*  {
-    path: 'home',
-    loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
-  },*/
-  {
-    path: 'home',
-    loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
   },
   {
     path: 'login-page',
@@ -45,18 +51,5 @@ export const routes: Routes = [
   {
     path: 'event-signup',
     loadComponent: () => import('./pages/event-signup/event-signup.page').then( m => m.EventSignupPage)
-  },
-/*  {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage)
-  },
-  {
-    path: 'chat',
-    loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
-  },*/
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+  }
 ];
