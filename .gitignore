@@ -1,6 +1,7 @@
 ./**/.DS_Store
 ./**/.angular
-./**/node_modules
+./**/node_modules/
+node_modules
 client/my-family-app/www/
 
 # Compiled class file
