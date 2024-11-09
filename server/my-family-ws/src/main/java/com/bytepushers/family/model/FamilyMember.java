@@ -3,13 +3,17 @@ package com.bytepushers.family.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -26,7 +30,7 @@ public class FamilyMember extends BaseEntity {
     @JsonIgnoreProperties("familyMembers")  // Prevents circular serialization issues
     private Person person;
 
-    public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public FamilyMember(Integer id, String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
     }
 
@@ -58,11 +62,11 @@ public class FamilyMember extends BaseEntity {
 
     @Override
     public String toString() {
-        return "FamilyMember{" +
-                "id=" + getId() +
-                ", relationship='" + relationship + '\'' +
-                ", person=" + (person != null ? person.getFirstName() + " " + person.getLastName() : "null") +
-                '}';
+        return "FamilyMember {" +
+            super.toString() +
+            ", relationship='" + relationship + '\'' +
+            ", person=" + (person != null ? person.getFirstName() + " " + person.getLastName() : "null") +
+        '}';
     }
 
     @Override

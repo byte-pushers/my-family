@@ -1,5 +1,6 @@
 package com.bytepushers.family.controller;
 
+import com.bytepushers.family.api.FamilyTreeRequestPayload;
 import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.service.FamilyTreeService;
@@ -36,20 +37,20 @@ public class FamilyTreeController {
 
     // Family Tree POST API
     @PostMapping
-    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
+    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ApiResponse errorResponse = new ApiResponse(List.of());
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
-        List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
+        List<FamilyMember> familyMembers = familyTreeService.createFamilyTree(familyTreeRequestPayload.getFamilyMembers());
+        // List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
         // ApiResponse response = new ApiResponse(familyMembers);
-        logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
+        // logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
         return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
 
-    // READ
+    /*// READ
     @GetMapping("/{id}")
     public ResponseEntity<List<FamilyMember>> getFamilyTreeById(@PathVariable Long id) {
         return familyTreeService.getFamilyTreeById(id)
@@ -102,7 +103,7 @@ public class FamilyTreeController {
             logger.error("Failed to delete family tree with ID {}", id);
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
 
 }
