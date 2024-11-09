@@ -1,10 +1,10 @@
-import { Person } from './person';
-import { FamilyMember } from './family-member.model';
-import { FamilyTreeRequestPayload } from './family-tree-request.payload';
+import { Person } from './family-tree/person';
+import { FamilyMember } from './family-tree/family-member.model';
+import { FamilyTreeRequestPayload } from './family-tree/family-tree-request.payload';
 import { Permission } from './permission';
 import { Role } from './role';
 import { User } from './user';
-import { RelationshipType } from './relationship-type';
+import { RelationshipType } from './family-tree/relationship-type';
 import * as moment from 'moment';
 
 describe('Combined Model Tests', () => {

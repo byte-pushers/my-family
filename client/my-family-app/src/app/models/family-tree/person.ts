@@ -1,6 +1,6 @@
 // src/app/models/person.ts
 
-import { BaseDomainModel } from './base-domain-model';
+import { BaseDomainModel } from '../base-domain-model';
 import { FamilyMember } from './family-member.model';
 
 export class Person extends BaseDomainModel {

@@ -41,6 +41,7 @@ public class SecurityConfig {
                                     "/login",
                                     "/api/create-account",
                                     "/api/users/**",
+                                    "/api/family-tree/**",
                                     "/api-docs",
                                     "/api-docs/**",
                                     "/swagger-resources",

@@ -6,10 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "FamilyTreeMember")
+@Table(name = "family_tree_member")
 public class FamilyTree extends BaseEntity {
 
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "relationship")
     private String relationship;
+
+    @Column(name = "parent_type")
+    private String parentType;
+
+    @Column(name = "parent_name")
+    private String parentName;
+
+    @Column(name = "grand_parent_type")
+    private String grandParentType;
+
+    @Column(name = "grand_parent_name")
+    private String grandParentName;
 
     // Assuming `Person` is meant to be embedded directly without an identifier of its own
     @OneToOne(cascade = CascadeType.ALL)
@@ -26,6 +42,22 @@ public class FamilyTree extends BaseEntity {
     public FamilyTree(String relationship, Person person) {
         this.relationship = relationship;
         this.person = person;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(String parentType) {
+        this.parentType = parentType;
     }
 
     // Getters and Setters
