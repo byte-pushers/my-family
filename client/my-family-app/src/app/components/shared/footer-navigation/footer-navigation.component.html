@@ -1,47 +1,38 @@
 <!-- navigation-footer.component.html -->
-<ion-footer>
+<ion-footer class="bg-light">
   <ion-toolbar>
     <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <!-- With routing (commented out for now) -->
-        <!-- <ion-tab-button tab="home" [routerLink]="['/home']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
-          <img src="assets/icon/home.png" alt="Home">
-          <ion-label>Home</ion-label>
-        </ion-tab-button> -->
-
-        <ion-tab-button tab="home" (click)="selectTab('home')" [class.selected]="selectedTab === 'home'">
-          <img src="assets/icon/home.png" alt="Home">
-          <ion-label>Home</ion-label>
+      <ion-tab-bar slot="bottom" class="py-2 bg-light">
+        <ion-tab-button tab="home" [routerLink]="['/home']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
+                        class="text-medium hover:opacity-80 transition-opacity">
+          <img ngSrc="assets/icon/home.png" alt="Home"
+               height="512" width="512"
+               class="w-5 h-5 mb-1 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
+          <ion-label class="text-xs mt-0.5">Home</ion-label>
         </ion-tab-button>
 
-        <!-- <ion-tab-button tab="family" [routerLink]="['/family']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
-          <img src="assets/icon/family.png" alt="Family">
-          <ion-label>Family</ion-label>
-        </ion-tab-button> -->
-
-        <ion-tab-button tab="family" (click)="selectTab('family')" [class.selected]="selectedTab === 'family'">
-          <img src="assets/icon/family-icon.png" alt="Family">
-          <ion-label>Family</ion-label>
+        <ion-tab-button tab="family" [routerLink]="['/family-tree']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
+                        class="text-medium hover:opacity-80 transition-opacity">
+          <img ngSrc="assets/icon/family-icon.png" alt="Family"
+               height="512" width="512"
+               class="w-5 h-5 mb-1 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
+          <ion-label class="text-xs mt-0.5">Family</ion-label>
         </ion-tab-button>
 
-        <!-- <ion-tab-button tab="profile" [routerLink]="['/profile']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
-          <img src="assets/icon/profile.png" alt="Profile">
-          <ion-label>Profile</ion-label>
-        </ion-tab-button> -->
-
-        <ion-tab-button tab="profile" (click)="selectTab('profile')" [class.selected]="selectedTab === 'profile'">
-          <img src="assets/icon/profile.png" alt="Profile">
-          <ion-label>Profile</ion-label>
+        <ion-tab-button tab="profile" [routerLink]="['/profile']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
+                        class="text-medium hover:opacity-80 transition-opacity">
+          <img ngSrc="assets/icon/profile.png" alt="Profile"
+               height="512" width="512"
+               class="w-5 h-5 mb-1 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
+          <ion-label class="text-xs mt-0.5">Profile</ion-label>
         </ion-tab-button>
 
-        <!-- <ion-tab-button tab="chat" [routerLink]="['/chat']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">
-          <img src="assets/icon/chat.png" alt="Chat">
-          <ion-label>Chat</ion-label>
-        </ion-tab-button> -->
-
-        <ion-tab-button tab="chat" (click)="selectTab('chat')" [class.selected]="selectedTab === 'chat'">
-          <img src="assets/icon/chat.png" alt="Chat">
-          <ion-label>Chat</ion-label>
+        <ion-tab-button tab="chat" [routerLink]="['/chat']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
+                        class="text-medium hover:opacity-80 transition-opacity">
+          <img ngSrc="assets/icon/chat.png" alt="Chat"
+               height="512" width="512"
+               class="w-5 h-5 mb-1 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
+          <ion-label class="text-xs mt-0.5">Chat</ion-label>
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>

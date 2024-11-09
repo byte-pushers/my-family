@@ -3,6 +3,7 @@ package com.bytepushers.family.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -18,14 +19,14 @@ public abstract class BaseEntity {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "created_data")
-    private LocalDateTime createdDate;
+    @Column(name = "created_date")
+    private Date createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
     // Constructors
-    public BaseEntity(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public BaseEntity(Integer id, String createdBy, String updatedBy, Date createdDate, Date updatedDate) {
         this.id = id;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
@@ -61,31 +62,31 @@ public abstract class BaseEntity {
         this.updatedBy = updatedBy;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 
     @Override
     public String toString() {
         return "BaseEntity {" +
-                "id=" + id +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
-                '}';
+            "id=" + id +
+            ", createdBy='" + createdBy + '\'' +
+            ", updatedBy='" + updatedBy + '\'' +
+            ", createdDate=" + createdDate +
+            ", updatedDate=" + updatedDate +
+        '}';
     }
 
     @Override

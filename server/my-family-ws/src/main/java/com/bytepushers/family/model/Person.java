@@ -1,15 +1,15 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class Person extends BaseEntity {
     private String lastName;
 
     @NotNull(message = "Birth date is required")
-    private LocalDate birthDate;
+    private Date birthDate;
 
     @NotNull(message = "Gender is required")
     private String gender;
@@ -38,14 +38,14 @@ public class Person extends BaseEntity {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, LocalDate birthDate, String gender) {
+    public Person(String firstName, String lastName, Date birthDate, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
     }
 
-    public Person(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String firstName, String lastName, LocalDate birthDate, String gender, List<FamilyMember> familyMembers) {
+    public Person(Integer id, String createdBy, String updatedBy, Date createdDate, Date updatedDate, String firstName, String lastName, Date birthDate, String gender, List<FamilyMember> familyMembers) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,11 +71,11 @@ public class Person extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -98,12 +98,12 @@ public class Person extends BaseEntity {
     @Override
     public String toString() {
         return "Person{" +
-                super.toString() +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", gender='" + gender + '\'' +
-                '}';
+            super.toString() +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", birthDate=" + birthDate +
+            ", gender='" + gender + '\'' +
+        '}';
     }
 
 

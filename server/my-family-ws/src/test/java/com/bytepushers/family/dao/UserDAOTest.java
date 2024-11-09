@@ -33,6 +33,8 @@ public class UserDAOTest {
         testUser = new User();
         testUser.setEmail("test" + uniqueSuffix + "@example.com");  // Unique email
         testUser.setPassword("password");
+        testUser.setUsername("test-user");
+        testUser.setEnabled(Boolean.valueOf(true));
 
         testUser = userDAO.createUser(testUser);
     }
@@ -64,6 +66,8 @@ public class UserDAOTest {
         User testUser = new User();
         testUser.setEmail(expectedUserEmail);
         testUser.setPassword("password");
+        testUser.setUsername("test-user");
+        testUser.setEnabled(Boolean.valueOf(true));
 
         User createdUser = userDAO.createUser(testUser);
 

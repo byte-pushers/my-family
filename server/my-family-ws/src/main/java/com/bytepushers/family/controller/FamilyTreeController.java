@@ -1,5 +1,6 @@
 package com.bytepushers.family.controller;
 
+import com.bytepushers.family.api.FamilyTreeRequestPayload;
 import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.service.FamilyTreeService;
@@ -28,44 +29,28 @@ public class FamilyTreeController {
     public FamilyTreeController(@Qualifier("familyTreeService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
-    // use the following qualifier when you are using the mocked service
-//    public FamilyTreeController(@Qualifier("familyTreeMockedService") FamilyTreeService familyTreeService) {
-//        this.familyTreeService = familyTreeService;
-//    }
+
+    /*use the following qualifier when you are using the mocked service
+    public FamilyTreeController(@Qualifier("familyTreeMockedService") FamilyTreeService familyTreeService) {
+        this.familyTreeService = familyTreeService;
+    }*/
 
     // Family Tree POST API
-//    @PostMapping
-//    public ResponseEntity<ApiResponse<List<FamilyMember>>> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors()) {
-//            System.out.println(familyTree);
-//            System.out.println("Hello Spring");
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        // Create the family tree and retrieve only the family members for the response
-//        FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
-//        ApiResponse<List<FamilyMember>> response = new ApiResponse<>(createdFamilyTree.getFamilyMembers());
-//
-//        logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
-//
-//        // Return ApiResponse with familyMembers as the main data
-//        return new ResponseEntity<>(response, HttpStatus.CREATED);
-//    }
     @PostMapping
-    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree, BindingResult bindingResult) {
+    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ApiResponse errorResponse = new ApiResponse(List.of());
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        FamilyTree createdFamilyTree = familyTreeService.createFamilyTree(familyTree);
-        List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
-        ApiResponse response = new ApiResponse(familyMembers);
-        logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
+        List<FamilyMember> familyMembers = familyTreeService.createFamilyTree(familyTreeRequestPayload.getFamilyMembers());
+        // List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
+        // ApiResponse response = new ApiResponse(familyMembers);
+        // logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
         return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
-    // READ
+
+    /*// READ
     @GetMapping("/{id}")
     public ResponseEntity<List<FamilyMember>> getFamilyTreeById(@PathVariable Long id) {
         return familyTreeService.getFamilyTreeById(id)
@@ -118,7 +103,7 @@ public class FamilyTreeController {
             logger.error("Failed to delete family tree with ID {}", id);
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
 
 }
