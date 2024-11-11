@@ -2,14 +2,14 @@ import { FamilyMember } from './family-member.model';  // Import the FamilyMembe
 
 export class FamilyTreeRequestPayload {
   // Private fields for encapsulation
-  #parents: FamilyMember[];
-  #grandparents: FamilyMember[];
-  #siblings: FamilyMember[];
-  #spouse: FamilyMember | null;  // Make spouse optional
-  #children: FamilyMember[];
-  #cousins: FamilyMember[];
-  #uncles: FamilyMember[];
-  #aunts: FamilyMember[];
+  readonly #parents: FamilyMember[];
+  readonly #grandparents: FamilyMember[];
+  readonly #siblings: FamilyMember[];
+  readonly #spouse: FamilyMember | null;  // Make spouse optional
+  readonly #children: FamilyMember[] | null;
+  readonly #uncles: FamilyMember[] | null;
+  readonly #aunts: FamilyMember[] | null;
+  readonly #cousins: FamilyMember[] | null;
 
   // Constructor to initialize the fields
   constructor(
@@ -17,19 +17,19 @@ export class FamilyTreeRequestPayload {
     grandparents: FamilyMember[],
     siblings: FamilyMember[],
     spouse: FamilyMember | null,  // Allow null for spouse
-    children: FamilyMember[],
-    cousins: FamilyMember[],
-    uncles: FamilyMember[],
-    aunts: FamilyMember[]
+    children: FamilyMember[] | null,
+    uncles: FamilyMember[] | null,
+    aunts: FamilyMember[] | null,
+    cousins: FamilyMember[] | null
   ) {
     this.#parents = parents;
     this.#grandparents = grandparents;
     this.#siblings = siblings;
     this.#spouse = spouse;
     this.#children = children;
-    this.#cousins = cousins;
     this.#uncles = uncles;
     this.#aunts = aunts;
+    this.#cousins = cousins;
   }
 
   // Property-style getters
@@ -49,55 +49,56 @@ export class FamilyTreeRequestPayload {
     return this.#spouse;
   }
 
-  public get children(): FamilyMember[] {
+  public get children(): FamilyMember[] | null {
     return this.#children;
   }
 
-  public get cousins(): FamilyMember[] {
-    return this.#cousins;
-  }
-
-  public get uncles(): FamilyMember[] {
+  public get uncles(): FamilyMember[] | null {
     return this.#uncles;
   }
 
-  public get aunts(): FamilyMember[] {
+  public get aunts(): FamilyMember[] | null {
     return this.#aunts;
+  }
+
+  public get cousins(): FamilyMember[] | null {
+    return this.#cousins;
   }
 
   // Method-style getters
-  public getparents(): FamilyMember[] {
+  public getParents(): FamilyMember[] {
     return this.#parents;
   }
 
-  public getgrandparents(): FamilyMember[] {
+  public getGrandparents(): FamilyMember[] {
     return this.#grandparents;
   }
 
-  public getsiblings(): FamilyMember[] {
+  public getSiblings(): FamilyMember[] {
     return this.#siblings;
   }
 
-  public getspouse(): FamilyMember | null {
+  public getSpouse(): FamilyMember | null {
     return this.#spouse;
   }
 
-  public getchildren(): FamilyMember[] {
+  public getChildren(): FamilyMember[] | null {
     return this.#children;
   }
 
-  public getcousins(): FamilyMember[] {
-    return this.#cousins;
-  }
-
-  public getuncles(): FamilyMember[] {
+  public getUncles(): FamilyMember[] | null {
     return this.#uncles;
   }
 
-  public getaunts(): FamilyMember[] {
+  public getAunts(): FamilyMember[] | null {
     return this.#aunts;
   }
 
+  public getCousins(): FamilyMember[] | null {
+    return this.#cousins;
+  }
+
+  /*
   // Method to generate the payload (organizes and gathers each family into the right format)
   public generatePayload() {
     return {
@@ -126,5 +127,16 @@ export class FamilyTreeRequestPayload {
         }))
       }
     }
+  }*/
+
+  public toString(): string {
+    return this.parents.toString() +
+      this.grandparents.toString() +
+      this.siblings.toString() +
+      this.spouse?.toString() +
+      this.children?.toString() +
+      this.uncles?.toString() +
+      this.aunts?.toString() +
+      this.cousins?.toString();
   }
 }
