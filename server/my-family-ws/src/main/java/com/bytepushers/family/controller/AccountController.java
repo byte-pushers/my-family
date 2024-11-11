@@ -1,8 +1,12 @@
 package com.bytepushers.family.controller;
 
+import com.bytepushers.family.api.APIErrorConstant;
 import com.bytepushers.family.api.ApiResponse;
+import com.bytepushers.family.api.ErrorResponse;
+import com.bytepushers.family.api.ValidationErrorResponse;
 import com.bytepushers.family.repo.AccountRepository;
 import com.bytepushers.family.model.Account;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import com.bytepushers.family.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -10,8 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@RequestMapping(path = "/api", consumes = "application/json")
+@RequestMapping(path = "/api")
 @CrossOrigin(origins="*")
 public class AccountController {
     private final AccountRepository createAccountRepository;
@@ -24,12 +32,73 @@ public class AccountController {
     }
 
     //create-account post api
-    @PostMapping(value = "/create-account")
+    @PostMapping(value = "/accounts", produces = {"application/json"}, consumes={"application/json"})
     public ResponseEntity<?> createAccount(@Valid @RequestBody Account account, BindingResult bindingResult) {
+
+//        if(bindingResult.hasErrors()) {
+//            ArrayList<String> errors = new ArrayList<>();
+//            bindingResult.getAllErrors().forEach(error -> {
+//                errors.add(error.getDefaultMessage());
+//            });
+//            return new ResponseEntity<>(new ValidationErrorResponse(APIErrorConstant.API_ERROR_MIN_LENGTH_INPUT, errors.toString(), null,null), HttpStatus.BAD_REQUEST);
+//        }
+
         Account userCreated = accountService.createAccount(account);
 
         //if user create successfully
-        ApiResponse<Account> response = new ApiResponse<>(userCreated);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
+    }
+
+    //get all account
+    @GetMapping(value = "/accounts", produces = {"application/json"})
+    public ResponseEntity<?> getAccounts() {
+        List<Account> accounts = accountService.getAllAccounts();
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
+
+    //get account by id, name, email
+    @GetMapping(value = "/accounts/", produces = {"application/json"})
+    public ResponseEntity<?> getAllAccountsByName(@RequestParam(required = false) String name,
+                                                  @RequestParam(required = false) String email,
+                                                  @RequestParam(required = false) Long id) {
+        if(name != null) {
+            List<Account>accounts = accountService.getAccountByName(name);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        }
+        if(email != null) {
+            ArrayList<Account> accounts = new ArrayList<>();
+            Account account = accountService.getAccountByEmail(email);
+            accounts.add(account);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        }
+        if(id != null) {
+            ArrayList<Account> accounts = new ArrayList<>();
+            Account account = accountService.getAccountById(id);
+            accounts.add(account);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Name, Email, or ID should be present",HttpStatus.BAD_REQUEST);
+    }
+
+    //update account
+    @PatchMapping(value = "/accounts/update/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<?> updateAccount(@PathVariable Long id, @Valid @RequestBody Account account, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }else{
+            ArrayList<Account> accounts = new ArrayList<>();
+            Account updatedAccount = accountService.updateAccount(id, account);
+            accounts.add(updatedAccount);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        }
+    }
+
+    //deleted account
+    @DeleteMapping(value = "/accounts/{id}")
+    public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
+       String message = accountService.deleteAccountById(id);
+
+       return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
