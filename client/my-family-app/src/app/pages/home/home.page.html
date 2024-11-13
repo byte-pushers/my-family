@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="flex flex-col min-h-full pb-[3.5rem] sm:pb-16">
+  <div class="flex flex-col min-h-full sm:pb-16">
     <!-- Header Section -->
     <div class="max-w-4xl mx-auto px-4 py-8 w-full">
       <div class="max-w-3xl mx-auto">
@@ -13,6 +13,9 @@
     <!-- Main Content -->
     <div class="flex-1">
       <!-- TODO: Search Bar Component -->
+  <app-search-bar></app-search-bar>
+
+  <!--TODO: Make "No Featured Events & No Announcements" for empty ones-->
 
       <!-- Featured Event Card -->
       <app-featured-event [event]="featuredEvent"></app-featured-event>

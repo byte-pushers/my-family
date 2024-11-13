@@ -56,6 +56,10 @@ export const routes: Routes = [
   {
     path: 'new-message',
     loadComponent: () => import('./pages/chat/new-message/new-message.page').then( m => m.NewMessagePage)
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+  },
+  {
+    path: 'search-results',
+    loadComponent: () => import('./pages/search-results/search-results.page').then( m => m.SearchResultsPage)
   }
-
 ];
