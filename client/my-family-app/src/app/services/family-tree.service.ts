@@ -1,58 +1,38 @@
-import { Role } from '../models/role';  // Import Role class
-import { FamilyMember } from '../models/family-member.model';  // Import FamilyMember class
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { FamilyTreeRequestPayload } from '../models/family-tree-request.payload';  // Adjust path as needed
 
-export class User {
-  #username: string;
-  #password: string;
-  #roles: Role[];
-  #familyMembers: FamilyMember[];
+@Injectable({
+  providedIn: 'root'
+})
+export class FamilyTreeService {
+  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
 
-  constructor(username: string, password: string, roles: Role[], familyMembers: FamilyMember[]) {
-    this.#username = username;
-    this.#password = password;
-    this.#roles = roles;
-    this.#familyMembers = familyMembers;
+  constructor(private http: HttpClient) {}
+
+  // Method to submit the family tree data
+  public submitFamilyTree(payload: FamilyTreeRequestPayload): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Accept-Version': '0.0.0.1',
+      'Authorization': 'Basic ' + btoa('john:12345')
+    });
+
+    console.log(`payload: ${JSON.stringify(payload)}`, payload);
+
+    return this.http.post<any>(this.apiBaseUrl + '/family-tree', payload, {
+      headers: headers
+    }).pipe(
+      catchError(this.handleError)  // Handle errors
+    );
   }
 
-  // Getters
-  public getUsername(): string {
-    return this.#username;
-  }
-
-  public get username(): string {
-    return this.#username;
-  }
-
-  public getPassword(): string {
-    return this.#password;
-  }
-
-  public get password(): string {
-    return this.#password;
-  }
-
-  public getRoles(): Role[] {
-    return this.#roles;
-  }
-
-  public get roles(): Role[] {
-    return this.#roles;
-  }
-
-  public getFamilyMembers(): FamilyMember[] {
-    return this.#familyMembers;
-  }
-
-  public get familyMembers(): FamilyMember[] {
-    return this.#familyMembers;
-  }
-
-  // toString method for debugging
-  public toString(): string {
-    return `"user": {
-              "username": "${this.#username}",
-              "roles": [${this.#roles.map(role => role.toString()).join(', ')}],
-              "familyMembers": [${this.#familyMembers.map(member => member.toString()).join(', ')}]
-            }`;
+  // Error handling logic
+  private handleError(error: any): Observable<never> {
+    console.error('Family Tree API error:', error);  // Log error for debugging
+    return throwError(() => new Error('Submission failed. Please try again later.'));
   }
 }
