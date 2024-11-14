@@ -1,12 +1,8 @@
 package com.bytepushers.family.controller;
 
-import com.bytepushers.family.api.APIErrorConstant;
-import com.bytepushers.family.api.ApiResponse;
-import com.bytepushers.family.api.ErrorResponse;
-import com.bytepushers.family.api.ValidationErrorResponse;
 import com.bytepushers.family.repo.AccountRepository;
 import com.bytepushers.family.model.Account;
-import jakarta.validation.ConstraintViolationException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import com.bytepushers.family.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -16,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping(path = "/api")
 @CrossOrigin(origins="*")
+@SecurityRequirement(name = "X-API-Version")
 public class AccountController {
     private final AccountRepository createAccountRepository;
     private final AccountService accountService;

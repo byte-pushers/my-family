@@ -26,7 +26,7 @@ public class APIErrorConstant {
     public static final String API_ERROR_INVALID_BIRTHDAY_FORMAT = "E016";
     public static final String API_ERROR_SOURCE_NOT_FOUND = "E017";
 
-
+    public static final String API_ERROR_ILLEGAL_ARGUMENT = "E018";
     // General server errors
     public static final String API_ERROR_INTERNAL_SERVER_ERROR = "E500"; // Internal server error
     public static final String API_ERROR_SERVICE_UNAVAILABLE = "E503";   // Service unavailable
