@@ -42,7 +42,7 @@ public class EventController {
     }
 
     @GetMapping(value = "/events/{id}", consumes = {"*/*"})
-    public ResponseEntity<?> getEvent(@PathVariable int id) {
+    public ResponseEntity<?> getEvent(@PathVariable Long id) {
 
         Event event = eventService.getEventById(id);
         ApiResponse<Event> response = new ApiResponse<>(event);
@@ -58,14 +58,14 @@ public class EventController {
     }
 
     @DeleteMapping(value = "/events/{id}",consumes = {"*/*"})
-    public ResponseEntity<?> deleteEventById(@PathVariable int id) {
+    public ResponseEntity<?> deleteEventById(@PathVariable Long id) {
 
        String event = eventService.deleteEventById(id);
       return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
     @PutMapping(value = "/events/{id}")
-    public ResponseEntity<?> updateEvent(@Valid @RequestBody Event event, @PathVariable int id, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<?> updateEvent(@Valid @RequestBody Event event, @PathVariable Long id, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }

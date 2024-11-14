@@ -57,8 +57,8 @@ public class EventService {
             existingEvent.setEventStartDate(event.getEventStartDate());
             existingEvent.setEventEndDate(event.getEventEndDate());
             existingEvent.setAddress(event.getAddress());
-            existingEvent.setAgenda(event.getAgenda());
-            existingEvent.setMerchandiseList(event.getMerchandiseList());
+            existingEvent.setAgendas(event.getAgendas());
+            existingEvent.setMerchandise(event.getMerchandise());
             return eventRepository.save(existingEvent);
         }else{
             throw new Exception("Event Not found");
