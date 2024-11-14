@@ -1,0 +1,108 @@
+<!--
+<ion-content>
+  &lt;!&ndash; Chat List View &ndash;&gt;
+  <ng-container *ngIf="!selectedThread">
+    <div class="p-4">
+      <h1 class="text-2xl font-bold mb-4">Messages</h1>
+
+      &lt;!&ndash; Search &ndash;&gt;
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="handleSearch($event)"
+        placeholder="Search"
+        class="mb-4">
+      </ion-searchbar>
+
+      &lt;!&ndash; Chat Threads List &ndash;&gt;
+&lt;!&ndash;      <ion-list>
+        <ion-item *ngFor="let thread of chatThreads"
+                  (click)="selectThread(thread)"
+                  class="mb-2 rounded-lg">
+          <ion-avatar slot="start">
+            <img [src]="thread.participant.avatarUrl" [alt]="thread.participant.name">
+          </ion-avatar>
+
+          <ion-label>
+            <h2 class="font-medium">{{thread.participant.name}}</h2>
+            <p class="text-gray-500">{{thread.lastMessage?.content}}</p>
+          </ion-label>
+
+          <ion-note slot="end" class="text-sm">
+            {{thread.lastMessage?.timestamp | date:'shortTime'}}
+          </ion-note>
+        </ion-item>
+      </ion-list>&ndash;&gt;
+    </div>
+  </ng-container>
+
+  &lt;!&ndash; Message Thread View &ndash;&gt;
+  <ng-container *ngIf="selectedThread">
+&lt;!&ndash;    <app-message-thread
+      [thread]="selectedThread"
+      (back)="backToList()">
+    </app-message-thread>&ndash;&gt;
+  </ng-container>
+<app-footer-navigation></app-footer-navigation>
+</ion-content>
+-->
+
+<!-- chat.page.html -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-2xl font-bold py-4">Messages</h1>
+      <ion-searchbar placeholder="Search messages"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Chat List -->
+    <ion-list class="bg-transparent">
+      <!-- Mom Chat -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-avatar slot="start">
+          <img alt="mom avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>
+          <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-gray-900">Mom</h2>
+            <p class="text-sm text-gray-500">10:30 AM</p>
+          </div>
+          <p class="text-gray-500 text-sm">I am super excited about the get together this weekend.</p>
+        </ion-label>
+      </ion-item>
+
+      <!-- Dad Chat -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-avatar slot="start">
+          <img alt="dad avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>
+          <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-gray-900">Dad</h2>
+            <p class="text-sm text-gray-500">9:45 AM</p>
+          </div>
+          <p class="text-gray-500 text-sm">When are you coming home?</p>
+        </ion-label>
+      </ion-item>
+
+      <!-- Grandmother Chat -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-avatar slot="start">
+          <img alt="grandmother avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>
+          <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-gray-900">Grandmother</h2>
+            <p class="text-sm text-gray-500">Yesterday</p>
+          </div>
+          <p class="text-gray-500 text-sm">Did you receive the family recipe I sent?</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>
