@@ -1,5 +1,6 @@
 package com.bytepushers.family.service;
 
+import com.bytepushers.family.exception.NotFoundException;
 import com.bytepushers.family.model.Book;
 import com.bytepushers.family.model.Event;
 import com.bytepushers.family.model.Merchandise;
@@ -32,8 +33,8 @@ public class EventService {
     }
 
     //get event by id
-    public Event getEventById(int id) {
-        return eventRepository.findById(id).orElse(null);
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event not found"));
     }
 
     //get Event by event name
@@ -42,20 +43,22 @@ public class EventService {
     }
 
     //delete event by id
-    public String deleteEventById(int id) {
+    public String deleteEventById(Long id) {
         eventRepository.findById(id).ifPresent(eventRepository::delete);
         return "Event deleted successfully";
     }
 
     //update Event
-    public Event updateEvent(@Valid Event event, int id) throws Exception {
-        Event existingEvent = eventRepository.findById(id).orElse(null);
+    public Event updateEvent(@Valid Event event, Long id) throws Exception {
+        Event existingEvent = eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event not found"));
         if (existingEvent != null) {
             existingEvent.setEventType(event.getEventType());
             existingEvent.setEventName(event.getEventName());
             existingEvent.setEventStartDate(event.getEventStartDate());
             existingEvent.setEventEndDate(event.getEventEndDate());
             existingEvent.setAddress(event.getAddress());
+            existingEvent.setAgenda(event.getAgenda());
+            existingEvent.setMerchandiseList(event.getMerchandiseList());
             return eventRepository.save(existingEvent);
         }else{
             throw new Exception("Event Not found");
