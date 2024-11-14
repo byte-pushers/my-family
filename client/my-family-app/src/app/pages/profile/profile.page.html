@@ -1,0 +1,106 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex gap-2 py-4">
+        <ion-chip class="bg-blue-50 text-blue-800">Edit Profile</ion-chip>
+        <ion-chip class="bg-blue-50 text-blue-800">Media</ion-chip>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Profile Header Section -->
+    <div class="flex flex-col items-center justify-center py-6">
+      <div class="relative">
+        <ion-avatar class="w-32 h-32 border-2 border-blue-800">
+          <img alt="Profile picture" src="https://ionicframework.com/docs/img/demos/avatar.svg" class="w-full h-full object-cover" />
+        </ion-avatar>
+      </div>
+
+      <div class="flex justify-center gap-4 mt-4">
+        <ion-button fill="clear" (click)="uploadPhoto()" class="text-blue-800">
+          <ion-icon name="cloud-upload-outline" slot="icon-only" class="text-xl"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="shareProfile()" class="text-blue-800">
+          <ion-icon name="share-social-outline" slot="icon-only" class="text-xl"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="editProfile()" class="text-blue-800">
+          <ion-icon name="person-outline" slot="icon-only" class="text-xl"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="text-blue-800">
+          <ion-icon name="images-outline" slot="icon-only" class="text-xl"></ion-icon>
+        </ion-button>
+      </div>
+
+      <h2 class="text-xl font-semibold text-blue-800 mt-4">
+        {{ profileData.firstName }} {{ profileData.lastName }}
+      </h2>
+    </div>
+
+    <!-- Profile Details Section -->
+    <ion-list class="bg-transparent">
+      <!-- Personal Info Card -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-label>
+          <div class="flex flex-col gap-2 py-2">
+            <div>
+              <div class="text-sm text-blue-500">Date of birth</div>
+              <div class="text-base text-gray-800">{{ profileData.dateOfBirth }}</div>
+            </div>
+            <div>
+              <div class="text-sm text-blue-500">Age</div>
+              <div class="text-base text-gray-800">{{ profileData.age }}</div>
+            </div>
+            <div>
+              <div class="text-sm text-blue-500">Address</div>
+              <div class="text-base text-gray-800">{{ profileData.address }}</div>
+            </div>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <!-- Family Details Card -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-label>
+          <div class="flex flex-col gap-2 py-2">
+            <div>
+              <div class="text-sm text-blue-500">Spouse</div>
+              <div class="text-base text-gray-800">{{ profileData.spouse || 'None' }}</div>
+            </div>
+            <div>
+              <div class="text-sm text-blue-500">Children</div>
+              <div class="text-base text-gray-800">{{ profileData.children?.join(', ') || 'None' }}</div>
+            </div>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <!-- Parents Card -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-label>
+          <div class="flex flex-col gap-2 py-2">
+            <div class="text-sm text-blue-500">Parents</div>
+            <div class="text-base text-gray-800">{{ profileData.parents.mother }}</div>
+            <div class="text-base text-gray-800">{{ profileData.parents.father }}</div>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <!-- Siblings Card -->
+      <ion-item class="mb-4 rounded-lg shadow-sm">
+        <ion-label>
+          <div class="flex flex-col gap-2 py-2">
+            <div class="text-sm text-blue-500">Siblings</div>
+            <div class="text-base text-gray-800" *ngFor="let sibling of profileData.siblings">
+              {{ sibling }}
+            </div>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>
