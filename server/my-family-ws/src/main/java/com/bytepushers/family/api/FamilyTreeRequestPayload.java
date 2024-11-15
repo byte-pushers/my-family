@@ -1,11 +1,14 @@
 package com.bytepushers.family.api;
 
 import com.bytepushers.family.model.FamilyMember;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public class FamilyTreeRequestPayload {
+    @NotNull
     private Long userId;
+    @NotNull
     private List<FamilyMember> familyMembers;
 
     public FamilyTreeRequestPayload() {

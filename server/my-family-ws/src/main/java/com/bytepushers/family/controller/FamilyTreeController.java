@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/family-tree") // Group all family-tree APIs under this base path
+@RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
 public class FamilyTreeController {
 
     private static final Logger logger = LoggerFactory.getLogger(FamilyTreeController.class);
@@ -29,24 +29,18 @@ public class FamilyTreeController {
     public FamilyTreeController(@Qualifier("familyTreeService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
-
-    /*use the following qualifier when you are using the mocked service
-    public FamilyTreeController(@Qualifier("familyTreeMockedService") FamilyTreeService familyTreeService) {
-        this.familyTreeService = familyTreeService;
-    }*/
+//    use the following qualifier when you are using the mocked service
+//    public FamilyTreeController(@Qualifier("familyTreeMockedService") FamilyTreeService familyTreeService) {
+//        this.familyTreeService = familyTreeService;
+//    }
 
     // Family Tree POST API
     @PostMapping
     public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            ApiResponse errorResponse = new ApiResponse(List.of());
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        }
+        Long userId = familyTreeRequestPayload.getUserId();
+        List<FamilyMember> CreatedFamilyMembers = familyTreeRequestPayload.getFamilyMembers();
 
         List<FamilyMember> familyMembers = familyTreeService.createFamilyTree(familyTreeRequestPayload.getFamilyMembers());
-        // List<FamilyMember> familyMembers = createdFamilyTree.getFamilyMembers();
-        // ApiResponse response = new ApiResponse(familyMembers);
-        // logger.info("Family tree with ID {} created successfully", createdFamilyTree.getId());
         return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
 

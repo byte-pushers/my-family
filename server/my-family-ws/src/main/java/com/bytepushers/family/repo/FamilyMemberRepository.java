@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FamilyMemberRepository extends JpaRepository<List<FamilyMember>, Long> {
+public interface FamilyMemberRepository extends JpaRepository<FamilyMember, Long> {
 }

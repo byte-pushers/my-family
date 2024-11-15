@@ -38,6 +38,7 @@ public class FamilyMember extends BaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
     @JsonIgnoreProperties("familyMembers")  // Prevents circular serialization issues
+    @NotNull(message = "Person is required")
     private Person person;
 
     /**

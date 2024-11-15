@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,16 +21,56 @@ public class GenealogyService implements FamilyTreeService {
     public GenealogyService(FamilyMemberRepository familyMemberRepository) {
         this.familyMemberRepository = familyMemberRepository;
     }
-    //CREATE
-    @Transactional // not sure yet if we should use this but it might be a good idea
+
+    // CREATE
+    @Transactional
     @Override
     public List<FamilyMember> createFamilyTree(List<FamilyMember> familyMembers) {
-        // Call repository to save the entity
-        if(familyMembers == null){
-            throw  new IllegalArgumentException("FamilyTree cannot be null");
+        if (familyMembers == null) {
+            throw new IllegalArgumentException("FamilyTree cannot be null");
         }
-        return familyMemberRepository.save(familyMembers);
-    }/*
+
+        List<FamilyMember> savedFamilyMembers = new ArrayList<>();
+        for (FamilyMember member : familyMembers) {
+            // Start the recursive save for each root family member
+            saveFamilyMemberRecursive(member);
+            // Flatten the hierarchy into a single list
+            savedFamilyMembers.addAll(flattenFamilyMembers(member));
+        }
+        return savedFamilyMembers;
+    }
+
+    private void saveFamilyMemberRecursive(FamilyMember member) {
+        // Save the current family member to persist it and generate an ID
+        FamilyMember savedMember = familyMemberRepository.save(member);
+
+        // Check for nested family members and associate them with the current person
+        if (member.getPerson().getFamilyMembers() != null) {
+            for (FamilyMember nestedMember : member.getPerson().getFamilyMembers()) {
+                // Set the nested member's person reference to the parent
+                nestedMember.setPerson(savedMember.getPerson());
+
+                // Recursively save each nested member
+                saveFamilyMemberRecursive(nestedMember);
+            }
+        }
+    }
+
+    private List<FamilyMember> flattenFamilyMembers(FamilyMember member) {
+        List<FamilyMember> flatList = new ArrayList<>();
+        flatList.add(member); // Add the current member to the list
+
+        // If the person has nested family members, add them recursively
+        if (member.getPerson().getFamilyMembers() != null) {
+            for (FamilyMember nestedMember : member.getPerson().getFamilyMembers()) {
+                flatList.addAll(flattenFamilyMembers(nestedMember));
+            }
+        }
+        return flatList;
+    }
+}
+
+/*
     // READ (Get by ID)
     @Override
     public Optional<FamilyMember> getFamilyTreeById(long id) {
@@ -62,4 +104,3 @@ public class GenealogyService implements FamilyTreeService {
         familyMemberRepository.deleteById(id);
     }*/
 
-}
