@@ -106,4 +106,13 @@
     <button (click)="saveEvent()" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Save Event</button>
     <button (click)="clearForm()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Clear Form</button>
   </div>
+
+  <!-- Success and Error Messages -->
+  <div *ngIf="successMessage" class="text-green-500 text-center my-4">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="text-red-500 text-center my-4">
+    {{ errorMessage }}
+  </div>
+
 </div>
