@@ -40,12 +40,7 @@ public class Event {
     private List<Agenda> agendas;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // @JoinColumn(name = "event_id")
     private List<Merchandise> merchandise;
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//   @JoinColumn(name = "package_id", referencedColumnName = "id")
-//    private Package eventPackage;
 
     public Event() {
     }

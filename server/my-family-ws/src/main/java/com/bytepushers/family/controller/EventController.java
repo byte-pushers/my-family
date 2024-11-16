@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api", consumes = "application/json")
+@RequestMapping(path = "/api")
 @CrossOrigin(origins="*")
 public class EventController {
 
@@ -25,46 +26,41 @@ public class EventController {
         this.eventRepository = eventRepository;
     }
 
-    @PostMapping(value = "/events")
+    @PostMapping(value = "/events", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<?> createEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
+        List<Event> events = new ArrayList<>();
         Event createdEvent = eventService.createEvent(event);
-        //ApiResponse<Event> response = new ApiResponse<>(createdEvent);
-        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+        events.add(createdEvent);
+        return new ResponseEntity<>(events, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/events", consumes = {"*/*"})
+    @GetMapping(value = "/events", produces = {"application/json"})
     public ResponseEntity<?> getEvents() {
-
         List<Event> events = eventService.getEvents();
-
-        ApiResponse<List<Event>> response = new ApiResponse<>(events);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/events/{id}", consumes = {"*/*"})
+    @GetMapping(value = "/events/{id}", produces = {"application/json"})
     public ResponseEntity<?> getEvent(@PathVariable Long id) {
-
+        List<Event> events = new ArrayList<>();
         Event event = eventService.getEventById(id);
-        ApiResponse<Event> response = new ApiResponse<>(event);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        events.add(event);
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/events?name={name}", consumes = {"*/*"})
+    @GetMapping(value = "/events?name={name}", produces = {"application/json"})
     public ResponseEntity<?> getEventByName(@PathVariable String name) {
-
         List<Event> event = eventService.getEventByName(name);
-        ApiResponse<List<Event>> response = new ApiResponse<>(event);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/events/{id}",consumes = {"*/*"})
+    @DeleteMapping(value = "/events/{id}")
     public ResponseEntity<?> deleteEventById(@PathVariable Long id) {
-
        String event = eventService.deleteEventById(id);
       return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/events/{id}")
+    @PatchMapping(value = "/events/{id}", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<?> updateEvent(@Valid @RequestBody Event event, @PathVariable Long id, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);

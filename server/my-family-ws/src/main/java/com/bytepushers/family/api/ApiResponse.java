@@ -1,22 +1,31 @@
 package com.bytepushers.family.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApiResponse <T> {
 
+    private List<T> data;
 
-    //private Object data;
-    private T data;
     public ApiResponse() {
+        this.data = new ArrayList<>();
     }
 
-    public ApiResponse(T data) {
-        this.data = data;
+    // Constructor for single object
+    public ApiResponse(T singleObject) {
+        this.data = new ArrayList<>();
+        this.data.add(singleObject);
     }
-    public T getData() {
+
+    // Getter method to ensure it's always a list
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    // Setter for a single object
+    public void setData(T singleObject) {
+        this.data = new ArrayList<>();
+        this.data.add(singleObject);
     }
 
 }
