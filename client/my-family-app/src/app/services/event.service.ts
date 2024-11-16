@@ -8,7 +8,7 @@ import { Event } from '../models/event';  // Adjust path as needed
   providedIn: 'root'
 })
 export class EventService {
-  private apiBaseUrl = '/api/event'; // Replace with the actual API URL (ask who is working on it)
+  private apiBaseUrl = '/api/events'; // Replace with the actual API URL (ask who is working on it)
 
   constructor(private http: HttpClient) {}
 
@@ -17,13 +17,13 @@ export class EventService {
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Accept-Version': '0.0.0.1',
+      'X-API-Version': '1.0.0',
       'Authorization': 'Basic ' + btoa('john:12345')
     });
 
     console.log(`Event payload: ${JSON.stringify(event)}`, event);
 
-    return this.http.post<Event>(`${this.apiBaseUrl}/event`, event, {
+    return this.http.post<Event>(`${this.apiBaseUrl}/events`, event, {
       headers: headers
     }).pipe(
       catchError(this.handleError)  // Handle errors

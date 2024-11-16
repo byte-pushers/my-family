@@ -27,7 +27,7 @@ export class FamilyTreeService {
 
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
 
-    return this.http.post<any>(this.apiBaseUrl + '/family-tree', payload, {
+    return this.http.post<any>(this.apiBaseUrl + '/family-trees', payload, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
@@ -36,7 +36,7 @@ export class FamilyTreeService {
 
   // GET - Retrieve family tree by ID
   public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
-    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-tree/${id}`)
+    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`)
       .pipe(
         catchError(error => {
           if (error.status === 404) {

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/family-tree") // Group all family-tree APIs under this base path
+@RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
 @CrossOrigin
 public class FamilyTreeController {
 

@@ -49,7 +49,7 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/events/", produces = {"application/json"})
+    @GetMapping(value = "/events", produces = {"application/json"})
     public ResponseEntity<?> getEventByName(@RequestParam(required = false) String name) {
         if (name != null) {
             List<Event> event = eventService.getEventByName(name);
