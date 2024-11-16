@@ -1,0 +1,24 @@
+<div class="max-w-4xl mx-auto px-4 mb-8 mt-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-5xl font-bold tracking-tight text-slate-900 text-center">
+      My Family Reunion
+    </h1>
+    <p class="text-lg text-slate-600 mt-2 text-center">Stay connected with your loved ones</p>
+  </div>
+</div>
+<ion-content>
+  <!-- TODO: Search Bar Component -->
+
+  <!-- Featured Event Card -->
+  <app-featured-event>
+    [event]="featuredEvent"
+  </app-featured-event>
+
+  <!-- Announcements Section -->
+  <app-announcements
+    [announcements]="upcomingAnnouncements"
+    class="block mt-4"
+  ></app-announcements>
+
+</ion-content>
+<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>

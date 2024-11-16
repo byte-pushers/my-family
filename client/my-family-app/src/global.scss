@@ -41,4 +41,14 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /*@import '@ionic/angular/css/palettes/dark.system.css'; */
 
+* {
+  font-family: 'Inter', sans-serif;
+}
 
+ion-content {
+  --background: #faf9f6 !important; /* Off White */
+}
+
+body {
+  background-color: #faf9f6; /* Set background for the entire app */
+}

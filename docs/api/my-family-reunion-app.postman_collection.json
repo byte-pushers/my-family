@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "f45ac2c4-6586-4def-875a-13bd27659760",
+		"_postman_id": "00ddb466-ca80-4db5-8518-2532a9211c05",
 		"name": "my-family-reunion-app",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38160132"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -236,12 +235,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/family-tree",
+							"raw": "http://localhost:8090/api/family-tree",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8090",
 							"path": [
 								"api",
 								"family-tree"
@@ -307,10 +306,43 @@
 				{
 					"name": "Create Event",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"family\",\n  \"eventName\": \"Tech Innovations 2024\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n      \"agenda\": \"tech meeting 2026\",\n      \"startTime\": \"02:00\",\n      \"endTime\": \"05:00\",\n      \"date\": \"2024-05-11\"\n    },\n    {\n      \"agenda\": \"Dinner Time\",\n      \"startTime\": \"07:00\",\n      \"endTime\": \"09:00\",\n      \"date\": \"2024-05-11\"\n    }\n  ],\n  \"merchandise\": [\n    {\n      \"merchandiseType\": \"WEARABLE\",\n      \"wearableType\": \"T_SHIRT\",\n      \"productName\": \"v-neck tshirt\",\n      \"productPrice\": 25.99,\n      \"productDescription\": \"it is quality v-neck tshirt for summer\",\n      \"productImageUrl\": \"url\",\n      \"SKU\": \"123jwedwer3234238wd\",\n      \"size\": \"M\",\n      \"color\": \"black\"\n    },\n    {\n      \"merchandiseType\": \"BOOK\",\n      \"productName\": \"Rich dad poor dad\",\n      \"productPrice\": 30.99,\n      \"productDescription\": \"Rich Dad Poor Dad is a 1997 book written by Robert T. Kiyosaki and Sharon Lechter.\",\n      \"productImageUrl\": \"url\",\n      \"author\": \"Robert T\",\n      \"ISBN\": \"0-446-67745-0\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:54175/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "54175",
+							"path": [
+								"api",
+								"events"
+							]
 						}
 					},
 					"response": []
@@ -318,10 +350,34 @@
 				{
 					"name": "Get Event",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
 						}
 					},
 					"response": []

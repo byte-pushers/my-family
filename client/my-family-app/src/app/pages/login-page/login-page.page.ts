@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {LoginService} from "../../services/login-service";
-import {GlobalErrorService} from "../../services/global-error.service";
-import {GlobalErrorHandler} from "../../errors/global-error-handler";
-import {ApiError} from "../../models/api-error";
-
 import {
   IonContent,
   IonHeader,
@@ -15,15 +10,16 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonIcon,
   AlertController
 } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';  // Import Router for navigation
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.page.html',
   styleUrls: ['./login-page.page.scss'],
   standalone: true,
-  providers: [GlobalErrorService, GlobalErrorHandler],
   imports: [
     IonContent,
     IonHeader,
@@ -33,6 +29,7 @@ import {
     IonLabel,
     IonInput,
     IonButton,
+    IonIcon,
     CommonModule,
     FormsModule
   ]
@@ -40,62 +37,57 @@ import {
 export class LoginPagePage implements OnInit {
   username: string = '';
   password: string = '';
+  submitted: boolean = false;
+
   passwordType: string = 'password';  // Default is hidden
-  errorMessages: ApiError[] = [];
 
-  constructor(private alertCtrl: AlertController, private loginService: LoginService, private globalError: GlobalErrorHandler,
-              private globalErrorService: GlobalErrorService) {
-  }
+  constructor(private alertCtrl: AlertController, private router: Router) {}  // Inject Router
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async onSignIn() {
-    if (!this.username) {
+    // Ensure both username and password are provided
+    this.submitted = true;
+    if (!this.username || !this.password) {
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'Username and password are required',
-        // buttons: ['OK'],
+        buttons: ['OK'],
       });
       await alert.present();
       return;
     }
 
-    // Note to self: The  login logic to call an API or perform authentication)
+    // Minimal validation for demonstration
+    if (this.password.length < 8) {
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'Password must be at least 8 characters long.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+
+    // Note to self: The login logic to call an API or perform authentication
     console.log('Username:', this.username);
     console.log('Password:', this.password);
 
-    //call login service from backend to get data
-    this.loginService.login(this.username, this.password)
-      .subscribe(
-        async (response) => {
-          console.log('Response from API:', response);
-          // Assuming a successful response means account creation was successful
-          const successAlert = await this.alertCtrl.create({
-            header: 'Success',
-            message: 'Account created successfully!',
-          });
-          await successAlert.present();
-        },
-        async (error) => {
-          console.error('Error occurred:', error.error);
+    // Show a success alert or navigate to another page
+    const successAlert = await this.alertCtrl.create({
+      header: 'Success',
+      message: 'Login successful!',
+      buttons: ['OK'],
+    });
+    await successAlert.present();
 
-          this.globalError.handleError(error.error);
+    // Optional: Navigate to another page or reset form after alert dismissal
+    await successAlert.onDidDismiss();
+    // this.router.navigate(['/home']);  // Replace with your desired route after login
+  }
 
-          this.globalErrorService.getErrorMessages().subscribe(async (errors: ApiError[]) => {
-            this.errorMessages = errors;
-            console.log(this.errorMessages);
-            const alert = await this.alertCtrl.create({
-              header: 'Error',
-              message: this.errorMessages.map(err => err.message).join(' --- '),
-              buttons: ['OK'],
-              cssClass: 'custom-alert',
-            });
-            await alert.present();
-          });
-        }
-      );
-
+  // Method to navigate back to the welcome page
+  async goBack() {
+    this.router.navigate(['/welcome-page']);  // Adjust this to your welcome page route
   }
 }
-

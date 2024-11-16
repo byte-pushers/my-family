@@ -1,0 +1,62 @@
+<!-- TODO List
+
+TODO: Create Family Members List Component
+- Prerequisites:
+  * Define FamilyMember interface/type with required properties
+  * Plan responsive layout for list visibility on different screen sizes
+- Implementation Details:
+  * Create scrollable container for member list
+  * Each list item should display:
+    - Profile picture (if available)
+    - Full name
+    - Basic info (age, relationship status)
+    - Quick action buttons (view details, highlight in tree)
+  * Add sorting capabilities (by name, age, relationship)
+
+TODO: Synchronize Family Member List with Tree Visualization
+- Prerequisites:
+  * Set up data service to manage shared state between tree and list
+  * Define visual indicators for list-tree connections
+- Implementation Details:
+  * Create bidirectional highlighting (list ↔ tree)
+  * Handle visibility filtering:
+    - When zooming to specific tree sections
+    - When filtering by search/relationship
+  * Consider performance optimizations for family tree
+
+TODO: Implement Search Functionality with List Integration
+- Prerequisites:
+  * Define search parameters (name, relationship, location, etc.)
+  * Plan search UI/UX (instant search vs. submit)
+  * Decide on search algorithm approach
+- Implementation Details:
+  * Create search input component with:
+    - Recent searches
+    - Advanced filter options
+  * Search results handling:
+    - Highlight matching terms in list
+    - Option to expand tree to show all results
+  * Consider implementing:
+    - Fuzzy search for names
+    - Filter by relationship type
+
+TODO: Making the Family Tree Canvas area Mobile Responsive
+-->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>family-tree</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">family-tree</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <input type="text" placeholder="Search family member" (input)="onSearch($event)" />
+  <app-family-tree-visualization></app-family-tree-visualization>
+</ion-content>
+<!--<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>-->
+

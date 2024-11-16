@@ -172,19 +172,12 @@
 ##### Response Body
 
 ```
-[
-    {
-        "relationship": "string",
-        "person": {
-            "familyMembers": [
-                {
-                    "relationship": "string",
-                    "person": {}
-                }
-            ]
-        }
+{
+  "credentials" : {
+    "username" : "alpha-number-string",
+    "password" : "base-64-encoding-string"
     }
-]
+ }
 ```
 
 ##### Response Headers

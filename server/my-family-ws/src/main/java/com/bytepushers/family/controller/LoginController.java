@@ -3,6 +3,7 @@ package com.bytepushers.family.controller;
 import com.bytepushers.family.api.APIErrorConstant;
 import com.bytepushers.family.api.ApiResponse;
 import com.bytepushers.family.api.ErrorResponse;
+import com.bytepushers.family.model.ErrorDetail;
 import com.bytepushers.family.model.Login;
 import com.bytepushers.family.model.User;
 import com.bytepushers.family.service.UserService;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(path = "/api", produces = "application/json")
+@RequestMapping(path = "/api")
 @CrossOrigin(origins="*")
 public class LoginController {
 
@@ -29,7 +30,7 @@ public class LoginController {
 
 
     // Basic login API for testing
-    @GetMapping("/login")
+    @GetMapping(value = "/sessions", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> login(@Valid @RequestBody Login login, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // Handling validation errors
@@ -37,7 +38,7 @@ public class LoginController {
             bindingResult.getAllErrors().forEach(error -> {
                 errors.add(error.getDefaultMessage());
             });
-            return new ResponseEntity<>(new ErrorResponse(APIErrorConstant.API_ERROR_LOGIN_VALIDATION_FAILED, "Invalid Request", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorResponse(APIErrorConstant.API_ERROR_LOGIN_VALIDATION_FAILED, "Invalid Request", null,null), HttpStatus.BAD_REQUEST);
         }
 
         boolean isValid = userService.login(login.getEmail(), login.getPassword());
@@ -45,7 +46,7 @@ public class LoginController {
             ApiResponse<User> response = new ApiResponse<>(null);
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(APIErrorConstant.API_ERROR_UNAUTHORIZED_ACCESS, "Unauthorized", null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(APIErrorConstant.API_ERROR_UNAUTHORIZED_ACCESS, "Unauthorized", null, null));
         }
     }
 }

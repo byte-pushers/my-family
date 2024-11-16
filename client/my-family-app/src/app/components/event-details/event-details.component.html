@@ -1,0 +1,42 @@
+<!-- Event Details Component -->
+<ion-card class="block w-full max-w-4xl mx-auto p-6 shadow-md rounded-lg text-left">
+  <ion-img
+    [src]="eventImageUrl"
+    class="w-full h-auto object-cover rounded-lg overflow-hidden block shadow-md mb-4">
+  </ion-img>
+
+  <ion-card-header>
+    <ion-card-title class="font-bold text-xl text-gray-800">{{ eventTitle }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="flex items-center mt-4 text-sm">
+      <img
+        src="assets/icon/calendar.png"
+        alt="Calendar Icon"
+        class="w-5 h-5 mr-2 object-contain" />
+      <span class="text-gray-500">{{ eventDate }}</span>
+    </div>
+
+    <div class="flex items-center mt-4 text-sm">
+      <img
+        src="assets/icon/clock.png"
+        alt="Time Icon"
+        class="w-5 h-5 mr-2 object-contain" />
+      <span class="text-gray-500">{{ eventTime }}</span>
+    </div>
+
+    <div class="flex items-center mt-4 text-sm">
+      <img
+        src="assets/icon/waypoint.png"
+        alt="Location Icon"
+        class="w-5 h-5 mr-2 object-contain" />
+      <span class="text-gray-500">{{ eventLocation }}</span>
+    </div>
+
+    <div class="mt-8 text-sm text-gray-600">
+      <h2 class="font-semibold text-gray-800 mt-4">Event Details</h2>
+      {{ eventDescription }}
+    </div>
+  </ion-card-content>
+</ion-card>
