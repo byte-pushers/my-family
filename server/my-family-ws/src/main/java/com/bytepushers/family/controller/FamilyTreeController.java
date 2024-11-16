@@ -2,7 +2,6 @@ package com.bytepushers.family.controller;
 
 import com.bytepushers.family.api.FamilyTreeRequestPayload;
 import com.bytepushers.family.model.FamilyMember;
-import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.service.FamilyTreeService;
 import com.bytepushers.family.api.ApiResponse;
 import jakarta.validation.Valid;
@@ -14,90 +13,158 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller class for managing family trees.
+ * Provides REST endpoints for CRUD operations on family trees.
+ * <p>
+ * All APIs are grouped under the base path "/api/family-trees".
+ * </p>
+ */
 @RestController
-@RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
+@RequestMapping("/api/family-trees")
 public class FamilyTreeController {
 
     private static final Logger logger = LoggerFactory.getLogger(FamilyTreeController.class);
 
     private final FamilyTreeService familyTreeService;
 
+    /**
+     * Constructs the FamilyTreeController with the specified FamilyTreeService.
+     *
+     * @param familyTreeService the service layer handling family tree logic
+     */
     public FamilyTreeController(@Qualifier("familyTreeService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
-//    use the following qualifier when you are using the mocked service
-//    public FamilyTreeController(@Qualifier("familyTreeMockedService") FamilyTreeService familyTreeService) {
-//        this.familyTreeService = familyTreeService;
-//    }
 
-    // Family Tree POST API
+    /**
+     * Creates a new family tree.
+     *
+     * @param familyTreeRequestPayload the request payload containing user ID and family members
+     * @param bindingResult            captures validation errors, if any
+     * @return a {@link ResponseEntity} containing the created family members and HTTP status code
+     */
     @PostMapping
-    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload, BindingResult bindingResult) {
+    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload,
+                                                   BindingResult bindingResult) {
         Long userId = familyTreeRequestPayload.getUserId();
-        List<FamilyMember> CreatedFamilyMembers = familyTreeRequestPayload.getFamilyMembers();
+        List<FamilyMember> createdFamilyMembers = familyTreeRequestPayload.getFamilyMembers();
 
-        List<FamilyMember> familyMembers = familyTreeService.createFamilyTree(familyTreeRequestPayload.getFamilyMembers());
+        logger.info("Creating family tree for user ID {}", userId);
+
+        List<FamilyMember> familyMembers = familyTreeService.createFamilyTree(createdFamilyMembers);
+        logger.info("Family tree created successfully for user ID {}", userId);
         return new ResponseEntity<>(familyMembers, HttpStatus.CREATED);
     }
 
-    /*// READ
+    /**
+     * Retrieves a family tree by its ID.
+     *
+     * @param id the ID of the family tree to retrieve
+     * @return a {@link ResponseEntity} containing the family tree data or an error message
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<List<FamilyMember>> getFamilyTreeById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> getFamilyTreeById(@PathVariable Long id) {
+        if (id <= 0) {
+            logger.warn("Invalid ID provided: {}", id);
+            return new ResponseEntity<>(new ApiResponse("Invalid ID"), HttpStatus.BAD_REQUEST);
+        }
+
         return familyTreeService.getFamilyTreeById(id)
-                .map(familyTree -> {
-                    List<FamilyMember> familyMembers = familyTree.getFamilyMembers();
-                    logger.info("Retrieved family members for family tree with ID {}", id);
-                    return new ResponseEntity<>(familyMembers, HttpStatus.OK);
+                .map(familyMember -> {
+                    logger.info("Retrieved family member with ID: {}", familyMember.getId());
+
+                    Long userId = (long) familyMember.getId();
+                    FamilyTreeRequestPayload payload = new FamilyTreeRequestPayload(userId, List.of(familyMember));
+                    return new ResponseEntity<>(new ApiResponse(payload), HttpStatus.OK);
                 })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> {
+                    logger.warn("Family member with ID {} not found", id);
+                    return new ResponseEntity<>(new ApiResponse("Family member not found"), HttpStatus.NOT_FOUND);
+                });
     }
 
-    // Adjusted getAllFamilyTrees to return a list of family members across all family trees
+    /**
+     * Retrieves all family trees.
+     *
+     * @return a {@link ResponseEntity} containing the list of all family members or an error message
+     */
     @GetMapping
-    public ResponseEntity<List<FamilyMember>> getAllFamilyTrees() {
-        List<FamilyTree> familyTrees = familyTreeService.getAllFamilyTrees();
-        List<FamilyMember> allFamilyMembers = familyTrees.stream()
-                .flatMap(tree -> tree.getFamilyMembers().stream())
-                .collect(Collectors.toList());
-
-        logger.info("Retrieved all family members across all family trees");
-        return new ResponseEntity<>(allFamilyMembers, HttpStatus.OK);
+    public ResponseEntity<Object> getAllFamilyTrees() {
+        try {
+            logger.info("Fetching all family trees");
+            List<FamilyMember> familyMembers = familyTreeService.getAllFamilyTrees();
+            return new ResponseEntity<>(new ApiResponse(familyMembers), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Failed to retrieve all family members", e);
+            return new ResponseEntity<>(new ApiResponse("Error retrieving family members"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-
-    // UPDATE
+    /**
+     * Updates a family tree with the given ID.
+     *
+     * @param id                  the ID of the family tree to update
+     * @return a {@link ResponseEntity} containing the updated family member or an error message
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateFamilyTree(@PathVariable Long id, @RequestBody FamilyTree updatedFamilyTree) {
+    public ResponseEntity<Object> updateFamilyTree(@PathVariable Long id, @Valid @RequestBody FamilyTreeRequestPayload familyTreeRequestPayload, BindingResult bindingResult) {
+        // Validate the request payload
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            logger.warn("Validation failed for family tree update: {}", errors);
+            return new ResponseEntity<>(new ApiResponse("Validation failed: " + errors), HttpStatus.BAD_REQUEST);
+        }
+
+        Long userId = familyTreeRequestPayload.getUserId();
+        List<FamilyMember> updatedFamilyMembers = familyTreeRequestPayload.getFamilyMembers();
+
+        logger.info("Updating family tree for user ID {} and FamilyTree ID {}", userId, id);
+
         try {
-            FamilyTree updatedTree = familyTreeService.updateFamilyTree(id, updatedFamilyTree);
-            ApiResponse response = new ApiResponse(updatedTree);
-            logger.info("Family tree with ID {} updated successfully", id);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            // Update each family member and persist changes
+            List<FamilyMember> updatedMembers = updatedFamilyMembers.stream()
+                    .map(member -> familyTreeService.updateFamilyTree(id, member))
+                    .toList();
+
+            logger.info("Family tree updated successfully for user ID {}", userId);
+            return new ResponseEntity<>(updatedMembers, HttpStatus.OK);
         } catch (RuntimeException e) {
-            ApiResponse errorResponse = new ApiResponse("Family tree not found");
-            logger.error("Failed to update family tree with ID {}", id);
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+            logger.warn("Family tree with ID {} not found", id, e);
+            return new ResponseEntity<>(new ApiResponse("Family tree not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            logger.error("Error updating family tree for user ID {} and FamilyTree ID {}", userId, id, e);
+            return new ResponseEntity<>(new ApiResponse("Error updating family tree"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // DELETE
+
+
+    /**
+     * Deletes a family tree by its ID.
+     *
+     * @param id the ID of the family tree to delete
+     * @return a {@link ResponseEntity} containing a success message or an error message
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteFamilyTree(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteFamilyTree(@PathVariable Long id) {
         try {
+            logger.info("Deleting family member with ID {}", id);
             familyTreeService.deleteFamilyTree(id);
-            ApiResponse response = new ApiResponse("Family tree deleted successfully");
-            logger.info("Deleted family tree with ID {}", id);
-            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+            logger.info("Family member with ID {} deleted successfully", id);
+            return new ResponseEntity<>(new ApiResponse("Family member deleted successfully"), HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            ApiResponse errorResponse = new ApiResponse("Family tree not found");
-            logger.error("Failed to delete family tree with ID {}", id);
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+            logger.warn("Failed to delete family member with ID {}", id, e);
+            return new ResponseEntity<>(new ApiResponse("Family member not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            logger.error("Error deleting family member with ID {}", id, e);
+            return new ResponseEntity<>(new ApiResponse("Error deleting family member"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
-
-
+    }
 }

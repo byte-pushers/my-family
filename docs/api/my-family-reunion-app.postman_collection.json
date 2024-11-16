@@ -228,7 +228,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"familyMembers\": [\r\n        {\r\n            \"relationship\": \"Father\",\r\n            \"person\": {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"familyMembers\": [\r\n                    {\r\n                        \"relationship\": \"Son\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Mike\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2000-05-12\",\r\n                            \"gender\": \"Male\",\r\n                            \"familyMembers\": [],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"relationship\": \"Daughter\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Anna\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2005-08-20\",\r\n                            \"gender\": \"Female\",\r\n                            \"familyMembers\": [\r\n                                {\r\n                                    \"relationship\": \"Child\",\r\n                                    \"person\": {\r\n                                        \"firstName\": \"Emily\",\r\n                                        \"lastName\": \"Smith\",\r\n                                        \"birthDate\": \"2023-03-15\",\r\n                                        \"gender\": \"Female\",\r\n                                        \"familyMembers\": []\r\n                                    },\r\n                                    \"createdBy\": \"adminUser\",\r\n                                    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                                }\r\n                            ],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ], \r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        }\r\n    ],\r\n    \"parentType\": \"Nuclear\",\r\n    \"parentName\": \"Smith Family\",\r\n    \"grandParentType\": \"Extended\",\r\n    \"grandParentName\": \"Doe Family\",\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}\r\n",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"familyMembers\": [\r\n        {\r\n            \"relationship\": \"MOTHER\",\r\n            \"person\": {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"familyMembers\": [\r\n                    {\r\n                        \"relationship\": \"SON\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Mike\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2000-05-12\",\r\n                            \"gender\": \"Male\",\r\n                            \"familyMembers\": [],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"relationship\": \"DAUGHTER\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Anna\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2005-08-20\",\r\n                            \"gender\": \"Female\",\r\n                            \"familyMembers\": [\r\n                                {\r\n                                    \"relationship\": \"CHILD\",\r\n                                    \"person\": {\r\n                                        \"firstName\": \"Emily\",\r\n                                        \"lastName\": \"Smith\",\r\n                                        \"birthDate\": \"2023-03-15\",\r\n                                        \"gender\": \"Female\",\r\n                                        \"familyMembers\": []\r\n                                    },\r\n                                    \"createdBy\": \"adminUser\",\r\n                                    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                                }\r\n                            ],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ], \r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        }\r\n    ],\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -236,15 +236,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/family-tree",
+							"raw": "http://localhost:8090/api/family-trees",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8090",
 							"path": [
 								"api",
-								"family-tree"
+								"family-trees"
 							]
 						}
 					},
@@ -253,10 +253,44 @@
 				{
 					"name": "Update Family Member",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 2,\r\n    \"familyMembers\": [\r\n        {\r\n            \"relationship\": \"DAUGHTER\",\r\n            \"person\": {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Doe\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"familyMembers\": [\r\n                    {\r\n                        \"relationship\": \"SON\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Mike\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2000-05-12\",\r\n                            \"gender\": \"Male\",\r\n                            \"familyMembers\": [],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"relationship\": \"DAUGHTER\",\r\n                        \"person\": {\r\n                            \"firstName\": \"Anna\",\r\n                            \"lastName\": \"Doe\",\r\n                            \"birthDate\": \"2005-08-20\",\r\n                            \"gender\": \"Female\",\r\n                            \"familyMembers\": [\r\n                                {\r\n                                    \"relationship\": \"CHILD\",\r\n                                    \"person\": {\r\n                                        \"firstName\": \"Emily\",\r\n                                        \"lastName\": \"Smith\",\r\n                                        \"birthDate\": \"2023-03-15\",\r\n                                        \"gender\": \"Female\",\r\n                                        \"familyMembers\": []\r\n                                    },\r\n                                    \"createdBy\": \"adminUser\",\r\n                                    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                                }\r\n                            ],\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ], \r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        }\r\n    ],\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8090/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
+							]
 						}
 					},
 					"response": []
@@ -264,10 +298,35 @@
 				{
 					"name": "Delete Family Member",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8090/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
+							]
 						}
 					},
 					"response": []
@@ -275,10 +334,35 @@
 				{
 					"name": "Get Family Tree",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8090/api/family-trees/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"2"
+							]
 						}
 					},
 					"response": []
@@ -286,10 +370,34 @@
 				{
 					"name": "Search Family Members",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8090/api/family-trees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees"
+							]
 						},
 						"description": "GET with filters such as age, gender, lineage, etc."
 					},

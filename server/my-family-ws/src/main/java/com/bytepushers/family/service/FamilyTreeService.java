@@ -9,9 +9,10 @@ import java.util.Optional;
 
 public interface FamilyTreeService {
     List<FamilyMember> createFamilyTree(@Valid List<FamilyMember> familyMember);
-    /*Optional<FamilyMember> getFamilyTreeById(long id);
+    Optional<FamilyMember> getFamilyTreeById(long id);
     List<FamilyMember> getAllFamilyTrees();
-    FamilyTree updateFamilyTree(long id, @Valid FamilyTree familyTree);
-    void deleteFamilyTree(long id);*/
+    FamilyMember updateFamilyTree(long id, @jakarta.validation.Valid FamilyMember familyMember);
+
+    void deleteFamilyTree(long id);
 
 }
