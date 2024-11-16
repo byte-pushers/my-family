@@ -21,6 +21,7 @@
     </div>
 
     <!-- Relationship type dropdown box -->
+    <!-- Only shows if parent component has passed in a relationshipTypeDropdownArray -->
     <div *ngIf="relationshipTypeDropdownArray && relationshipTypeDropdownArray.length > 0" class="flex flex-col mt-6 ml-3 w-1/5 h-13">
       <select id="relationship-type-dropdown-array"
               formControlName="type"

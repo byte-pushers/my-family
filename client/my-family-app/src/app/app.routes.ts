@@ -29,14 +29,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/welcome-page/welcome-page.page').then(m => m.WelcomePagePage)
   },
   {
-    path: 'add-family-step-2',
-    loadComponent: () => import('./pages/add-family-step-2/add-family-step-2.page').then( m => m.AddFamilyStep2Page)
-  },
-  {
-    path: 'add-family-step-3',
-    loadComponent: () => import('./pages/add-family-step-3/add-family-step-3.page').then(m => m.AddFamilyStep3Page)
-  },
-  {
     path: 'family-member-form',
     loadComponent: () => import('./components/family-member-form/family-member-form.component').then( m => m.FamilyMemberFormComponent)
   },
@@ -47,5 +39,9 @@ export const routes: Routes = [
   {
     path: 'event-signup',
     loadComponent: () => import('./pages/event-signup/event-signup.page').then( m => m.EventSignupPage)
+  },
+  {
+    path: 'add-to-family',
+    loadComponent: () => import('./pages/add-to-family/add-to-family.page').then( m => m.AddToFamilyPage)
   }
 ];

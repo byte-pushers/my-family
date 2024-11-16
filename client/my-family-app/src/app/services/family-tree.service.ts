@@ -13,7 +13,7 @@ export class FamilyTreeService {
   constructor(private http: HttpClient) {}
 
   // Method to submit the family tree data
-  public submitFamilyTree(payload: FamilyTreeRequestPayload): Observable<any> {
+  public create(payload: FamilyTreeRequestPayload): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',

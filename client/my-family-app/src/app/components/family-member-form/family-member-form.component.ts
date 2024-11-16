@@ -29,17 +29,12 @@ import {
 export class FamilyMemberFormComponent implements OnInit {
   @Input({ required: true }) relationshipType: string = '';
   @Input() relationshipTypeDropdownArray: string[] = []; // For specific relation in step 2 (ex. parents -> mom, dad)
-  @Input() addFamilyMemberForm: FormGroup; // FormGroup passed in from parent to hold family members
+  @Input() addFamilyMemberForm: FormGroup = this.fb.group({}); // FormGroup passed in from parent to hold family members
 
   submitted: boolean = false;
   tempType: string = '';
 
   constructor(private fb: FormBuilder) {
-    this.addFamilyMemberForm = this.fb.group({
-      name: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
-      familyMembers: this.fb.array([])
-    });
   }
 
   ngOnInit() {
@@ -59,6 +54,12 @@ export class FamilyMemberFormComponent implements OnInit {
 
     // Adding members with relationshipDropdownArray
     if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid) {
+      // If Spouse has already been added, don't add anymore
+      if (this.relationshipType === 'Spouse' && this.familyMembers.length > 0) {
+        console.log('Cannot have multiple spouses.');
+        return;
+      }
+
       const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
       const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
 
@@ -96,6 +97,8 @@ export class FamilyMemberFormComponent implements OnInit {
 
   removeAllFamilyMembers() {
     this.familyMembers.clear();
+
+    // Resetting input boxes
     this.addFamilyMemberForm.get('name')?.setValue('');
     this.addFamilyMemberForm.get('type')?.setValue('');
   }
