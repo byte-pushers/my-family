@@ -1,6 +1,7 @@
 package com.bytepushers.family.controller;
 
-import com.bytepushers.family.api.ApiResponse;
+import com.bytepushers.family.api.APIErrorConstant;
+import com.bytepushers.family.api.ErrorResponse;
 import com.bytepushers.family.model.Event;
 import com.bytepushers.family.repo.EventRepository;
 import com.bytepushers.family.service.EventService;
@@ -48,10 +49,15 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/events?name={name}", produces = {"application/json"})
-    public ResponseEntity<?> getEventByName(@PathVariable String name) {
-        List<Event> event = eventService.getEventByName(name);
-        return new ResponseEntity<>(event, HttpStatus.OK);
+    @GetMapping(value = "/events/", produces = {"application/json"})
+    public ResponseEntity<?> getEventByName(@RequestParam(required = false) String name) {
+        if (name != null) {
+            List<Event> event = eventService.getEventByName(name);
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new ErrorResponse(APIErrorConstant.API_ERROR_SOURCE_NOT_FOUND,"Event name is required",null, null), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping(value = "/events/{id}")
