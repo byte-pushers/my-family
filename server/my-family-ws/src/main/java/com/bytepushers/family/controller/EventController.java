@@ -25,16 +25,14 @@ public class EventController {
         this.eventRepository = eventRepository;
     }
 
-    @PostMapping(value = "/create-event")
+    @PostMapping(value = "/events")
     public ResponseEntity<?> createEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
-
         Event createdEvent = eventService.createEvent(event);
-
-        ApiResponse<Event> response = new ApiResponse<>(createdEvent);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        //ApiResponse<Event> response = new ApiResponse<>(createdEvent);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/event/list", consumes = {"*/*"})
+    @GetMapping(value = "/events", consumes = {"*/*"})
     public ResponseEntity<?> getEvents() {
 
         List<Event> events = eventService.getEvents();
@@ -43,15 +41,15 @@ public class EventController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/event/id/{id}", consumes = {"*/*"})
-    public ResponseEntity<?> getEvent(@PathVariable int id) {
+    @GetMapping(value = "/events/{id}", consumes = {"*/*"})
+    public ResponseEntity<?> getEvent(@PathVariable Long id) {
 
         Event event = eventService.getEventById(id);
         ApiResponse<Event> response = new ApiResponse<>(event);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/event/name/{name}", consumes = {"*/*"})
+    @GetMapping(value = "/events?name={name}", consumes = {"*/*"})
     public ResponseEntity<?> getEventByName(@PathVariable String name) {
 
         List<Event> event = eventService.getEventByName(name);
@@ -59,15 +57,15 @@ public class EventController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/event/delete/{id}",consumes = {"*/*"})
-    public ResponseEntity<?> deleteEventById(@PathVariable int id) {
+    @DeleteMapping(value = "/events/{id}",consumes = {"*/*"})
+    public ResponseEntity<?> deleteEventById(@PathVariable Long id) {
 
        String event = eventService.deleteEventById(id);
       return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/event/update/{id}")
-    public ResponseEntity<?> updateEvent(@Valid @RequestBody Event event, @PathVariable int id, BindingResult bindingResult) throws Exception {
+    @PutMapping(value = "/events/{id}")
+    public ResponseEntity<?> updateEvent(@Valid @RequestBody Event event, @PathVariable Long id, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }

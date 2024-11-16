@@ -1,21 +1,25 @@
 package com.bytepushers.family.api;
 
+import com.bytepushers.family.model.ErrorDetail;
+
 public class ValidationErrorResponse {
-    private int code;
+    private String code;
     private String message;
     private String messageKey;
+    private ErrorDetail errorDetail;
 
-    public ValidationErrorResponse(int code, String message, String messageKey) {
+    public ValidationErrorResponse(String code, String message, String messageKey, ErrorDetail errorDetail) {
         this.code = code;
         this.message = message;
         this.messageKey = messageKey;
+        this.errorDetail = errorDetail;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -33,6 +37,13 @@ public class ValidationErrorResponse {
 
     public void setMessageKey(String messageKey) {
         this.messageKey = messageKey;
+    }
+
+    public ErrorDetail getErrorDetail() {
+        return errorDetail;
+    }
+    public void setErrorDetail(ErrorDetail errorDetail) {
+        this.errorDetail = errorDetail;
     }
 
     @Override

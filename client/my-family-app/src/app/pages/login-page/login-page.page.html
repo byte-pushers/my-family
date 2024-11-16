@@ -1,34 +1,54 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>Sign In</ion-title>
-    </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-    <!-- Centralized Login Form -->
-    <div class="login-container">
-        <h2 class="login-title">Sign In</h2>
+  <div class="login-container">
+    <h2 class="login-title">Sign In</h2>
 
-        <!-- Username Input: Text is to have it show and password is to have it hidden -->
-        <ion-item lines="none" class="login-input">
-            <ion-input [(ngModel)]="username" type="text" placeholder="Username" required #usernameInput="ngModel"></ion-input>
-        </ion-item>
-      <div *ngIf="usernameInput.invalid && usernameInput.touched" class="error">
+    <div class="input-container">
+      <ion-item lines="none" class="login-input" [class.error]="submitted && usernameInput.invalid">
+        <ion-input
+          [(ngModel)]="username"
+          type="text"
+          placeholder="Username"
+          required
+          #usernameInput="ngModel">
+        </ion-input>
+        <!-- Red "X" Icon -->
+        <span *ngIf="submitted && usernameInput.invalid"
+              class="error-x">
+                  X
+                </span>
+      </ion-item>
+      <div *ngIf="submitted && usernameInput.invalid" class="error">
         Username is required.
       </div>
+    </div>
 
-        <!-- Password Input -->
-        <ion-item lines="none" class="login-input">
-            <ion-input [(ngModel)]="password" type="password" placeholder="Password" required minlength="8" #passwordInput="ngModel"></ion-input>
-        </ion-item>
-      <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error">
+    <div class="input-container">
+      <ion-item lines="none" class="login-input" [class.error]="submitted && passwordInput.invalid">
+        <ion-input
+          [(ngModel)]="password"
+          [type]="passwordType"
+          placeholder="Password"
+          required
+          minlength="8"
+          #passwordInput="ngModel">
+        </ion-input>
+        <!-- Red "X" Icon -->
+        <span *ngIf="submitted && passwordInput.invalid"
+              class="error-x">
+                  X
+                </span>
+      </ion-item>
+      <div *ngIf="submitted && passwordInput.invalid" class="error">
         Password is required and must be at least 8 characters.
       </div>
-
-        <!-- Sign In Button -->
-        <ion-button expand="block" class="login-button" [disabled]="usernameInput.invalid || passwordInput.invalid" (click)="onSignIn()">
-            Sign In
-        </ion-button>
-
     </div>
+
+    <ion-button expand="block" class="login-button" [disabled]="usernameInput.invalid || passwordInput.invalid" (click)="onSignIn()">
+      Sign In
+    </ion-button>
+
+    <ion-button expand="block" class="back-button" (click)="goBack()">
+      Back to Welcome Page
+    </ion-button>
+  </div>
 </ion-content>

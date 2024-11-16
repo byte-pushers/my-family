@@ -1,5 +1,8 @@
 package com.bytepushers.family.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,13 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Account {
 
     @Id
     @GeneratedValue
-    private Integer Id;
+    private Long Id;
 
     @Column(nullable = false)
     @NotBlank(message="First Name is Required")
@@ -24,6 +28,10 @@ public class Account {
     @Column(nullable = false)
     @NotBlank(message="Last Name is Required")
     private String lastName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "User Name is Required")
+    private String userName;
 
     private String nickName;
 
@@ -55,11 +63,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(Integer Id, String firstName, String middleName, String lastName, String nickName, LocalDate birthday, int age, String password, String email, String address) {
+    public Account(Long Id, String firstName, String middleName, String lastName, String userName, String nickName, LocalDate birthday, int age, String password, String email, String address) {
         this.Id = Id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
+        this.userName = userName;
         this.nickName = nickName;
         this.birthday = birthday;
         this.age = age;
@@ -68,12 +77,10 @@ public class Account {
         this.address = address;
     }
 
-    public void setId(Integer Id) {
-        this.Id = Id;
-    }
-    public Integer getId() {
+    public Long getId() {
         return Id;
     }
+
     public String getFirstName() {
         return firstName;
     }
@@ -92,6 +99,14 @@ public class Account {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void setLastName(String lastName) {
@@ -159,5 +174,18 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return age == account.age && Objects.equals(Id, account.Id) && Objects.equals(firstName, account.firstName) && Objects.equals(middleName, account.middleName) && Objects.equals(lastName, account.lastName) && Objects.equals(userName, account.userName) && Objects.equals(nickName, account.nickName) && Objects.equals(birthday, account.birthday) && Objects.equals(password, account.password) && Objects.equals(email, account.email) && Objects.equals(address, account.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Id, firstName, middleName, lastName, userName, nickName, birthday, age, password, email, address);
     }
 }
