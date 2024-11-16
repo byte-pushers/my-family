@@ -56,7 +56,26 @@ TODO: Making the Family Tree Canvas area Mobile Responsive
     </ion-toolbar>
   </ion-header>
   <input type="text" placeholder="Search family member" (input)="onSearch($event)" />
-  <app-family-tree-visualization></app-family-tree-visualization>
-</ion-content>
-<!--<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>-->
+  <!-- Tree Container with Border -->
+  <div class="w-full max-w-[700px] min-w-[300px] mx-auto p-5 aspect-square">
+    <div class="w-full h-full min-h-[450px] bg-gray-50 border-2 border-gray-300 rounded-lg shadow-sm relative flex justify-center overflow-hidden">
+      <ng-container *ngIf="familyTreeData; else noData">
+        <app-family-tree-visualization
+          [familyTreeData]="familyTreeData"
+          class="w-full h-full">
+        </app-family-tree-visualization>
+      </ng-container>
 
+      <ng-template #noData>
+        <div class="flex flex-col items-center justify-center text-center p-8">
+          <h3 class="text-xl font-semibold mb-2">No Family Tree Available</h3>
+          <p class="text-gray-600 mb-4">Start building your family tree by adding family members.</p>
+          <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+            Create Family Tree
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>
+<app-footer-navigation></app-footer-navigation>

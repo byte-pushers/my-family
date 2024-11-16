@@ -1,8 +1,11 @@
 package com.bytepushers.family.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,14 +17,19 @@ import java.util.Objects;
 public class Person extends BaseEntity {
 
     @NotEmpty(message = "First name is required")
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     @NotEmpty(message = "Last name is required")
     private String lastName;
 
-    @NotEmpty(message = "Birth date is required")
+    @Column(name = "birth_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private LocalDate birthDate;
 
+    @Column(name = "gender")
     @NotEmpty(message = "Gender is required")
     private String gender;
 

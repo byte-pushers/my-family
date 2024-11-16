@@ -34,7 +34,7 @@ public class EventService {
 
     //get event by id
     public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event not found"));
+        return eventRepository.findById(id).orElse(null);
     }
 
     //get Event by event name

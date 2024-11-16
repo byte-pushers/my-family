@@ -1,4 +1,4 @@
-import { BaseDomainModel } from './base-domain-model';  // Import BaseDomainModel
+import { BaseDomainModel } from '../base-domain-model';  // Import BaseDomainModel
 import { Person } from './person';                      // Import Person
 import { RelationshipType } from './relationship-type'; // Import RelationshipType
 

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddToFamilyPage } from './add-to-family.page';
+import { ChatPage } from './chat.page';
 
-describe('AddToFamilyPage', () => {
-  let component: AddToFamilyPage;
-  let fixture: ComponentFixture<AddToFamilyPage>;
+describe('ChatPage', () => {
+  let component: ChatPage;
+  let fixture: ComponentFixture<ChatPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddToFamilyPage);
+    fixture = TestBed.createComponent(ChatPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "0a74b188-dbc3-41b0-866c-981292d7c5be",
+		"name": "MY-FAMILY-APP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35578910"
+	},
+	"item": [
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "create account",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"john\",\n    \"middleName\":\"middleName\",\n    \"lastName\":\"Doe\",\n    \"userName\":\"John01\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2001-10-11\",\n    \"age\":14,\n    \"password\":\"12s\",\n    \"email\":\"zayan123@gmail.com\",\n    \"address\":\"12334 3432432\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all accounts",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by email",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?email=zayan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "zayan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by name",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?name=john",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "john"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"Zayan\",\n    \"middleName\":\"N/A\",\n    \"lastName\":\"malik\",\n    \"userName\":\"john01\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2001-10-11\",\n    \"age\":20,\n    \"password\":\"newpassword12345\",\n    \"email\":\"John@gmail.com\",\n    \"address\":\"12334 3432432\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/update/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "add event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"friends\",\n  \"eventName\": \"Tech Innovations 2024\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n        \"agenda\":\"tech meeting 2026\",\n        \"startTime\":\"02:00\",\n        \"endTime\":\"05:00\",\n        \"date\": \"2024-05-11\"\n    },\n    {\n        \"agenda\":\"Dinner Time\",\n        \"startTime\":\"07:00\",\n        \"endTime\":\"09:00\",\n        \"date\": \"2024-05-11\"\n    }\n    \n  ],\n  \"merchandise\":[\n    {\n        \"merchandiseType\":\"WEARABLE\",\n        \"wearableType\":\"T_SHIRT\",\n        \"productName\":\"v-neck tshirt\",\n        \"productPrice\":25.99,\n        \"productDescription\":\"it is quality v-neck tshirt for summer\",\n        \"productImageUrl\":\"url\",\n        \"SKU\":\"123jwedwer3234238wd\",\n        \"size\":\"M\",\n        \"color\":\"black\"\n\n    },\n    {\n        \"merchandiseType\":\"BOOK\",\n        \"productName\":\"Rich dad poor dad\",\n        \"productPrice\":30.99,\n        \"productDescription\":\"Rich Dad Poor Dad is a 1997 book written by Robert T. Kiyosaki and Sharon Lechter.\",\n        \"productImageUrl\":\"url\",\n        \"author\":\"Robert T\",\n        \"ISBN\":\"0-446-67745-0\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by name",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events?name=Random",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Random"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete event by id ",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"family reunion\",\n  \"eventName\": \"Tech Innovations 2024\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n        \"agenda\":\"Breakfast time\",\n        \"startTime\":\"07:00\",\n        \"endTime\":\"08:00\",\n        \"date\": \"2024-05-11\"\n    },\n    {\n        \"agenda\":\"go for fishing\",\n        \"startTime\":\"09:00\",\n        \"endTime\":\"05:00\",\n        \"date\": \"2024-05-11\"\n    }\n    \n  ],\n  \"merchandise\":[\n    {\n        \"merchandiseType\":\"WEARABLE\",\n        \"wearableType\":\"T_SHIRT\",\n        \"productName\":\"v-neck tshirt, which fishing print\",\n        \"productPrice\":25.99,\n        \"productDescription\":\"it is quality v-neck tshirt for summer\",\n        \"productImageUrl\":\"url\",\n        \"SKU\":\"123jwedwer3234238wd\",\n        \"size\":\"S, M, Xl\",\n        \"color\":\"black\"\n\n    },\n    {\n        \"merchandiseType\":\"BOOK\",\n        \"productName\":\"Rich dad poor dad\",\n        \"productPrice\":31.99,\n        \"productDescription\":\"Rich Dad Poor Dad is a 1997 book written by Robert T. Kiyosaki and Sharon Lechter.\",\n        \"productImageUrl\":\"url\",\n        \"author\":\"Robert T\",\n        \"ISBN\":\"0-446-67745-0\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/events/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
