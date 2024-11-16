@@ -34,12 +34,17 @@ public class EventService {
 
     //get event by id
     public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElse(null);
+        return eventRepository.findById(id).orElseThrow(()-> new NotFoundException("Event not found with id " + id));
     }
 
     //get Event by event name
-    public List<Event> getEventByName(@Valid String eventName) {
-        return eventRepository.findByEventName(eventName);
+    public List<Event> getEventByName(String eventName) {
+        List<Event>Events =  eventRepository.findByEventName(eventName);
+        System.out.println("bug here");
+        if(Events.isEmpty()){
+            throw new NotFoundException("Event not found with name " + eventName);
+        }
+        return Events;
     }
 
     //delete event by id
