@@ -41,6 +41,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/event-signup/event-signup.page').then( m => m.EventSignupPage)
   },
   {
+    path: 'chat',
+    loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
+  },
+  {
     path: 'add-to-family',
     loadComponent: () => import('./pages/add-to-family/add-to-family.page').then( m => m.AddToFamilyPage)
   }
