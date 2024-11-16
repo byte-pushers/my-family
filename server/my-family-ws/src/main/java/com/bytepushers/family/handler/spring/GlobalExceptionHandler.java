@@ -4,6 +4,7 @@ import com.bytepushers.family.exception.*;
 import com.bytepushers.family.model.ErrorDetail;
 import com.bytepushers.family.api.APIErrorConstant;
 import com.bytepushers.family.api.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -27,6 +28,16 @@ public class GlobalExceptionHandler {
 
     public GlobalExceptionHandler(HttpMessageConverters messageConverters) {
         this.messageConverters = messageConverters;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handlerIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                APIErrorConstant.API_ERROR_ILLEGAL_ARGUMENT,
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthorizationException.class)
