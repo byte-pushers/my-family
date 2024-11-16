@@ -1,39 +1,43 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "family_members")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id" // Unique identifier for managing references
+)
 public class FamilyMember extends BaseEntity {
 
+    @Column(name = "relationship")
     @NotEmpty(message = "Relationship is required")
     private String relationship;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)  // Add cascade
     @JoinColumn(name = "person_id")
     private Person person;
 
     // Parent reference for the bidirectional relationship
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_member_id")
-    @JsonBackReference
     private FamilyMember parent;
 
     // Recursive reference for child members
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
-    @JsonManagedReference
-    private List<FamilyMember> familyMembers;
+    private List<FamilyMember> familyMembers = new ArrayList<>();
 
-    // Many-to-one relationship with FamilyTree (if needed)
-    @ManyToOne
+    // Link to FamilyTree with @JsonIgnore to avoid recursion
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_tree_id")
+    @JsonIgnore
     private FamilyTree familyTree;
 
     public FamilyMember(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {

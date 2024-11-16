@@ -1,11 +1,11 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { FamilyMember } from "../../models/family-member.model";
-import { RelationshipType } from "../../models/relationship-type";
-import { Person } from "../../models/person";
+import { FamilyMember } from "../../models/family-tree/family-member.model";
+import { RelationshipType } from "../../models/family-tree/relationship-type";
+import { Person } from "../../models/family-tree/person";
 import { today } from "ionicons/icons";
-import { FamilyTreeRequestPayload } from "../../models/family-tree-request.payload";
+import { FamilyTreeRequestPayload } from "../../models/family-tree/family-tree-request.payload";
 import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { IonicModule } from "@ionic/angular";

@@ -20,13 +20,13 @@ export class ForceSimulation {
       .force('link', d3.forceLink(links)
         .id(d => (d as d3.HierarchyNode<FamilyNode>).data.name)
         .distance(d => {
-          if (d.source.depth === 0) return 250;
-          if (d.source.depth === 1) return 150;
+          if (d.source.depth === 0) return 180;
+          if (d.source.depth === 1) return 110;
           return 100;
         })
         .strength(0.7) // Reduced for smoother movement
       )
-      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('center', d3.forceCenter(0,0).strength(0.1))
       .force('charge', d3.forceManyBody().strength(-30)) // Reduced strength
       .force('collide', d3.forceCollide().radius(40))
       .velocityDecay(0.4) // Added velocity decay

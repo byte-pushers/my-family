@@ -1,5 +1,5 @@
 import { Role } from './role';  // Import Role class
-import { FamilyMember } from './family-member.model';  // Import FamilyMember class
+import { FamilyMember } from './family-tree/family-member.model';  // Import FamilyMember class
 
 export class User {
   #username: string;

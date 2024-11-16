@@ -4,12 +4,14 @@ import com.bytepushers.family.model.BaseEntity;
 import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.model.Person;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 @Service
-public class FamilyTreeMockService implements FamilyTreeService {
+@Profile("test")// Only active in test profile
+public abstract class FamilyTreeMockService implements FamilyTreeService {
 
     private final AtomicInteger idGenerator = new AtomicInteger(1);
 
