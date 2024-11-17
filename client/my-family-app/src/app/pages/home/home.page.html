@@ -1,24 +1,31 @@
-<div class="max-w-4xl mx-auto px-4 mb-8 mt-8">
-  <div class="max-w-3xl mx-auto">
-    <h1 class="text-5xl font-bold tracking-tight text-slate-900 text-center">
-      My Family Reunion
-    </h1>
-    <p class="text-lg text-slate-600 mt-2 text-center">Stay connected with your loved ones</p>
+<ion-content [fullscreen]="true">
+  <div class="flex flex-col min-h-full pb-[3.5rem] sm:pb-16">
+    <!-- Header Section -->
+    <div class="max-w-4xl mx-auto px-4 py-8 w-full">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-5xl font-bold tracking-tight text-slate-900 text-center">
+          My Family Reunion
+        </h1>
+        <p class="text-lg text-slate-600 mt-2 text-center">Stay connected with your loved ones</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1">
+      <!-- TODO: Search Bar Component -->
+
+      <!-- Featured Event Card -->
+      <app-featured-event [event]="featuredEvent"></app-featured-event>
+
+      <!-- Announcements Section -->
+      <app-announcements
+        [announcements]="upcomingAnnouncements"
+        class="block mt-4"
+      ></app-announcements>
+    </div>
   </div>
-</div>
-<ion-content>
-  <!-- TODO: Search Bar Component -->
-
-  <!-- Featured Event Card -->
-  <app-featured-event>
-    [event]="featuredEvent"
-  </app-featured-event>
-
-  <!-- Announcements Section -->
-  <app-announcements
-    [announcements]="upcomingAnnouncements"
-    class="block mt-4"
-  ></app-announcements>
-
 </ion-content>
-<ion-footer><app-footer-navigation></app-footer-navigation></ion-footer>
+
+<ion-footer>
+  <app-footer-navigation></app-footer-navigation>
+</ion-footer>

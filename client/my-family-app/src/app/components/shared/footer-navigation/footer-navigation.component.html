@@ -1,39 +1,84 @@
-<!-- navigation-footer.component.html -->
-<ion-footer class="bg-light">
-  <ion-toolbar>
+<ion-footer class="w-full shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
+  <ion-toolbar class="!p-1">
     <ion-tabs>
-      <ion-tab-bar slot="bottom" class="bg-light h-16">
-        <ion-tab-button tab="home" [routerLink]="['/home']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
-                        class="text-medium hover:opacity-80 transition-opacity px-1">
-          <img ngSrc="assets/icon/home.png" alt="Home"
-               height="512" width="512"
-               class="w-5 h-5 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
-          <ion-label class="text-[12px] leading-tight">Home</ion-label>
-        </ion-tab-button>
+      <ion-tab-bar slot="bottom" class="bg-white h-14 sm:h-16 border-t border-gray-100/20">
+        <div class="max-w-2xl mx-auto w-full grid grid-cols-4 h-full px-2 sm:px-12">
+          <!-- Home Tab -->
+          <ion-tab-button
+            tab="home"
+            [routerLink]="['/home']"
+            routerLinkActive="selected"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex flex-col items-center justify-center gap-0.5 py-1.5 active:bg-gray-50 touch-manipulation select-none sm:gap-1.5 sm:py-2 sm:hover:bg-gray-50/70"
+          >
+            <img
+              ngSrc="assets/icon/home.png"
+              alt="Home"
+              height="24"
+              width="24"
+              priority
+              class="w-5 h-5 transition-all duration-200 ease-in-out opacity-60 grayscale [.selected_&]:opacity-100 [.selected_&]:grayscale-0"
+            />
+            <ion-label class="text-[12px] sm:text-xs font-medium min-h-[1rem] flex items-center">Home</ion-label>
+          </ion-tab-button>
 
-        <ion-tab-button tab="family" [routerLink]="['/family-tree']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
-                        class="text-medium hover:opacity-80 transition-opacity px-1">
-          <img ngSrc="assets/icon/family-icon.png" alt="Family"
-               height="512" width="512"
-               class="w-5 h-5 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
-          <ion-label class="text-[12px] leading-tight">Family</ion-label>
-        </ion-tab-button>
+          <!-- Family Tab -->
+          <ion-tab-button
+            tab="family"
+            [routerLink]="['/family-tree']"
+            routerLinkActive="selected"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex flex-col items-center justify-center gap-0.5 py-1.5 active:bg-gray-50 touch-manipulation select-none sm:gap-1.5 sm:py-2 sm:hover:bg-gray-50/70"
+          >
+            <img
+              ngSrc="assets/icon/family-icon.png"
+              alt="Family"
+              height="24"
+              width="24"
+              priority
+              class="w-5 h-5 transition-all duration-200 ease-in-out opacity-60 grayscale [.selected_&]:opacity-100 [.selected_&]:grayscale-0"
+            />
+            <ion-label class="text-[12px] sm:text-xs font-medium min-h-[1rem] flex items-center">Family</ion-label>
+          </ion-tab-button>
 
-        <ion-tab-button tab="profile" [routerLink]="['/profile']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
-                        class="text-medium hover:opacity-80 transition-opacity px-1">
-          <img ngSrc="assets/icon/profile.png" alt="Profile"
-               height="512" width="512"
-               class="w-5 h-5 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
-          <ion-label class="text-[12px] leading-tight">Profile</ion-label>
-        </ion-tab-button>
+          <!-- Profile Tab -->
+          <ion-tab-button
+            tab="profile"
+            [routerLink]="['/profile']"
+            routerLinkActive="selected"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex flex-col items-center justify-center gap-0.5 py-1.5 active:bg-gray-50 touch-manipulation select-none sm:gap-1.5 sm:py-2 sm:hover:bg-gray-50/70"
+          >
+            <img
+              ngSrc="assets/icon/profile.png"
+              alt="Profile"
+              height="24"
+              width="24"
+              priority
+              class="w-5 h-5 transition-all duration-200 ease-in-out opacity-60 grayscale [.selected_&]:opacity-100 [.selected_&]:grayscale-0"
+            />
+            <ion-label class="text-[12px] sm:text-xs font-medium min-h-[1rem] flex items-center">Profile</ion-label>
+          </ion-tab-button>
 
-        <ion-tab-button tab="chat" [routerLink]="['/chat']" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"
-                        class="text-medium hover:opacity-80 transition-opacity px-1">
-          <img ngSrc="assets/icon/chat.png" alt="Chat"
-               height="512" width="512"
-               class="w-5 h-5 opacity-60 filter grayscale selected:opacity-100 selected:filter-none">
-          <ion-label class="text-[12px] leading-tight">Chat</ion-label>
-        </ion-tab-button>
+          <!-- Chat Tab -->
+          <ion-tab-button
+            tab="chat"
+            [routerLink]="['/chat']"
+            routerLinkActive="selected"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex flex-col items-center justify-center gap-0.5 py-1.5 active:bg-gray-50 touch-manipulation select-none sm:gap-1.5 sm:py-2 sm:hover:bg-gray-50/70"
+          >
+            <img
+              ngSrc="assets/icon/chat.png"
+              alt="Chat"
+              height="24"
+              width="24"
+              priority
+              class="w-5 h-5 transition-all duration-200 ease-in-out opacity-60 grayscale [.selected_&]:opacity-100 [.selected_&]:grayscale-0"
+            />
+            <ion-label class="text-[12px] sm:text-xs font-medium min-h-[1rem] flex items-center">Chat</ion-label>
+          </ion-tab-button>
+        </div>
       </ion-tab-bar>
     </ion-tabs>
   </ion-toolbar>
