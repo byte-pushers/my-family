@@ -13,5 +13,6 @@ export enum RelationshipType {
   COUSIN = 'Cousin',
   UNCLE = 'Uncle',
   AUNT = 'Aunt',
-  GRANDPARENT = 'Grandparent'
+  GRANDPARENT = 'Grandparent',
+  OTHER = 'Other',
 }

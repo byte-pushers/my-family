@@ -1,7 +1,7 @@
 // family-tree-visualization.component.ts
 import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
-// import * as familyData from './mock-data.json';
+import * as familyData from './mock-data.json';
 import {FamilyNode} from "../../interfaces/family-node";
 import {ForceSimulation} from './force-simulation';
 import {
@@ -17,10 +17,14 @@ import {
   styleUrls: ['./family-tree-visualization.component.scss']
 })
 export class FamilyTreeVisualizationComponent implements OnChanges {
+  @Input() selectedMemberId?: number;
   @Input() familyTreeData!: FamilyTreeResponse;
   private resizeObserver: ResizeObserver;
   private svg: any;
   private zoomableGroup: any;
+  private zoom: any;
+  private width: number = 0;
+  private height: number = 0;
 
   constructor(
     private el: ElementRef,
@@ -115,16 +119,16 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     console.log('FamilyTreeVisualization: Found container element');
     element.innerHTML = '';
     const bbox = element.getBoundingClientRect();
-    const width = bbox.width;
-    const height = bbox.height;
-    const radius = Math.min(width, height) / 2 - Math.min(width, height) * 0.2;
+    this.width = bbox.width;
+    this.height = bbox.height;
+    const radius = Math.min(this.width, this.height) / 2 - Math.min(this.width, this.height) * 0.2;
 
     // Create SVG with centered group
     const svg = d3.select(element)
       .append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`)
       .style('font', '10px sans-serif');
 
     // Create a container for zoom, centered in the SVG
@@ -200,8 +204,8 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     const simulation = this.forceSimulation.setupForceSimulation(
       nodes,
       links,
-      width / 2,  // Center X
-      height / 2, // Center Y
+      this.width / 2,  // Center X
+      this.height / 2, // Center Y
       node,
       link
     );
@@ -211,16 +215,124 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     node.call(this.forceSimulation.setupDragBehavior(simulation) as any);
 
     // Setup zoom behavior
-    const zoom = d3.zoom()
+    this.zoom = d3.zoom()
       .scaleExtent([0.5, 3])
       .on('zoom', (event) => {
         zoomableGroup.attr('transform', `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`);
       });
 
     // Add zoom behavior to SVG
-    svg.call(zoom as any);
+    svg.call(this.zoom as any);
 
     // Double tap to reset zoom
     svg.on('dblclick.zoom', null);
+
+    // Store references
+    this.svg = svg;
+    this.zoomableGroup = zoomableGroup;
+  }
+  highlightNodes(query: string): void {
+    if (!query) {
+      // Reset all nodes if query is empty
+      this.resetNodeHighlighting();
+      return;
+    }
+
+    const nodes = d3.selectAll('.node'); // Adjust selector if needed
+
+    nodes.each(function(d: any) {
+      const nodeElement = d3.select(this);
+      const name = d.data.name.toLowerCase();
+
+      if (name.includes(query.toLowerCase())) {
+        // Highlight matching nodes
+        nodeElement.select('circle')
+          .attr('stroke', 'orange')
+          .attr('stroke-width', 4);
+
+        nodeElement.select('text')
+          .style('font-weight', 'bold');
+      } else {
+        // Reset non-matching nodes
+        nodeElement.select('circle')
+          .attr('stroke', '#b3a2c8')
+          .attr('stroke-width', 2);
+
+        nodeElement.select('text')
+          .style('font-weight', 'normal');
+      }
+    });
+  }
+
+  private resetNodeHighlighting(): void {
+    const nodes = d3.selectAll('.node');
+
+    nodes.each(function() {
+      const nodeElement = d3.select(this);
+      nodeElement.select('circle')
+        .attr('stroke', '#b3a2c8')
+        .attr('stroke-width', 2);
+
+      nodeElement.select('text')
+        .style('font-weight', 'normal');
+    });
+  }
+  focusNode(memberId: number): void {
+    if (!this.svg || !this.zoomableGroup) {
+      console.error('Tree visualization not initialized');
+      return;
+    }
+
+    const nodes = d3.selectAll('.node');
+    let targetNode: any;
+
+    nodes.each(function(d: any) {
+      if (d.data.id === memberId) {
+        targetNode = d;
+      }
+    });
+
+    if (targetNode && this.zoom) {
+      const svgNode = this.svg.node();
+      if (!svgNode) return;
+
+      const transform = d3.zoomTransform(svgNode);
+
+      // Calculate the position using stored width/height
+      const x = Math.cos(targetNode.x - Math.PI / 2) * targetNode.y;
+      const y = Math.sin(targetNode.x - Math.PI / 2) * targetNode.y;
+
+      // Calculate the transform to center the node
+      const scale = 1.5; // Zoom level when focusing
+      const centerX = -x * scale + this.width / 2;
+      const centerY = -y * scale + this.height / 2;
+
+      this.svg.transition()
+        .duration(750)
+        .call(
+          this.zoom.transform,
+          d3.zoomIdentity
+            .translate(centerX, centerY)
+            .scale(scale)
+        );
+
+      // Also highlight the focused node
+      nodes.each(function() {
+        const nodeElement = d3.select(this);
+        // @ts-ignore
+        const isTarget = this.__data__ === targetNode;
+
+        nodeElement.select('circle')
+          .transition()
+          .duration(750)
+          .attr('stroke', isTarget ? 'orange' : '#b3a2c8')
+          .attr('stroke-width', isTarget ? 4 : 2);
+
+        nodeElement.select('text')
+          .transition()
+          .duration(750)
+          .style('font-weight', isTarget ? 'bold' : 'normal');
+      });
+    }
   }
 }
