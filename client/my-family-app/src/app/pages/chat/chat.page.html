@@ -1,108 +1,135 @@
-<!--
-<ion-content>
-  &lt;!&ndash; Chat List View &ndash;&gt;
-  <ng-container *ngIf="!selectedThread">
-    <div class="p-4">
-      <h1 class="text-2xl font-bold mb-4">Messages</h1>
-
-      &lt;!&ndash; Search &ndash;&gt;
-      <ion-searchbar
-        [(ngModel)]="searchTerm"
-        (ionInput)="handleSearch($event)"
-        placeholder="Search"
-        class="mb-4">
-      </ion-searchbar>
-
-      &lt;!&ndash; Chat Threads List &ndash;&gt;
-&lt;!&ndash;      <ion-list>
-        <ion-item *ngFor="let thread of chatThreads"
-                  (click)="selectThread(thread)"
-                  class="mb-2 rounded-lg">
-          <ion-avatar slot="start">
-            <img [src]="thread.participant.avatarUrl" [alt]="thread.participant.name">
-          </ion-avatar>
-
-          <ion-label>
-            <h2 class="font-medium">{{thread.participant.name}}</h2>
-            <p class="text-gray-500">{{thread.lastMessage?.content}}</p>
-          </ion-label>
-
-          <ion-note slot="end" class="text-sm">
-            {{thread.lastMessage?.timestamp | date:'shortTime'}}
-          </ion-note>
-        </ion-item>
-      </ion-list>&ndash;&gt;
-    </div>
-  </ng-container>
-
-  &lt;!&ndash; Message Thread View &ndash;&gt;
-  <ng-container *ngIf="selectedThread">
-&lt;!&ndash;    <app-message-thread
-      [thread]="selectedThread"
-      (back)="backToList()">
-    </app-message-thread>&ndash;&gt;
-  </ng-container>
-<app-footer-navigation></app-footer-navigation>
-</ion-content>
--->
-
 <!-- chat.page.html -->
-<ion-header class="ion-no-border">
-  <ion-toolbar>
+<ng-container *ngIf="!selectedThread">
+  <!-- Chat List View -->
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-2xl font-bold py-4">Messages</h1>
+        <ion-searchbar placeholder="Search messages"
+                       [(ngModel)]="searchTerm"
+                       (ionChange)="handleSearch($event)">
+        </ion-searchbar>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-bold py-4">Messages</h1>
-      <ion-searchbar placeholder="Search messages"></ion-searchbar>
+      <!-- No results message -->
+      <div *ngIf="searchTerm && filteredThreads.length === 0"
+           class="text-center py-8 text-gray-500">
+        No messages found for "{{searchTerm}}"
+      </div>
+
+      <!-- Search results -->
+      <ion-list class="bg-transparent">
+        <ion-item *ngFor="let thread of filteredThreads"
+                  class="mb-4 rounded-lg shadow-sm cursor-pointer
+                         transition-all duration-200
+                         hover:bg-gray-50 hover:shadow-md
+                         active:bg-gray-100"
+                  (click)="selectThread(thread)">
+          <ion-avatar slot="start">
+            <img [alt]="thread.name + ' avatar'" [src]="thread.avatar" />
+          </ion-avatar>
+          <ion-label>
+            <div class="flex justify-between items-center">
+              <h2 class="font-semibold text-gray-900"
+                  [innerHTML]="highlightText(thread.name)">
+              </h2>
+              <p class="text-sm text-gray-500">{{thread.lastMessageTime}}</p>
+            </div>
+            <p class="text-gray-500 text-sm"
+               [innerHTML]="highlightText(thread.lastMessage)">
+            </p>
+
+            <!-- Show matching messages count if searching -->
+            <div *ngIf="searchTerm && hasMatchingMessages(thread)"
+                 class="mt-1 text-xs text-blue-500">
+              {{ getMatchingMessagesCount(thread) }} matching messages
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </div>
-  </ion-toolbar>
-</ion-header>
+  </ion-content>
+</ng-container>
 
-<ion-content>
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Chat List -->
-    <ion-list class="bg-transparent">
-      <!-- Mom Chat -->
-      <ion-item class="mb-4 rounded-lg shadow-sm">
-        <ion-avatar slot="start">
-          <img alt="mom avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
-        <ion-label>
-          <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-gray-900">Mom</h2>
-            <p class="text-sm text-gray-500">10:30 AM</p>
-          </div>
-          <p class="text-gray-500 text-sm">I am super excited about the get together this weekend.</p>
-        </ion-label>
-      </ion-item>
+<!-- Message Thread View -->
+<ng-container *ngIf="selectedThread">
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="flex items-center">
+          <button (click)="backToList()"
+                  class="p-2 -ml-2 text-gray-600 rounded-full
+               hover:bg-gray-100 active:bg-gray-200
+               transition-colors duration-200 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-      <!-- Dad Chat -->
-      <ion-item class="mb-4 rounded-lg shadow-sm">
-        <ion-avatar slot="start">
-          <img alt="dad avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
-        <ion-label>
-          <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-gray-900">Dad</h2>
-            <p class="text-sm text-gray-500">9:45 AM</p>
+          <div class="flex items-center ml-2">
+            <ion-avatar class="w-8 h-8">
+              <img [src]="selectedThread.avatar" [alt]="selectedThread.name">
+            </ion-avatar>
+            <span class="ml-2 font-semibold text-gray-900">{{selectedThread.name}}</span>
           </div>
-          <p class="text-gray-500 text-sm">When are you coming home?</p>
-        </ion-label>
-      </ion-item>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
 
-      <!-- Grandmother Chat -->
-      <ion-item class="mb-4 rounded-lg shadow-sm">
-        <ion-avatar slot="start">
-          <img alt="grandmother avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
-        <ion-label>
-          <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-gray-900">Grandmother</h2>
-            <p class="text-sm text-gray-500">Yesterday</p>
+  <ion-content class="ion-padding">
+    <div class="max-w-3xl mx-auto">
+      <!-- Messages -->
+      <div class="space-y-4 mb-16">
+        <div *ngFor="let message of selectedThread.messages"
+             [class]="message.sender === 'user' ? 'flex justify-end' : 'flex justify-start'">
+          <div [class]="message.sender === 'user' ?
+                       'bg-blue-500 text-white rounded-lg px-4 py-2 max-w-[80%]' :
+                       'bg-gray-100 text-gray-900 rounded-lg px-4 py-2 max-w-[80%]'">
+            <p>{{message.content}}</p>
+            <p class="text-xs mt-1 opacity-70">
+              {{message.timestamp | date:'shortTime'}}
+            </p>
           </div>
-          <p class="text-gray-500 text-sm">Did you receive the family recipe I sent?</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+
+  <!-- Fixed Message Input at Bottom -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t z-10" style="bottom: 56px;">
+    <div class="max-w-3xl mx-auto px-4 py-2">
+      <div class="flex items-center space-x-2">
+        <!-- Replace the input with a textarea -->
+        <textarea
+          [(ngModel)]="newMessage"
+          placeholder="Type a message..."
+          rows="1"
+          (input)="autoGrow($event)"
+          (keyup.enter)="sendMessage()"
+          class="flex-1 bg-gray-100 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500
+         text-gray-900 placeholder-gray-500 resize-none overflow-hidden min-h-[40px] max-h-[120px] !important"
+          style="color: #1f2937 !important; background-color: #f3f4f6 !important;"
+        ></textarea>
+
+        <button (click)="sendMessage()"
+                [disabled]="!newMessage?.trim()"
+                class="p-2 text-blue-500 disabled:text-gray-400 rounded-full
+               hover:bg-blue-50 active:bg-blue-100
+               transition-colors duration-200 focus:outline-none
+               disabled:hover:bg-transparent">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
-</ion-content>
+</ng-container>
 
 <app-footer-navigation></app-footer-navigation>
