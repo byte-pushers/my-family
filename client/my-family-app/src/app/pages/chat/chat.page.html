@@ -117,7 +117,7 @@
         ></textarea>
 
         <button (click)="sendMessage()"
-                [disabled]="!newMessage?.trim()"
+                [disabled]="!newMessage.trim()"
                 class="p-2 text-blue-500 disabled:text-gray-400 rounded-full
                hover:bg-blue-50 active:bg-blue-100
                transition-colors duration-200 focus:outline-none
