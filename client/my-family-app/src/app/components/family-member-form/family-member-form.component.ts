@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { IonContent, } from "@ionic/angular/standalone";
 import { NgForOf, NgIf } from '@angular/common';
-//import { FamilyMember, Person } from "./../../models/family-member.model"
+import { InputBoxComponent } from "../input-box/input-box.component";
+
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   Validators
 } from "@angular/forms";
@@ -22,7 +22,8 @@ import {
     FormsModule,
     NgIf,
     NgForOf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputBoxComponent
   ],
   standalone: true
 })
@@ -30,6 +31,8 @@ export class FamilyMemberFormComponent implements OnInit {
   @Input({ required: true }) relationshipType: string = '';
   @Input() relationshipTypeDropdownArray: string[] = []; // For specific relation in step 2 (ex. parents -> mom, dad)
   @Input() addFamilyMemberForm: FormGroup = this.fb.group({}); // FormGroup passed in from parent to hold family members
+
+  @ViewChild(InputBoxComponent) inputBox!: InputBoxComponent;
 
   submitted: boolean = false;
   tempType: string = '';
@@ -49,45 +52,44 @@ export class FamilyMemberFormComponent implements OnInit {
     return this.addFamilyMemberForm.controls['familyMembers'] as FormArray;
   }
 
-  addFamilyMember() {
+  addFamilyMember(newName: string) {
     this.submitted = true;
 
-    // Adding members with relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid) {
-      // If Spouse has already been added, don't add anymore
-      if (this.relationshipType === 'Spouse' && this.familyMembers.length > 0) {
-        console.log('Cannot have multiple spouses.');
-        return;
+    if (newName) {
+      // Adding family members with relationship type array (Parents, Siblings, etc.)
+      if (this.addFamilyMemberForm.controls['type']?.valid) {
+        // If Spouse has already been added, don't add anymore
+        if (this.relationshipType === 'Spouse' && this.familyMembers.length > 0) {
+          console.log('Cannot have multiple spouses.');
+          return;
+        }
+
+        const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+
+        const member = this.fb.group({
+          name: new FormControl(newName, Validators.required),
+          type: new FormControl(familyMemberType, Validators.required)
+        });
+
+        this.familyMembers.push(member);
+
+        this.addFamilyMemberForm.controls['type'].reset();
+        this.submitted = false;
+        this.inputBox?.resetName();
       }
 
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-      const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+      // Adding family members without relationship type array (Uncles, Aunts, Cousins)
+      if (this.relationshipTypeDropdownArray.length == 0) {
+        const member = this.fb.group({
+          name: new FormControl(newName, Validators.required),
+          type: new FormControl(this.tempType, Validators.required)
+        });
 
-      const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(familyMemberType, Validators.required)
-      });
+        this.familyMembers.push(member);
 
-      this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.addFamilyMemberForm.controls['type'].reset();
-      this.submitted = false;
-    }
-
-    // Adding members with no relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.relationshipTypeDropdownArray.length == 0) {
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-
-      const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(this.tempType, Validators.required)
-      });
-
-      this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.submitted = false;
+        this.submitted = false;
+        this.inputBox?.resetName();
+      }
     }
   }
 

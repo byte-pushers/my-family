@@ -1,23 +1,10 @@
 <div class="add-family-form" [formGroup]="addFamilyMemberForm">
   <div class="mr-7 mt-4 flex g justify-center">
     <div class="w-full">
-      <div class="flex justify-between">
-        <label for="input-box" class="block leading-6 text-sm">{{relationshipType}}</label>
-        <button class="color-blue" (click)="addFamilyMember()">
-          <div class="sub-header font-semibold text-xs text-blue-800">Add {{relationshipType}} +</div>
-        </button>
-      </div>
-
-      <!-- Name input box with -->
-      <input type="text"
-             placeholder="Enter Name..."
-             id="input-box"
-             autocomplete="given-name"
-             formControlName="name"
-             class="form-control text-sm block w-full rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
-      <div *ngIf="addFamilyMemberForm.controls['name'].errors?.['required'] && submitted" class="text-red-700 text-xs">
-        Name required.
-      </div>
+      <app-input-box
+        [relationshipType]="relationshipType"
+        (newNameEvent)="addFamilyMember($event)">
+      </app-input-box>
     </div>
 
     <!-- Relationship type dropdown box -->
