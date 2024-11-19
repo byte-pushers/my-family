@@ -3,52 +3,74 @@
     <h2 class="login-title">Sign In</h2>
 
     <div class="input-container">
-      <ion-item lines="none" class="login-input" [class.error]="submitted && usernameInput.invalid">
-        <ion-input
-          [(ngModel)]="username"
-          type="text"
-          placeholder="Username"
-          required
-          #usernameInput="ngModel">
-        </ion-input>
-        <!-- Red "X" Icon -->
-        <span *ngIf="submitted && usernameInput.invalid"
-              class="error-x">
-                  X
-                </span>
-      </ion-item>
-      <div *ngIf="submitted && usernameInput.invalid" class="error">
-        Username is required.
+      <div class="sm:col-span-3">
+        <label for="user-name" class="block text-sm font-medium leading-6 text-gray-900">User Name</label>
+        <div class="mt-2 relative">
+          <input type="text" placeholder="Create User Name..." name="user-name" id="user-name"
+                 autocomplete="family-name" formControlName="userName"
+                 [ngClass]="{
+               'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['userName'].invalid,
+               'pr-8': submitted && profileForm.controls['userName'].invalid
+             }"
+                 class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
+          <!-- Red "X" Icon (inside the input box) -->
+          <span *ngIf="submitted && profileForm.controls['userName'].invalid"
+                class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+  X
+</span>
+          <!-- User Name Error Message -->
+          <div *ngIf="submitted && profileForm.controls['userName'].errors?.['minlength']"
+               class="text-red-800 text-sm font-bold">
+            User Name must be at least 4 character long.
+          </div>
+          <div *ngIf="submitted && profileForm.controls['userName'].errors?.['required']"
+               class="text-red-800 text-sm font-bold">
+            Create User Name.
+          </div>
+        </div>
+      </div>
+      <div class="sm:col-span-3">
+        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+        <div class="mt-2 relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="********"
+            name="password"
+            id="password"
+            autocomplete="new-password"
+            formControlName="password"
+            [ngClass]="{
+        'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['password'].invalid,
+        'pr-8': submitted && profileForm.controls['password'].invalid
+      }"
+            class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6"
+          />
+
+          <!-- Password Error Messages (inside relative container, but below input) -->
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['minlength']"
+               class="text-red-800 text-sm font-bold mt-2">
+            Password must be at least 8 characters long.
+          </div>
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['pattern']"
+               class="text-red-800 text-sm font-bold mt-2">
+            Password must include at least 1 uppercase, special character, and number.
+          </div>
+
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['required']"
+               class="text-red-800 text-sm font-bold ">
+            You need to create a password.
+          </div>
+          <span class="input-group-text cursor-pointer">
+        <!-- Password Toggle Button -->
+          <div class="absolute inset-y-0 right-2 flex items-center">
+<!--            <ion-icon name="{{ showPassword ? 'eye-off' : 'eye' }}" (click)="toggleShow()" size="small"></ion-icon>-->
+            <img
+              [src]="showPassword ? 'assets/icon/eye-off.svg' : 'assets/icon/eye.svg'" alt="Toggle Password Visibility" class="cursor-pointer" (click)="toggleShow()" width="16" height="16"
+            />
+
+          </div>
+      </span>
+        </div>
       </div>
     </div>
-
-    <div class="input-container">
-      <ion-item lines="none" class="login-input" [class.error]="submitted && passwordInput.invalid">
-        <ion-input
-          [(ngModel)]="password"
-          [type]="passwordType"
-          placeholder="Password"
-          required
-          minlength="8"
-          #passwordInput="ngModel">
-        </ion-input>
-        <!-- Red "X" Icon -->
-        <span *ngIf="submitted && passwordInput.invalid"
-              class="error-x">
-                  X
-                </span>
-      </ion-item>
-      <div *ngIf="submitted && passwordInput.invalid" class="error">
-        Password is required and must be at least 8 characters.
-      </div>
-    </div>
-
-    <ion-button expand="block" class="login-button" [disabled]="usernameInput.invalid || passwordInput.invalid" (click)="onSignIn()">
-      Sign In
-    </ion-button>
-
-    <ion-button expand="block" class="back-button" (click)="goBack()">
-      Back to Welcome Page
-    </ion-button>
-  </div>
 </ion-content>
