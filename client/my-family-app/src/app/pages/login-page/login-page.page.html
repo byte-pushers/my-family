@@ -1,14 +1,16 @@
 <ion-content [fullscreen]="true" class="flex justify-center items-center h-screen p-0">
 <!-- Centralized Login Form -->
-  <div class="login-container m-auto mt-[6.25rem] p-[50px] max-w-[600px] text-center bg-white shadow-xl rounded-[15px]">
-  <div class="second-login-container">
+  <div class="login-container m-auto p-[50px] max-w-[600px] text-center bg-white shadow-xl rounded-[15px] h-[100vh] lg:h-auto lg:mt-[6.25rem]">
+  <div class="second-login-container relative sm:top-0 top-[10rem]">
+<!--    <img src="assets/img/family-1.jpg">-->
     <h2 class="login-title text-[30px] mb-[1rem] font-bold">
       Welcome Back</h2>
-      <h3 class="no-account">
-        Don’t have an account?
-        <a href="#" (click)="goBack()">Create a new account</a>
-      </h3>
-      <div class="sm:col-span-4 input-field">
+    <h3 class="no-account">
+      Don’t have an account?
+      <span class="text-[#0054e9] cursor-pointer" (click)="createAccount()">Create a new account</span>
+    </h3>
+
+    <div class="sm:col-span-4 input-field">
         <label for="user-name" class="block text-sm font-medium leading-6"></label>
         <div class="mt-5 relative">
           <input type="text" placeholder="User Name" name="user-name" id="user-name"
@@ -78,12 +80,12 @@
       </div>
 
     <!-- Sign In Button -->
-    <ion-button expand="block" class="login-button w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[5px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="onSignIn()" [disabled]="loading">
+    <ion-button expand="block" class="login-button w-[80%] sm:w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[11px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="onSignIn()" [disabled]="loading">
       Sign In
     </ion-button>
 
     <!-- Back to Welcome Page-->
-    <ion-button expand="block" class="back-button w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[5px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="goBack()">
+    <ion-button expand="block" class="back-button w-[80%] sm:w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[5px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="goBack()">
       Back to Welcome Page
     </ion-button>
 

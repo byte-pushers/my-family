@@ -104,5 +104,8 @@ export class LoginPagePage implements OnInit {
   async goBack() {
     this.router.navigate(['/welcome-page']); // Adjust this to your welcome page route
   }
+  async createAccount() {
+    this.router.navigate(['/create-account']); // Adjust this to your welcome page route
+  }
   ngOnInit() {}
 }
