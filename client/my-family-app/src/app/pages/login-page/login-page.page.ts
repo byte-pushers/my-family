@@ -1,59 +1,108 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Router} from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonButton,
+  AlertController
+} from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login-page',
+  templateUrl: './login-page.page.html',
+  styleUrls: ['./login-page.page.scss'],
+  standalone: true,
+  imports: [
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
+  ]
 })
-export class LoginComponent implements OnInit {
-  profileForm!: FormGroup; // The form group for handling form controls
-  submitted = false; // Tracks whether the form has been submitted
-  showPassword = false; // Toggles password visibility
+export class LoginPagePage implements OnInit {
+  profileForm!: FormGroup;
+  username: string = '';
+  password: string = '';
+  loading = false;
+  showPassword = false;
+  submitted = false; // Flag to check form submission state
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
-
-  ngOnInit(): void {
-    // Initialize the form with validation rules
-    this.profileForm = this.formBuilder.group({
-      userName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4) // Minimum length of 4 characters for username
-        ]
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8), // Minimum length of 8 characters for password
-          Validators.pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).*$/) // At least 1 uppercase, number, and special character
-        ]
-      ]
+  constructor(
+    public alertCtrl: AlertController,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.profileForm = new FormGroup({
+      userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),])
     });
   }
-
-  // Toggles the visibility of the password field
-  toggleShow(): void {
+  toggleShow() {
     this.showPassword = !this.showPassword;
   }
-
-  // Handles form submission
-  onSubmit(): void {
-    this.submitted = true; // Mark the form as submitted
-
+  isValid(): boolean{
+    this.submitted = true;
     if (this.profileForm.invalid) {
-      // If the form is invalid, stop further processing
-      return;
+      for (const control in this.profileForm.controls) {
+        if (this.profileForm.controls.hasOwnProperty(control)) {
+          this.profileForm.controls[control].markAsTouched();
+        }
+      }
+      return false;
     }
-
-    // Perform the login or sign-in logic
-    console.log('Form submitted successfully:', this.profileForm.value);
+    return true;
   }
+
+
+
+  async onSignIn() {
+    this.submitted = true;  // Set the flag to true when form is submitted
+    this.loading = true;
+    //console.log(this.profileForm.getRawValue())
+    if (this.isValid()) {
+      console.log(this.profileForm.value); // Process the form data
+      await this.successAlert();
+    } else {
+      console.log('Form is invalid');
+      const firstInvalidControl = Object.keys(this.profileForm.controls).find(key => this.profileForm.controls[key].invalid);
+      // Focus on the first invalid field, if found
+      if (firstInvalidControl) {
+        document.getElementById(firstInvalidControl)?.focus();
+      }
+    }
+    this.loading = false;
+  }
+
+  async successAlert(){
+    // Show a success alert or navigate to another page
+    const successAlert = await this.alertCtrl.create({
+      header: 'Success',
+      message: 'Log-in successful!',
+      buttons: ['OK'],
+      cssClass: 'custom-alert',
+    });
+    await successAlert.present();
+    await successAlert.onDidDismiss();
+    this.router.navigate(['/home']);
+  }
+
   // Method to navigate back to the welcome page
   async goBack() {
-    this.router.navigate(['/welcome-page']);  // Adjust this to your welcome page route
+    this.router.navigate(['/welcome-page']); // Adjust this to your welcome page route
   }
+  ngOnInit() {}
 }

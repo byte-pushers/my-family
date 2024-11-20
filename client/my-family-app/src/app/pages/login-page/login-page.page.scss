@@ -1,55 +1,13 @@
-ion-content {
-  display: flex;
-  justify-content: center;  // Center horizontally
-  align-items: center;      // Center vertically
-  height: 100vh;            // Take full viewport height
-  padding: 0;               // Remove any potential padding that could offset the centering
+#user-name, #password {
+  line-height: 2.5rem;
 }
-
-.login-container {
-  width: 100%;
-  max-width: 600px;          // Increased size for better visibility
-  padding: 150px;             // Increased padding for better spacing
-  text-align: center;
-  background-color: white;   // Optional: Add background color for better contrast
-  box-shadow: 1px 10px 16px rgba(0, 0, 0, 0.1);  // Optional: Add a slight shadow for a more defined look
-  border-radius: 15px;       // Optional: Add rounded corners
-  margin: 0 auto;            // Ensure the container is centered horizontally
+.no-account a{
+  color: #0054e9;
 }
-
-.login-title {
-  font-size: 28px;           // Increase the title size
-  margin-bottom: 30px;       // Add more space below the title
+.input-field {
+  padding: 0 1rem;
 }
 
 .login-input {
   margin-bottom: 15px;       // Increase the margin between inputs
-}
-
-ion-input {
-  padding: 20px;             // Increase input padding
-  font-size: 18px;           // Increase input text size
-  border: 1px solid #ccc;    // Simple border
-  border-radius: 5px;
-  width: 100%;
-}
-
-.login-button {
-  margin-top: 30px;          // Add space above the button
-  font-size: 20px;           // Make the button text larger
-  height: 55px;              // Increase button height
-  border-radius: 5px;
-}
-
-.login-options {
-  margin-top: 30px;
-  font-size: 16px;           // Adjust font size for the "sign up" link
-  color: #888;
-}
-
-.error {                    // error messages
-  color: red;
-  font-size: 14px;
-  margin-top: -10px;
-  margin-bottom: 10px;
 }
