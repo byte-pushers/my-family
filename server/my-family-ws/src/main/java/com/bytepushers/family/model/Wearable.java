@@ -28,6 +28,7 @@ public class Wearable extends Merchandise{
         this.color = color;
     }
 
+
     public String getColor() {
         return color;
     }
@@ -58,6 +59,11 @@ public class Wearable extends Merchandise{
 
     public void setWearableType(WearableType wearableType) {
         this.wearableType = wearableType;
+    }
+
+    @Override
+    public double calculatePrice(int quantity, double price) {
+        return price * quantity;
     }
 
     @Override

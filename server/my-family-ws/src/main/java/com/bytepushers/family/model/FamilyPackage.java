@@ -7,14 +7,19 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("FAMILY")
 public class FamilyPackage extends Package {
 
-    public FamilyPackage() {}
+    private static final double extra_cost_per_persion = 20.0;
+
+    public FamilyPackage() {
+        super("family", 100);
+    }
 
     public FamilyPackage(String name, Double basePrice) {
         super(name, basePrice);
     }
 
     @Override
-    public Double calculateTotalPrice(int numPeople) {
-        return getBasePrice()*numPeople;
+    public double calculatePackageCost(double baseCost, int numberOfPeople) {
+        double additionalCost = (numberOfPeople>3) ? extra_cost_per_persion * (numberOfPeople -3) : 0;
+        return getBasePrice()+ additionalCost;
     }
 }

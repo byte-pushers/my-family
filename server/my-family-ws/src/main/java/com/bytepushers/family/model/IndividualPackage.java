@@ -7,14 +7,13 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("INDIVIDUAL")
 public class IndividualPackage extends Package {
 
-    public IndividualPackage() {}
-
-    public IndividualPackage(String name, Double basePrice) {
-        super(name, basePrice);
+    public IndividualPackage() {
+        super("individual", 100);
     }
 
     @Override
-    public Double calculateTotalPrice(int numPeople) {
-        return getBasePrice() * numPeople;
+    public double calculatePackageCost(double baseCost, int numberOfPeople) {
+        return baseCost;
     }
+
 }

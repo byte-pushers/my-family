@@ -20,7 +20,7 @@ public abstract class Merchandise {
     @Enumerated(EnumType.STRING)
     private MerchandiseType merchandiseType;
     private String productName;
-    private float productPrice;
+    private double productPrice;
 
     @Column(name = "product_description", length = 1000)
     private String productDescription;
@@ -29,7 +29,7 @@ public abstract class Merchandise {
     public Merchandise() {
     }
 
-    public Merchandise(Long id, MerchandiseType merchandiseType, String productName, float productPrice, String productDescription, String productImageUrl) {
+    public Merchandise(Long id, MerchandiseType merchandiseType, String productName, double productPrice, String productDescription, String productImageUrl) {
         this.id = id;
         this.merchandiseType = merchandiseType;
         this.productName = productName;
@@ -62,7 +62,7 @@ public abstract class Merchandise {
         this.productName = productName;
     }
 
-    public float getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 
@@ -85,4 +85,6 @@ public abstract class Merchandise {
     public void setProductImageUrl(String productImageUrl) {
         this.productImageUrl = productImageUrl;
     }
+
+    public abstract double calculatePrice(int quantity, double price);
 }

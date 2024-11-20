@@ -20,20 +20,20 @@ public abstract class Package {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
-    private Double basePrice;
+    private String packageName;
+    private double basePrice;
 
 //    @OneToOne(mappedBy = "eventPackage")
 //    private Event event;
 
-    public Package() {}
+    public Package() {
 
-    public Package(String name, Double basePrice) {
-        this.name = name;
-        this.basePrice = basePrice;
     }
 
-    public abstract Double calculateTotalPrice(int numPeople);
+    public Package(String packageName, double basePrice) {
+        this.packageName = packageName;
+        this.basePrice = basePrice;
+    }
 
     public Long getId() {
         return id;
@@ -44,20 +44,22 @@ public abstract class Package {
     }
 
     public String getName() {
-        return name;
+        return packageName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.packageName = name;
     }
 
-    public Double getBasePrice() {
+    public double getBasePrice() {
         return basePrice;
     }
 
     public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
+
+    public abstract double calculatePackageCost(double basePrice, int numberOfPeople);
 
 //    public Event getEvent() {
 //        return event;

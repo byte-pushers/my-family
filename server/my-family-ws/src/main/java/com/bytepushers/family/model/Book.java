@@ -37,6 +37,11 @@ public class Book extends Merchandise{
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    @Override
+    public double calculatePrice(int quantity, double price) {
+        return quantity * price;
+    }
 }
 
 
