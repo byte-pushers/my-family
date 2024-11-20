@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'welcome-page',
     pathMatch: 'full'
   },
 
@@ -72,5 +72,17 @@ export const routes: Routes = [
   {
     path: 'search-results',
     loadComponent: () => import('./pages/search-results/search-results.page').then( m => m.SearchResultsPage)
+  },
+  {
+    path: 'tree-loading',
+    loadComponent: () => import('./pages/tree-loading/tree-loading.page').then( m => m.TreeLoadingPage)
+  },
+  {
+    path: 'subscription-plan',
+    loadComponent: () => import('./pages/subscription-plan/subscription-plan.page').then( m => m.SubscriptionPlanPage)
+  },
+  {
+    path: 'payment',
+    loadComponent: () => import('./pages/payment-page/payment-page.page').then( m => m.PaymentPage)
   }
 ];

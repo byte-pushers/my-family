@@ -46,8 +46,6 @@ TODO: Implement Search Functionality with List Integration
 
 -->
 
-<!-- family-tree.page.html -->
-// family-tree.page.html
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Family Tree</ion-title>
@@ -97,10 +95,11 @@ TODO: Implement Search Functionality with List Integration
           <div class="flex flex-col items-center justify-center text-center p-8">
             <h3 class="text-xl font-semibold mb-2">No Family Tree Available</h3>
             <p class="text-gray-600 mb-4">Start building your family tree by adding family members.</p>
-            <ion-button color="primary">
+            <button
+              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              (click)="navigateToAddFamily()">
               Create Family Tree
-              <ion-icon slot="end" name="add-circle-outline"></ion-icon>
-            </ion-button>
+            </button>
           </div>
         </ng-template>
       </div>

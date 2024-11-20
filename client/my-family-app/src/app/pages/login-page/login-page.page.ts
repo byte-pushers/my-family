@@ -11,9 +11,11 @@ import {
   IonInput,
   IonButton,
   IonIcon,
-  AlertController
+  AlertController,
+  ToastController
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';  // Import Router for navigation
+import { Router } from '@angular/router';
+import {alert} from "ionicons/icons";  // Import Router for navigation
 
 @Component({
   selector: 'app-login-page',
@@ -41,7 +43,7 @@ export class LoginPagePage implements OnInit {
 
   passwordType: string = 'password';  // Default is hidden
 
-  constructor(private alertCtrl: AlertController, private router: Router) {}  // Inject Router
+  constructor(private alertCtrl: AlertController, private router: Router, private toastController: ToastController ) {}  // Inject Router
 
   ngOnInit() {}
 
@@ -73,16 +75,26 @@ export class LoginPagePage implements OnInit {
     console.log('Username:', this.username);
     console.log('Password:', this.password);
 
-    // Show a success alert or navigate to another page
-    const successAlert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Login successful!',
-      buttons: ['OK'],
+    // Show success toast
+    const toast = await this.toastController.create({
+      message: '✨ Welcome to My Family Reunion!',
+      duration: 2000,
+      position: 'top',
+      color: 'primary',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel'
+        }
+      ]
     });
-    await successAlert.present();
+    await toast.present();
 
+    // Navigate after a short delay
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 1000);
     // Optional: Navigate to another page or reset form after alert dismissal
-    await successAlert.onDidDismiss();
     // this.router.navigate(['/home']);  // Replace with your desired route after login
   }
 

@@ -14,6 +14,7 @@ import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
 import {FamilySearchService} from "../../services/family-search.service";
 import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-family-tree',
@@ -29,8 +30,7 @@ import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-da
     FamilyMemberListComponent
   ]
 })
-// family-tree.page.ts
-// family-tree.page.ts
+
 export class FamilyTreePage implements OnInit, OnDestroy {
   @ViewChild(FamilyTreeVisualizationComponent)
   familyTreeVisualization!: FamilyTreeVisualizationComponent;
@@ -47,7 +47,8 @@ export class FamilyTreePage implements OnInit, OnDestroy {
 
   constructor(
     private familyTreeService: FamilyTreeService,
-    private familySearchService: FamilySearchService
+    private familySearchService: FamilySearchService,
+    private router: Router
   ) {
     // Subscribe to search results
     this.familySearchService.getSearchResults()
@@ -66,7 +67,13 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       });
   }
 
+  navigateToAddFamily() {
+    sessionStorage.setItem('fromFamilyTree', 'true');
+    this.router.navigate(['/add-to-family']);
+  }
+
   ngOnInit() {
+    console.log('FamilyTreePage: ngOnInit');
     this.loadFamilyTree();
   }
 
@@ -76,6 +83,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   }
 
   loadFamilyTree() {
+    console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
     this.error = null;
 

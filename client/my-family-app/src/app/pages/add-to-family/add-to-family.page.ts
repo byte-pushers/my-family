@@ -1,4 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FamilyMember } from "../../models/family-tree/family-member.model";
@@ -47,7 +48,9 @@ export class AddToFamilyPage implements OnInit {
   aunts: FamilyMember[] = [];
   cousins: FamilyMember[] = [];
 
-  constructor(private fb: FormBuilder, private familyTreeService: FamilyTreeService) {
+  previousUrl: string = '';
+
+  constructor(private fb: FormBuilder, private familyTreeService: FamilyTreeService, private router: Router) {
     this.parentsForm = this.constructFormGroup();
     this.grandparentsForm = this.constructFormGroup();
     this.siblingsForm = this.constructFormGroup();
@@ -56,6 +59,24 @@ export class AddToFamilyPage implements OnInit {
     this.unclesForm = this.constructFormGroup();
     this.auntsForm = this.constructFormGroup();
     this.cousinsForm = this.constructFormGroup();
+  }
+
+  public goBack(): void {
+    const currentUrl = this.router.url;
+
+    // If we came from family tree page
+    if (currentUrl.includes('add-to-family') && this.currentStep === 2) {
+      // If on step 3, go back to step 2
+      this.previousStep();
+    } else if (currentUrl.includes('add-to-family') && this.currentStep === 1) {
+      // If on step 2, check if we should go to family-tree or create-account
+      const fromFamilyTree = sessionStorage.getItem('fromFamilyTree');
+      if (fromFamilyTree === 'true') {
+        this.router.navigate(['/family-tree']);
+      } else {
+        this.router.navigate(['/create-account']);
+      }
+    }
   }
 
   // Created this method to prevent constructor being super long
@@ -139,9 +160,21 @@ export class AddToFamilyPage implements OnInit {
         this.uncles, this.aunts, this.cousins
       );
     }
-    this.familyTreeService.create(familyMemberRequestPayload).subscribe(response => {
-      console.log('Add To Family successful.', response);
-    })
+    // Try to save data
+    this.familyTreeService.create(familyMemberRequestPayload).subscribe({
+      next: (response) => {
+        console.log('Add To Family successful.', response);
+      },
+      error: (error) => {
+        console.error('Error creating family tree:', error);
+      },
+      complete: () => {
+        this.router.navigate(['/tree-loading']);
+      }
+    });
+
+    // immediate navigation regardless of API:
+    this.router.navigate(['/tree-loading']);
   }
 
   previousStep(): void {
