@@ -1,26 +1,21 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>Welcome Page!</ion-title>
-    </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="flex justify-center items-center h-screen p-0">
+  <!-- Centralized Login Form -->
+  <div class="w-full max-w-[600px] p-[4rem] text-center bg-white shadow-md mx-auto h-screen sm:h-auto sm:rounded-t-[15px] sm:rounded-b-none">
+    <div class="second-container">
+      <h2 class="text-[28px] mb-[30px] text-[#0D4C92]">Welcome to My Family!</h2>
+      <p class="text-[#97D2EC]">Bring your family closer together by staying connected in meaningful ways. Whether you’re building your family tree, planning events, or sharing updates, this is a space for connection and collaboration that makes staying in touch effortless. Let’s get started—because family matters!</p>
 
-<ion-content [fullscreen]="true">
-    <!-- Centralized Login Form -->
-    <div class="login-container">
-        <h2 class="login-title">Welcome to My Family!</h2>
-      <p class="welcome-text">Bring your family closer together by staying connected in meaningful ways. Whether you’re building your family tree, planning events, or sharing updates, this is a space for connection and collaboration that makes staying in touch effortless. Let’s get started—because family matters!</p>
+      <img src="assets/img/my-family-logo.png" alt="my family welcome picture" width="500" height="600">
 
-      <img src="../../../assets/myfamilywelcomepagepicture.png" alt="my family welcome picture" width="500" height="600">
-
-        <!-- Sign In Button -->
-      <ion-button expand="block" class="login-button" [routerLink]="['/login-page']" color="#0D4C92">
+      <!-- Sign In Button -->
+      <ion-button expand="block" class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white" [routerLink]="['/login-page']" color="#0D4C92">
         Sign In
       </ion-button>
-
       <!-- Create Account Button -->
-      <ion-button expand="block" class="create-account-button" [routerLink]="['/create-account']" color="white" fill="outline">
+      <ion-button expand="block" class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white" [routerLink]="['/create-account']" color="#0D4C92">
         Create Account
       </ion-button>
 
     </div>
+  </div>
 </ion-content>
