@@ -123,9 +123,7 @@ export class FamilyMemberPage implements OnInit {
   }
 
   editMember() {
-    if (this.familyMember.isAlive) {
-      this.router.navigate(['/edit-family-member', this.familyMember.id]);
-    }
+    this.router.navigate(['/edit-family-member', this.familyMember.id]);
   }
 
   getFullName(): string {

@@ -89,5 +89,4 @@ export const routes: Routes = [
     path: 'family-member/:id',
     loadComponent: () => import('./pages/profile/family-member/family-member.page').then( m => m.FamilyMemberPage)
   }
-
 ];
