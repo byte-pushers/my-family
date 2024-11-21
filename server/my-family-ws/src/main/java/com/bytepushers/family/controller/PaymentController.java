@@ -25,12 +25,12 @@ public class PaymentController {
     }
 
     @PostMapping(value = "/orders", consumes = {"*/*"})
-    public ResponseEntity<?> createOrder(@Valid @RequestParam Order order) {
+    public ResponseEntity<?> createOrder(@Valid @RequestParam Order order, User user) {
         return orderService.completeOrder(order);
     }
 
     @GetMapping(value = "/orders/{id}", consumes = {"*/*"})
-    public ResponseEntity<OrderPrice> createOrder(@Valid @RequestParam Order order){
+    public ResponseEntity<OrderPrice> createOrder(@Valid @RequestParam Order order, User user){
         return orderService.calculatePriceOrder(order);
     }
 
