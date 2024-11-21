@@ -36,9 +36,14 @@ public class EventController {
     }
 
     @GetMapping(value = "/events", produces = {"application/json"})
-    public ResponseEntity<?> getEvents() {
-        List<Event> events = eventService.getEvents();
-        return new ResponseEntity<>(events, HttpStatus.OK);
+    public ResponseEntity<?> getEvents(@RequestParam(required = false) String name) {
+        if (name != null) {
+            List<Event> event = eventService.getEventByName(name);
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        } else {
+            List<Event> events = eventService.getEvents();
+            return new ResponseEntity<>(events, HttpStatus.OK);
+        }
     }
 
     @GetMapping(value = "/events/{id}", produces = {"application/json"})
@@ -47,17 +52,6 @@ public class EventController {
         Event event = eventService.getEventById(id);
         events.add(event);
         return new ResponseEntity<>(events, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/events", produces = {"application/json"})
-    public ResponseEntity<?> getEventByName(@RequestParam(required = false) String name) {
-        if (name != null) {
-            List<Event> event = eventService.getEventByName(name);
-            return new ResponseEntity<>(event, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(new ErrorResponse(APIErrorConstant.API_ERROR_SOURCE_NOT_FOUND,"Event name is required",null, null), HttpStatus.BAD_REQUEST);
-        }
-
     }
 
     @DeleteMapping(value = "/events/{id}")

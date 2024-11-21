@@ -1,19 +1,19 @@
 package com.bytepushers.family.service;
 
-import com.bytepushers.family.model.BaseEntity;
+import com.bytepushers.family.model.BaseModel;
 import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.model.Person;
-import org.springframework.context.annotation.Profile;
+// import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
-@Service
-@Profile("test")// Only active in test profile
-public abstract class FamilyTreeMockService implements FamilyTreeService {
+import java.util.concurrent.atomic.AtomicLong;
 
-    private final AtomicInteger idGenerator = new AtomicInteger(1);
+@Service
+public class FamilyTreeMockService implements FamilyTreeService {
+
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public FamilyTree createFamilyTree(FamilyTree familyTree) {
@@ -27,6 +27,16 @@ public abstract class FamilyTreeMockService implements FamilyTreeService {
         }
 
         return familyTree;
+    }
+
+    @Override
+    public FamilyTree getFamilyTree(Integer id) {
+        return null;
+    }
+
+    @Override
+    public FamilyMember getFamilyMemberWithChildren(Integer id) {
+        return null;
     }
 
     private void assignIdsAndSetAuditFields(FamilyMember familyMember) {
@@ -46,7 +56,7 @@ public abstract class FamilyTreeMockService implements FamilyTreeService {
         }
     }
 
-    private void setAuditFields(BaseEntity entity) {
+    private void setAuditFields(BaseModel entity) {
         if (entity.getCreatedBy() == null) {
             entity.setCreatedBy("defaultUser");
         }

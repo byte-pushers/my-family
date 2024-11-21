@@ -9,10 +9,10 @@ public interface UserDAO {
 
     // Standard CRUD operations
     User createUser(User user);
-    User findUserById(Integer id);
+    User findUserById(Long id);
     List<User> findAllUsers();
     User updateUser(User user);
-    boolean deleteUser(Integer id);
+    boolean deleteUser(Long id);
 
     User findUserByEmail(String email);
 }

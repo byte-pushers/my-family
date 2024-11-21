@@ -1,6 +1,6 @@
 package com.bytepushers.family.model;
 
-public class Address extends BaseEntity{
+public class Address extends BaseIdGeneratedValueEntity {
     private String addressLine1;
     private String addressLine2;
     private String city;

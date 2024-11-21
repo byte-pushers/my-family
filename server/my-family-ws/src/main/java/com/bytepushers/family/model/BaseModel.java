@@ -1,48 +1,33 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public abstract class BaseModel {
     @Column(name = "created_by")
-    private String createdBy;
+    protected String createdBy;
 
     @Column(name = "updated_by")
-    private String updatedBy;
+    protected String updatedBy;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    protected LocalDateTime updatedDate;
 
-    // Constructors
-    public BaseEntity(Integer id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
-        this.id = id;
+    public BaseModel() {
+    }
+
+    public BaseModel(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
-    }
-
-    public BaseEntity() {
-    }
-
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getCreatedBy() {
@@ -79,22 +64,19 @@ public abstract class BaseEntity {
 
     @Override
     public String toString() {
-        return "BaseEntity {" +
-                "id=" + id +
-                ", createdBy='" + createdBy + '\'' +
+        return ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
-                '}';
+                ", updatedDate=" + updatedDate;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(createdBy, that.createdBy) &&
+
+        BaseModel that = (BaseModel) o;
+        return Objects.equals(createdBy, that.createdBy) &&
                 Objects.equals(updatedBy, that.updatedBy) &&
                 Objects.equals(createdDate, that.createdDate) &&
                 Objects.equals(updatedDate, that.updatedDate);
@@ -102,6 +84,6 @@ public abstract class BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdBy, updatedBy, createdDate, updatedDate);
+        return Objects.hash(createdBy, updatedBy, createdDate, updatedDate);
     }
 }

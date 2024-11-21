@@ -5,7 +5,6 @@ import com.bytepushers.family.model.FamilyTree;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface FamilyTreeService {
     FamilyTree createFamilyTree(@Valid FamilyTree familyTree);
     FamilyTree getFamilyTree(Integer id);

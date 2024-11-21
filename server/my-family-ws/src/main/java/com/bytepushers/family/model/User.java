@@ -1,14 +1,14 @@
 package com.bytepushers.family.model;
 
+import com.bytepushers.family.security.model.Role;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class User extends BaseIdGeneratedValueEntity {
     @Column(nullable = false, unique = true) // Ensure email is unique and not null
     private String email;
 
@@ -21,8 +21,24 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled;
 
+    @Column(nullable = true)
+    private Boolean tokenExpired;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private Person person;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Collection<Role> roles;
+
     // Default constructor
     public User() {
+        super();
+        this.person = new Person();
     }
 
     public User(String email, String password, String username, Boolean enabled) {
@@ -30,15 +46,8 @@ public class User {
         this.password = password;
         this.username = username;
         this.enabled = enabled;
-    }
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.person = new Person();
     }
 
     public String getEmail() {
@@ -76,7 +85,7 @@ public class User {
     @Override
     public String toString() {
         return "User {" +
-            "id=" + id +
+            "id=" + super.id +
             ", email='" + email + '\'' +
             ", password='" + password + '\'' +
             ", username='" + username + '\'' +
@@ -114,5 +123,42 @@ public class User {
         result = 31 * result + enabled.hashCode();
 
         return result;
+    }
+
+    public void setFirstName(String firstName) {
+        this.person.setFirstName(firstName);
+    }
+
+    public void setLastName(String lastName) {
+        this.person.setLastName(lastName);
+    }
+
+    public Collection<Role> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.person.setBirthDate(birthDate);
+    }
+
+    public LocalDate getBirthDate() {
+        return this.person.getBirthDate();
+    }
+
+
+    public void setGender(String gender) {
+        this.person.setGender(gender);
+    }
+
+    public String getGender() {
+        return this.person.getGender();
+    }
+
+    public Person getPerson() {
+        return this.person;
     }
 }

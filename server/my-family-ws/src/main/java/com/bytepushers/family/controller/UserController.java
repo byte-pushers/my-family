@@ -2,7 +2,7 @@ package com.bytepushers.family.controller;
 
 import com.bytepushers.family.exception.*;
 import com.bytepushers.family.model.User;
-import com.bytepushers.family.repo.UserRepo;
+import com.bytepushers.family.repo.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserRepo userDao;
+    private UserRepository userDao;
 
     // Create User Error with /{id} in URL
     @PostMapping("/users/{id}")
@@ -62,7 +62,7 @@ public class UserController {
 
         try {
             // Check if a user with the same email already exists
-            if (userDao.findUserByEmail(user.getEmail()).isPresent()) {
+            if (userDao.findByEmail(user.getEmail()).isPresent()) {
                 throw new DuplicateUserException("A user with the email " + user.getEmail() + " already exists.");
             }
 
@@ -110,7 +110,7 @@ public class UserController {
     // Get User by ID
     @GetMapping(value = "/users/{id}", produces = "application/json")
     public ResponseEntity<Object> getUserById(
-            @PathVariable Integer id
+            @PathVariable Long id
     ) {
         List<Map<String, String>> errors = new ArrayList<>();
 
@@ -155,7 +155,7 @@ public class UserController {
     // Update User
     @PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> updateUser(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Valid @RequestBody User user,
             BindingResult bindingResult
     ) {
@@ -213,7 +213,7 @@ public class UserController {
             }
 
             // Check if the email is already in use by another user
-            Optional<User> userWithSameEmail = userDao.findUserByEmail(user.getEmail());
+            Optional<User> userWithSameEmail = userDao.findByEmail(user.getEmail());
             if (userWithSameEmail.isPresent() && !userWithSameEmail.get().getId().equals(id)) {
                 throw new DuplicateUserException("A user with email " + user.getEmail() + " already exists.");
             }
@@ -266,7 +266,7 @@ public class UserController {
     // Delete User
     @DeleteMapping(value = "/users/{id}", produces = "application/json")
     public ResponseEntity<Object> deleteUser(
-            @PathVariable Integer id
+            @PathVariable Long id
     ) {
         List<Map<String, String>> errors = new ArrayList<>();
 
