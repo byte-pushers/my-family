@@ -10,6 +10,7 @@ import { FileUploadComponent } from '../../components/file-upload-component/file
 import { Event } from '../../models/event';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {IonicModule} from "@ionic/angular";
 
 
 @Component({
@@ -17,13 +18,14 @@ import { of } from 'rxjs';
   templateUrl: './create-event.page.html',
   styleUrls: ['./create-event.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgOptimizedImage,
-    AgendaItemComponent,
-    FileUploadComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgOptimizedImage,
+        AgendaItemComponent,
+        FileUploadComponent,
+        IonicModule
+    ]
 })
 export class CreateEventPage {
   event: EventModel = new EventModel();

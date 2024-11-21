@@ -1,44 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+// src/app/pages/profile/profile.page.ts
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { ProfileData } from "../../models/profile-data";
-import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
-
+import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
+import { Router, RouterLink } from "@angular/router";
+import { ProfileService } from '../../services/profile.service';
+import {Subject} from "rxjs";
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FooterNavigationComponent]
+  imports: [IonicModule, CommonModule, FooterNavigationComponent, RouterLink]
 })
-export class ProfilePage implements OnInit {
-  profileData: ProfileData = {
-    id: '1',
-    firstName: 'Alejandro',
-    lastName: 'Quintanilla',
-    dateOfBirth: '03.10.1997',
-    age: 25,
-    address: '206 Myrtle Drive Pottsville, Ar',
-    spouse: '',
-    children: [''],
-    parents: {
-      mother: 'Alejandra Quintanilla',
-      father: 'Daniel Quintanilla'
-    },
-    siblings: ['Fernando Quintanilla', 'Gabriela Quintanilla']
-  };
+export class ProfilePage implements OnInit, OnDestroy {
+  profileData!: ProfileData;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  constructor() {}
+  constructor(
+    private alertCtrl: AlertController,
+    private router: Router,
+    private profileService: ProfileService
+  ) {}
 
-  ngOnInit() {}
-
-  onSearch(event: any) {
-    console.log('Search query:', event.target.value);
+  ngOnInit() {
+    this.profileService.getProfile()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(profile => {
+        this.profileData = profile;
+      });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+
   editProfile() {
-    console.log('Edit profile clicked');
+    this.router.navigate(['/edit-profile']);
   }
 
   uploadPhoto() {
@@ -47,5 +50,26 @@ export class ProfilePage implements OnInit {
 
   shareProfile() {
     console.log('Share profile clicked');
+  }
+
+  async logout() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.router.navigate(['/welcome-page']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
