@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,22 +24,14 @@ public class PaymentController {
         this.costServiceImpl = costServiceImpl;
     }
 
-    @GetMapping(value = "/payment", consumes = {"*/*"})
-    public ResponseEntity<?> makePayment(@Valid @RequestParam String pakageType,
-                                         @RequestParam int numberOfPeople,
-                                         @RequestParam String merchName,
-                                         @RequestParam String merchType,
-                                         @RequestParam double price,
-                                         @RequestParam int quantity){
-//        if (bindingResult.hasErrors()) {
-//            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
-//        }
-        Merchandise merchandise = createMerchandise(merchType, merchName, quantity, price);
-        Package selectedPackage = createPackage(pakageType);
+    @PostMapping(value = "/orders", consumes = {"*/*"})
+    public ResponseEntity<?> createOrder(@Valid @RequestParam Order order) {
+        return orderService.completeOrder(order);
+    }
 
-        double totalCost = costServiceImpl.calculateTotalCost(merchandise, quantity, selectedPackage, numberOfPeople, price);
-
-        return new ResponseEntity<>(totalCost, HttpStatus.OK);
+    @GetMapping(value = "/orders/{id}", consumes = {"*/*"})
+    public ResponseEntity<OrderPrice> createOrder(@Valid @RequestParam Order order){
+        return orderService.calculatePriceOrder(order);
     }
 
     private Merchandise createMerchandise(String type, String name, int quantity, double price) {
