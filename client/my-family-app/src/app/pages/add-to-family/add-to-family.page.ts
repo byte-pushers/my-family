@@ -116,12 +116,6 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.siblingsForm, this.siblings);
     this.fillFamilyMemberArray(this.spouseForm, this.spouse);
     this.fillFamilyMemberArray(this.childrenForm, this.children);
-
-    console.log(`parents: ${this.parents}`);
-    console.log(`grandparents: ${this.grandparents}`);
-    console.log(`siblings: ${this.siblings}`);
-    console.log(`spouse: ${this.spouse}`);
-    console.log(`children: ${this.children}`);
   }
 
   // todo: make request payload here
@@ -131,9 +125,6 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.unclesForm, this.uncles);
     this.fillFamilyMemberArray(this.auntsForm, this.aunts);
     this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
-    console.log(`uncles: ${this.uncles}`);
-    console.log(`aunts: ${this.aunts}`);
-    console.log(`cousins: ${this.cousins}`);
 
     let familyMemberRequestPayload: FamilyTreeRequestPayload;
     if (this.spouse[0]) {

@@ -22,12 +22,11 @@ export class FamilyTreeService {
     });
   }
 
-  // Method to submit the family tree data
+  // POST - Submit the family tree data
   public create(payload: FamilyTreeRequestPayload): Observable<any> {
-
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
 
-    return this.http.post<any>(this.apiBaseUrl + '/family-trees', payload, {
+    return this.http.post<any>(`${this.apiBaseUrl}/family-trees/`, payload, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
@@ -46,6 +45,24 @@ export class FamilyTreeService {
           return throwError(() => error);
         })
       );
+  }
+
+  // UPDATE - Adding additional family members after initial creation
+  public updateFamilyTree(id: number, payload: FamilyTreeRequestPayload): Observable<any> {
+    return this.http.put<any>(`${this.apiBaseUrl}/family-trees/${id}`, payload, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // DELETE - Deleting family member from family tree
+  public deleteFamilyTree(id: number): Observable<FamilyTreeResponse> {
+    return this.http.delete<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: any): Observable<never> {
