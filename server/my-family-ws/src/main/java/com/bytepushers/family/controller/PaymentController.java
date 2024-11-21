@@ -8,12 +8,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @SecurityRequirement(name = "X-API-Version")
 public class PaymentController {
 
@@ -31,10 +30,8 @@ public class PaymentController {
                                          @RequestParam String merchName,
                                          @RequestParam String merchType,
                                          @RequestParam double price,
-                                         @RequestParam int quantity){
-//        if (bindingResult.hasErrors()) {
-//            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
-//        }
+                                         @RequestParam int quantity) {
+
         Merchandise merchandise = createMerchandise(merchType, merchName, quantity, price);
         Package selectedPackage = createPackage(pakageType);
 

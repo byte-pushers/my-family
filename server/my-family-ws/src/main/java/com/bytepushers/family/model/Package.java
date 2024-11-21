@@ -23,9 +23,6 @@ public abstract class Package {
     private String packageName;
     private double basePrice;
 
-//    @OneToOne(mappedBy = "eventPackage")
-//    private Event event;
-
     public Package() {
 
     }
@@ -61,11 +58,4 @@ public abstract class Package {
 
     public abstract double calculatePackageCost(double basePrice, int numberOfPeople);
 
-//    public Event getEvent() {
-//        return event;
-//    }
-//
-//    public void setEvent(Event event) {
-//        this.event = event;
-//    }
 }

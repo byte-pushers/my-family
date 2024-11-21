@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "wearable_id")
-public class Wearable extends Merchandise{
+public class Wearable extends Merchandise {
 
     private WearableType wearableType;
     private String SKU;
