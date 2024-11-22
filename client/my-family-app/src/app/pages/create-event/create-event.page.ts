@@ -11,6 +11,7 @@ import { Event } from '../../models/event';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
+
 @Component({
   selector: 'app-create-event',
   templateUrl: './create-event.page.html',
@@ -35,7 +36,9 @@ export class CreateEventPage {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
+
   constructor(private eventService: EventService) {}
+
 
   onFileSelected(file: File | null): void {
     if (file) {
@@ -51,6 +54,7 @@ export class CreateEventPage {
     }
   }
 
+
   addAgenda(): void {
     const newAgenda = new AgendaItemModel(this.agendaStartTime, this.agendaEndTime, this.agendaDescription);
     this.event.agendas.push(newAgenda);
@@ -58,6 +62,7 @@ export class CreateEventPage {
     this.agendaStartTime = '';
     this.agendaEndTime = '';
   }
+
 
   saveEvent(): void {
     this.eventService.saveEvent(this.event as Event)
@@ -82,6 +87,7 @@ export class CreateEventPage {
       });
   }
 
+
   clearForm(): void {
     this.event = new EventModel();
     this.fileName = null;
@@ -92,3 +98,6 @@ export class CreateEventPage {
     this.resetFileInput = !this.resetFileInput;
   }
 }
+
+
+

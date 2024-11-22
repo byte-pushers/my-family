@@ -1,6 +1,7 @@
 import { AgendaItem } from '../interfaces/agenda-item.interface';
 import { Event } from './event';
 
+
 interface MerchandiseItem {
   merchandiseType: string;
   productName: string;
@@ -15,6 +16,7 @@ interface MerchandiseItem {
   wearableType?: string;
 }
 
+
 export class EventModel implements Event {
   #name: string;
   #type: string;
@@ -25,6 +27,7 @@ export class EventModel implements Event {
   #location: string;
   #agendas: AgendaItem[];
   #merchandiseList: MerchandiseItem[];
+
 
   constructor(
       name: string = '',
@@ -48,90 +51,66 @@ export class EventModel implements Event {
     this.#merchandiseList = merchandiseList;
   }
 
-  public getName(): string {
-    return this.#name;
-  }
 
-  public get name(): string {
-    return this.#name;
-  }
+  // Public getter methods and two-way binding compatibility
+  public get name(): string { return this.#name; }
+  public set name(value: string) { this.#name = value; }
+  public getName(): string { return this.#name; }
 
-  public getType(): string {
-    return this.#type;
-  }
 
-  public get type(): string {
-    return this.#type;
-  }
+  public get type(): string { return this.#type; }
+  public set type(value: string) { this.#type = value; }
+  public getType(): string { return this.#type; }
 
-  public getStartDate(): string {
-    return this.#startDate;
-  }
 
-  public get startDate(): string {
-    return this.#startDate;
-  }
+  public get startDate(): string { return this.#startDate; }
+  public set startDate(value: string) { this.#startDate = value; }
+  public getStartDate(): string { return this.#startDate; }
 
-  public getEndDate(): string {
-    return this.#endDate;
-  }
 
-  public get endDate(): string {
-    return this.#endDate;
-  }
+  public get endDate(): string { return this.#endDate; }
+  public set endDate(value: string) { this.#endDate = value; }
+  public getEndDate(): string { return this.#endDate; }
 
-  public getStartTime(): string {
-    return this.#startTime;
-  }
 
-  public get startTime(): string {
-    return this.#startTime;
-  }
+  public get startTime(): string { return this.#startTime; }
+  public set startTime(value: string) { this.#startTime = value; }
+  public getStartTime(): string { return this.#startTime; }
 
-  public getEndTime(): string {
-    return this.#endTime;
-  }
 
-  public get endTime(): string {
-    return this.#endTime;
-  }
+  public get endTime(): string { return this.#endTime; }
+  public set endTime(value: string) { this.#endTime = value; }
+  public getEndTime(): string { return this.#endTime; }
 
-  public getLocation(): string {
-    return this.#location;
-  }
 
-  public get location(): string {
-    return this.#location;
-  }
+  public get location(): string { return this.#location; }
+  public set location(value: string) { this.#location = value; }
+  public getLocation(): string { return this.#location; }
 
-  public getAgendas(): AgendaItem[] {
-    return this.#agendas;
-  }
 
-  public get agendas(): AgendaItem[] {
-    return this.#agendas;
-  }
+  public get agendas(): AgendaItem[] { return this.#agendas; }
+  public set agendas(value: AgendaItem[]) { this.#agendas = value; }
+  public getAgendas(): AgendaItem[] { return this.#agendas; }
 
-  public getMerchandiseList(): MerchandiseItem[] {
-    return this.#merchandiseList;
-  }
 
-  public get merchandiseList(): MerchandiseItem[] {
-    return this.#merchandiseList;
-  }
+  public get merchandiseList(): MerchandiseItem[] { return this.#merchandiseList; }
+  public set merchandiseList(value: MerchandiseItem[]) { this.#merchandiseList = value; }
+  public getMerchandiseList(): MerchandiseItem[] { return this.#merchandiseList; }
 
-  // toString method to represent the EventModel as a string
+
+
+
   public toString(): string {
     return `{
-      name: ${this.#name},
-      type: ${this.#type},
-      startDate: ${this.#startDate},
-      endDate: ${this.#endDate},
-      startTime: ${this.#startTime},
-      endTime: ${this.#endTime},
-      location: ${this.#location},
-      agendas: ${JSON.stringify(this.#agendas)},
-      merchandiseList: ${JSON.stringify(this.#merchandiseList)}
-    }`;
+     name: ${this.#name},
+     type: ${this.#type},
+     startDate: ${this.#startDate},
+     endDate: ${this.#endDate},
+     startTime: ${this.#startTime},
+     endTime: ${this.#endTime},
+     location: ${this.#location},
+     agendas: ${JSON.stringify(this.#agendas)},
+     merchandiseList: ${JSON.stringify(this.#merchandiseList)}
+   }`;
   }
 }
