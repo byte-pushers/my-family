@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
+@RequestMapping("/api") // Group all family-tree APIs under this base path
 @CrossOrigin(origins="*")
 public class FamilyTreeController {
 
@@ -34,14 +34,14 @@ public class FamilyTreeController {
     }
 
     // Simple GET test endpoint
-    @GetMapping("/ping")
+    @GetMapping("/family-trees/ping")
     public ResponseEntity<String> ping(Authentication authentication) {
         logger.info("Ping endpoint hit by user: {}",
                 authentication != null ? authentication.getName() : "anonymous");
         return ResponseEntity.ok("pong");
     }
 
-    @PostMapping
+    @PostMapping("/family-trees")
     public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree,
                                                    BindingResult bindingResult) {
         logger.debug("Received request to create family tree: {}", familyTree);
@@ -63,7 +63,7 @@ public class FamilyTreeController {
         }
     }
 
-    /*@GetMapping("/{id}")
+    /*@GetMapping("/family-trees/{id}")
     public ResponseEntity<FamilyTree> getFamilyTree(@PathVariable Integer id) {
         logger.info("Attempting to get family tree with id: {}", id);
         try {
@@ -80,16 +80,16 @@ public class FamilyTreeController {
             return ResponseEntity.internalServerError().build();
         }
     }*/
-    /*@GetMapping("/{id}")
+    /*@GetMapping("/family-trees/{id}")
     public FamilyMember getFamilyMemberWithChildren(@PathVariable Integer id) {
         return familyTreeService.getFamilyMemberWithChildren(id);
     }*/
 
-    @GetMapping("/{id}")
-    public String getFamilyMemberWithChildren(@PathVariable Integer id) {
-        return """
+    @GetMapping(value = "/family-trees/{id}", produces = "application/json")
+    public ResponseEntity<String> getFamilyMemberWithChildren(@PathVariable Integer id) {
+        return ResponseEntity.ok("""
                 {
-                    "userId": 1,
+                    "userId": %s,
                     "transactionId:": "transaction-id-value",
                     "familyTreeId": 32,
                     "familyMembers": [
@@ -155,6 +155,6 @@ public class FamilyTreeController {
                     "createdBy": "adminUser",
                     "createdDate": "2024-10-16T10:00:00Z"
                 }
-            """;
+            """.formatted(id));
     }
 }
