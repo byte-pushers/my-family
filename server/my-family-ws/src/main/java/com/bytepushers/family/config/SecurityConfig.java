@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .expressionHandler(customWebSecurityExpressionHandler())
                 .requestMatchers("/login", "/api/create-account", "/api/users/**")
                 .permitAll()
-                .requestMatchers("/api/family-trees", "/api/events")
+                .requestMatchers("/api/family-trees/**", "/api/events")
                 .hasRole("ADMIN")
                 .anyRequest().authenticated().and().build();
                 /*.authorizeHttpRequests(registry -> {

@@ -26,6 +26,19 @@ public class FamilyTreeMockService implements FamilyTreeService {
             }
         }
 
+        return this.generateMockFamilyTree(familyTree);
+    }
+
+    private FamilyTree generateMockFamilyTree(FamilyTree familyTree) {
+        familyTree.setId(idGenerator.getAndIncrement());
+        setAuditFields(familyTree);
+
+        if (familyTree.getFamilyMembers() != null) {
+            for (FamilyMember familyMember : familyTree.getFamilyMembers()) {
+                assignIdsAndSetAuditFields(familyMember);
+            }
+        }
+
         return familyTree;
     }
 

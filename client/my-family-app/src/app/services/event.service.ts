@@ -18,7 +18,7 @@ export class EventService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-API-Version': '1.0.0',
-      'Authorization': 'Basic ' + btoa('john:12345')
+      'Authorization': 'Basic ' + btoa('john@doe.com:123456')
     });
 
     console.log(`Event payload: ${JSON.stringify(event)}`, event);

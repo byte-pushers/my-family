@@ -18,15 +18,12 @@ export class FamilyTreeService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-API-Version': '1.0.0',
-      'Authorization': 'Basic ' + btoa('john:12345')
+      'Authorization': 'Basic ' + btoa('john@doe.com:123456')
     });
   }
 
   // Method to submit the family tree data
   public create(payload: FamilyTreeRequestPayload): Observable<any> {
-
-    console.log(`payload: ${JSON.stringify(payload)}`, payload);
-
     return this.http.post<any>(this.apiBaseUrl + '/family-trees', payload, {
       headers: this.getHeaders()
     }).pipe(
@@ -36,16 +33,17 @@ export class FamilyTreeService {
 
   // GET - Retrieve family tree by ID
   public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
-    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`)
-      .pipe(
-        catchError(error => {
-          if (error.status === 404) {
-            // Handle not found
-            console.error('Family tree not found:', error);
-          }
-          return throwError(() => error);
-        })
-      );
+    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          // Handle not found
+          console.error('Family tree not found:', error);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   private handleError(error: any): Observable<never> {

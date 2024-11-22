@@ -1,6 +1,6 @@
 package com.bytepushers.family.controller;
 
-import com.bytepushers.family.model.FamilyMember;
+// import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.service.FamilyTreeService;
 import com.bytepushers.family.api.ApiResponse;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
-@CrossOrigin
+@CrossOrigin(origins="*")
 public class FamilyTreeController {
 
     private static final Logger logger = LoggerFactory.getLogger(FamilyTreeController.class);
@@ -32,6 +32,7 @@ public class FamilyTreeController {
     public FamilyTreeController(@Qualifier("familyTreeMockService") FamilyTreeService familyTreeService) {
         this.familyTreeService = familyTreeService;
     }
+
     // Simple GET test endpoint
     @GetMapping("/ping")
     public ResponseEntity<String> ping(Authentication authentication) {
@@ -62,7 +63,7 @@ public class FamilyTreeController {
         }
     }
 
-/*    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<FamilyTree> getFamilyTree(@PathVariable Integer id) {
         logger.info("Attempting to get family tree with id: {}", id);
         try {
@@ -79,12 +80,81 @@ public class FamilyTreeController {
             return ResponseEntity.internalServerError().build();
         }
     }*/
-@GetMapping("/{id}")
-public FamilyMember getFamilyMemberWithChildren(@PathVariable Integer id) {
-    return familyTreeService.getFamilyMemberWithChildren(id);
-}
+    /*@GetMapping("/{id}")
+    public FamilyMember getFamilyMemberWithChildren(@PathVariable Integer id) {
+        return familyTreeService.getFamilyMemberWithChildren(id);
+    }*/
 
-
-
-
+    @GetMapping("/{id}")
+    public String getFamilyMemberWithChildren(@PathVariable Integer id) {
+        return """
+                {
+                    "userId": 1,
+                    "transactionId:": "transaction-id-value",
+                    "familyTreeId": 32,
+                    "familyMembers": [
+                        {
+                            "relationship": "Father",
+                            "person": {
+                                "firstName": "John",
+                                "lastName": "Doe",
+                                "birthDate": "1970-01-01",
+                                "gender": "Male",
+                                "familyMembers": [
+                                    {
+                                        "relationship": "Son",
+                                        "person": {
+                                            "firstName": "Mike",
+                                            "lastName": "Doe",
+                                            "birthDate": "2000-05-12",
+                                            "gender": "Male",
+                                            "familyMembers": [],
+                                            "createdBy": "adminUser",
+                                            "createdDate": "2024-10-16T10:00:00Z"
+                                        },
+                                        "createdBy": "adminUser",
+                                        "createdDate": "2024-10-16T10:00:00Z"
+                                    },
+                                    {
+                                        "relationship": "Daughter",
+                                        "person": {
+                                            "firstName": "Anna",
+                                            "lastName": "Doe",
+                                            "birthDate": "2005-08-20",
+                                            "gender": "Female",
+                                            "familyMembers": [
+                                                {
+                                                    "relationship": "Child",
+                                                    "person": {
+                                                        "firstName": "Emily",
+                                                        "lastName": "Smith",
+                                                        "birthDate": "2023-03-15",
+                                                        "gender": "Female",
+                                                        "familyMembers": []
+                                                    },
+                                                    "createdBy": "adminUser",
+                                                    "createdDate": "2024-10-16T10:00:00Z"
+                                                }
+                                            ],
+                                            "createdBy": "adminUser",
+                                            "createdDate": "2024-10-16T10:00:00Z"
+                                        },
+                                        "createdBy": "adminUser",
+                                        "createdDate": "2024-10-16T10:00:00Z"
+                                    }
+                                ],\s
+                                "createdBy": "adminUser",
+                                "createdDate": "2024-10-16T10:00:00Z"
+                            }
+                        }
+                    ],
+                    "parentType": "Nuclear",
+                    "parentName": "Smith Family",
+                    "grandParentType": "Extended",
+                    "grandParentName": "Doe Family",
+                    "createdBy": "adminUser",
+                    "createdDate": "2024-10-16T10:00:00Z"
+                }
+            """;
+    }
 }
