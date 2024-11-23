@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, IonContent } from '@ionic/angular';
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
+import {RouterLink} from "@angular/router";
 
 interface ChatMessage {
   id: string;
@@ -26,13 +27,13 @@ interface ChatThread {
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, FooterNavigationComponent]
+  imports: [IonicModule, CommonModule, FormsModule, FooterNavigationComponent, RouterLink]
 })
 export class ChatPage {
   @ViewChild(IonContent) content?: IonContent;
 
   selectedThread?: ChatThread;
-  newMessage = '';
+  newMessage: string | undefined = '';
 
   // Mock data
   mockThreads: ChatThread[] = [

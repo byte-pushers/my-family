@@ -1,0 +1,44 @@
+<!-- new-message.page.html -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <ion-buttons slot="start">
+        <ion-button (click)="cancel()" class="text-blue-600">Cancel</ion-button>
+      </ion-buttons>
+      <ion-title class="text-center text-2xl font-semibold">New Message</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-4">
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="filterContacts()"
+        placeholder="To:"
+        class="ion-no-padding">
+      </ion-searchbar>
+    </div>
+
+    <div class="bg-white rounded-lg shadow">
+      <div class="py-2 px-4 border-b">
+        <h2 class="text-sm font-medium text-gray-500">Suggested</h2>
+      </div>
+
+      <ion-list lines="full" class="ion-no-padding">
+        <ion-item *ngFor="let contact of filteredContacts"
+                  (click)="selectContact(contact)"
+                  class="py-2 cursor-pointer hover:bg-gray-50">
+          <ion-avatar slot="start">
+            <img [src]="contact.avatar" [alt]="contact.name">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="font-medium">{{contact.name}}</h2>
+            <p class="text-gray-500">{{contact.relation}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>
