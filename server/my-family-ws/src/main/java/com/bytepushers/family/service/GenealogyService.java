@@ -1,6 +1,8 @@
 package com.bytepushers.family.service;
 
 import com.bytepushers.family.model.FamilyMember;
+import com.bytepushers.family.model.FamilyTree;
+import com.bytepushers.family.model.User;
 import com.bytepushers.family.repo.FamilyMemberRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -34,6 +36,15 @@ public class GenealogyService implements FamilyTreeService {
     public GenealogyService(FamilyMemberRepository familyMemberRepository) {
         this.familyMemberRepository = familyMemberRepository;
     }
+/*
+// TODO: accept userId in this method.
+
+// TODO: Do validation check to make sure the userId is and actual user/person.  If not an existing user/person throw exception
+
+// TODO: find user/person by id
+
+// TODO: assign user to the top level family member.
+*/
 
     /**
      * Creates a family tree by saving the provided list of family members.
@@ -44,48 +55,60 @@ public class GenealogyService implements FamilyTreeService {
      *
      * @param topLevelFamilyMembers the list of root family members to create
      * @return a flattened list of all saved family members
-     * @throws IllegalArgumentException if the provided list is null
+     * @throws IllegalArgumentException if the provided list is null or userId is invalid
      */
     @Transactional
     @Override
-    public List<FamilyMember> createFamilyTree(List<FamilyMember> topLevelFamilyMembers/*, Long userId, Long familyTreeId*/) { // TODO: accept userId in this method.
-        // TODO: Do validation check to make sure the userId is and actual user/person.  If not an existing user/person throw exception
-
+    public List<FamilyMember> createFamilyTree(List<FamilyMember> topLevelFamilyMembers) {
         if (topLevelFamilyMembers == null) {
             throw new IllegalArgumentException("FamilyTree cannot be null");
         }
 
-        // TODO: find user/person by id
-
-        List<FamilyMember> savedFamilyMembers = new ArrayList<>();
-        for (FamilyMember topLevelFamilyMember : topLevelFamilyMembers) {
-            // TODO: assign user to the top level family member.
-            FamilyMember familyMember = saveFamilyMember(topLevelFamilyMember); // Save root and nested members
-            saveFamilyMemberChildren(familyMember);
-
-            savedFamilyMembers.addAll(flattenFamilyMembers(topLevelFamilyMember)); // Flatten hierarchy
+        // Validate the userId
+        Optional<User> user = user.findById(userId);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("Invalid userId: User does not exist.");
         }
+
+        // Initialize list to store saved family members
+        List<FamilyMember> savedFamilyMembers = new ArrayList<>();
+
+        for (FamilyMember topLevelFamilyMember : topLevelFamilyMembers) {
+            // Assign userId and familyTreeId to the top-level family member
+            topLevelFamilyMember.setCreatedBy(String.valueOf(userId));
+            topLevelFamilyMember.setFamilyTreeId(familyTreeId);
+
+            // Save the top-level family member
+            FamilyMember savedFamilyMember = saveFamilyMember(topLevelFamilyMember);
+
+            // Save the children of the top-level family member recursively
+            saveFamilyMemberChildren(savedFamilyMember);
+
+            // Flatten and collect all family members (top-level + children)
+            savedFamilyMembers.addAll(flattenFamilyMembers(savedFamilyMember));
+        }
+
         return savedFamilyMembers;
     }
 
     /**
      * Recursively saves a family member and its nested family members.
      *
-     * @param member   the family member to save
-     * @param parentId
+     * @param parentFamilyMember the family member whose children need to be saved
      */
-    private FamilyMember saveFamilyMember(FamilyMember member) {
-        return familyMemberRepository.save(member);
-    }
-
     private void saveFamilyMemberChildren(FamilyMember parentFamilyMember) {
-        if (parentFamilyMember.getPerson().getFamilyMembers() != null && parentFamilyMember.getPerson().getFamilyMembers().size() > 0) {
-            for (FamilyMember familyMemberChild : parentFamilyMember.getPerson().getFamilyMembers()) {
-                // nestedMember.setPerson(savedMember.getPerson());
-                familyMemberChild.setParentId(parentFamilyMember.getId());
-                FamilyMember savedChildFamilyMember = saveFamilyMember(familyMemberChild);
-                familyMemberChild.setId(savedChildFamilyMember.getId());
-                saveFamilyMemberChildren(familyMemberChild);
+        if (parentFamilyMember.getPerson().getFamilyMembers() != null && !parentFamilyMember.getPerson().getFamilyMembers().isEmpty()) {
+            for (FamilyMember child : parentFamilyMember.getPerson().getFamilyMembers()) {
+                // Set parent reference
+                child.setParentId(parentFamilyMember.getId());
+                child.setCreatedBy(parentFamilyMember.getCreatedBy());
+                child.setFamilyTreeId(parentFamilyMember.getFamilyTreeId());
+
+                // Save child member
+                FamilyMember savedChild = saveFamilyMember(child);
+
+                // Recursively save nested children
+                saveFamilyMemberChildren(savedChild);
             }
         }
     }
@@ -106,6 +129,16 @@ public class GenealogyService implements FamilyTreeService {
             }
         }
         return flatList;
+    }
+
+    /**
+     * Saves a family member to the repository.
+     *
+     * @param member the family member to save
+     * @return the saved family member entity
+     */
+    private FamilyMember saveFamilyMember(FamilyMember member) {
+        return familyMemberRepository.save(member);
     }
 
     /**
@@ -188,5 +221,20 @@ public class GenealogyService implements FamilyTreeService {
             throw new RuntimeException("FamilyTree with id " + id + " not found");
         }
         familyMemberRepository.deleteById(id);
+    }
+
+    @Override
+    public FamilyTree createFamilyTree(FamilyTree familyTree) {
+        return null;
+    }
+
+    @Override
+    public FamilyTree getFamilyTree(Integer id) {
+        return null;
+    }
+
+    @Override
+    public FamilyMember getFamilyMemberWithChildren(Integer id) {
+        return null;
     }
 }

@@ -9,8 +9,8 @@ import java.util.List;
  * Represents the payload for creating or updating a family tree.
  * <p>
  * This class is used as a data transfer object (DTO) to encapsulate the information
- * required for creating or updating a family tree. It includes the user ID and a list of
- * {@link FamilyMember} entities.
+ * required for creating or updating a family tree. It includes the user ID, family tree ID,
+ * and a list of {@link FamilyMember} entities.
  * </p>
  */
 public class FamilyTreeRequestPayload {
@@ -21,6 +21,13 @@ public class FamilyTreeRequestPayload {
      */
     @NotNull
     private Long userId;
+
+    /**
+     * The unique identifier of the family tree.
+     * Must not be null.
+     */
+    @NotNull
+    private Long familyTreeId;
 
     /**
      * The list of family members in the family tree.
@@ -39,13 +46,15 @@ public class FamilyTreeRequestPayload {
     }
 
     /**
-     * Constructs a new {@link FamilyTreeRequestPayload} with the specified user ID and family members.
+     * Constructs a new {@link FamilyTreeRequestPayload} with the specified user ID, family tree ID, and family members.
      *
      * @param userId         the unique identifier of the user
+     * @param familyTreeId   the unique identifier of the family tree
      * @param familyMembers  the list of family members in the family tree
      */
-    public FamilyTreeRequestPayload(Long userId, List<FamilyMember> familyMembers) {
+    public FamilyTreeRequestPayload(Long userId, Long familyTreeId, List<FamilyMember> familyMembers) {
         this.userId = userId;
+        this.familyTreeId = familyTreeId;
         this.familyMembers = familyMembers;
     }
 
@@ -56,6 +65,15 @@ public class FamilyTreeRequestPayload {
      */
     public Long getUserId() {
         return userId;
+    }
+
+    /**
+     * Gets the family tree ID associated with the family tree.
+     *
+     * @return the family tree ID
+     */
+    public Long getFamilyTreeId() {
+        return familyTreeId;
     }
 
     /**

@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface FamilyMemberRepository extends JpaRepository<FamilyMember, Long> {
-   /*@Query("SELECT f FROM FamilyMember f LEFT JOIN FETCH f.familyMembers fm WHERE f.id = :id")
-    FamilyMember findFamilyMemberWithChildren(@Param("id") Long id);*/
+
 }

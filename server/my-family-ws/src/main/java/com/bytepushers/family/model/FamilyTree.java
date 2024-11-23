@@ -9,6 +9,12 @@ import java.util.List;
 @Table(name = "family_tree_member")
 public class FamilyTree extends BaseIdGeneratedValueEntity {
 
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Column(name = "relationship")
     private String relationship;
 
@@ -30,6 +36,14 @@ public class FamilyTree extends BaseIdGeneratedValueEntity {
     }
 
     // Getters and Setters
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
     public String getRelationship() {
         return relationship;
     }

@@ -53,7 +53,7 @@ public class FamilyMember extends BaseIdGeneratedValueEntity {
         this.person = person;
     }
 
-    public FamilyMember(Long id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers) {
+    public FamilyMember(Long id, String relationship, Person person, FamilyMember parent, List<FamilyMember> familyMembers,String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate ) {
         super(id, createdBy, updatedBy, createdDate, updatedDate);
         this.relationship = relationship;
         this.person = person;
