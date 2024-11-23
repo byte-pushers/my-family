@@ -6,13 +6,14 @@ import {FeaturedEventComponent} from "../../components/featured-event/featured-e
 import {IonicModule} from "@ionic/angular";
 import {Announcement} from "../../models/announcement.model";
 import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
+import {SearchBarComponent} from "../../components/shared/search-bar/search-bar.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, AnnouncementsComponent, FeaturedEventComponent, FooterNavigationComponent]
+  imports: [IonicModule, CommonModule, FormsModule, AnnouncementsComponent, FeaturedEventComponent, FooterNavigationComponent, SearchBarComponent]
 })
 export class HomePage implements OnInit {
   featuredEvent = {
