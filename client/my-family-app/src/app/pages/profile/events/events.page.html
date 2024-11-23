@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile" text="Back to profile"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Search Bar -->
+    <div class="py-2">
+      <ion-searchbar
+        placeholder="Search..."
+        class="rounded-lg"
+      ></ion-searchbar>
+    </div>
+
+    <!-- My Events Section -->
+    <div class="mt-6">
+      <h2 class="text-xl sm:text-2xl font-semibold mb-4">My Family Events</h2>
+
+      <div class="space-y-4">
+        <div *ngFor="let event of getMyEvents()"
+             class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-grow">
+              <h3 class="text-base sm:text-lg font-medium text-gray-900">{{ event.title }}</h3>
+              <p class="text-pink-500 text-xs sm:text-sm mt-1">{{ event.date }} {{ event.time }}</p>
+              <p class="text-gray-500 text-xs sm:text-sm mt-1">{{ event.location }}</p>
+            </div>
+            <div class="flex justify-end gap-2 mt-3 sm:mt-0">
+              <ion-button fill="outline" size="small" class="text-xs sm:text-sm" (click)="shareEvent(event)">
+                Share
+              </ion-button>
+              <ion-button color="primary" size="small" class="text-xs sm:text-sm" (click)="editEvent(event)">
+                Edit
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Family Events Section -->
+    <div class="mt-8 pb-24">
+      <h2 class="text-xl sm:text-2xl font-semibold mb-4">All Family Events</h2>
+
+      <div class="space-y-4">
+        <div *ngFor="let event of getAllEvents()"
+             class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-grow">
+              <h3 class="text-base sm:text-lg font-medium text-gray-900">{{ event.title }}</h3>
+              <p class="text-pink-500 text-xs sm:text-sm mt-1">{{ event.date }} {{ event.time }}</p>
+              <p class="text-gray-500 text-xs sm:text-sm mt-1">{{ event.location }}</p>
+            </div>
+            <div class="flex justify-end gap-2 mt-3 sm:mt-0">
+              <ion-button fill="outline" size="small" class="text-xs sm:text-sm" (click)="shareEvent(event)">
+                Share
+              </ion-button>
+              <ion-button color="primary" size="small" class="text-xs sm:text-sm" (click)="editEvent(event)">
+                Edit
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Event Button -->
+  <div class="fixed bottom-20 left-0 right-0 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <ion-button
+        expand="block"
+        (click)="navigateToCreateEvent()"
+        class="w-full"
+      >
+        Create Event
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>

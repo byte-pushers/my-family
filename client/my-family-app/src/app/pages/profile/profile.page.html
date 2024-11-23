@@ -1,9 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex gap-2 py-4">
-        <ion-chip class="bg-blue-50 text-blue-800">Edit Profile</ion-chip>
-        <ion-chip class="bg-blue-50 text-blue-800">Media</ion-chip>
+      <div class="flex flex-wrap gap-2 py-4">
+        <ion-chip class="bg-blue-100 text-blue-800 text-sm sm:text-base flex-grow sm:flex-grow-0" [routerLink]="['/family-tree']">My Tree</ion-chip>
+        <ion-chip class="bg-blue-100 text-blue-800 text-sm sm:text-base flex-grow sm:flex-grow-0" [routerLink]="['/events']">Events</ion-chip>
+        <ion-chip class="bg-blue-100 text-blue-800 text-sm sm:text-base flex-grow sm:flex-grow-0" [routerLink]="['/edit-profile']">Edit Profile</ion-chip>
+        <ion-chip class="bg-blue-100 text-blue-800 text-sm sm:text-base flex-grow sm:flex-grow-0" [routerLink]="['/media']">Media</ion-chip>
       </div>
     </div>
   </ion-toolbar>
@@ -15,11 +17,14 @@
     <div class="flex flex-col items-center justify-center py-6">
       <div class="relative">
         <ion-avatar class="w-32 h-32 border-2 border-blue-800">
-          <img alt="Profile picture" src="https://ionicframework.com/docs/img/demos/avatar.svg" class="w-full h-full object-cover" />
+          <img
+            [src]="profileData.profileImage || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+            alt="Profile picture"
+            class="w-full h-full object-cover" />
         </ion-avatar>
       </div>
 
-      <div class="flex justify-center gap-4 mt-4">
+<!--      <div class="flex justify-center gap-4 mt-4">
         <ion-button fill="clear" (click)="uploadPhoto()" class="text-blue-800">
           <ion-icon name="cloud-upload-outline" slot="icon-only" class="text-xl"></ion-icon>
         </ion-button>
@@ -32,11 +37,14 @@
         <ion-button fill="clear" class="text-blue-800">
           <ion-icon name="images-outline" slot="icon-only" class="text-xl"></ion-icon>
         </ion-button>
-      </div>
+      </div>-->
 
       <h2 class="text-xl font-semibold text-blue-800 mt-4">
-        {{ profileData.firstName }} {{ profileData.lastName }}
+        {{ profileData.firstName }} {{ profileData.middleName }} {{ profileData.lastName }}
       </h2>
+      <p class="text-sm text-gray-500 mt-1" *ngIf="profileData.nickName">
+        "{{ profileData.nickName }}"
+      </p>
     </div>
 
     <!-- Profile Details Section -->
@@ -52,6 +60,14 @@
             <div>
               <div class="text-sm text-blue-500">Age</div>
               <div class="text-base text-gray-800">{{ profileData.age }}</div>
+            </div>
+            <div>
+              <div class="text-sm text-blue-500">Email</div>
+              <div class="text-base text-gray-800">{{ profileData.email }}</div>
+            </div>
+            <div>
+              <div class="text-sm text-blue-500">Phone</div>
+              <div class="text-base text-gray-800">{{ profileData.phone || 'Not provided' }}</div>
             </div>
             <div>
               <div class="text-sm text-blue-500">Address</div>
@@ -100,6 +116,12 @@
         </ion-label>
       </ion-item>
     </ion-list>
+  </div>
+
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <ion-button expand="block" color="danger" (click)="logout()" class="font-medium">
+      Logout
+    </ion-button>
   </div>
 </ion-content>
 
