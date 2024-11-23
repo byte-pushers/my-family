@@ -4,7 +4,7 @@ import { FamilyMember } from './family-member.model';
 import {RelationshipType} from "./relationship-type";
 
 // Raw person data from API before instantiation
-interface PersonResponseData {
+export interface PersonResponseData {
   id: number;
   createdBy: string;
   updatedBy: string | null;

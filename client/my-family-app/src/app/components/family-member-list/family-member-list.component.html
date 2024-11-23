@@ -1,0 +1,77 @@
+<div class="w-full max-w-[700px] mx-auto p-4">
+  <!-- Header with controls -->
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+    <h2 class="text-xl font-semibold text-gray-800">Family Members</h2>
+
+    <div class="flex items-center gap-4 w-full md:w-auto">
+      <ion-select
+        [(ngModel)]="sortOption"
+        interface="popover"
+        class="w-32">
+        <ion-select-option value="name">Name</ion-select-option>
+        <ion-select-option value="relationship">Relation</ion-select-option>
+      </ion-select>
+    </div>
+  </div>
+
+  <!-- List Container -->
+  <ion-list class="rounded-lg shadow bg-white">
+    <ng-container *ngIf="sortedMembers.length > 0; else noMembers">
+      <ion-item-sliding *ngFor="let member of sortedMembers">
+        <ion-item
+          [class.selected-member]="member.getId() === selectedMemberId"
+          (click)="onMemberClick(member)"
+          class="hover:bg-gray-50 transition-colors">
+
+          <!-- Profile Image/Initial -->
+          <div class="w-12 h-12 rounded-full overflow-hidden mr-4 flex-shrink-0">
+            <div class="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 font-semibold">
+              {{ getInitials(member) }}
+            </div>
+          </div>
+
+          <!-- Member Info -->
+          <div class="flex-grow">
+            <h3 class="font-medium text-gray-900">
+              {{member.person.firstName}} {{member.person.lastName}}
+            </h3>
+            <div class="text-sm text-gray-600 flex gap-3">
+              <span>{{member.relationship}}</span>
+              <span>Age: {{calculateAge(member.person.birthDate)}}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div slot="end" class="flex gap-2">
+            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
+              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
+              <ion-icon slot="icon-only" name="git-merge-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+
+        <!-- Sliding Options -->
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="$event.stopPropagation(); ">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="$event.stopPropagation();">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ng-container>
+
+    <ng-template #noMembers>
+      <div class="p-8 text-center text-gray-500">
+        <ion-icon name="people-outline" class="text-4xl mb-2"></ion-icon>
+        <p>No family members found.</p>
+        <ion-button fill="clear" size="small" class="mt-2">
+          Add Family Member
+        </ion-button>
+      </div>
+    </ng-template>
+  </ion-list>
+</div>

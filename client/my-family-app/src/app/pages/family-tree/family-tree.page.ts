@@ -1,75 +1,119 @@
-import {Component, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {
-  FamilyTreeVisualizationComponent
-} from "../../components/family-tree-visualization/family-tree-visualization.component";
-import * as d3 from 'd3';
-import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
-import {IonicModule} from "@ionic/angular";
-import {FamilyTreeService} from "../../services/family-tree.service";
-import {FamilyTreeResponse} from "../../models/family-tree/family-tree-response";
-
+// family-tree.page.ts
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from "@ionic/angular";
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { FamilyTreeVisualizationComponent } from "../../components/family-tree-visualization/family-tree-visualization.component";
+import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
+import { FamilyTreeService } from "../../services/family-tree.service";
+import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
+import {createFamilyMemberFromResponse, FamilyTreeResponse} from "../../models/family-tree/family-tree-response";
+import { FamilyMember } from '../../models/family-tree/family-member.model';
+import { Person } from '../../models/family-tree/person';
+import { RelationshipType } from '../../models/family-tree/relationship-type';
+import {FamilySearchService} from "../../services/family-search.service";
+import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 
 @Component({
   selector: 'app-family-tree',
   templateUrl: './family-tree.page.html',
   styleUrls: ['./family-tree.page.scss'],
   standalone: true,
-  imports: [ IonicModule, FooterNavigationComponent, FamilyTreeVisualizationComponent, CommonModule, FormsModule ]
+  imports: [
+    IonicModule,
+    FooterNavigationComponent,
+    FamilyTreeVisualizationComponent,
+    CommonModule,
+    FormsModule,
+    FamilyMemberListComponent
+  ]
 })
-export class FamilyTreePage {
-  // Reference to the SVG group or nodes (modify as needed)
-  @ViewChild(FamilyTreeVisualizationComponent) familyTreeVisualization!: FamilyTreeVisualizationComponent;
+// family-tree.page.ts
+// family-tree.page.ts
+export class FamilyTreePage implements OnInit, OnDestroy {
+  @ViewChild(FamilyTreeVisualizationComponent)
+  familyTreeVisualization!: FamilyTreeVisualizationComponent;
 
   familyTreeData: FamilyTreeResponse | null = null;
-  loading: boolean = true;
+  familyMembers: FamilyMember[] = [];
+  filteredMembers: FamilyMember[] = [];
+  selectedId?: number;
+  loading = true;
   error: string | null = null;
+  searchQuery = '';
 
-  constructor(private familyTreeService: FamilyTreeService) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private familyTreeService: FamilyTreeService,
+    private familySearchService: FamilySearchService
+  ) {
+    // Subscribe to search results
+    this.familySearchService.getSearchResults()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(results => {
+        this.filteredMembers = results;
+      });
+
+    // Subscribe to selected member
+    this.familySearchService.getSelectedMember()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(member => {
+        if (member) {
+          this.selectedId = member.getId();
+        }
+      });
+  }
 
   ngOnInit() {
-    console.log('FamilyTreePage: ngOnInit');
     this.loadFamilyTree();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadFamilyTree() {
-    console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
     this.error = null;
 
-    // Hardcoded ID for now - could come from user context later
-    const treeId = 1; // TODO: Get from user context
-    console.log('FamilyTreePage: Fetching tree with ID:', treeId);
+    try {
+      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
 
-    this.familyTreeService.getFamilyTree(treeId).subscribe({
-      next: (response) => {
-        console.log('FamilyTreePage: API Response:', response);
-        this.familyTreeData = response;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('FamilyTreePage: Error loading family tree:', err);
-        this.error = 'Failed to load family tree. Please try again.';
-        this.loading = false;
-      }
-    });
+      // Convert response to FamilyMember instances for the list
+      this.familyMembers = MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(memberData =>
+        createFamilyMemberFromResponse(memberData)
+      );
+
+      this.familySearchService.searchMembers('', this.familyMembers);
+      this.loading = false;
+    } catch (error) {
+      console.error('Error loading mock data:', error);
+      this.error = 'Failed to load family tree data.';
+      this.loading = false;
+    }
   }
 
-  onSearch(event: Event): void {
-    const query = (event.target as HTMLInputElement).value.toLowerCase();
-    const nodes = d3.selectAll('.node'); // Adjust if the node class is different
+  onSearch(event: CustomEvent): void {
+    const query = event.detail.value?.toLowerCase() ?? '';
+    this.searchQuery = query;
+    this.familySearchService.searchMembers(query, this.familyMembers);
 
-    // Highlight nodes that match the query
-    nodes.each(function(d: any) {
-      const nodeElement = d3.select(this);
-      if (d.data.name.toLowerCase().includes(query)) {
-        nodeElement.select('circle').attr('stroke', 'orange').attr('stroke-width', 4); // Highlight circle
-        nodeElement.select('text').style('font-weight', 'bold'); // Highlight text
-      } else {
-        nodeElement.select('circle').attr('stroke', '#b3a2c8').attr('stroke-width', 2); // Reset circle
-        nodeElement.select('text').style('font-weight', 'normal'); // Reset text
+    // Highlight matching nodes in tree visualization
+    if (this.familyTreeVisualization) {
+      this.familyTreeVisualization.highlightNodes(query);
+    }
+  }
+
+  onMemberSelected(memberId: number) {
+    const member = this.familyMembers.find(m => m.getId() === memberId);
+    if (member) {
+      this.familySearchService.selectMember(member);
+      if (this.familyTreeVisualization) {
+        this.familyTreeVisualization.focusNode(memberId);
       }
-    });
+    }
   }
 }
