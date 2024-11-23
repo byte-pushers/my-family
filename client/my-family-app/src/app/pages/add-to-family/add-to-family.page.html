@@ -42,7 +42,10 @@
 
       <!-- Buttons -->
       <div class="mt-3 flex items-center justify-center gap-x-6">
-        <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200" [routerLink]="['/create-account']">
+        <button
+          type="button"
+          class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200"
+          (click)="goBack()">
           Back
         </button>
         <button type="submit" class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow" (click)="nextStep()">
@@ -90,12 +93,18 @@
       </div>
 
       <div class="mt-3 flex items-center justify-center gap-x-6">
-        <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200" (click)="previousStep()">
+        <button
+          type="button"
+          class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200"
+          (click)="goBack()">
           Back
         </button>
         <!-- TODO: route to family tree and create FamilyMember objects for all family members submitted -->
         <!-- Add to family button for step 3 -->
-        <button type="submit" class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow" (click)="addToFamilyButton()" [routerLink]="['/family-tree']">
+        <button
+          type="submit"
+          class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow"
+          (click)="addToFamilyButton()">
           Add to family
         </button>
         <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearButton()">

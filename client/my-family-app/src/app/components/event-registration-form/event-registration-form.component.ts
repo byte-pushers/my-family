@@ -60,7 +60,9 @@ export class EventRegistrationFormComponent implements OnInit {
     this.ageRange = Array.from({length: 101}, (_, i) => i);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.resetForm();
+  }
 
   selectPaymentMethod(method: 'card' | 'paypal'): void {
     this.paymentMethod = method;
@@ -97,5 +99,14 @@ export class EventRegistrationFormComponent implements OnInit {
 
   returnHome() {
     this.router.navigate(['/home']);
+  }
+
+  resetForm() {
+    // Reset form data
+    this.registrationForm.reset();
+    // Reset step counter
+    this.currentStep = 0;
+    // Reset payment method
+    this.paymentMethod = 'card';
   }
 }

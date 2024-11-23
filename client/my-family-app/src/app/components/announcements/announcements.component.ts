@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Announcement} from "../../models/announcement.model";
 import {IonicModule} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-announcements',
@@ -13,12 +14,15 @@ import {CommonModule} from "@angular/common";
 export class AnnouncementsComponent  implements OnInit {
   @Input() announcements: Announcement[] = [];
 
+
   handleRSVP(announcement: Announcement) {
-    // Handle RSVP logic here
+    this.router.navigate(['/event-signup'], {
+      state: { eventData: announcement }
+    });
     console.log('RSVP for:', announcement.title);
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     console.log('Received announcements:', this.announcements);

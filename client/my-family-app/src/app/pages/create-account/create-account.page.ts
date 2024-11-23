@@ -14,6 +14,8 @@ import { AccountInfo } from "../../models/account-info";
 import { Address } from "../../models/address"
 import { PhoneNumber } from "../../models/phone-number";
 import {create} from "ionicons/icons";
+import {Router} from "@angular/router";
+import { ToastController }  from "@ionic/angular";
 
 @Component({
   selector: 'app-create-account',
@@ -31,7 +33,12 @@ export class CreateAccountPage implements OnInit {
   selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
   file: File | null = null; // The selected file, it is a type of javascript api and file here is object
 //   private apiUrl = 'http://localhost:8080/api/create-account'; // Backend API URL
-  constructor(private createAccountService: CreateAccountService) {
+  constructor(
+    private createAccountService: CreateAccountService,
+    private router: Router,
+    private toastCtrl: ToastController,
+
+  ) {
     this.profileForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
       lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
@@ -46,10 +53,12 @@ export class CreateAccountPage implements OnInit {
 
   // Method to handle form submission
   onSubmit() {
-    this.submitted = true;  // Set the flag to true when form is submitted
+    // Comment out validation and API logic for now
+    /*
+    this.submitted = true;
     console.log(this.profileForm.getRawValue())
     if (this.profileForm.valid) {
-      console.log(this.profileForm.value); // Process the form data
+      console.log(this.profileForm.value);
 
       const address = new Address(
         this.profileForm.get("address")?.value,
@@ -78,12 +87,38 @@ export class CreateAccountPage implements OnInit {
 
       const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
 
-      this.createAccountService.createAccount(createAccountRequestPayload).subscribe(response => {
+      this.createAccountService.createAccount(createAccountRequestPayload).subscribe(async response => {
         console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
+    */
+
+    // Just show success toast and navigate
+    this.toastCtrl.create({
+      message: 'Account Successfully Created!',
+      duration: 2000,
+      position: 'top',
+      color: 'success'
+    }).then(toast => toast.present());
+
+    // Navigate to subscription plan page
+    this.router.navigate(['/subscription-plan']);
+
+    /*
+      },
+        async error => {
+          console.error('Account creation failed:', error);
+          const toast = await this.toastCtrl.create({
+            message: 'Account creation failed. Please try again.',
+            duration: 2000,
+            position: 'top',
+            color: 'danger'
+          });
+          await toast.present();
+
       })
     } else {
       console.log('Account creation failed. Try Again.');
     }
+    */
   }
 
 // Handle file input change
@@ -111,4 +146,8 @@ createAccount(accountData: any): Observable<any> {
     return this.http.post(this.apiUrl, accountData);
   } */
   ngOnInit() {}
+
+  goBack() {
+    this.router.navigate(['/welcome-page']);
+  }
 }
