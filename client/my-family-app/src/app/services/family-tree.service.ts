@@ -18,7 +18,7 @@ export class FamilyTreeService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-API-Version': '1.0.0',
-      'Authorization': 'Basic ' + btoa('john:12345')
+      'Authorization': 'Basic ' + btoa('john@doe.com:123456')
     });
   }
 
@@ -35,16 +35,18 @@ export class FamilyTreeService {
 
   // GET - Retrieve family tree by ID
   public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
-    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`)
-      .pipe(
-        catchError(error => {
-          if (error.status === 404) {
-            // Handle not found
-            console.error('Family tree not found:', error);
-          }
-          return throwError(() => error);
-        })
-      );
+    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
+      headers: this.getHeaders()
+    })
+    .pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          // Handle not found
+          console.error('Family tree not found:', error);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   // UPDATE - Adding additional family members after initial creation

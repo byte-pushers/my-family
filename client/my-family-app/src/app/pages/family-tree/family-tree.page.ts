@@ -88,7 +88,9 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.error = null;
 
     try {
-      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
+      this.familyTreeService.getFamilyTree(1).subscribe(familyTree => {
+        this.familyTreeData = familyTree;
+      });
 
       // Convert response to FamilyMember instances for the list
       this.familyMembers = MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(memberData =>
