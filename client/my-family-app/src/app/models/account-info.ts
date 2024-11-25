@@ -1,5 +1,5 @@
-import { Address } from "./address";
-import { PhoneNumber } from "./phone-number";
+import { Address } from './address';
+import { PhoneNumber } from './phone-number';
 
 /**
  * Represents account information for a user

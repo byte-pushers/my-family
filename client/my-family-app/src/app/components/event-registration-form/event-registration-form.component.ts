@@ -46,7 +46,7 @@ export class EventRegistrationFormComponent implements OnInit {
       type: 'clothing',
       available: true,
       category: 'apparel'
-    })
+    }*/{} as MerchandiseItem)
   ];
 
   constructor(private fb: FormBuilder, private router: Router) {

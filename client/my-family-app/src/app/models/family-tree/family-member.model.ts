@@ -7,11 +7,13 @@
  */
 import { BaseDomainModel } from '../base-domain-model';  // Import BaseDomainModel
 import { Person } from './person';                      // Import Person
-import { RelationshipType } from './relationship-type'; // Import RelationshipType
+import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-member';
+import { PersonModel } from './person.model'; // Import RelationshipType
 
-export class FamilyMember extends BaseDomainModel {
-  #relationship: RelationshipType;
-  #person: Person;
+export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
+  readonly #relationship: RelationshipType;
+  readonly #person: Person;
 
   /**
    * Constructs a new FamilyMember instance.
@@ -67,5 +69,9 @@ export class FamilyMember extends BaseDomainModel {
       "relationship": "${this.#relationship}",
       "person": ${this.#person.toString()}
     }`;
+
+    console.log(`FamilyMember: ${s}`);
+
+    return s;
   }
 }

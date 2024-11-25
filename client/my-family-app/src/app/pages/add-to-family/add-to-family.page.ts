@@ -2,7 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { FamilyMember } from "../../models/family-tree/family-member.model";
+import { FamilyMemberModel } from "../../models/family-tree/family-member.model";
 import { RelationshipType } from "../../models/family-tree/relationship-type";
 import { Person } from "../../models/family-tree/person";
 import { today } from "ionicons/icons";
@@ -12,6 +12,9 @@ import { FooterNavigationComponent } from "../../components/shared/footer-naviga
 import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
+import { PersonModel } from '../../models/family-tree/person.model';
+import { FamilyTree } from '../../models/family-tree/family-tree';
+import {FamilyTreeModel} from "../../models/family-tree/family-tree.model";
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.
@@ -145,8 +148,8 @@ export class AddToFamilyPage implements OnInit {
       let firstName = parsedName[0];
       let lastName = parsedName[1];
 
-      const person = new Person(1, firstName, lastName, new Date(1 / 2001));
-      const familyMember = new FamilyMember(1, type, person, 'createdBy', 'updatedBy', new Date(today), new Date(today));
+      const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), 'male', false, [], "system", new Date(), undefined, undefined);
+      const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', new Date(today), 'updatedBy', new Date(today));
       arr.push(familyMember);
     });
   }
@@ -175,16 +178,28 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.auntsForm, this.aunts);
     this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
 
+    const allFamilyMembers: FamilyMemberModel[] = [
+      ...this.parents,
+      ...this.grandparents,
+      ...this.siblings,
+      ...this.spouse,
+      ...this.children,
+      ...this.uncles,
+      ...this.aunts,
+      ...this.cousins
+    ];
     let familyMemberRequestPayload: FamilyTreeRequestPayload;
+    const familyTree: FamilyTreeModel = new FamilyTreeModel({
+      familyMembers: allFamilyMembers
+    });
+
     if (this.spouse[0]) {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
-        this.uncles, this.aunts, this.cousins
+        1, 'transaction-id', {} as FamilyTree
       );
     } else {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, null, this.children,
-        this.uncles, this.aunts, this.cousins
+        1, 'transaction-id', familyTree
       );
     }
 

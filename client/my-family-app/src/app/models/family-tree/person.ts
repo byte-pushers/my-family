@@ -5,8 +5,11 @@
  * @author Danny Amezquita
  */
 
-import { BaseDomainModel } from '../base-domain-model';
-import { FamilyMember } from './family-member.model';
+export interface Person extends BaseModel {
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  familyMembers: FamilyMember[];
 
 /**
  * Class representing a person.
@@ -33,7 +36,7 @@ export class Person extends BaseDomainModel {
     id: number,
     firstName: string,
     lastName: string,
-    birthdate: Date,
+    birthDate: Date,
     familyMembers: FamilyMember[] = [],
     createdBy?: string,
     createdDate?: Date,

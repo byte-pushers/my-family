@@ -68,7 +68,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
    */
   private handleResize() {
     if (this.familyTreeData) {
-      this.createFamilyTree();
+      // this.createFamilyTree();
     }
   }
 
@@ -108,7 +108,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     const rootNode = buildFamilyNode(data);
     console.log('FamilyTreeVisualization: Transformed Root Node:', rootNode);
     return rootNode;
-  }
+  }*/
 
   /**
    * Creates the family tree visualization using D3.js.

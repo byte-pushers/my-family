@@ -11,8 +11,8 @@ import { AgendaItem } from './agenda-item';
  * Class representing an agenda item.
  */
 export class AgendaItemModel implements AgendaItem {
-  timeStart: string;
-  timeEnd: string;
+  startTime: Date;
+  endTime: Date;
   title: string;
   description: string;
 
@@ -21,8 +21,8 @@ export class AgendaItemModel implements AgendaItem {
    * @param {AgendaItem} data - Data to initialize the agenda item.
    */
   constructor(data: AgendaItem) {
-    this.timeStart = data.timeStart;
-    this.timeEnd = data.timeEnd;
+    this.startTime = data.startTime;
+    this.endTime = data.endTime;
     this.title = data.title;
     this.description = data.description;
   }

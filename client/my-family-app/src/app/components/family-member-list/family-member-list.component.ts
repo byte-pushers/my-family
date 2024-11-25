@@ -189,7 +189,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
    */
   onMemberClick(member: FamilyMember): void {
     const id = member.getId();
-    if (id !== undefined) {
+    if (id != null) {
       this.memberSelected.emit(id);
     }
   }

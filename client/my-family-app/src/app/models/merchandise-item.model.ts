@@ -5,6 +5,7 @@
  */
 
 import { MerchandiseItem } from './merchandise-item';
+import { BaseDomainModel } from './base-domain.model';
 
 /**
  * Class representing a merchandise item.
@@ -26,7 +27,7 @@ export class MerchandiseItemModel implements MerchandiseItem {
    * @param {MerchandiseItem} data - Data to initialize the merchandise item.
    */
   constructor(data: MerchandiseItem) {
-    this.id = data.id;
+    super(data as { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date });
     this.name = data.name;
     this.description = data.description;
     this.price = data.price;

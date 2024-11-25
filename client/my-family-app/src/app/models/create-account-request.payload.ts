@@ -1,4 +1,4 @@
-import { AccountInfo } from "./account-info";
+import { AccountInfoModel } from "./account-info.model";
 
 /**
  * Represents the payload for creating an account request.

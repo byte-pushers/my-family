@@ -2,7 +2,7 @@
 
 import { User } from './user';
 import { Role } from './role';
-import { FamilyMember } from './family-tree/family-member.model';
+import { FamilyMemberModel } from './family-tree/family-member.model';
 import { Person } from './family-tree/person';
 import { RelationshipType } from './family-tree/relationship-type';
 import { Permission } from './permission';
@@ -11,7 +11,7 @@ import { Permission } from './permission';
 describe('User Model', () => {
   let user: User;
   let roles: Role[];
-  let familyMembers: FamilyMember[];
+  let familyMembers: FamilyMemberModel[];
 
   beforeEach(() => {
     // Mock data for permissions(array permission)
@@ -51,7 +51,7 @@ describe('User Model', () => {
 
     // Mock data for family members using RelationshipType enum values
     familyMembers = [
-      new FamilyMember(
+      new FamilyMemberModel(
         1,                             // id: number
         RelationshipType.FATHER,       // relationship: RelationshipType
         person1,                       // person: Person
@@ -60,7 +60,7 @@ describe('User Model', () => {
         new Date(),                    // createdDate: Date
         new Date()                     // updatedDate: Date
       ),
-      new FamilyMember(
+      new FamilyMemberModel(
         2,                             // id: number
         RelationshipType.SPOUSE,       // relationship: RelationshipType
         person2,                       // person: Person

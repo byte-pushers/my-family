@@ -9,7 +9,7 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from "@ionic/angular";
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { FamilyTreeVisualizationComponent } from "../../components/family-tree-visualization/family-tree-visualization.component";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { FamilyTreeService } from "../../services/family-tree.service";
@@ -21,6 +21,9 @@ import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilySearchService } from "../../services/family-search.service";
 import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
+import {FamilyMember} from "../../models/family-tree/family-member";
+import {FamilyTreeResponseModel} from "../../models/family-tree/family-tree-response.model";
+import {FamilyTree} from "../../models/family-tree/family-tree";
 
 @Component({
   selector: 'app-family-tree',
@@ -191,7 +194,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.familySearchService.searchMembers(query, allMembers);
 
     if (this.familyTreeVisualization) {
-      this.familyTreeVisualization.highlightNodes(query);
+      // this.familyTreeVisualization.highlightNodes(query);
     }
   }
 

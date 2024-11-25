@@ -11,15 +11,9 @@ import { FamilyMember } from './family-member.model';  // Import the FamilyMembe
  * Class representing the payload for a family tree request.
  */
 export class FamilyTreeRequestPayload {
-  // Private fields for encapsulation
-  readonly #parents: FamilyMember[];
-  readonly #grandparents: FamilyMember[];
-  readonly #siblings: FamilyMember[];
-  readonly #spouse: FamilyMember | null;  // Make spouse optional
-  readonly #children: FamilyMember[] | null;
-  readonly #uncles: FamilyMember[] | null;
-  readonly #aunts: FamilyMember[] | null;
-  readonly #cousins: FamilyMember[] | null;
+  #userId: number;
+  #transactionId: string;
+  #familyTree: FamilyTree;
 
   /**
    * Constructor to initialize the fields.
@@ -189,13 +183,10 @@ export class FamilyTreeRequestPayload {
    * @returns {string} String representation of the family tree request payload.
    */
   public toString(): string {
-    return this.parents.toString() +
-      this.grandparents.toString() +
-      this.siblings.toString() +
-      this.spouse?.toString() +
-      this.children?.toString() +
-      this.uncles?.toString() +
-      this.aunts?.toString() +
-      this.cousins?.toString();
+    return `{
+      "userId": ${this.#userId},
+      "transactionId:": ${this.#transactionId},
+      "familyTree": ${this.familyTree}
+    }`;
   }
 }

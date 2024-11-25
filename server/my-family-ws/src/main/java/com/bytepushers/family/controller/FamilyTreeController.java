@@ -93,12 +93,8 @@ public class FamilyTreeController {
             return ResponseEntity.internalServerError().build();
         }
     }*/
-@GetMapping("/{id}")
-public FamilyMember getFamilyMemberWithChildren(@PathVariable Integer id) {
-    return familyTreeService.getFamilyMemberWithChildren(id);
-}
-
-
-
-
+    @GetMapping("/family-trees/{id}")
+    public String getFamilyMemberWithChildren(@PathVariable Integer id) {
+        return familyTreeService.getFamilyTree(id); // .getFamilyMemberWithChildren(id);
+    }
 }

@@ -28,4 +28,5 @@ export enum RelationshipType {
   AUNT = 'Aunt',
   GRANDPARENT = 'Grandparent',
   OTHER = 'Other',
+  SELF = 'SELF',
 }

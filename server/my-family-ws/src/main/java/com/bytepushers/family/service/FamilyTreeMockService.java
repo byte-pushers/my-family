@@ -28,8 +28,8 @@ public class FamilyTreeMockService implements FamilyTreeService {
      * @return the created family tree with assigned IDs and audit fields
      */
     @Override
-    public FamilyTree createFamilyTree(FamilyTree familyTree) {
-        familyTree.setId(idGenerator.getAndIncrement());
+    public String createFamilyTree(FamilyTree familyTree) {
+        /*familyTree.setId(idGenerator.getAndIncrement());
         setAuditFields(familyTree);
 
         if (familyTree.getFamilyMembers() != null) {
@@ -38,7 +38,74 @@ public class FamilyTreeMockService implements FamilyTreeService {
             }
         }
 
-        return familyTree;
+        return familyTree;*/
+        return """
+            {
+                "id": 1,
+                "relationship": "Son",
+                "person": null,
+                "familyMembers": [
+                    {
+                        "relationship": "Father",
+                        "person": {
+                            "firstName": "John",
+                            "lastName": "Doe",
+                            "birthDate": "1970-01-01",
+                            "gender": "Male",
+                            "familyMembers": [
+                                {
+                                    "relationship": "Son",
+                                    "person": {
+                                        "firstName": "Mike",
+                                        "lastName": "Doe",
+                                        "birthDate": "2000-05-12",
+                                        "gender": "Male",
+                                        "familyMembers": [],
+                                        "createdBy": "adminUser",
+                                        "createdDate": "2024-10-16T10:00:00Z"
+                                    },
+                                    "createdBy": "adminUser",
+                                    "createdDate": "2024-10-16T10:00:00Z"
+                                },
+                                {
+                                    "relationship": "Daughter",
+                                    "person": {
+                                        "firstName": "Anna",
+                                        "lastName": "Doe",
+                                        "birthDate": "2005-08-20",
+                                        "gender": "Female",
+                                        "familyMembers": [
+                                            {
+                                                "relationship": "Daughter",
+                                                "person": {
+                                                    "firstName": "Emily",
+                                                    "lastName": "Smith",
+                                                    "birthDate": "2023-03-15",
+                                                    "gender": "Female",
+                                                    "familyMembers": [],
+                                                    "createdBy": "adminUser",
+                                                    "createdDate": "2024-10-16T10:00:00Z"
+                                                },
+                                                "createdBy": "adminUser",
+                                                "createdDate": "2024-10-16T10:00:00Z"
+                                            }
+                                        ],
+                                        "createdBy": "adminUser",
+                                        "createdDate": "2024-10-16T10:00:00Z"
+                                    },
+                                    "createdBy": "adminUser",
+                                    "createdDate": "2024-10-16T10:00:00Z"
+                                }
+                            ],
+                            "createdBy": "adminUser",
+                            "createdDate": "2024-10-16T10:00:00Z"
+                        }
+                    }
+                ],
+                "createdBy": "adminUser",
+                "createdDate": "2024-10-16T10:00:00Z"
+            }
+        """;
     }
 
     /**

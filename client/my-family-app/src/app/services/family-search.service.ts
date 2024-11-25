@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FamilyMember } from '../models/family-tree/family-member.model';
+import { FamilyMemberModel } from '../models/family-tree/family-member.model';
 
 /**
  * Service for searching and selecting family members.

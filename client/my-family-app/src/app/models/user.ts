@@ -1,13 +1,13 @@
 import { Role } from './role';  // Import Role class
-import { FamilyMember } from './family-tree/family-member.model';  // Import FamilyMember class
+import { FamilyMemberModel } from './family-tree/family-member.model';  // Import FamilyMember class
 
 export class User {
   #username: string;
   #password: string;
   #roles: Role[];
-  #familyMembers: FamilyMember[];
+  #familyMembers: FamilyMemberModel[];
 
-  constructor(username: string, password: string, roles: Role[], familyMembers: FamilyMember[]) {
+  constructor(username: string, password: string, roles: Role[], familyMembers: FamilyMemberModel[]) {
     this.#username = username;
     this.#password = password;
     this.#roles = roles;
@@ -39,11 +39,11 @@ export class User {
     return this.#roles;
   }
 
-  public getFamilyMembers(): FamilyMember[] {
+  public getFamilyMembers(): FamilyMemberModel[] {
     return this.#familyMembers;
   }
 
-  public get familyMembers(): FamilyMember[] {
+  public get familyMembers(): FamilyMemberModel[] {
     return this.#familyMembers;
   }
 
