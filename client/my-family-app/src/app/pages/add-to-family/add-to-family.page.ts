@@ -2,7 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { FamilyMember } from "../../models/family-tree/family-member.model";
+import { FamilyMemberModel } from "../../models/family-tree/family-member.model";
 import { RelationshipType } from "../../models/family-tree/relationship-type";
 import { Person } from "../../models/family-tree/person";
 import { today } from "ionicons/icons";
@@ -12,6 +12,7 @@ import { FooterNavigationComponent } from "../../components/shared/footer-naviga
 import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
+import { PersonModel } from '../../models/family-tree/person.model';
 
 @Component({
   selector: 'app-add-to-family',
@@ -39,14 +40,14 @@ export class AddToFamilyPage implements OnInit {
   cousinsForm: FormGroup;
 
   // Array of FamilyMember's to pass in to the FamilyTreeRequestPayload
-  parents: FamilyMember[] = [];
-  grandparents: FamilyMember[] = [];
-  siblings: FamilyMember[] = [];
-  spouse: FamilyMember[] = []; // Need to pass in as FamilyMember for the payload
-  children: FamilyMember[] = [];
-  uncles: FamilyMember[] = [];
-  aunts: FamilyMember[] = [];
-  cousins: FamilyMember[] = [];
+  parents: FamilyMemberModel[] = [];
+  grandparents: FamilyMemberModel[] = [];
+  siblings: FamilyMemberModel[] = [];
+  spouse: FamilyMemberModel[] = []; // Need to pass in as FamilyMember for the payload
+  children: FamilyMemberModel[] = [];
+  uncles: FamilyMemberModel[] = [];
+  aunts: FamilyMemberModel[] = [];
+  cousins: FamilyMemberModel[] = [];
 
   previousUrl: string = '';
 
@@ -108,7 +109,7 @@ export class AddToFamilyPage implements OnInit {
   }
 
   // Taking family members from form and populating respective FamilyMember[]
-  private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMember[]): void {
+  private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMemberModel[]): void {
     const formArray = fg.get('familyMembers') as FormArray;
     formArray.controls.forEach((control) => {
       const name = control.get('name')?.value;
@@ -118,8 +119,8 @@ export class AddToFamilyPage implements OnInit {
       let firstName = parsedName[0];
       let lastName = parsedName[1];
 
-      const person = new Person(1, firstName, lastName, new Date(1 / 2001));
-      const familyMember = new FamilyMember(1, type, person, 'createdBy', 'updatedBy', new Date(today), new Date(today));
+      const person = new PersonModel(1, firstName, lastName, new Date(1 / 2001));
+      const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', new Date(today), 'updatedBy', new Date(today));
       arr.push(familyMember);
     });
   }

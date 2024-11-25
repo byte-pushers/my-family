@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { FamilyMember } from '../../models/family-tree/family-member.model';
+import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
 import {today} from "ionicons/icons";
 
 @Component({
@@ -14,7 +14,7 @@ import {today} from "ionicons/icons";
   imports: [CommonModule, IonicModule, FormsModule]
 })
 export class FamilyMemberListComponent implements OnInit {
-  @Input() members: FamilyMember[] = [];
+  @Input() members: FamilyMemberModel[] = [];
   @Input() selectedMemberId?: number;
   @Output() memberSelected = new EventEmitter<number>();
   @Output() memberDeleted = new EventEmitter<number>();
@@ -22,7 +22,7 @@ export class FamilyMemberListComponent implements OnInit {
 
   sortOption: 'name' | 'relationship' = 'name';
 
-  get sortedMembers(): FamilyMember[] {
+  get sortedMembers(): FamilyMemberModel[] {
     return this.members.sort((a, b) => {
       if (this.sortOption === 'name') {
         return `${a.person.firstName} ${a.person.lastName}`
@@ -32,7 +32,7 @@ export class FamilyMemberListComponent implements OnInit {
     });
   }
 
-  getInitials(member: FamilyMember): string {
+  getInitials(member: FamilyMemberModel): string {
     return (member.person.firstName.charAt(0) + member.person.lastName.charAt(0)).toUpperCase();
   }
 
@@ -47,7 +47,7 @@ export class FamilyMemberListComponent implements OnInit {
     return age;
   }
 
-  onMemberClick(member: FamilyMember): void {
+  onMemberClick(member: FamilyMemberModel): void {
     const id = member.getId();
     if (id !== undefined) {
       this.memberSelected.emit(id);

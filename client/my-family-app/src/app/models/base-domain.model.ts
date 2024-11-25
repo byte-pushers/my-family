@@ -1,4 +1,6 @@
-export abstract class BaseDomainModel {
+import { BaseModel } from './base.model';
+
+export abstract class BaseDomainModel implements BaseModel {
   #id?: number;
   #createdBy?: string;
   #createdDate?: Date;
@@ -56,10 +58,13 @@ export abstract class BaseDomainModel {
   public toString(): string {
     return `{
       "id": ${this.#id},
+      ${this.getPartialJSON()},
       "createdBy": "${this.#createdBy}",
       "updatedBy": "${this.#updatedBy}",
       "createdDate": "${this.#createdDate}",
       "updatedDate": "${this.#updatedDate}"
     }`;
   }
+
+  public abstract getPartialJSON(): string;
 }

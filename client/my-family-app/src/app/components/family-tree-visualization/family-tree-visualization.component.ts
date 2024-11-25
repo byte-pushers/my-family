@@ -5,8 +5,8 @@ import * as familyData from './mock-data.json';
 import {FamilyNode} from "../../interfaces/family-node";
 import {ForceSimulation} from './force-simulation';
 import {
-  createFamilyMemberFromResponse,
-  createPersonFromResponse,
+  /*createFamilyMemberFromResponse,
+  createPersonFromResponse,*/
   FamilyTreeResponse
 } from "../../models/family-tree/family-tree-response";
 
@@ -48,7 +48,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
   }
   private handleResize() {
     if (this.familyTreeData) {
-      this.createFamilyTree();
+      // this.createFamilyTree();
     }
   }
 
@@ -65,13 +65,13 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     console.log('FamilyTreeVisualization: ngOnChanges', changes);
     if (changes['familyTreeData'] && changes['familyTreeData'].currentValue) {
       console.log('FamilyTreeVisualization: Data changed, creating tree');
-      this.createFamilyTree();
+      // this.createFamilyTree();
     }
   }
 
 
   // @ts-ignore
-  private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
+  /*private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
     console.log('FamilyTreeVisualization: Raw API Data:', data);
 
     // Convert raw data to our domain model instances
@@ -92,10 +92,10 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     const rootNode = buildFamilyNode(data);
     console.log('FamilyTreeVisualization: Transformed Root Node:', rootNode);
     return rootNode;
-  }
+  }*/
 
 
-  createFamilyTree(): void {
+  /*createFamilyTree(): void {
     console.log('FamilyTreeVisualization: Starting createFamilyTree');
     if (!this.familyTreeData) {
       console.error('FamilyTreeVisualization: No data available');
@@ -262,7 +262,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
           .style('font-weight', 'normal');
       }
     });
-  }
+  }*/
 
   private resetNodeHighlighting(): void {
     const nodes = d3.selectAll('.node');

@@ -1,26 +1,26 @@
-import { FamilyMember } from './family-member.model';  // Import the FamilyMember model
+import { FamilyMemberModel } from './family-member.model';  // Import the FamilyMember model
 
 export class FamilyTreeRequestPayload {
   // Private fields for encapsulation
-  readonly #parents: FamilyMember[];
-  readonly #grandparents: FamilyMember[];
-  readonly #siblings: FamilyMember[];
-  readonly #spouse: FamilyMember | null;  // Make spouse optional
-  readonly #children: FamilyMember[] | null;
-  readonly #uncles: FamilyMember[] | null;
-  readonly #aunts: FamilyMember[] | null;
-  readonly #cousins: FamilyMember[] | null;
+  readonly #parents: FamilyMemberModel[];
+  readonly #grandparents: FamilyMemberModel[];
+  readonly #siblings: FamilyMemberModel[];
+  readonly #spouse: FamilyMemberModel | null;  // Make spouse optional
+  readonly #children: FamilyMemberModel[] | null;
+  readonly #uncles: FamilyMemberModel[] | null;
+  readonly #aunts: FamilyMemberModel[] | null;
+  readonly #cousins: FamilyMemberModel[] | null;
 
   // Constructor to initialize the fields
   constructor(
-    parents: FamilyMember[],
-    grandparents: FamilyMember[],
-    siblings: FamilyMember[],
-    spouse: FamilyMember | null,  // Allow null for spouse
-    children: FamilyMember[] | null,
-    uncles: FamilyMember[] | null,
-    aunts: FamilyMember[] | null,
-    cousins: FamilyMember[] | null
+    parents: FamilyMemberModel[],
+    grandparents: FamilyMemberModel[],
+    siblings: FamilyMemberModel[],
+    spouse: FamilyMemberModel | null,  // Allow null for spouse
+    children: FamilyMemberModel[] | null,
+    uncles: FamilyMemberModel[] | null,
+    aunts: FamilyMemberModel[] | null,
+    cousins: FamilyMemberModel[] | null
   ) {
     this.#parents = parents;
     this.#grandparents = grandparents;
@@ -33,68 +33,68 @@ export class FamilyTreeRequestPayload {
   }
 
   // Property-style getters
-  public get parents(): FamilyMember[] {
+  public get parents(): FamilyMemberModel[] {
     return this.#parents;
   }
 
-  public get grandparents(): FamilyMember[] {
+  public get grandparents(): FamilyMemberModel[] {
     return this.#grandparents;
   }
 
-  public get siblings(): FamilyMember[] {
+  public get siblings(): FamilyMemberModel[] {
     return this.#siblings;
   }
 
-  public get spouse(): FamilyMember | null {
+  public get spouse(): FamilyMemberModel | null {
     return this.#spouse;
   }
 
-  public get children(): FamilyMember[] | null {
+  public get children(): FamilyMemberModel[] | null {
     return this.#children;
   }
 
-  public get uncles(): FamilyMember[] | null {
+  public get uncles(): FamilyMemberModel[] | null {
     return this.#uncles;
   }
 
-  public get aunts(): FamilyMember[] | null {
+  public get aunts(): FamilyMemberModel[] | null {
     return this.#aunts;
   }
 
-  public get cousins(): FamilyMember[] | null {
+  public get cousins(): FamilyMemberModel[] | null {
     return this.#cousins;
   }
 
   // Method-style getters
-  public getParents(): FamilyMember[] {
+  public getParents(): FamilyMemberModel[] {
     return this.#parents;
   }
 
-  public getGrandparents(): FamilyMember[] {
+  public getGrandparents(): FamilyMemberModel[] {
     return this.#grandparents;
   }
 
-  public getSiblings(): FamilyMember[] {
+  public getSiblings(): FamilyMemberModel[] {
     return this.#siblings;
   }
 
-  public getSpouse(): FamilyMember | null {
+  public getSpouse(): FamilyMemberModel | null {
     return this.#spouse;
   }
 
-  public getChildren(): FamilyMember[] | null {
+  public getChildren(): FamilyMemberModel[] | null {
     return this.#children;
   }
 
-  public getUncles(): FamilyMember[] | null {
+  public getUncles(): FamilyMemberModel[] | null {
     return this.#uncles;
   }
 
-  public getAunts(): FamilyMember[] | null {
+  public getAunts(): FamilyMemberModel[] | null {
     return this.#aunts;
   }
 
-  public getCousins(): FamilyMember[] | null {
+  public getCousins(): FamilyMemberModel[] | null {
     return this.#cousins;
   }
 

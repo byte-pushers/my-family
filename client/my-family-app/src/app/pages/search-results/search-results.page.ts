@@ -6,6 +6,7 @@ import { Event } from '../../models/event';
 import { Person } from '../../models/family-tree/person';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
+import { PersonModel } from '../../models/family-tree/person.model';
 
 interface SearchFilters {
   type: 'events' | 'family';
@@ -49,7 +50,7 @@ export class SearchResultsPage implements OnInit {
   ];
 
   private mockPeople: Person[] = [
-    new Person(
+    new PersonModel(
       1,
       "Julia",
       "Harris",

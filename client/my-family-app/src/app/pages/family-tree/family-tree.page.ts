@@ -8,12 +8,11 @@ import { FamilyTreeVisualizationComponent } from "../../components/family-tree-v
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { FamilyTreeService } from "../../services/family-tree.service";
 import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
-import {createFamilyMemberFromResponse, FamilyTreeResponse} from "../../models/family-tree/family-tree-response";
-import { FamilyMember } from '../../models/family-tree/family-member.model';
+import { /*createFamilyMemberFromResponse, */FamilyTreeResponse} from "../../models/family-tree/family-tree-response";
+import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
 import {FamilySearchService} from "../../services/family-search.service";
-import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,8 +35,8 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   familyTreeVisualization!: FamilyTreeVisualizationComponent;
 
   familyTreeData: FamilyTreeResponse | null = null;
-  familyMembers: FamilyMember[] = [];
-  filteredMembers: FamilyMember[] = [];
+  familyMembers: FamilyMemberModel[] = [];
+  filteredMembers: FamilyMemberModel[] = [];
   selectedId?: number;
   loading = true;
   error: string | null = null;
@@ -93,9 +92,9 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       });
 
       // Convert response to FamilyMember instances for the list
-      this.familyMembers = MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(memberData =>
+      this.familyMembers = [];/*MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(memberData =>
         createFamilyMemberFromResponse(memberData)
-      );
+      );*/
 
       this.familySearchService.searchMembers('', this.familyMembers);
       this.loading = false;
@@ -113,7 +112,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
 
     // Highlight matching nodes in tree visualization
     if (this.familyTreeVisualization) {
-      this.familyTreeVisualization.highlightNodes(query);
+      // this.familyTreeVisualization.highlightNodes(query);
     }
   }
 

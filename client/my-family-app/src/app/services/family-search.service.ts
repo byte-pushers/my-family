@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FamilyMember } from '../models/family-tree/family-member.model';
+import { FamilyMemberModel } from '../models/family-tree/family-member.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FamilySearchService {
-  private searchResults = new BehaviorSubject<FamilyMember[]>([]);
-  private selectedMember = new BehaviorSubject<FamilyMember | null>(null);
+  private searchResults = new BehaviorSubject<FamilyMemberModel[]>([]);
+  private selectedMember = new BehaviorSubject<FamilyMemberModel | null>(null);
 
   constructor() {}
 
   // Search both tree and list
-  searchMembers(query: string, members: FamilyMember[]): void {
+  searchMembers(query: string, members: FamilyMemberModel[]): void {
     if (!query.trim()) {
       this.searchResults.next(members);
       return;
@@ -27,16 +27,16 @@ export class FamilySearchService {
   }
 
   // Handle member selection from list
-  selectMember(member: FamilyMember): void {
+  selectMember(member: FamilyMemberModel): void {
     this.selectedMember.next(member);
   }
 
   // Observable for components to subscribe to
-  getSearchResults(): Observable<FamilyMember[]> {
+  getSearchResults(): Observable<FamilyMemberModel[]> {
     return this.searchResults.asObservable();
   }
 
-  getSelectedMember(): Observable<FamilyMember | null> {
+  getSelectedMember(): Observable<FamilyMemberModel | null> {
     return this.selectedMember.asObservable();
   }
 

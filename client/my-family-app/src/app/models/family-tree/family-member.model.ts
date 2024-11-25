@@ -1,20 +1,13 @@
-import { BaseDomainModel } from '../base-domain-model';  // Import BaseDomainModel
+import { BaseDomainModel } from '../base-domain.model';  // Import BaseDomainModel
 import { Person } from './person';                      // Import Person
-import { RelationshipType } from './relationship-type'; // Import RelationshipType
+import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-member'; // Import RelationshipType
 
-export class FamilyMember extends BaseDomainModel {
+export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
   #relationship: RelationshipType;
   #person: Person;
 
-  constructor(
-      id: number,
-      relationship: RelationshipType,
-      person: Person,
-      createdBy: string,
-      updatedBy: string,
-      createdDate: Date,
-      updatedDate: Date
-  ) {
+  constructor(id: number, relationship: RelationshipType, person: Person, createdBy: string, createdDate: Date, updatedBy: string, updatedDate: Date) {
     super(id, createdBy, createdDate, updatedBy, updatedDate);  // Initialize BaseDomainModel fields
     this.#relationship = relationship;
     this.#person = person;
@@ -29,11 +22,10 @@ export class FamilyMember extends BaseDomainModel {
     return this.#person;
   }
 
-  //added overide since it overrides the method in BaseDomainModel
-  public override toString(): string {  // Added 'override' here
-    return `{
-      "relationship": "${this.#relationship}",
-      "person": ${this.#person.toString()}
-    }`;
+  public getPartialJSON(): string {
+    return `
+      "relationship": "${this?.relationship}",
+      "person": ${this?.person?.toString()}
+    `;
   }
 }
