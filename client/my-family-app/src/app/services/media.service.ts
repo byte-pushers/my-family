@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+/**
+ * Interface representing a media item.
+ */
 export interface MediaItem {
   id: string;
   url: string;
@@ -9,6 +12,12 @@ export interface MediaItem {
   timestamp: string;
 }
 
+/**
+ * Service for managing media items such as photos and videos.
+ *
+ * @author Danny Amezquita
+ * @version 1.0.0
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -52,10 +61,20 @@ export class MediaService {
   private photos = new BehaviorSubject<MediaItem[]>(this.mockPhotos);
   private videos = new BehaviorSubject<MediaItem[]>(this.mockVideos);
 
+  /**
+   * Returns an observable of the photo media items.
+   *
+   * @returns An observable of the photo media items.
+   */
   getPhotos() {
     return this.photos.asObservable();
   }
 
+  /**
+   * Returns an observable of the video media items.
+   *
+   * @returns An observable of the video media items.
+   */
   getVideos() {
     return this.videos.asObservable();
   }

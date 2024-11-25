@@ -10,46 +10,116 @@ import { Observable } from 'rxjs'; */ // will be used for api call later
 import { DatePipe } from '@angular/common';
 import { CreateAccountService } from "../../services/create-account.service";
 import { CreateAccountRequestPayload } from "../../models/create-account-request.payload";
-import { AccountInfo } from "../../models/account-info";
-import { Address } from "../../models/address"
-import { PhoneNumber } from "../../models/phone-number";
+import { AccountInfoModel } from "../../models/account-info.model";
+import { AddressModel } from "../../models/address.model"
+import { PhoneNumberModel } from "../../models/phone-number.model";
 import {create} from "ionicons/icons";
 import {Router} from "@angular/router";
 import { ToastController }  from "@ionic/angular";
 
+/**
+ * Component for handling the Create Account page.
+ * Allows users to fill out a form with personal details, upload a profile image, and validate their inputs.
+ */
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.page.html',
   styleUrls: ['./create-account.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,DatePipe, ReactiveFormsModule],
-  providers:  [CreateAccountService]
+  imports: [CommonModule, IonicModule, FormsModule, DatePipe, ReactiveFormsModule, RouterModule],
 })
 export class CreateAccountPage implements OnInit {
+  /** User's input for birthday as a string. */
+  birthdayInput = '';
 
+  /** Calculated user's age based on the birthday input. */
+  userAge = 0;
+
+  /** Reactive form for profile creation. */
   profileForm: FormGroup;
-//   todayDate: DatePipe;
-  submitted = false;  // Flag to check form submission state
-  selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
-  file: File | null = null; // The selected file, it is a type of javascript api and file here is object
-//   private apiUrl = 'http://localhost:8080/api/create-account'; // Backend API URL
+
+  /** Controls the visibility of the password input field. */
+  showPassword = false;
+
+  /** Indicates if the form submission is in progress. */
+  loading = false;
+
+  /** Indicates whether the form has been submitted. */
+  submitted = false;
+
+  /** Stores the selected image for profile preview. */
+  selectedImage: string | ArrayBuffer | null = null;
+
+  /** Stores the selected file object. */
+  file: File | null = null;
+
+  /**
+   * Constructor to initialize the Create Account page.
+   *
+   * @param alertCtrl - Service for displaying alerts.
+   * @param router - Router service for navigation.
+   */
   constructor(
-    private createAccountService: CreateAccountService,
-    private router: Router,
-    private toastCtrl: ToastController,
-
+    public alertCtrl: AlertController,
+    private router: Router
   ) {
+    // Initialize the form group with default values and validators.
     this.profileForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
-      lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
-      email: new FormControl('', [Validators.required, Validators.email]),             // email: required, must be a valid email format
-      address: new FormControl('', Validators.required),                               // address: required
-      birthday: new FormControl(null, Validators.required),                            // birthday: required
-      age: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(140)]),  // age: required, minimum value of 0, maximum value of 140
-
+      firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      address: new FormControl('', Validators.required),
+      birthday: new FormControl(null, Validators.required),
+      age: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(140)]),
+      userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),
+      ]),
     });
   }
 
+  /**
+   * Toggles the visibility of the password field.
+   */
+  toggleShow(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  /**
+   * Validates the form and marks controls as touched if invalid.
+   *
+   * @returns `true` if the form is valid, otherwise `false`.
+   */
+  isValid(): boolean {
+    this.submitted = true;
+    if (this.profileForm.invalid) {
+      for (const control in this.profileForm.controls) {
+        if (this.profileForm.controls.hasOwnProperty(control)) {
+          this.profileForm.controls[control].markAsTouched();
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Calculates the user's age based on the provided birthday input.
+   *
+   * @param event - The input event containing the user's birthday.
+   */
+  calculateUserAge(event: Event): void {
+    const userAgeInput = event.target as HTMLInputElement;
+    const currentDate = new Date();
+    const birthDate = new Date(userAgeInput.value);
+    const differenceInMs = currentDate.getTime() - birthDate.getTime();
+    const millisecondsInYear = 1000 * 3600 * 24 * 365.25;
+    const ageInYears = Math.floor(differenceInMs / millisecondsInYear);
+    console.log(ageInYears);
+    this.userAge = ageInYears;
+  }
 
   // Method to handle form submission
   onSubmit() {
@@ -60,7 +130,7 @@ export class CreateAccountPage implements OnInit {
     if (this.profileForm.valid) {
       console.log(this.profileForm.value);
 
-      const address = new Address(
+      const address = new AddressModel(
         this.profileForm.get("address")?.value,
         "AddressLine2",
         "City",
@@ -68,14 +138,14 @@ export class CreateAccountPage implements OnInit {
         "Zipcode"
       );
 
-      const phoneNumber = new PhoneNumber(
+      const phoneNumber = new PhoneNumberModel(
         "Type",
         "CountryCode",
         "AreaCode",
         "SubscriberNumber"
       );
 
-      const accountInfo = new AccountInfo(
+      const accountInfo: AccountInfo = new AccountInfoModel(
         this.profileForm.get("firstName")?.value,
         "middleNamePlaceholder",
         this.profileForm.get("lastName")?.value,
@@ -116,13 +186,47 @@ export class CreateAccountPage implements OnInit {
 
       })
     } else {
-      console.log('Account creation failed. Try Again.');
+      console.log('Form is invalid');
+      const firstInvalidControl = Object.keys(this.profileForm.controls).find(
+        (key) => this.profileForm.controls[key].invalid
+      );
+
+      // Focus on the first invalid field, if found
+      if (firstInvalidControl) {
+        document.getElementById(firstInvalidControl)?.focus();
+      }
     }
-    */
+
+    this.loading = false;
   }
 
-// Handle file input change
-  onFileChange(event: Event) {
+  /**
+   * Clears the form inputs and resets the state.
+   */
+  clearInputMethod(): void {
+    this.profileForm.reset();
+    this.submitted = false;
+  }
+
+  /**
+   * Displays a success alert upon successful form submission.
+   */
+  async successAlert(): Promise<void> {
+    const successAlert = await this.alertCtrl.create({
+      header: 'Success',
+      message: 'Your account has been created successfully!',
+      buttons: ['OK'],
+      cssClass: 'custom-alert',
+    });
+    await successAlert.present();
+  }
+
+  /**
+   * Handles the file input change event to upload and preview the selected image.
+   *
+   * @param event - The file input change event.
+   */
+  onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files[0]) {
@@ -137,17 +241,14 @@ export class CreateAccountPage implements OnInit {
       // Read the image for preview
       const reader = new FileReader();
       reader.onload = () => {
-        this.selectedImage = reader.result;  // Store the image URL for preview
+        this.selectedImage = reader.result; // Store the image URL for preview
       };
       reader.readAsDataURL(file);
     }
-  }/*
-createAccount(accountData: any): Observable<any> {
-    return this.http.post(this.apiUrl, accountData);
-  } */
-  ngOnInit() {}
-
-  goBack() {
-    this.router.navigate(['/welcome-page']);
   }
+
+  /**
+   * Lifecycle hook that is called after the component is initialized.
+   */
+  ngOnInit(): void {}
 }

@@ -1,19 +1,44 @@
+/**
+ * @file search-bar.component.ts
+ * @description This file contains the SearchBarComponent which handles search functionality and filters for events and family members.
+ * @version 1.0.0
+ * @autor Danny Amezquita
+ */
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { IonicModule, IonDatetime } from "@ionic/angular";
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 
+/**
+ * Interface representing search filters.
+ */
 interface SearchFilters {
+  /**
+   * The type of search, either 'events' or 'family'.
+   */
   type: 'events' | 'family';
+
+  /**
+   * The optional date range for the search.
+   */
   dateRange?: {
     from: string;
     to: string;
   };
+
+  /**
+   * The optional location for the search.
+   */
   location?: {
     state?: string;
     city?: string;
   };
+
+  /**
+   * The optional lineage for the search.
+   */
   lineage?: string;
 }
 
@@ -95,6 +120,10 @@ export class SearchBarComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * Initializes default dates.
+   */
   ngOnInit() {
     // Initialize with default dates
     const today = new Date();
@@ -106,10 +135,17 @@ export class SearchBarComponent implements OnInit {
     this.toDate = fiveDaysFromNow.toISOString();
   }
 
+  /**
+   * Toggles the visibility of the filters panel.
+   */
   toggleFilters() {
     this.showFilters = !this.showFilters;
   }
 
+  /**
+   * Handles the search input event.
+   * @param {any} event - The event object containing the search query.
+   */
   onSearchInput(event: any) {
     this.searchQuery = event.detail.value;
     // Emit for real-time search if needed
@@ -118,10 +154,17 @@ export class SearchBarComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles the change of filter type.
+   * @param {any} event - The event object containing the selected filter type.
+   */
   filterTypeChanged(event: any) {
     this.activeFilter = event.detail.value;
   }
 
+  /**
+   * Cancels the search and resets all filters to default values.
+   */
   cancelSearch() {
     // Reset all filters to default values
     this.selectedState = '';
@@ -150,10 +193,17 @@ export class SearchBarComponent implements OnInit {
     });
   }
 
+  /**
+   * Applies the selected filters and performs the search.
+   */
   applyFilters() {
     this.onSearch(); // This will now handle both filtered and unfiltered searches
   }
 
+  /**
+   * Opens the date picker for selecting a date range.
+   * @param {'from' | 'to'} type - The type of date picker to open ('from' or 'to').
+   */
   async openDatePicker(type: 'from' | 'to') {
     this.currentPickerType = type;
     this.selectedDate = type === 'from' ? this.fromDate : this.toDate;
@@ -166,6 +216,10 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the date selection event.
+   * @param {any} event - The event object containing the selected date.
+   */
   onDateSelected(event: any) {
     const selectedDate = event.detail.value;
 
@@ -185,6 +239,11 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
+  /**
+   * Formats a date string to 'MM/DD/YYYY' format.
+   * @param {string} date - The date string to format.
+   * @returns {string} The formatted date string.
+   */
   formatDate(date: string): string {
     if (!date) return '';
     const d = new Date(date);
@@ -198,6 +257,9 @@ export class SearchBarComponent implements OnInit {
     return `${month}/${day}/${year}`;
   }
 
+  /**
+   * Performs the search and navigates to the search results page.
+   */
   onSearch() {
     // Only include filters in navigation if any filters are actually set
     const hasFilters = this.showFilters && (

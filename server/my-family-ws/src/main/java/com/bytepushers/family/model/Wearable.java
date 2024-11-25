@@ -1,47 +1,49 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 
-import java.util.Objects;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "wearable_id")
 public class Wearable extends Merchandise{
 
-    private WearableType wearableType;
     private String SKU;
     private String size;
     private String color;
 
-    public Wearable() {
-        super();
+    /**
+     * Constructor with basic attributes for a wearable.
+     *
+     * @param type        the type of the wearable (e.g., T-shirt, Shoes).
+     * @param name        the name of the wearable item.
+     * @param description a description of the wearable item.
+     * @param price       the price of the wearable.
+     * @param quantity    the quantity available.
+     */
+    public Wearable(String type, String name, String description, double price, int quantity) {
+        super(type, name, description, price, quantity);
     }
 
-    public Wearable(Long id, MerchandiseType merchandiseType, String productName, float productPrice, String productDescription, String productImageUrl, WearableType wearableType, String SKU, String size, String color) {
-        super(id, merchandiseType, productName, productPrice, productDescription, productImageUrl);
-        this.wearableType = wearableType;
+    /**
+     * Constructor with additional attributes specific to the wearable.
+     *
+     * @param type        the type of the wearable.
+     * @param name        the name of the wearable.
+     * @param description a description of the wearable.
+     * @param price       the price of the wearable.
+     * @param quantity    the quantity of the wearable.
+     * @param SKU         the SKU (Stock Keeping Unit) of the wearable.
+     * @param size        the size of the wearable.
+     * @param color       the color of the wearable.
+     */
+    public Wearable(String type, String name, String description, double price, int quantity, String SKU, String size, String color) {
+        super(type, name, description, price, quantity);
         this.SKU = SKU;
         this.size = size;
         this.color = color;
     }
 
-    public String getColor() {
-        return color;
-    }
+    public Wearable() {
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getSKU() {
@@ -52,24 +54,20 @@ public class Wearable extends Merchandise{
         this.SKU = SKU;
     }
 
-    public WearableType getWearableType() {
-        return wearableType;
+    public String getSize() {
+        return size;
     }
 
-    public void setWearableType(WearableType wearableType) {
-        this.wearableType = wearableType;
+    public void setSize(String size) {
+        this.size = size;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wearable wearable = (Wearable) o;
-        return wearableType == wearable.wearableType && Objects.equals(SKU, wearable.SKU) && Objects.equals(size, wearable.size) && Objects.equals(color, wearable.color);
+    public String getColor() {
+        return color;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(wearableType, SKU, size, color);
+    public void setColor(String color) {
+        this.color = color;
     }
+
 }

@@ -10,7 +10,16 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 
-
+/**
+ * Configuration class for setting up API documentation using OpenAPI annotations.
+ * <p>
+ * This class defines the general metadata for the API, including the title, version,
+ * description, and contact details. It also sets up the security scheme for the API,
+ * where an API key (X-API-Version) is required in the request header for access.
+ * </p>
+ *
+ * @author Adish Timalsina
+ */
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(

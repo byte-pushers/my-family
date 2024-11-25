@@ -1,18 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IonContent, } from "@ionic/angular/standalone";
+import { Component, OnInit, Input } from '@angular/core';
+import { IonContent } from "@ionic/angular/standalone";
 import { NgForOf, NgIf } from '@angular/common';
-//import { FamilyMember, Person } from "./../../models/family-member.model"
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   Validators
 } from "@angular/forms";
 
+/**
+ * A standalone Angular component for adding and removing family members of one relationship.
+ * @author Stella Choi
+ */
 @Component({
   selector: 'app-family-member-form',
   templateUrl: './family-member-form.component.html',
@@ -27,16 +29,50 @@ import {
   standalone: true
 })
 export class FamilyMemberFormComponent implements OnInit {
+  /**
+   * Relationship type passed from the parent component.
+   * Example: Parents, Grandparents, Siblings.
+   * @property {string} relationshipType
+   */
   @Input({ required: true }) relationshipType: string = '';
-  @Input() relationshipTypeDropdownArray: string[] = []; // For specific relation in step 2 (ex. parents -> mom, dad)
+
+  /**
+   * Array of specific relations for Parents, Grandparents, Siblings, Spouse, and Children.
+   * Example: For Parents, pass in [Mom, Dad].
+   * @property {string[]} relationshipTypeDropdownArray
+   */
+  @Input() relationshipTypeDropdownArray: string[] = [];
+
+  /**
+   * FormGroup passed in from the parent component to manage family members
+   * @property {FormGroup} addFamilyMemberForm
+   */
   @Input() addFamilyMemberForm: FormGroup = this.fb.group({}); // FormGroup passed in from parent to hold family members
 
+  /**
+   * Tracks whether the form has been submitted.
+   * @property {boolean} submitted
+   */
   submitted: boolean = false;
+
+  /**
+   * A temporary variable used to store relationship type for Uncles, Aunts, and Cousins.
+   * Value will be Uncle, Aunt, or Cousin.
+   * @property {string} tempType
+   */
   tempType: string = '';
 
+  /**
+   * Constructor for FamilyMemberFormComponent.
+   * @param {FormBuilder} fb - The FormBuilder service for managing the form and its form controls.
+   */
   constructor(private fb: FormBuilder) {
   }
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * Sets tempType's value when no dropdown array is provided.
+   */
   ngOnInit() {
     // Using relationshipType passed in from parent to use as type since step 3 doesn't have the relationshipTypeDropdownArray
     if (this.relationshipTypeDropdownArray.length == 0) {
@@ -45,10 +81,18 @@ export class FamilyMemberFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Getter for the familyMembers FormArray.
+   * @returns {FormArray} The form array holding all added family members.
+   */
   get familyMembers(): FormArray {
     return this.addFamilyMemberForm.controls['familyMembers'] as FormArray;
   }
 
+  /**
+   * Adds a new family member to the FormArray.
+   * Handles both scenarios where a relationship dropdown array is provided or not.
+   */
   addFamilyMember() {
     this.submitted = true;
 
@@ -91,14 +135,20 @@ export class FamilyMemberFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Removes a family member from the FormArray by the given index.
+   * @param {number} index - The index of the member from the FormArray to remove.
+   */
   removeFamilyMember(index: number): void {
     this.familyMembers.removeAt(index);
   }
 
+  /**
+   * Removes all family members from the FormArray and resets input fields.
+   */
   removeAllFamilyMembers() {
     this.familyMembers.clear();
 
-    // Resetting input boxes
     this.addFamilyMemberForm.get('name')?.setValue('');
     this.addFamilyMemberForm.get('type')?.setValue('');
   }

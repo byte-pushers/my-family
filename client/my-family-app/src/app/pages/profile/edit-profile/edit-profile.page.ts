@@ -1,12 +1,18 @@
-// src/app/pages/edit-profile/edit-profile.page.ts
+/**
+ * @file edit-profile.page.ts
+ * @description This file contains the EditProfilePage component which handles editing and updating the user's profile.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FooterNavigationComponent } from '../../../components/shared/footer-navigation/footer-navigation.component';
 import { ProfileService } from '../../../services/profile.service';
-import {ProfileData} from "../../../models/profile-data";
+import { ProfileData } from "../../../models/profile-data";
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,7 +22,14 @@ import {ProfileData} from "../../../models/profile-data";
   imports: [IonicModule, CommonModule, ReactiveFormsModule, FooterNavigationComponent, RouterLink]
 })
 export class EditProfilePage implements OnInit {
+  /**
+   * Form group for the profile form.
+   */
   profileForm: FormGroup;
+
+  /**
+   * The selected image for the profile.
+   */
   selectedImage: string | null = null;
 
   constructor(
@@ -41,8 +54,11 @@ export class EditProfilePage implements OnInit {
     });
   }
 
+  /**
+   * Lifecycle hook called after data-bound properties of a directive are initialized.
+   * Populates the form with current profile data.
+   */
   ngOnInit() {
-    // Populate form with current profile data
     const currentProfile = this.profileService.getCurrentProfile();
     this.profileForm.patchValue({
       firstName: currentProfile.firstName,
@@ -57,30 +73,31 @@ export class EditProfilePage implements OnInit {
     });
   }
 
+  /**
+   * Handles the image upload event.
+   * @param {any} event - The event object containing the uploaded file.
+   */
   onImageUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.selectedImage = e.target.result;
-        // Update the profile service with the new image
         this.profileService.updateProfileImage(e.target.result);
       };
       reader.readAsDataURL(file);
     }
   }
 
+  /**
+   * Handles the form submission.
+   */
   async onSubmit() {
     if (this.profileForm.valid) {
       try {
-        // Update only the changed fields
         const formValue = this.profileForm.value;
         const updatedProfile: Partial<ProfileData> = {};
-
-        // Compare and only include changed values
         const currentProfile = this.profileService.getCurrentProfile();
-
-        // Type-safe way to check for changes
         const keys = Object.keys(formValue) as Array<keyof ProfileData>;
         for (const key of keys) {
           if (formValue[key] !== undefined &&
@@ -90,11 +107,8 @@ export class EditProfilePage implements OnInit {
             updatedProfile[key] = formValue[key];
           }
         }
-
-        // Update profile if there are changes
         if (Object.keys(updatedProfile).length > 0) {
           this.profileService.updateProfile(updatedProfile);
-
           const alert = await this.alertController.create({
             header: 'Success',
             message: 'Profile updated successfully',
@@ -102,7 +116,6 @@ export class EditProfilePage implements OnInit {
           });
           await alert.present();
         }
-
         this.router.navigate(['/profile']);
       } catch (error) {
         const alert = await this.alertController.create({
@@ -122,13 +135,14 @@ export class EditProfilePage implements OnInit {
     }
   }
 
+  /**
+   * Handles the password update.
+   */
   updatePassword() {
     const { currentPassword, newPassword, confirmPassword } = this.profileForm.value;
     if (newPassword !== confirmPassword) {
-      // Show error message
       return;
     }
-    // Implement password update logic
     console.log('Password update:', { currentPassword, newPassword });
   }
 }

@@ -1,8 +1,7 @@
 <div class="w-full max-w-[700px] mx-auto p-4">
-  <!-- Header with controls -->
+  <!-- Controls Section -->
   <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
     <h2 class="text-xl font-semibold text-gray-800">Family Members</h2>
-
     <div class="flex items-center gap-4 w-full md:w-auto">
       <ion-select
         [(ngModel)]="sortOption"
@@ -10,63 +9,42 @@
         class="w-32">
         <ion-select-option value="name">Name</ion-select-option>
         <ion-select-option value="relationship">Relation</ion-select-option>
+        <ion-select-option value="age">Age</ion-select-option>
       </ion-select>
     </div>
   </div>
 
   <!-- List Container -->
   <ion-list class="rounded-lg shadow bg-white">
-    <ng-container *ngIf="sortedMembers.length > 0; else noMembers">
-      <ion-item-sliding *ngFor="let member of sortedMembers">
-        <ion-item
-          [class.selected-member]="member.getId() === selectedMemberId"
-          (click)="onMemberClick(member)"
-          class="hover:bg-gray-50 transition-colors">
+    <ng-container *ngIf="paginatedMembers.length > 0; else noMembers">
+      <ion-item
+        *ngFor="let member of paginatedMembers"
+        [class.selected-member]="member.getId() === selectedMemberId"
+        (click)="onMemberClick(member)"
+        class="hover:bg-gray-50 transition-colors cursor-pointer">
 
-          <!-- Profile Image/Initial -->
-          <div class="w-12 h-12 rounded-full overflow-hidden mr-4 flex-shrink-0">
-            <div class="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 font-semibold">
-              {{ getInitials(member) }}
-            </div>
+        <!-- Profile Image/Initial -->
+        <div class="w-12 h-12 rounded-full overflow-hidden mr-4 flex-shrink-0">
+          <div class="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 font-semibold">
+            {{ getInitials(member) }}
           </div>
+        </div>
 
-          <!-- Member Info -->
-          <div class="flex-grow">
-            <h3 class="font-medium text-gray-900">
-              {{member.person.firstName}} {{member.person.lastName}}
-            </h3>
-            <div class="text-sm text-gray-600 flex gap-3">
-              <span>{{member.relationship}}</span>
-              <span>Age: {{calculateAge(member.person.birthDate)}}</span>
-            </div>
+        <!-- Member Info -->
+        <div class="flex-grow">
+          <h3 class="font-medium text-gray-900">
+            {{member.person.firstName}} {{member.person.lastName}}
+          </h3>
+          <div class="text-sm text-gray-600 flex gap-3">
+            <span>{{getMemberRelation(member)}}</span>
+            <span>Age: {{calculateAge(member.person.birthDate)}}</span>
           </div>
-
-          <!-- Action Buttons -->
-          <div slot="end" class="flex gap-2">
-            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
-              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
-              <ion-icon slot="icon-only" name="git-merge-outline"></ion-icon>
-            </ion-button>
-          </div>
-        </ion-item>
-
-        <!-- Sliding Options -->
-        <ion-item-options side="end">
-          <ion-item-option color="primary" (click)="$event.stopPropagation(); ">
-            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-          </ion-item-option>
-          <ion-item-option color="danger" (click)="$event.stopPropagation();">
-            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
+        </div>
+      </ion-item>
     </ng-container>
 
     <ng-template #noMembers>
       <div class="p-8 text-center text-gray-500">
-        <ion-icon name="people-outline" class="text-4xl mb-2"></ion-icon>
         <p>No family members found.</p>
         <ion-button fill="clear" size="small" class="mt-2">
           Add Family Member
@@ -74,4 +52,32 @@
       </div>
     </ng-template>
   </ion-list>
+
+  <!-- Pagination -->
+  <div class="flex justify-center items-center mt-4 gap-4">
+    <button
+      class="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="currentPage === 1"
+      (click)="onPageChange(currentPage - 1)">
+      <img
+        src="assets/icon/chevron-left.svg"
+        alt="Previous"
+        class="w-6 h-6" />
+    </button>
+
+    <span class="text-sm font-medium">
+      Page {{currentPage}} of {{totalPages}}
+    </span>
+
+    <button
+      class="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="currentPage === totalPages"
+      (click)="onPageChange(currentPage + 1)">
+      <img
+        src="assets/icon/chevron-right.svg"
+        alt="Next"
+        class="w-6 h-6" />
+    </button>
+  </div>
 </div>
+

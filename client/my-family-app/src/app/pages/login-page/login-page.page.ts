@@ -1,6 +1,12 @@
+/**
+ * @file login-page.page.ts
+ * @description This file contains the LoginPagePage component, which provides login functionality, including form validation, user feedback, and navigation to other pages.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -10,12 +16,7 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonIcon,
-  AlertController,
-  ToastController
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
-import {alert} from "ionicons/icons";  // Import Router for navigation
 
 @Component({
   selector: 'app-login-page',
@@ -31,75 +32,84 @@ import {alert} from "ionicons/icons";  // Import Router for navigation
     IonLabel,
     IonInput,
     IonButton,
-    IonIcon,
     CommonModule,
-    FormsModule
-  ]
+    ReactiveFormsModule,
+    FormsModule,
+  ],
 })
 export class LoginPagePage implements OnInit {
-  username: string = '';
-  password: string = '';
-  submitted: boolean = false;
+  /** The reactive form for user input in the login page. */
+  profileForm!: FormGroup;
 
-  passwordType: string = 'password';  // Default is hidden
+  /** Indicates whether the application is in a loading state. */
+  loading = false;
 
-  constructor(private alertCtrl: AlertController, private router: Router, private toastController: ToastController ) {}  // Inject Router
+  /** Toggles the visibility of the password field. */
+  showPassword = false;
 
-  ngOnInit() {}
+  /** Tracks whether the form has been submitted. */
+  submitted = false;
 
-  async onSignIn() {
-    // Ensure both username and password are provided
-    this.submitted = true;
-    if (!this.username || !this.password) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Username and password are required',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
+  /**
+   * Constructor to inject necessary services.
+   * @param router - The Angular Router for navigation.
+   * @param fb - The FormBuilder for creating reactive forms.
+   */
+  constructor(private router: Router, private fb: FormBuilder) {}
 
-    // Minimal validation for demonstration
-    if (this.password.length < 8) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Password must be at least 8 characters long.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
+  /**
+   * Initializes the component and sets up the reactive form.
+   */
+  ngOnInit() {
+    this.profileForm = this.fb.group({
+      /** The username field, required with a minimum length of 4. */
+      userName: ['', [Validators.required, Validators.minLength(4)]],
 
-    // Note to self: The login logic to call an API or perform authentication
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    // Show success toast
-    const toast = await this.toastController.create({
-      message: '✨ Welcome to My Family Reunion!',
-      duration: 2000,
-      position: 'top',
-      color: 'primary',
-      buttons: [
-        {
-          text: 'OK',
-          role: 'cancel'
-        }
-      ]
+      /** The password field, required with a minimum length of 8 and pattern constraints. */
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),
+        ],
+      ],
     });
-    await toast.present();
-
-    // Navigate after a short delay
-    setTimeout(() => {
-      this.router.navigate(['/home']);
-    }, 1000);
-    // Optional: Navigate to another page or reset form after alert dismissal
-    // this.router.navigate(['/home']);  // Replace with your desired route after login
   }
 
-  // Method to navigate back to the welcome page
-  async goBack() {
-    this.router.navigate(['/welcome-page']);  // Adjust this to your welcome page route
+  /**
+   * Toggles the visibility of the password input field.
+   */
+  toggleShow() {
+    this.showPassword = !this.showPassword;
+  }
+
+  /**
+   * Handles the sign-in action. Validates the form and navigates to the home page if successful.
+   * Logs an error message if the form is invalid.
+   */
+  async onSignIn() {
+    this.submitted = true;
+
+    if (this.profileForm.valid) {
+      console.log(this.profileForm.value);
+      this.router.navigate(['/home']); // Navigate to the home page
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+
+  /**
+   * Navigates back to the welcome page.
+   */
+  goBack() {
+    this.router.navigate(['/welcome-page']); // Navigate to welcome page
+  }
+
+  /**
+   * Navigates to the create account page.
+   */
+  createAccount() {
+    this.router.navigate(['/create-account']); // Navigate to create account
   }
 }

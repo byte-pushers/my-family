@@ -1,107 +1,162 @@
-<ion-content [fullscreen]="true" class="h-screen flex flex-col items-center justify-center">
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="create-account-form font-inter">
-    <div class="space-y-12">
-      <div class="border-gray-900/10 p-7 ">
+<!--
+Create Account Page
+Description: This page is a user-friendly form designed for account creation. It includes features like image upload,
+real-time validation, and dynamic feedback for form fields such as First Name, Last Name, Email, Password, and more.
+Features:
+- Responsive design using Ionic and TailwindCSS.
+- Dynamic field validation with Angular Reactive Forms.
+- File upload with preview functionality for profile images.
+- Client-side password toggle visibility.
+- Real-time age calculation based on user-provided birth date and age will automatically calculated.
+-->
+<ion-content [fullscreen]="false" class="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+  <!-- Main form for creating an account -->
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()"
+        class="create-account-form justify-items-center font-inter w-full md:max-w-md lg:max-w-lg space-y-6 mx-auto p-4 pb-8 lg:p-6 bg-white md:border md:border-gray-300 rounded-lg shadow-lg
+      mt-0 lg:mt-5 lg:mb-5">
+    <div class="space-y-2">
+      <div class="border-gray-900/10 p-4 pb-4 w-full">
+        <!-- Profile photo upload section -->
         <div class="profile-photo grid col-span-full place-items-center ">
-          <div class="space-y-12">
-            <div class="border-gray-900/10 p-7">
+          <div class="space-y-8">
+            <div class="border-gray-900/10 p-0">
               <div class="profile-photo grid col-span-full place-items-center">
-
-                <!-- Default Placeholder (SVG) -->
-                <svg *ngIf="!selectedImage" class="profile-image h-40 w-40 text-gray-300" viewBox="0 0 24 24"
-                     fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                        clip-rule="evenodd"/>
-                </svg>
-
-                <!-- Uploaded Image Preview -->
+                <!-- Default profile placeholder image -->
+                <img *ngIf="!selectedImage" src="assets/img/placeholder1.png" alt="Default Placeholder" class="profile-image h-40 w-40 object-cover rounded-full text-gray-300" />
+                <!-- Uploaded profile image preview -->
                 <div *ngIf="selectedImage" class="image-preview">
                   <img [src]="selectedImage" alt="Uploaded Photo" class="rounded-full h-40 w-40">
                 </div>
 
-                <!-- File Upload Button -->
-                <div class="file-upload-wrapper mt-4">
-                  <button type="button" class="btn btn-secondary text-[#97d2ec]" (click)="fileInput.click()">Upload
+                <!-- Button to trigger file input for uploading a profile photo -->
+                <div class="file-upload-wrapper mt-1">
+                  <button type="button" class="btn btn-secondary text-[#0D4C92] hover:bg-[#0D4C92] hover:text-[#ffffff]  rounded-md px-4 py-1" (click)="fileInput.click()">Upload Image
                   </button>
+                  <!-- Hidden file input to accept image uploads -->
                   <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" hidden>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-        <div class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
 
+        <!-- Form fields for user information -->
+        <div class="mt-5 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <!-- First Name input -->
           <div class="sm:col-span-3">
             <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
-
-            <div class="mt-2">
+            <div class="mt-2 relative">
+              <!-- Input for first name with validation -->
               <input type="text" placeholder="Enter First Name..." name="first-name" id="first-name"
                      autocomplete="given-name" formControlName="firstName"
-                     class="input-create-account bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6 ">
+                     [ngClass]="{
+               'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['firstName'].invalid,
+               'pr-8': submitted && profileForm.controls['firstName'].invalid
+             }"                     class="input-create-account bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
 
-              <!-- First Name Error Message -->
+              <!-- Red "X" icon shown if the first name field is invalid -->
+              <span *ngIf="submitted && profileForm.controls['firstName'].invalid"
+                    class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+  X
+</span>
+
+              <!-- Error messages for first name validation -->
               <div *ngIf="submitted && profileForm.controls['firstName'].errors?.['minlength']"
-                   class="text-red-500 text-sm font-bold">
-                First Name must be at least 1 character long.
+                   class="text-red-800 text-sm font-bold">
+                First Name must be at least 4 characters long.
               </div>
               <div *ngIf="submitted && profileForm.controls['firstName'].errors?.['required']"
-                   class="text-red-500 text-sm font-bold">
+                   class="text-red-800 text-sm font-bold">
                 First Name is required.
               </div>
-
             </div>
           </div>
-
+          <!-- Middle Name input field -->
           <div class="sm:col-span-3">
+            <!-- Label for Middle Name -->
             <label for="middle-name" class="block text-sm font-medium leading-6 text-gray-900">Middle Name</label>
             <div class="mt-2">
+              <!-- Input field for Middle Name with placeholder -->
               <input type="text" placeholder="Enter Middle Name..." name="middle-name" id="middle-name"
                      autocomplete="family-name"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
             </div>
           </div>
 
+          <!-- Last Name input field -->
           <div class="sm:col-span-3">
+            <!-- Label for Last Name -->
             <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
-            <div class="mt-2">
+            <div class="mt-2 relative">
+              <!-- Input field for Last Name with validation -->
               <input type="text" placeholder="Enter Last Name..." name="last-name" id="last-name"
                      autocomplete="family-name" formControlName="lastName"
+                     [ngClass]="{
+             'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['lastName'].invalid,
+             'pr-8': submitted && profileForm.controls['lastName'].invalid
+           }"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
+              <!-- Red "X" icon displayed if the Last Name field is invalid -->
+              <span *ngIf="submitted && profileForm.controls['lastName'].invalid"
+                    class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+      X
+    </span>
+              <!-- Error messages for Last Name validation -->
               <div *ngIf="submitted && profileForm.controls['lastName'].errors?.['minlength']"
-                   class="text-red-500 text-sm font-bold">
+                   class="text-red-800 text-sm font-bold">
                 Last Name must be at least 1 character long.
               </div>
               <div *ngIf="submitted && profileForm.controls['lastName'].errors?.['required']"
-                   class="text-red-500 text-sm font-bold">
+                   class="text-red-800 text-sm font-bold">
                 Last Name is required.
               </div>
-
             </div>
           </div>
 
+          <!-- Nick Name input field -->
           <div class="sm:col-span-3">
+            <!-- Label for Nick Name -->
             <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Nick Name</label>
             <div class="mt-2">
+              <!-- Input field for Nick Name with placeholder -->
               <input type="text" placeholder="Enter Nick Name..." name="last-name" id="nick-name"
                      autocomplete="family-name"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
             </div>
           </div>
-          <div class="sm:col-span-3">
-            <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Birthday</label>
-            <div class="mt-2">
-              <input type="date" placeholder="12/25/2023" name="birthday" id="birthday" autocomplete="family-name"
-                     formControlName="birthday"
-                     class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
 
+          <!-- Birthday input field -->
+          <div class="sm:col-span-3">
+            <!-- Label for Birthday -->
+            <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Birthday</label>
+            <div class="mt-2 relative">
+              <!-- Input field for Birthday with event binding to calculate age -->
+              <input (input)="calculateUserAge($event)"
+                     type="date"
+                     placeholder="12/25/2023"
+                     name="birthday"
+                     [(ngModel)]="birthdayInput"
+                     id="birthday"
+                     autocomplete="family-name"
+                     formControlName="birthday"
+                     [ngClass]="{
+             'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['birthday'].invalid,
+             'pr-8': submitted && profileForm.controls['birthday'].invalid
+           }"
+                     class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
+              <!-- Red "X" icon displayed if the Birthday field is invalid -->
+              <span *ngIf="submitted && profileForm.controls['birthday'].invalid"
+                    class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+      X
+    </span>
+              <!-- Error message for Birthday validation -->
               <div *ngIf="submitted && profileForm.controls['birthday'].errors?.['required']"
-                   class="text-red-500 text-sm font-bold">
+                   class="text-red-800 text-sm font-bold">
                 Birthday is required.
               </div>
             </div>
           </div>
+
 
           <div class="sm:col-span-3">
             <label for="age" class="block text-sm font-medium leading-6 text-gray-900">Age</label>
@@ -111,76 +166,164 @@
                 name="age"
                 id="age"
                 formControlName="age"
+                [ngModel] = "userAge"
+                readonly
                 class="block w-full rounded-md border-0 border-[#97d2ec] bg-gray-100 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm"
-                placeholder="Enter your age"
               >
-              <!-- Error message for required field -->
-              <div *ngIf="submitted && profileForm.controls['age'].errors?.['required']"
-                   class="text-red-500 text-sm font-bold">
-                Age is required.
-              </div>
-
               <!-- Error message for invalid (negative) age -->
               <div
                 *ngIf="submitted && !profileForm.controls['age'].errors?.['required'] && profileForm.controls['age'].errors?.['min']"
-                class="text-red-500 text-sm font-bold">
+                class="text-red-800 text-sm font-bold">
                 Age must be greater than or equal to 0.
               </div>
               <!-- Error message if age is above 140 -->
               <div
                 *ngIf="submitted && !profileForm.controls['age'].errors?.['required'] && profileForm.controls['age'].errors?.['max']"
-                class="text-red-500 text-sm font-bold">
+                class="text-red-800 text-sm font-bold">
                 Check your age.
+              </div>
+
+            </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label for="user-name" class="block text-sm font-medium leading-6 text-gray-900">User Name</label>
+            <div class="mt-2 relative">
+              <input type="text" placeholder="Create User Name..." name="user-name" id="user-name"
+                     autocomplete="family-name" formControlName="userName"
+                     [ngClass]="{
+               'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['userName'].invalid,
+               'pr-8': submitted && profileForm.controls['userName'].invalid
+             }"
+                     class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
+              <!-- Red "X" Icon (inside the input box) -->
+              <span *ngIf="submitted && profileForm.controls['userName'].invalid"
+                    class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+  X
+</span>
+              <!-- User Name Error Message -->
+              <div *ngIf="submitted && profileForm.controls['userName'].errors?.['minlength']"
+                   class="text-red-800 text-sm font-bold">
+                User Name must be at least 4 character long.
+              </div>
+              <div *ngIf="submitted && profileForm.controls['userName'].errors?.['required']"
+                   class="text-red-800 text-sm font-bold">
+                Create User Name.
               </div>
             </div>
           </div>
-        </div>
+          <div class="sm:col-span-3">
+            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="mt-2 relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="********"
+                name="password"
+                id="password"
+                autocomplete="new-password"
+                formControlName="password"
+                [ngClass]="{
+        'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['password'].invalid,
+        'pr-8': submitted && profileForm.controls['password'].invalid
+      }"
+                class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6"
+              />
 
+              <!-- Password Error Messages (inside relative container, but below input) -->
+              <div *ngIf="submitted && profileForm.controls['password'].errors?.['minlength']"
+                   class="text-red-800 text-sm font-bold mt-2">
+                Password must be at least 8 characters long.
+              </div>
+              <div *ngIf="submitted && profileForm.controls['password'].errors?.['pattern']"
+                   class="text-red-800 text-sm font-bold mt-2">
+                Password must include at least 1 uppercase, special character, and number.
+              </div>
+
+              <div *ngIf="submitted && profileForm.controls['password'].errors?.['required']"
+                   class="text-red-800 text-sm font-bold ">
+                You need to create a password.
+              </div>
+              <span class="input-group-text cursor-pointer">
+        <!-- Password Toggle Button -->
+          <div class="absolute inset-y-0 right-2 flex items-center">
+<!--            <ion-icon name="{{ showPassword ? 'eye-off' : 'eye' }}" (click)="toggleShow()" size="small"></ion-icon>-->
+            <img
+              [src]="showPassword ? 'assets/icon/eye-off.svg' : 'assets/icon/eye.svg'" alt="Toggle Password Visibility" class="cursor-pointer" (click)="toggleShow()" width="16" height="16"
+            />
+
+          </div>
+      </span>
+            </div>
+          </div>
+        </div>
         <div class="mt-10">
           <div class="sm:col-span-full">
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
-              <input id="email" name="email" type="email" placeholder="Email Address..." autocomplete="email"
+              <input id="email" name="email" type="email" placeholder="Email AddressModel..." autocomplete="email"
                      formControlName="email"
+                     [ngClass]="{
+               'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['email'].invalid,
+               'pr-8': submitted && profileForm.controls['email'].invalid
+             }"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
 
               <!--              <div *ngIf="profileForm.controls['email'].invalid && profileForm.controls['email'].touched" class="text-red-500 text-sm font-bold">-->
-              <!--                Invalid Email Address.-->
+              <!--                Invalid Email AddressModel.-->
               <!--              </div>-->
               <!-- Error message for invalid email format -->
               <div *ngIf="submitted && profileForm.controls['email'].errors?.['email']"
                    class="text-red-500 text-sm font-bold">
-                Invalid Email Address.
+                Invalid Email AddressModel.
               </div>
               <div *ngIf="submitted && profileForm.controls['email'].errors?.['required']"
-                   class="text-red-500 text-sm font-bold">
+                   class="text-red-800 text-sm font-bold">
                 Email is required.
               </div>
 
             </div>
           </div>
           <div class="col-span-full mt-6">
-            <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
+            <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">AddressModel</label>
             <div class="mt-2">
-              <input type="text" placeholder="Enter Address.." name="street-address" id="street-address"
+              <input type="text" placeholder="Enter AddressModel.." name="street-address" id="street-address"
                      autocomplete="street-address" formControlName="address"
+                     [ngClass]="{
+               'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['address'].invalid,
+               'pr-8': submitted && profileForm.controls['address'].invalid
+             }"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
+              <!-- Red "X" Icon (inside the input box) -->
+              <span *ngIf="submitted && profileForm.controls['address'].invalid"
+                    class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+  X
+</span>
               <div *ngIf="submitted && profileForm.controls['address'].errors?.['required']"
                    class="text-red-500 text-sm font-bold">
-                Address is required.
+                AddressModel is required.
               </div>
             </div>
           </div>
         </div>
-
-        <div class="mt-6 flex items-center justify-center gap-x-6">
-          <button type="button"
-                  class="text-sm font-semibold leading-6 text-gray-900"
-                  (click)="goBack()">Back</button>
-          <button type="submit" class="rounded-md bg-[#0D4C92] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" (click)="onSubmit()">Next</button>
-          <button type="button" class="w-49 h-25 text-sm font-semibold leading-6 text-gray-900">Clear</button>
-        </div>
       </div>
     </div>
+    <!-- Button Section -->
+    <div class="mt-6 flex items-center justify-center gap-x-6">
+      <button type="button" class="text-gray-800 bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200" [routerLink]="['/welcome-page']">
+        Back
+      </button>
+
+      <button type="submit" [disabled]="loading" class="bg-[#0D4C92] text-white px-6 py-2 rounded-md hover:bg-blue-800 shadow">
+        <!-- Show "Next" text when not loading -->
+        <span *ngIf="!loading">Next</span>
+        <!-- Show Loading Spinner when loading -->
+        <span *ngIf="loading" class="flex items-center">
+          <i class="fa fa-spinner fa-spin mr-2"></i> Processing...
+        </span>
+      </button>
+      <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearInputMethod()">
+        Clear
+      </button>
+    </div>
+
   </form>
 </ion-content>
