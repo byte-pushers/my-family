@@ -139,8 +139,6 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.childrenForm, this.children);
   }
 
-  // todo: make request payload here
-  // todo: http post
   // Add To Family button call
   addToFamilyButton(): void {
     this.fillFamilyMemberArray(this.unclesForm, this.uncles);
@@ -192,6 +190,39 @@ export class AddToFamilyPage implements OnInit {
     if(this.selectedImage) {
       this.selectedImage = '';
     }
+  }
+
+  // Pre-populating form with required family members for faster testing/demos
+  autofillFormButton(): void {
+    let name = 'Alejandro Quintanilla';
+    let type = 'Father'
+    let member = this.fb.group({
+      name: new FormControl(name, Validators.required),
+      type: new FormControl(type, Validators.required)
+    });
+
+    const formArray1 = this.parentsForm.get('familyMembers') as FormArray;
+    formArray1.push(member);
+
+    name = 'Alejandra Quintanilla';
+    type = 'Grandma';
+    member = this.fb.group({
+      name: new FormControl(name, Validators.required),
+      type: new FormControl(type, Validators.required)
+    });
+
+    const formArray2 = this.grandparentsForm.get('familyMembers') as FormArray;
+    formArray2.push(member);
+
+    name = 'Gabriela Quintanilla';
+    type = 'Sister';
+    member = this.fb.group({
+      name: new FormControl(name, Validators.required),
+      type: new FormControl(type, Validators.required)
+    });
+
+    const formArray3 = this.siblingsForm.get('familyMembers') as FormArray;
+    formArray3.push(member);
   }
 
   ngOnInit() {
