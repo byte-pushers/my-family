@@ -5,7 +5,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
-import java.time.LocalDateTime;
+
+import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -20,8 +21,8 @@ public abstract class BaseIdGeneratedValueEntity extends BaseModel {
         super();
     }
 
-    public BaseIdGeneratedValueEntity(Long id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
-        super(createdBy, updatedBy, createdDate, updatedDate);
+    public BaseIdGeneratedValueEntity(Long id, String createdBy, Date createdDate, String updatedBy, Date updatedDate) {
+        super(createdBy, createdDate, updatedBy, updatedDate);
         this.id = id;
     }
 

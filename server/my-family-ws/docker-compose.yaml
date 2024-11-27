@@ -9,7 +9,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/myfamily?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: myfamily
-      SPRING_DATASOURCE__PASSWORD: myfamily
+      SPRING_DATASOURCE_PASSWORD: myfamily
     depends_on:
       - mysqldb
     volumes:

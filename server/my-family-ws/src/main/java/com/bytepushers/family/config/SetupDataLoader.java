@@ -2,6 +2,7 @@ package com.bytepushers.family.config;
 
 import com.bytepushers.family.model.Person;
 import com.bytepushers.family.model.User;
+import com.bytepushers.family.repo.PersonRepository;
 import com.bytepushers.family.repo.PrivilegeRepository;
 import com.bytepushers.family.repo.RoleRepository;
 import com.bytepushers.family.repo.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PersonRepository personRepository;
 
     /**
      * Called when the application context is refreshed.
@@ -76,12 +80,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         user.setPassword(passwordEncoder.encode("123456")); // Encrypt password
         user.setEmail("john@doe.com");
         user.setUsername("john@doe.com");
-        user.setBirthDate(LocalDate.now()); // Assign current date as birth date
+        user.setBirthDate(new Date()); // Assign current date as birth date
         user.setGender("male");
-
-        // Link user and person entities
-        Person person = user.getPerson();
-        person.setUser(user);
 
         // Assign admin role to user if present
         if (adminRole.isPresent()) {

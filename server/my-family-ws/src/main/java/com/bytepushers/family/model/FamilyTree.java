@@ -3,7 +3,10 @@ package com.bytepushers.family.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a family tree entity in the system.
@@ -14,98 +17,46 @@ import java.util.List;
  * </p>
  */
 @Entity
-@Table(name = "family_tree_member")
-public class FamilyTree extends BaseIdGeneratedValueEntity {
+@Table(name = "family_tree")
+public class FamilyTree extends BaseModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
 
-    /** The relationship description for the root of the family tree (e.g., Head of Family). */
-    @Column(name = "relationship")
-    private String relationship;
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Person> people = new ArrayList<>();
 
-    /**
-     * The primary person associated with this family tree.
-     * Represents the root node or head of the family tree structure.
-     */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person person;
-
-    /**
-     * The list of family members associated with this family tree.
-     * Models the recursive relationships within the family tree.
-     */
-    @OneToMany(mappedBy = "familyTree", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FamilyMember> familyMembers = new ArrayList<>();
-
-    /**
-     * Default constructor for FamilyTree.
-     * Required for frameworks like Hibernate to instantiate objects.
-     */
     public FamilyTree() {
+
     }
 
-    /**
-     * Constructs a FamilyTree with a specified relationship and associated person.
-     *
-     * @param relationship the relationship type or description of the root person
-     * @param person       the primary {@link Person} associated with this family tree
-     */
-    public FamilyTree(String relationship, Person person) {
-        this.relationship = relationship;
-        this.person = person;
+    public FamilyTree(FamilyTreeBuilder builder) {
+        this.name = builder.name;
+        this.people = builder.people;
     }
 
-    /**
-     * Retrieves the relationship description of the root of this family tree.
-     *
-     * @return the relationship description
-     */
-    public String getRelationship() {
-        return relationship;
+    public Long getId() {
+        return id;
     }
 
-    /**
-     * Sets the relationship description of the root of this family tree.
-     *
-     * @param relationship the relationship description to set
-     */
-    public void setRelationship(String relationship) {
-        this.relationship = relationship;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    /**
-     * Retrieves the primary {@link Person} associated with this family tree.
-     *
-     * @return the primary {@link Person}
-     */
-    public Person getPerson() {
-        return person;
+    public List<Person> getPeople() {
+        return people;
     }
 
-    /**
-     * Sets the primary {@link Person} associated with this family tree.
-     *
-     * @param person the primary {@link Person} to set
-     */
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPeople(List<Person> people) {
+        this.people = people;
     }
 
-    /**
-     * Retrieves the list of family members associated with this family tree.
-     *
-     * @return the list of {@link FamilyMember}s
-     */
-    public List<FamilyMember> getFamilyMembers() {
-        return familyMembers;
-    }
-
-    /**
-     * Sets the list of family members associated with this family tree.
-     *
-     * @param familyMembers the list of {@link FamilyMember}s to set
-     */
-    public void setFamilyMembers(List<FamilyMember> familyMembers) {
-        this.familyMembers = familyMembers;
+    public void addPerson(Person person) {
+        this.people.add(person);
     }
 
     /**
@@ -116,10 +67,56 @@ public class FamilyTree extends BaseIdGeneratedValueEntity {
      */
     @Override
     public String toString() {
-        return super.toString().replaceFirst("}$", "") +
-                ", relationship='" + relationship + '\'' +
-                ", person=" + person +
-                ", familyMembers=" + familyMembers +
-                '}';
+        return "FamilyTree {" +
+            "id=" + id +
+            "name='" + name + "'" +
+            "people=" + people +
+            super.toString() + "," +
+        "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        FamilyTree that = (FamilyTree) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, name);
+    }
+
+    public static class FamilyTreeBuilder {
+        private String name;
+        private String createdBy;
+        private Date createdDate;
+        private List<Person> people = new ArrayList<>();
+
+
+        public FamilyTreeBuilder(String name) {
+            this.name = name;
+        }
+
+        public FamilyTreeBuilder addCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public FamilyTreeBuilder addCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public FamilyTreeBuilder addPerson(Person person) {
+            this.people.add(person);
+            return this;
+        }
+
+        public FamilyTree build() {
+            return new FamilyTree(this);
+        }
     }
 }

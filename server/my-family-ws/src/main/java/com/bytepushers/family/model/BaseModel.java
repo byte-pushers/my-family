@@ -3,7 +3,7 @@ package com.bytepushers.family.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -24,11 +24,11 @@ public abstract class BaseModel {
 
     /** The timestamp when the entity was created. */
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     /** The timestamp when the entity was last updated. */
     @Column(name = "updated_date")
-    protected LocalDateTime updatedDate;
+    protected Date updatedDate;
 
     /**
      * Default constructor for BaseModel.
@@ -45,7 +45,7 @@ public abstract class BaseModel {
      * @param createdDate  the timestamp when the entity was created
      * @param updatedDate  the timestamp when the entity was last updated
      */
-    public BaseModel(String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public BaseModel(String createdBy, Date createdDate, String updatedBy, Date updatedDate) {
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
         this.createdDate = createdDate;
@@ -93,7 +93,7 @@ public abstract class BaseModel {
      *
      * @return the timestamp of creation
      */
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
@@ -102,7 +102,7 @@ public abstract class BaseModel {
      *
      * @param createdDate the timestamp of creation
      */
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -111,7 +111,7 @@ public abstract class BaseModel {
      *
      * @return the timestamp of the last update
      */
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
@@ -120,7 +120,7 @@ public abstract class BaseModel {
      *
      * @param updatedDate the timestamp of the last update
      */
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 

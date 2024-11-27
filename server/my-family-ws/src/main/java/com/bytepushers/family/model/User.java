@@ -3,8 +3,11 @@ package com.bytepushers.family.model;
 import com.bytepushers.family.security.model.Role;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Entity representing a system user.
@@ -28,7 +31,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "users")
 public class User extends BaseIdGeneratedValueEntity {
-
     @Column(nullable = false, unique = true) // Ensure email is unique and not null
     private String email;
 
@@ -47,7 +49,15 @@ public class User extends BaseIdGeneratedValueEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Person person;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "users_family_tree",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "family_tree_id", referencedColumnName = "id")
+    )
+    private Collection<FamilyTree> familyTrees;
+
+    @ManyToMany
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -64,6 +74,17 @@ public class User extends BaseIdGeneratedValueEntity {
     public User() {
         super();
         this.person = new Person();
+        person.setUser(this);
+    }
+    public User(Long id, String email, String password, String username, Boolean enabled, String createdBy, Date createdDate, String updatedBy, Date updatedDate) {
+        super(id, createdBy, createdDate, updatedBy, updatedDate);
+
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.enabled = enabled;
+        this.person = new Person();
+        person.setUser(this);
     }
 
     /**
@@ -75,24 +96,16 @@ public class User extends BaseIdGeneratedValueEntity {
      * @param enabled  Indicates whether the user account is enabled.
      */
     public User(String email, String password, String username, Boolean enabled) {
+        super();
         this.email = email;
         this.password = password;
         this.username = username;
         this.enabled = enabled;
         this.person = new Person();
+        person.setUser(this);
     }
 
     // Getters and Setters
-
-    /**
-     * Returns the current User instance.
-     *
-     * @return The current User instance.
-     */
-    public Object get() {
-        return this;
-    }
-
     /**
      * Gets the email of the user.
      *
@@ -165,122 +178,82 @@ public class User extends BaseIdGeneratedValueEntity {
         this.enabled = enabled;
     }
 
-    /**
-     * Gets the associated {@link Person}.
-     *
-     * @return The associated {@link Person}.
-     */
-    public Person getPerson() {
-        return this.person;
+    /*@Override
+    public String toString() {
+        return "User {" +
+            "id=" + super.id +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", username='" + username + '\'' +
+            ", enabled='" + enabled + '\'' +
+            super.toString() +
+        '}';
+    }*/
+
+    public Object get() {
+        return this;
     }
 
-    /**
-     * Gets the roles associated with the user.
-     *
-     * @return A collection of {@link Role} objects.
-     */
-    public Collection<Role> getRoles() {
-        return this.roles;
-    }
-
-    /**
-     * Sets the roles for the user.
-     *
-     * @param roles The roles to associate with the user.
-     */
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
-    /**
-     * Sets the user's first name.
-     *
-     * @param firstName The first name to set.
-     */
     public void setFirstName(String firstName) {
         this.person.setFirstName(firstName);
     }
 
-    /**
-     * Sets the user's last name.
-     *
-     * @param lastName The last name to set.
-     */
     public void setLastName(String lastName) {
         this.person.setLastName(lastName);
     }
 
-    /**
-     * Sets the user's birthdate.
-     *
-     * @param birthDate The birthdate to set.
-     */
-    public void setBirthDate(LocalDate birthDate) {
+    public Collection<Role> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setBirthDate(Date birthDate) {
         this.person.setBirthDate(birthDate);
     }
 
-    /**
-     * Gets the user's birthdate.
-     *
-     * @return The user's birthdate.
-     */
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return this.person.getBirthDate();
     }
 
-    /**
-     * Sets the user's gender.
-     *
-     * @param gender The gender to set.
-     */
     public void setGender(String gender) {
         this.person.setGender(gender);
     }
 
-    /**
-     * Gets the user's gender.
-     *
-     * @return The user's gender.
-     */
     public String getGender() {
         return this.person.getGender();
     }
 
-    // Overrides
+    public Person getPerson() {
+        return this.person;
+    }
 
-    @Override
-    public String toString() {
-        return "User {" +
-                "id=" + super.id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", enabled=" + enabled +
-                '}';
+    public void setPerson(Person person) {
+        this.person = person;
+        person.setUser(this);
+    }
+
+    public Collection<FamilyTree> getFamilyTrees() {
+        return this.familyTrees;
+    }
+
+    public void setFamilyTrees(Collection<FamilyTree> familyTrees) {
+        this.familyTrees = familyTrees;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         User user = (User) o;
-
-        if (!id.equals(user.id)) return false;
-        if (!email.equals(user.email)) return false;
-        if (!username.equals(user.username)) return false;
-        if (!enabled.equals(user.enabled)) return false;
-
-        return password.equals(user.password);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(username, user.username) && Objects.equals(enabled, user.enabled) && Objects.equals(tokenExpired, user.tokenExpired) && Objects.equals(person, user.person) && Objects.equals(familyTrees, user.familyTrees) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + username.hashCode();
-        result = 31 * result + enabled.hashCode();
-        return result;
+        return Objects.hash(super.hashCode(), id, email, password, username, enabled, tokenExpired, person, familyTrees, roles);
     }
 }

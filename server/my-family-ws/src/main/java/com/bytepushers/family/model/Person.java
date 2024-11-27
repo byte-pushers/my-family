@@ -1,15 +1,15 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Represents a person entity in the system.
@@ -17,7 +17,7 @@ import java.util.Objects;
  * It is associated with a {@link User} entity and extends {@link BaseModel} to include common metadata fields.
  */
 @Entity
-@Table(name = "Person")
+@Table(name = "People")
 public class Person extends BaseModel {
 
     /**
@@ -25,12 +25,7 @@ public class Person extends BaseModel {
      * Generated using a foreign key strategy linked to the associated {@link User}.
      */
     @Id
-    @GeneratedValue(generator = "personKeyGenerator")
-    @org.hibernate.annotations.GenericGenerator(
-            name = "personKeyGenerator",
-            strategy = "foreign",
-            parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user")
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /** The first name of the person. */
@@ -38,37 +33,42 @@ public class Person extends BaseModel {
     @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "middle_name")
+    private String middleName;
+
     /** The last name of the person. */
+    @Column(name = "last_name")
     @NotNull(message = "Last name is required")
-    @Column(name = "relationship")
     private String lastName;
 
     /** The birth date of the person in the format yyyy-MM-dd. */
     @Column(name = "birth_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Birth date is required")
-    private LocalDate birthDate;
+    private Date birthDate;
 
     /** The gender of the person (e.g., Male, Female, Non-Binary). */
     @Column(name = "gender")
     @NotNull(message = "Gender is required")
     private String gender;
 
-    /**
-     * The associated {@link User} entity for this person.
-     * Represents the authentication or system user information tied to this person.
-     */
-    @OneToOne(optional = false)
-    @PrimaryKeyJoinColumn
-    private User user;
+    @OneToMany(cascade=CascadeType.ALL)
+    private List<Union> unions;
 
-    /**
-     * The list of family members associated with this person.
-     * Models the bidirectional relationship between {@link Person} and {@link FamilyMember}.
-     */
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<FamilyMember> familyMembers = new ArrayList<>();
+    @OneToMany(cascade=CascadeType.ALL)
+    private List<Person> siblings;
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<Person> parents;
+
+    @ManyToMany(mappedBy = "parents")
+    private Set<Person> children = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_PERSON",
+            joinColumns=@JoinColumn(name = "PERSON_ID"),
+    inverseJoinColumns = @JoinColumn(name = "USER_ID", nullable = false, unique = true))
+    private User user;
 
     // Constructors
 
@@ -88,7 +88,7 @@ public class Person extends BaseModel {
      * @param birthDate the birth date of the person
      * @param gender    the gender of the person
      */
-    public Person(String firstName, String lastName, LocalDate birthDate, String gender) {
+    public Person(String firstName, String lastName, Date birthDate, String gender) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,28 +99,29 @@ public class Person extends BaseModel {
     /**
      * Constructs a Person with metadata, name, birth date, gender, and associated family members.
      *
-     * @param id            the unique identifier of the person
      * @param createdBy     the username of the entity creator
-     * @param updatedBy     the username of the last updater
-     * @param createdDate   the timestamp when the entity was created
-     * @param updatedDate   the timestamp when the entity was last updated
      * @param firstName     the first name of the person
      * @param lastName      the last name of the person
      * @param birthDate     the birth date of the person
      * @param gender        the gender of the person
-     * @param familyMembers the list of {@link FamilyMember}s associated with this person
      */
-    public Person(Long id, String createdBy, String updatedBy, LocalDateTime createdDate, LocalDateTime updatedDate,
-                  String firstName, String lastName, LocalDate birthDate, String gender, List<FamilyMember> familyMembers) {
-        super(createdBy, updatedBy, createdDate, updatedDate);
+    public Person(String firstName, String middleName, String lastName, Date birthDate, String gender, String createdBy) {
+        super(createdBy, new Date(), null, null);
         this.firstName = firstName;
+        this.middleName = middleName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
-        this.familyMembers = familyMembers;
     }
 
-    // Getters and Setters
+    public Person(PersonBuilder builder) {
+        this.firstName = builder.build().firstName;
+        this.lastName = builder.lastName;
+        this.middleName = builder.build().middleName;
+        this.birthDate = builder.birthDate;
+        this.gender = builder.gender;
+        this.unions = builder.unions;
+    }
 
     /**
      * Gets the unique identifier of this person.
@@ -158,6 +159,14 @@ public class Person extends BaseModel {
         this.firstName = firstName;
     }
 
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
     /**
      * Gets the last name of this person.
      *
@@ -181,7 +190,7 @@ public class Person extends BaseModel {
      *
      * @return the birth date
      */
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -190,7 +199,7 @@ public class Person extends BaseModel {
      *
      * @param birthDate the birth date
      */
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -212,40 +221,64 @@ public class Person extends BaseModel {
         this.gender = gender;
     }
 
-    /**
-     * Gets the associated {@link User} of this person.
-     *
-     * @return the associated user
-     */
-    public User getUser() {
-        return user;
+    public List<Union> getUnions() {
+        return unions;
     }
 
-    /**
-     * Sets the associated {@link User} for this person.
-     *
-     * @param user the associated user
-     */
-    public void setUser(User user) {
-        this.user = user;
+    public void setUnions(List<Union> unions) {
+        this.unions = unions;
     }
 
-    /**
-     * Gets the list of family members associated with this person.
-     *
-     * @return the list of family members
-     */
-    public List<FamilyMember> getFamilyMembers() {
-        return familyMembers;
+    public void addUnion(Union union) {
+        this.unions.add(union);
     }
 
-    /**
-     * Sets the list of family members associated with this person.
-     *
-     * @param familyMembers the list of family members
-     */
-    public void setFamilyMembers(List<FamilyMember> familyMembers) {
-        this.familyMembers = familyMembers;
+    public List<Person> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Person> parents) {
+        this.parents = parents;
+    }
+
+    public void addParents(Person parent1, Person parent2) {
+        if (!this.parents.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        this.parents.add(parent1);
+        parent1.getChildren().add(this);
+        this.parents.add(parent2);
+        parent2.getChildren().add(this);
+    }
+
+    public Set<Person> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<Person> children) {
+        this.children = children;
+    }
+
+    public Person createChild(String firstName, String middleName, String lastName, Date birthDate, String gender, String createdBy, Person parent2) {
+        Person child = new Person(firstName, middleName, lastName, birthDate, gender, createdBy);
+        this.children.add(child);
+        child.getParents().add(this);
+
+        if (parent2 != null) {
+            parent2.getChildren().add(child);
+            child.getParents().add(parent2);
+        }
+
+        return child;
+    }
+
+    public List<Person> getSiblings() {
+        return siblings;
+    }
+
+    public void setSiblings(List<Person> siblings) {
+        this.siblings = siblings;
     }
 
     // Overridden Methods
@@ -257,13 +290,17 @@ public class Person extends BaseModel {
      */
     @Override
     public String toString() {
-        return "Person{" +
-                super.toString() +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", gender='" + gender + '\'' +
-                '}';
+        return "Person {" +
+            "id=" + id + "'," +
+            "firstName='" + firstName + "'," +
+            "lastName='" + lastName + "'," +
+            "birthDate=" + birthDate +
+            "gender='" + gender + "'," +
+            "unions=" + unions + "," +
+            "siblings=" + siblings + "," +
+            "parents=" + parents + "," +
+            super.toString() +
+        "}";
     }
 
     /**
@@ -293,5 +330,41 @@ public class Person extends BaseModel {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), firstName, lastName, birthDate, gender);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public static class PersonBuilder {
+        private String firstName;
+        private String lastName;
+        private Date birthDate;
+        private String gender;
+        private List<Union> unions = new ArrayList<>();
+
+        public PersonBuilder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public PersonBuilder withBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public PersonBuilder withGender(String gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public PersonBuilder withUnion(Union union) {
+            this.unions.add(union);
+            return this;
+        }
+
+        public Person build() {
+            return new Person(this);
+        }
     }
 }

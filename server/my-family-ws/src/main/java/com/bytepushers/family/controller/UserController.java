@@ -245,12 +245,12 @@ public class UserController {
 
             // Check if the email is already in use by another user
             Optional<User> userWithSameEmail = userDao.findByEmail(user.getEmail());
-            if (userWithSameEmail.isPresent() && !userWithSameEmail.get().getId().equals(id)) {
+            if (userWithSameEmail.isPresent() /*&& !userWithSameEmail.get().getId().equals(id)*/) {//TODO: LOOK AT LATER
                 throw new DuplicateUserException("A user with email " + user.getEmail() + " already exists.");
             }
 
             // Set the ID from the path variable into the user object
-            user.setId(id);
+            // user.setId(id); //TODO: LOOK AT LATER
 
             // Call the DAO to update the user
             User updatedUser = userDao.save(user);
