@@ -48,7 +48,9 @@ public class Person extends BaseModel {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<FamilyMember> familyMembers = new ArrayList<>();
-
+    // One-to-Many relationship with FamilyMember (Tonte)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FamilyTree> familyTrees = new ArrayList<>();
     // Constructors
     public Person() {
         super();

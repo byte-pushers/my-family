@@ -4,6 +4,7 @@ import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.model.User;
 import com.bytepushers.family.repo.FamilyMemberRepository;
+import com.bytepushers.family.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,52 +26,47 @@ import java.util.Optional;
 @Service("familyTreeService")
 public class GenealogyService implements FamilyTreeService {
     private static final Logger logger = LoggerFactory.getLogger(GenealogyService.class);
+
     private final FamilyMemberRepository familyMemberRepository;
+    private final UserRepository userRepository;
 
     /**
-     * Constructs a new {@link GenealogyService} with the specified {@link FamilyMemberRepository}.
+     * Constructs a new {@link GenealogyService} with the specified repositories.
      *
      * @param familyMemberRepository the repository for family member persistence
+     * @param userRepository         the repository for user persistence
      */
     @Autowired
-    public GenealogyService(FamilyMemberRepository familyMemberRepository) {
+    public GenealogyService(FamilyMemberRepository familyMemberRepository, UserRepository userRepository) {
         this.familyMemberRepository = familyMemberRepository;
+        this.userRepository = userRepository;
     }
-/*
-// TODO: accept userId in this method.
-
-// TODO: Do validation check to make sure the userId is and actual user/person.  If not an existing user/person throw exception
-
-// TODO: find user/person by id
-
-// TODO: assign user to the top level family member.
-*/
 
     /**
      * Creates a family tree by saving the provided list of family members.
-     * <p>
-     * This method recursively saves all family members and their nested members,
-     * flattening the hierarchy into a single list of saved entities.
-     * </p>
+     * This method validates the userId and familyTreeId, saves all family members recursively,
+     * and flattens the hierarchy into a single list of saved entities.
      *
      * @param topLevelFamilyMembers the list of root family members to create
+     * @param userId                the ID of the user associated with the family tree
+     * @param familyTreeId          the ID of the family tree (null for new trees)
      * @return a flattened list of all saved family members
-     * @throws IllegalArgumentException if the provided list is null or userId is invalid
+     * @throws IllegalArgumentException if the provided list is null, empty, or userId is invalid
      */
     @Transactional
     @Override
-    public List<FamilyMember> createFamilyTree(List<FamilyMember> topLevelFamilyMembers) {
-        if (topLevelFamilyMembers == null) {
-            throw new IllegalArgumentException("FamilyTree cannot be null");
+    public List<FamilyMember> createFamilyTree(List<FamilyMember> topLevelFamilyMembers, Long userId, Long familyTreeId) {
+        if (topLevelFamilyMembers == null || topLevelFamilyMembers.isEmpty()) {
+            throw new IllegalArgumentException("Family tree cannot be null or empty.");
         }
 
-        // Validate the userId
-        Optional<User> user = user.findById(userId);
+        // Validate userId
+        Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
+            logger.error("User with ID {} not found. Cannot create family tree.", userId);
             throw new IllegalArgumentException("Invalid userId: User does not exist.");
         }
 
-        // Initialize list to store saved family members
         List<FamilyMember> savedFamilyMembers = new ArrayList<>();
 
         for (FamilyMember topLevelFamilyMember : topLevelFamilyMembers) {
@@ -88,6 +84,7 @@ public class GenealogyService implements FamilyTreeService {
             savedFamilyMembers.addAll(flattenFamilyMembers(savedFamilyMember));
         }
 
+        logger.info("Successfully created family tree for user ID {} with {} members.", userId, savedFamilyMembers.size());
         return savedFamilyMembers;
     }
 
@@ -97,7 +94,8 @@ public class GenealogyService implements FamilyTreeService {
      * @param parentFamilyMember the family member whose children need to be saved
      */
     private void saveFamilyMemberChildren(FamilyMember parentFamilyMember) {
-        if (parentFamilyMember.getPerson().getFamilyMembers() != null && !parentFamilyMember.getPerson().getFamilyMembers().isEmpty()) {
+        if (parentFamilyMember.getPerson().getFamilyMembers() != null &&
+                !parentFamilyMember.getPerson().getFamilyMembers().isEmpty()) {
             for (FamilyMember child : parentFamilyMember.getPerson().getFamilyMembers()) {
                 // Set parent reference
                 child.setParentId(parentFamilyMember.getId());
@@ -114,31 +112,18 @@ public class GenealogyService implements FamilyTreeService {
     }
 
     /**
-     * Flattens a family member hierarchy into a single list.
-     *
-     * @param member the root family member
-     * @return a flattened list of the family member and all its nested members
-     */
-    private List<FamilyMember> flattenFamilyMembers(FamilyMember member) {
-        List<FamilyMember> flatList = new ArrayList<>();
-        flatList.add(member);
-
-        if (member.getPerson().getFamilyMembers() != null) {
-            for (FamilyMember nestedMember : member.getPerson().getFamilyMembers()) {
-                flatList.addAll(flattenFamilyMembers(nestedMember));
-            }
-        }
-        return flatList;
-    }
-
-    /**
      * Saves a family member to the repository.
      *
      * @param member the family member to save
      * @return the saved family member entity
      */
     private FamilyMember saveFamilyMember(FamilyMember member) {
-        return familyMemberRepository.save(member);
+        try {
+            return familyMemberRepository.save(member);
+        } catch (Exception e) {
+            logger.error("Failed to save family member: {}", e.getMessage());
+            throw new RuntimeException("Error while saving family member. Please try again.", e);
+        }
     }
 
     /**
@@ -150,26 +135,8 @@ public class GenealogyService implements FamilyTreeService {
     @Override
     public Optional<FamilyMember> getFamilyTreeById(Long id) {
         return familyMemberRepository.findById(id);
-        //TODO: we got to figure out how to use this.
-        /*FamilyMember familyMember = familyMemberRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("Family tree not found with ID: {}", id);
-                    return new NotFoundException("Family tree not found with id: " + id);
-                });*/
-        //Initialize family members to ensure proper structure
-        //initializeFamilyMembers(familyTree.getFamilyMembers());
-        //TODO: eagly load to the family member
-        //familyMember.getPerson().getFamilyMembers();
-        //return familyTree;
     }
-    /*private void initializeFamilyMembers(List<FamilyMember> members) {
-        if (members != null) {
-            for (Person member : members) {
-                member.getFamilyMembers().size(); // Force initialization
-                initializeFamilyMembers(member.getFamilyMembers());
-            }
-        }
-    }*/
+
     /**
      * Retrieves all family members in the repository.
      *
@@ -179,11 +146,7 @@ public class GenealogyService implements FamilyTreeService {
     public List<FamilyMember> getAllFamilyTrees() {
         return familyMemberRepository.findAll();
     }
-    /*@Override
-    @Transactional()
-    public FamilyMember getFamilyMemberWithChildren(Long id) {
-        return familyMemberRepository.findFamilyMemberWithChildren(id);
-    }*/
+
     /**
      * Updates an existing family member.
      *
@@ -194,7 +157,7 @@ public class GenealogyService implements FamilyTreeService {
      */
     @Override
     @Transactional
-    public FamilyMember updateFamilyTree(Long id, @jakarta.validation.Valid FamilyMember updatedFamilyMember) {
+    public FamilyMember updateFamilyTree(Long id, FamilyMember updatedFamilyMember) {
         return familyMemberRepository.findById(id)
                 .map(existingMember -> {
                     if (updatedFamilyMember.getPerson() != null) {
@@ -221,20 +184,5 @@ public class GenealogyService implements FamilyTreeService {
             throw new RuntimeException("FamilyTree with id " + id + " not found");
         }
         familyMemberRepository.deleteById(id);
-    }
-
-    @Override
-    public FamilyTree createFamilyTree(FamilyTree familyTree) {
-        return null;
-    }
-
-    @Override
-    public FamilyTree getFamilyTree(Integer id) {
-        return null;
-    }
-
-    @Override
-    public FamilyMember getFamilyMemberWithChildren(Integer id) {
-        return null;
     }
 }

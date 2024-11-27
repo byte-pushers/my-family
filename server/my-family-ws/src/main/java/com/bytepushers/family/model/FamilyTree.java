@@ -18,8 +18,8 @@ public class FamilyTree extends BaseIdGeneratedValueEntity {
     @Column(name = "relationship")
     private String relationship;
 
-    // Assuming `Person` is meant to be embedded directly without an identifier of its own
-    @OneToOne(cascade = CascadeType.ALL)
+    //
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
