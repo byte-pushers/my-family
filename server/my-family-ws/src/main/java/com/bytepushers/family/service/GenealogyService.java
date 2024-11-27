@@ -80,8 +80,7 @@ public class GenealogyService implements FamilyTreeService {
             // Save the children of the top-level family member recursively
             saveFamilyMemberChildren(savedFamilyMember);
 
-            // Flatten and collect all family members (top-level + children)
-            savedFamilyMembers.addAll(flattenFamilyMembers(savedFamilyMember));
+
         }
 
         logger.info("Successfully created family tree for user ID {} with {} members.", userId, savedFamilyMembers.size());
