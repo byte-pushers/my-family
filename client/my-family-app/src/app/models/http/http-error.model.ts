@@ -1,10 +1,10 @@
-import { HttpErrorInfo } from "./http-error-info";
-import { HttpError } from "./http-error";
+import { HttpErrorInfo } from './http-error-info';
+import { HttpError } from './http-error';
 
 export class HttpErrorModel extends Error implements HttpError {
   #httpErrors: HttpErrorInfo[];
 
-  constructor(errorMessage1?: String);
+  constructor(errorMessage1?: string);
   constructor(error: Error, errorMessage2?: string);
   constructor(httpErrorInfoArray: HttpErrorInfo[], errorMessage3?: string);
   constructor(...args: any[]) {
@@ -12,11 +12,11 @@ export class HttpErrorModel extends Error implements HttpError {
       let errorMessage = null;
 
       if (args.length === 1) {
-        errorMessage = args[0] instanceof String ? (args[0] as String) : null;
+        errorMessage = args[0] instanceof String ? (args[0] as string) : null;
       }
 
       if (args.length === 2) {
-        errorMessage = args[1] instanceof String ? (args[1] as String) : null;
+        errorMessage = args[1] instanceof String ? (args[1] as string) : null;
       }
 
       if (errorMessage == null) {
@@ -34,7 +34,7 @@ export class HttpErrorModel extends Error implements HttpError {
         });
       }
 
-      return errorMessage;
+      return errorMessage != null? errorMessage : '';
     }
 
     function getErrorStackTrace(args: any[]): string {
@@ -45,10 +45,10 @@ export class HttpErrorModel extends Error implements HttpError {
         stackTrace = error?.stack;
       }
 
-      return stackTrace;
+      return stackTrace != null? stackTrace : '';
     }
 
-    function getErrorName(args: any[]): string {
+    function getErrorName(args: any[]): string | null {
       let errorName = null;
 
       if (args.length === 2 || args.length === 1) {
@@ -60,7 +60,7 @@ export class HttpErrorModel extends Error implements HttpError {
     }
 
     function getHttpErrorInfoArray(args: any[]): HttpErrorInfo[] {
-      let httpErrorInfoArray = [];
+      let httpErrorInfoArray: HttpErrorInfo[] = [];
 
       if (args.length === 1 || args.length === 2) {
         httpErrorInfoArray = Array.isArray(args[0])
@@ -76,37 +76,32 @@ export class HttpErrorModel extends Error implements HttpError {
     const errorName = getErrorName(args);
 
     if (errorName != null) {
-      this.name = errorName;
+      super.name = errorName;
     }
 
-    this.stack = getErrorStackTrace(args);
+    super.stack = getErrorStackTrace(args);
     this.#httpErrors = getHttpErrorInfoArray(args);
   }
 
   getName(): string {
-    return this.name;
-  }
-  get name(): string {
-    return this.name;
-  }
-
-  set name(name: string) {
-    this.name = name;
+    return super.name;
   }
 
   setName(name: string) {
-    this.name = name;
+    super.name = name;
   }
 
   getMessage(): string {
-    return this.message;
+    return super.message;
   }
 
-  get message(): string {
-    if (this.message == null) {
+  override get message(): string {
+    let message = super.message;
+
+    if (message == null) {
       this.getHttpErrors().some((httpError) => {
         if (httpError.message != null) {
-          this.message = httpError.message;
+          message = httpError.message;
           return true;
         }
 
@@ -114,36 +109,25 @@ export class HttpErrorModel extends Error implements HttpError {
       });
     }
 
-    return this.message;
-  }
-
-  set message(message: string) {
-    this.message = message;
+    return message;
   }
 
   setMessage(message: string) {
-    this.message = message;
+    super.message = message;
   }
 
-  getStack(): string {
-    return this.stack;
-  }
-
-  get stack(): string {
-    return this.stack;
-  }
-
-  set stack(stack: string) {
-    this.stack = stack;
+  getStack(): string | undefined {
+    return super.stack;
   }
 
   setStack(stack: string) {
-    this.stack = stack;
+    super.stack = stack;
   }
 
   getHttpErrors(): HttpErrorInfo[] {
     return this.#httpErrors;
   }
+
   get httpErrors(): HttpErrorInfo[] {
     return this.#httpErrors;
   }

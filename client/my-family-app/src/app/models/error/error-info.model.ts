@@ -2,10 +2,10 @@ import { ErrorInfo } from "./error-info";
 import { ErrorInfoProperties } from "./error-info.properties";
 
 export class ErrorInfoModel implements ErrorInfo {
-  #code: string;
-  #field: { name: string; min?: number; max?: number; required?: boolean };
-  #message: string;
-  #type: string;
+  #code?: string;
+  #field?: { name: string; min?: number; max?: number; required?: boolean };
+  #message?: string;
+  #type?: string;
 
   constructor(config: ErrorInfoProperties) {
     this.#code = config?.code;
@@ -14,15 +14,15 @@ export class ErrorInfoModel implements ErrorInfo {
     this.#type = config?.type;
   }
 
-  getCode(): string {
+  getCode(): string | undefined {
     return this.#code;
   }
 
-  get code(): string {
+  get code(): string | undefined {
     return this.#code;
   }
 
-  getField(): { name: string; min?: number; max?: number; required?: boolean } {
+  getField(): { name: string; min?: number; max?: number; required?: boolean } | undefined {
     return this.#field;
   }
 
@@ -31,22 +31,22 @@ export class ErrorInfoModel implements ErrorInfo {
     min?: number;
     max?: number;
     required?: boolean;
-  } {
+  } | undefined {
     return this.#field;
   }
 
-  getMessage(): string {
+  getMessage(): string | undefined {
     return this.#message;
   }
-  get message(): string {
+  get message(): string | undefined {
     return this.#message;
   }
 
-  getType(): string {
+  getType(): string | undefined {
     return this.#type;
   }
 
-  get type(): string {
+  get type(): string | undefined {
     return this.#type;
   }
 }

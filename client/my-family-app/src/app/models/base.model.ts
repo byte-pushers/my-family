@@ -4,4 +4,6 @@ export interface BaseModel {
   createdDate?: Date;
   updatedBy?: string;
   updatedDate?: Date;
+
+  new(props: any): BaseModel;
 }

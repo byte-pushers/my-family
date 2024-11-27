@@ -4,7 +4,7 @@ import { HttpErrorProperties } from "./http-error.properties";
 export interface HttpError extends HttpErrorProperties {
   getName(): string;
   setName(name: string): void;
-  getStack(): string;
+  getStack(): string | undefined;
   setStack(stackTrace: string): void;
   getMessage(): string;
   setMessage(message: string): void;
