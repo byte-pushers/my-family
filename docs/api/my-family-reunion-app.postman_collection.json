@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3215483d-e5bd-4cad-9175-72dc94d7f1c1",
+		"_postman_id": "7f929dcd-1d00-4c8a-9699-6f723d1ad15f",
 		"name": "my-family-reunion-app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38471072"
+		"_exporter_id": "35578910"
 	},
 	"item": [
 		{
@@ -519,6 +519,700 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "paymentProcess",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"type\": \"wearable\",\n    \"name\": \"Laptop\",\n    \"description\": \"15-inch display\",\n    \"price\": 999.99,\n    \"quantity\": 1\n  },\n  {\n    \"type\": \"book\",\n    \"name\": \"Mouse\",\n    \"description\": \"Wireless mouse\",\n    \"price\": 25.50,\n    \"quantity\": 2\n  },{\n    \"type\": \"family\",\n    \"name\": \"Mouse\",\n    \"description\": \"Wireless mouse\",\n    \"price\": 100,\n    \"attendees\":5,\n    \"quantity\": 1\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order total",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							},
+							{
+								"key": "email",
+								"value": "zayan@gmail.com",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"type\": \"wearable\",\n    \"name\": \"Laptop\",\n    \"description\": \"15-inch display\",\n    \"price\": 10.99,\n    \"quantity\": 5\n  },\n  {\n    \"type\":\"family\",\n    \"attendees\":5\n  }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/orders?email=zayan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "zayan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "add event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"friends\",\n  \"eventName\": \"friends reunion\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n        \"agenda\":\"tech meeting 2026\",\n        \"startTime\":\"02:00\",\n        \"endTime\":\"05:00\",\n        \"date\": \"2024-05-11\"\n    },\n    {\n        \"agenda\":\"Dinner Time\",\n        \"startTime\":\"07:00\",\n        \"endTime\":\"09:00\",\n        \"date\": \"2024-05-11\"\n    }\n    \n  ],\n  \"merchandise\":[\n    {\n        \"type\":\"wearable\",\n        \"name\":\"v-neck tshirt\",\n        \"description\":\"it is quality v-neck tshirt for summer\",\n        \"quantity\":2,\n        \"price\":25.99,\n        \"imageUrl\":\"url\",\n        \"sku\":\"1qwejdjasdsa\",\n        \"size\":\"M\",\n        \"color\":\"black\"\n\n    },\n    {\n       \"type\":\"book\",\n        \"name\":\"rich dad and poor dad\",\n        \"description\":\"it is quality v-neck tshirt for summer\",\n        \"quantity\":2,\n        \"price\":25.99,\n        \"imageUrl\":\"url\",\n        \"author\":\"Robert\",\n        \"isbn\":\"1232wjsadasd\"\n        \n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by name",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events/?name=Tech Innovations 2027",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Tech Innovations 2027"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete event by id ",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/events/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"School program\",\n  \"eventName\": \"Tech Innovations 2024\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n        \"agenda\":\"Breakfast time\",\n        \"startTime\":\"08:00\",\n        \"endTime\":\"09:00\",\n        \"date\": \"2024-05-11\"\n    },\n    {\n        \"agenda\":\"go for fishing\",\n        \"startTime\":\"09:00\",\n        \"endTime\":\"05:00\",\n        \"date\": \"2024-05-11\"\n    }\n    \n  ],\n  \"merchandise\":[\n    {\n        \"merchandiseType\":\"WEARABLE\",\n        \"wearableType\":\"T_SHIRT\",\n        \"productName\":\"v-neck tshirt, which fishing print\",\n        \"productPrice\":25.99,\n        \"productDescription\":\"it is quality v-neck tshirt for summer\",\n        \"productImageUrl\":\"url\",\n        \"SKU\":\"123jwedwer3234238wd\",\n        \"size\":\"S, M\",\n        \"color\":\"black\"\n\n    },\n    {\n        \"merchandiseType\":\"BOOK\",\n        \"productName\":\"Rich dad poor dad\",\n        \"productPrice\":31.99,\n        \"productDescription\":\"Rich Dad Poor Dad is a 1997 book written by Robert T. Kiyosaki and Sharon Lechter.\",\n        \"productImageUrl\":\"url\",\n        \"author\":\"Robert T\",\n        \"ISBN\":\"0-446-67745-0\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/events/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "create account",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"zayan\",\n    \"middleName\":\"middleName\",\n    \"lastName\":\"Doe\",\n    \"userName\":\"John01\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2001-10-11\",\n    \"age\":14,\n    \"password\":\"12s\",\n    \"email\":\"zayan@gmail.com\",\n    \"address\":\"12334 3432432\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all accounts",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by email",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?email=zayan12@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "zayan12@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by name",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/?name=zayan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "zayan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"Casey\",\n    \"middleName\":\"N/A\",\n    \"lastName\":\"malik\",\n    \"userName\":\"john01\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2001-10-11\",\n    \"age\":20,\n    \"password\":\"newpassword12345\",\n    \"email\":\"John@gmail.com\",\n    \"address\":\"12334 3432432\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/accounts/update/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"accounts",
+								"update",
+								"2"
+							]
 						}
 					},
 					"response": []

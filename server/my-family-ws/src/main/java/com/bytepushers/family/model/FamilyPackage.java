@@ -1,20 +1,15 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 
-@Entity
-@DiscriminatorValue("FAMILY")
 public class FamilyPackage extends Package {
 
-    public FamilyPackage() {}
-
-    public FamilyPackage(String name, Double basePrice) {
-        super(name, basePrice);
+    public FamilyPackage() {
+       super("Package","family package", "family package",100);
     }
 
     @Override
-    public Double calculateTotalPrice(int numPeople) {
-        return getBasePrice()*numPeople;
+    public double calculateTotalCost(int attendees) {
+        return this.getPrice() * attendees;
     }
+
 }

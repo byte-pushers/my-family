@@ -1,20 +1,14 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 
-@Entity
-@DiscriminatorValue("GROUP")
 public class GroupPackage extends Package{
 
-    public GroupPackage() {}
-
-    public GroupPackage(String name, Double basePrice) {
-        super(name, basePrice);
+    public GroupPackage() {
+        super("package","Group Package", "Group Package",200);
     }
 
     @Override
-    public Double calculateTotalPrice(int numPeople) {
-        return getBasePrice() * numPeople;
-    }
+    public double calculateTotalCost(int attendees){
+        return this.getPrice()*attendees;
+    };
 }

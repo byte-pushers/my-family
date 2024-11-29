@@ -6,7 +6,6 @@ import com.bytepushers.family.model.Event;
 import com.bytepushers.family.model.Merchandise;
 import com.bytepushers.family.model.Wearable;
 import com.bytepushers.family.repo.EventRepository;
-import com.bytepushers.family.repo.MerchendiseRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +14,9 @@ import java.util.List;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-    private final MerchendiseRepository merchendiseRepository;
 
-    public EventService(EventRepository eventRepository, MerchendiseRepository merchendiseRepository) {
+    public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
-        this.merchendiseRepository = merchendiseRepository;
     }
 
     //create new event method

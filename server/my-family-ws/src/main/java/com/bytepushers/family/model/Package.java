@@ -1,69 +1,34 @@
 package com.bytepushers.family.model;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.*;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "package_type", discriminatorType = DiscriminatorType.STRING)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "merchandiseType", visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = IndividualPackage.class, name = "IndividualPackage"),
-        @JsonSubTypes.Type(value = GroupPackage.class, name = "GroupPackage"),
-        @JsonSubTypes.Type(value = FamilyPackage.class, name = "FamilyPackage"),
-        @JsonSubTypes.Type(value = FreePackage.class, name = "FreePackage")
-})
-public abstract class Package {
+public abstract class Package extends ShoppingItem{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int attendees;
 
-    private String name;
-    private Double basePrice;
-
-//    @OneToOne(mappedBy = "eventPackage")
-//    private Event event;
-
-    public Package() {}
-
-    public Package(String name, Double basePrice) {
-        this.name = name;
-        this.basePrice = basePrice;
+    public Package() {
     }
 
-    public abstract Double calculateTotalPrice(int numPeople);
-
-    public Long getId() {
-        return id;
+    public Package(String type, String name, String description, double price) {
+        super(type, name, description, price);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Package(String type, String name, String description, double price, int quantity, int attendees) {
+        super(type, name, description, price);
+        this.attendees = attendees;
     }
 
-    public String getName() {
-        return name;
+    public int getAttendees() {
+        return attendees;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAttendees(int attendees) {
+        this.attendees = attendees;
     }
 
-    public Double getBasePrice() {
-        return basePrice;
-    }
+//    public static double calculatePackageCost(int attendees, double price) {
+//        return  attendees * price;
+//    };
 
-    public void setBasePrice(Double basePrice) {
-        this.basePrice = basePrice;
-    }
-
-//    public Event getEvent() {
-//        return event;
-//    }
-//
-//    public void setEvent(Event event) {
-//        this.event = event;
-//    }
+    @Override
+    public abstract double calculateTotalCost(int attendees);
 }
