@@ -12,10 +12,14 @@ import { catchError, map } from "rxjs/operators";
 import { HttpError } from "../models/http/http-error";
 import { HttpErrorModel } from "../models/http/http-error.model";
 import { HttpErrorInfoModel } from "../models/http/http-error-info.model";
+import { FamilyTreeDomainModelApiTransformer } from '../transformers/FamilyTreeDomainModelApiTransformer';
+import { FamilyReunionTransformer } from '../transformers/FamilyReunionTransformer';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
+  readonly #registeredDomainApiTransformers = new Map<string|null, FamilyReunionTransformer>();
   constructor() {
+    this.#registeredDomainApiTransformers.set('api/family-trees', new FamilyTreeDomainModelApiTransformer())
   }
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -28,8 +32,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
           if (event instanceof HttpResponse) {
             if (event?.body) {
-              Transformer registeredDomainApiTransformer = this.registeredDomainApiTransformers.get(event.url);
-              return event.clone({ body: registeredDomainApiTransformer.transform(event.body) });
+              const registeredDomainApiTransformer = this.#registeredDomainApiTransformers.get(event.url);
+
+              return event.clone({ body: (registeredDomainApiTransformer != null)? registeredDomainApiTransformer.transform(event.body): event.body });
             }
           }
 

@@ -119,7 +119,7 @@ export class AddToFamilyPage implements OnInit {
       let firstName = parsedName[0];
       let lastName = parsedName[1];
 
-      const person = new PersonModel(1, firstName, lastName, new Date(1 / 2001));
+      const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), [], "system", new Date(), undefined, undefined);
       const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', new Date(today), 'updatedBy', new Date(today));
       arr.push(familyMember);
     });

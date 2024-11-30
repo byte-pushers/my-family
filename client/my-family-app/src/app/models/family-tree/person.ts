@@ -6,4 +6,16 @@ export interface Person extends BaseModel {
   lastName: string;
   birthDate: Date;
   familyMembers: FamilyMember[];
+
+  /*constructor(
+    id: number,
+    firstName: string,
+    lastName: string,
+    birthDate: Date,
+    familyMembers: FamilyMember[] = [],
+    createdBy?: string,
+    createdDate?: Date,
+    updatedBy?: string,
+    updatedDate?: Date
+  );*/
 }

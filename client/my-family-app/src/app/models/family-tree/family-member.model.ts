@@ -4,11 +4,11 @@ import { RelationshipType } from './relationship-type';
 import { FamilyMember } from './family-member'; // Import RelationshipType
 
 export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
-  #relationship: RelationshipType;
-  #person: Person;
+  readonly #relationship: RelationshipType;
+  readonly #person: Person;
 
   constructor(id: number, relationship: RelationshipType, person: Person, createdBy: string, createdDate: Date, updatedBy: string, updatedDate: Date) {
-    super(id, createdBy, createdDate, updatedBy, updatedDate);  // Initialize BaseDomainModel fields
+    super({id: id, createdBy: createdBy, createdDate: createdDate, updatedBy: updatedBy, updatedDate: updatedDate});  // Initialize BaseDomainModel fields
     this.#relationship = relationship;
     this.#person = person;
   }

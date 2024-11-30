@@ -3,10 +3,10 @@ import { Person } from './person';
 import { FamilyMember } from './family-member';
 
 export class PersonModel extends BaseDomainModel implements Person {
-  #firstName: string;
-  #lastName: string;
-  #birthDate: Date;
-  #familyMembers: FamilyMember[];
+  readonly #firstName: string;
+  readonly #lastName: string;
+  readonly #birthDate: Date;
+  readonly #familyMembers: FamilyMember[];
 
   constructor(
     id: number,
@@ -19,7 +19,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     updatedBy?: string,
     updatedDate?: Date
   ) {
-    super(id, createdBy, createdDate, updatedBy, updatedDate);
+    super({id: id, createdBy: createdBy, createdDate: createdDate, updatedBy: updatedBy, updatedDate: updatedDate});
     this.#firstName = firstName;
     this.#lastName = lastName;
     this.#birthDate = birthDate;
@@ -81,7 +81,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     return`
       "firstName": "${this.#firstName}",
       "lastName": "${this.#lastName}",
-      "birthdate": "${this.#birthDate.toISOString()}",
+      "birthDate": "${this.#birthDate.toISOString()}",
       "familyMembers": [${this.#familyMembers.map(fm => fm.toString()).join(', ')}]
     `;
   }

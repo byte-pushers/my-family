@@ -49,8 +49,13 @@ export class SearchResultsPage implements OnInit {
     // ... other mock events
   ];
 
-  private mockPeople: Person[] = [
-    new PersonModel(
+  private mockPeople: Array<Person> = [];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    /*this.mockPeople[0] = new PersonModel(
       1,
       "Julia",
       "Harris",
@@ -60,14 +65,8 @@ export class SearchResultsPage implements OnInit {
       new Date(),
       'system',
       new Date()
-    ),
-    // ... other mock people
-  ];
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    );*/
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

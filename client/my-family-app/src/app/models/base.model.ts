@@ -5,5 +5,5 @@ export interface BaseModel {
   updatedBy?: string;
   updatedDate?: Date;
 
-  new(props: any): BaseModel;
+  // constructor(props: { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date }): BaseModel;
 }

@@ -7,12 +7,12 @@ export abstract class BaseDomainModel implements BaseModel {
   #updatedBy?: string;
   #updatedDate?: Date;
 
-  constructor(id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date) {
-    this.#id = id;
-    this.#createdBy = createdBy;
-    this.#createdDate = createdDate;
-    this.#updatedBy = updatedBy;
-    this.#updatedDate = updatedDate;
+  protected constructor(props: { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date }) {
+    this.#id = props?.id;
+    this.#createdBy = props?.createdBy;
+    this.#createdDate = props?.createdDate;
+    this.#updatedBy = props?.updatedBy;
+    this.#updatedDate = props?.updatedDate;
   }
 
   public getId(): number | undefined {
