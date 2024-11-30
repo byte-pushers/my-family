@@ -52,7 +52,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     }
   }
 
-
   // TODO: Call Family Tree Service for API GET Calls
 /*  ngOnInit(): void {
     this.createFamilyTree();
@@ -70,7 +69,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
   }
 
 
-  // @ts-ignore
+// @ts-ignore
   private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
     console.log('FamilyTreeVisualization: Raw API Data:', data);
 
@@ -82,6 +81,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       const person = createPersonFromResponse(member.person);
 
       return {
+        id: member.id, // Add the ID here
         name: `${person.firstName} ${person.lastName}`,
         image: `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(person.firstName)}`,
         children: member.familyMembers.map(child => buildFamilyNode(child))
@@ -118,18 +118,23 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     }
     console.log('FamilyTreeVisualization: Found container element');
     element.innerHTML = '';
+
+    // Get container dimensions with responsive adjustments
     const bbox = element.getBoundingClientRect();
     this.width = bbox.width;
     this.height = bbox.height;
-    const radius = Math.min(this.width, this.height) / 2 - Math.min(this.width, this.height) * 0.2;
+    const minDimension = Math.min(this.width, this.height);
+    const radius = minDimension / 2 * 0.9; // 80% of half the minimum dimension
 
-    // Create SVG with centered group
+    // Create SVG with responsive attributes
     const svg = d3.select(element)
       .append('svg')
-      .attr('width', this.width)
-      .attr('height', this.height)
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`)
-      .style('font', '10px sans-serif');
+      .style('font', minDimension < 600 ? '8px sans-serif' : '10px sans-serif');
+
 
     // Create a container for zoom, centered in the SVG
     const zoomableGroup = svg.append('g')
@@ -137,13 +142,15 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
   // .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
 
+/*
     // Setup radial tree layout
     const radialTreeLayout = d3.tree<FamilyNode>()
       .size([2 * Math.PI, radius])
-      .separation(() => 1.5);
+      .separation((a, b) => (a.parent === b.parent ? 2 : 3)); // Increase separation
 
     // Apply the layout
     radialTreeLayout(root);
+*/
 
     // Convert coordinates from polar to Cartesian
     root.each(d => {
@@ -151,7 +158,15 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       d.y = (d as any).y;
     });
 
-    const nodes = root.descendants();
+  // Manually assign polar coordinates to nodes
+      const totalNodes = root.descendants().length;
+      const nodes = root.descendants();
+      nodes.forEach((node, i) => {
+        const angle = (2 * Math.PI * i) / totalNodes; // Spread evenly in a circle
+        node.x = Math.cos(angle) * radius; // Convert polar to Cartesian
+        node.y = Math.sin(angle) * radius; // Convert polar to Cartesian
+      });
+
     const links = root.links();
 
     // Setup links
@@ -159,10 +174,10 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       .data(links)
       .enter()
       .append('line')
-      .attr('x1', d => Math.cos((d as any).source.x - Math.PI / 2) * (d as any).source.y)
-      .attr('y1', d => Math.sin((d as any).source.x - Math.PI / 2) * (d as any).source.y)
-      .attr('x2', d => Math.cos((d as any).target.x - Math.PI / 2) * (d as any).target.y)
-      .attr('y2', d => Math.sin((d as any).target.x - Math.PI / 2) * (d as any).target.y)
+      .attr('x1', d => (d as any).source.x)
+      .attr('y1', d => (d as any).source.y)
+      .attr('x2', d => (d as any).target.x)
+      .attr('y2', d => (d as any).target.y)
       .attr('stroke', '#ccc')
       .attr('stroke-width', 2);
 
@@ -172,33 +187,165 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', d => {
-        const x = Math.cos((d as any).x - Math.PI / 2) * (d as any).y;
-        const y = Math.sin((d as any).x - Math.PI / 2) * (d as any).y;
-        return `translate(${x},${y})`;
-      });
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
-    // Add circles
-    node.append('circle')
-      .attr('r', d => {
-        if (d.depth === 0) return 40;
-        else if (d.depth === 1) return 30;
-        else return 20;
+
+
+    node.append('image')
+      .attr('xlink:href', 'assets/img/placeholder1.png')
+      .attr('x', d => {
+        const baseSize = minDimension < 600 ? 0.85 : 1;
+        const size = d.depth === 0 ? -40 : d.depth === 1 ? -30 : -20;
+        return size * baseSize;
       })
-      .style('fill', '#19d3a2')
-      .style('fill-opacity', 0.3)
-      .attr('stroke', '#b3a2c8')
-      .style('stroke-width', 4)
+      .attr('y', d => {
+        const baseSize = minDimension < 600 ? 0.85 : 1;
+        const size = d.depth === 0 ? -40 : d.depth === 1 ? -30 : -20;
+        return size * baseSize;
+      })
+      .attr('width', d => {
+        const baseSize = minDimension < 600 ? 0.85 : 1;
+        const size = d.depth === 0 ? 80 : d.depth === 1 ? 60 : 40;
+        return size * baseSize;
+      })
+      .attr('height', d => {
+        const baseSize = minDimension < 600 ? 0.85 : 1;
+        const size = d.depth === 0 ? 80 : d.depth === 1 ? 60 : 40;
+        return size * baseSize;
+      })
       .style('cursor', 'pointer');
 
-    // Add text labels
-    node.append('text')
-      .attr('dy', 5)
-      .attr('x', 35)
-      .style('font-size', '12px')
-      .style('font-family', 'Arial, sans-serif')
-      .style('pointer-events', 'none')
-      .text(d => d.data.name);
+// Add a circular border/stroke around the avatar
+    node.append('circle')
+      .attr('r', d => {
+        const baseSize = minDimension < 600 ? 0.85 : 1;
+        if (d.depth === 0) return 40 * baseSize;
+        else if (d.depth === 1) return 30 * baseSize;
+        else return 20 * baseSize;
+      })
+      .style('fill', 'none')
+      .attr('stroke', '#b3a2c8')
+      .style('stroke-width', minDimension < 600 ? 3 : 4)
+      .style('cursor', 'pointer');
+
+    node.append('g')
+      .attr('class', 'label-group')
+      .style('opacity', () => {
+        // Show labels permanently if screen is small
+        return minDimension < 600 ? 1 : 0;
+      })
+      .each(function(d) {
+        const group = d3.select(this);
+
+        // Split the name into two lines
+        const nameParts = d.data.name.split(' ');
+
+        // Add background rectangle for text
+        group.append('rect')
+          .attr('class', 'label-background')
+          .attr('x', -35)
+          .attr('y', d => {
+            const baseSize = minDimension < 600 ? 0.85 : 1;
+            return (d as any).depth === 0 ? 45 * baseSize : (d as any).depth === 1 ? 35 * baseSize : 25 * baseSize;
+          })
+          .attr('width', 70)
+          .attr('height', nameParts.length * 14 + 6)
+          .attr('rx', 4)
+          .attr('ry', 4)
+          .style('fill', 'rgba(240, 242, 245, 0.95)')
+          .style('stroke', 'rgba(200, 206, 213, 0.8)')
+          .style('stroke-width', '1px')
+          .style('pointer-events', 'none');
+
+        // Add text labels (multi-line)
+        nameParts.forEach((part, index) => {
+          group.append('text')
+            .attr('class', 'label-text')
+            .attr('dy', d => {
+              const baseSize = minDimension < 600 ? 0.85 : 1;
+              return ((d as any).depth === 0 ? 60 : (d as any).depth === 1 ? 50 : 40) * baseSize + index * 12;
+            })
+            .attr('x', 0)
+            .style('font-size', minDimension < 600 ? '10px' : '12px')
+            .style('font-family', 'Arial, sans-serif')
+            .style('fill', 'black')
+            .style('font-weight', 'normal')
+            .style('text-anchor', 'middle')
+            .style('pointer-events', 'none')
+            .text(part);
+        });
+      });
+
+// Only add hover events if not in mobile/responsive mode
+    if (minDimension >= 600) {
+      node.on('mouseenter', function(event, d) {
+        // Show the label group with a transition
+        d3.select(this)
+          .select('.label-group')
+          .transition()
+          .duration(200)
+          .style('opacity', 1);
+      })
+        .on('mouseleave', function(event, d) {
+          // Hide the label group with a transition
+          d3.select(this)
+            .select('.label-group')
+            .transition()
+            .duration(200)
+            .style('opacity', 0);
+        });
+
+      // Optional: Add hover effect to the circle only in desktop mode
+      node.select('circle')
+        .style('cursor', 'pointer')
+        .on('mouseenter', function() {
+          d3.select(this)
+            .transition()
+            .duration(200)
+            .style('stroke-width', '5');
+        })
+        .on('mouseleave', function() {
+          d3.select(this)
+            .transition()
+            .duration(200)
+            .style('stroke-width', '2');
+        });
+    }
+
+// Make sure the node container has pointer events
+    node.style('pointer-events', 'all');
+
+// Add resize handler to update the labels visibility
+    const updateLabelsVisibility = () => {
+      const currentDimension = Math.min(this.width, this.height);
+      node.selectAll('.label-group')
+        .style('opacity', currentDimension < 600 ? 1 : 0);
+
+      // Remove or add hover events based on current dimension
+      if (currentDimension < 600) {
+        node.on('mouseenter', null).on('mouseleave', null);
+        node.select('circle')
+          .on('mouseenter', null)
+          .on('mouseleave', null);
+      } else {
+        // Reattach hover events
+        node.on('mouseenter', function(event, d) {
+          d3.select(this)
+            .select('.label-group')
+            .transition()
+            .duration(200)
+            .style('opacity', 1);
+        })
+          .on('mouseleave', function(event, d) {
+            d3.select(this)
+              .select('.label-group')
+              .transition()
+              .duration(200)
+              .style('opacity', 0);
+          });
+      }
+    };
+
 
     // Setup force simulation
     const simulation = this.forceSimulation.setupForceSimulation(
@@ -230,15 +377,26 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     // Store references
     this.svg = svg;
     this.zoomableGroup = zoomableGroup;
+    this.svg.call(this.zoom).on('wheel.zoom'); // zoom feature disabled
+
+    const resizeObserver = new ResizeObserver(() => {
+      const newBbox = element.getBoundingClientRect();
+      this.width = newBbox.width;
+      this.height = newBbox.height;
+      svg.attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`);
+      updateLabelsVisibility();
+    });
+
+    resizeObserver.observe(element);
   }
+
   highlightNodes(query: string): void {
     if (!query) {
-      // Reset all nodes if query is empty
       this.resetNodeHighlighting();
       return;
     }
 
-    const nodes = d3.selectAll('.node'); // Adjust selector if needed
+    const nodes = d3.selectAll('.node');
 
     nodes.each(function(d: any) {
       const nodeElement = d3.select(this);
@@ -250,16 +408,37 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
           .attr('stroke', 'orange')
           .attr('stroke-width', 4);
 
-        nodeElement.select('text')
-          .style('font-weight', 'bold');
+        // Highlight all text elements in the node
+        nodeElement.selectAll('.label-text')
+          .style('font-weight', 'bold')
+          .style('fill', '#FF6B00'); // Optional: change text color for better visibility
+
+        // Highlight the background rectangle
+        nodeElement.select('.label-background')
+          .style('fill', 'rgba(255, 243, 230, 0.95)')  // Light orange background
+          .style('stroke', '#FFB366');  // Light orange border
+
+        // Optionally add a highlight effect to the avatar
+        nodeElement.select('image')
+          .style('filter', 'brightness(1.2)');
       } else {
         // Reset non-matching nodes
         nodeElement.select('circle')
           .attr('stroke', '#b3a2c8')
           .attr('stroke-width', 2);
 
-        nodeElement.select('text')
-          .style('font-weight', 'normal');
+        // Reset all text elements
+        nodeElement.selectAll('.label-text')
+          .style('font-weight', 'normal')
+          .style('fill', 'black');
+
+        // Reset background rectangle
+        nodeElement.select('.label-background')
+          .style('fill', 'rgba(240, 242, 245, 0.95)')
+          .style('stroke', 'rgba(200, 206, 213, 0.8)');
+
+        nodeElement.select('image')
+          .style('filter', 'none');
       }
     });
   }
@@ -273,10 +452,19 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
         .attr('stroke', '#b3a2c8')
         .attr('stroke-width', 2);
 
-      nodeElement.select('text')
-        .style('font-weight', 'normal');
+      nodeElement.selectAll('.label-text')
+        .style('font-weight', 'normal')
+        .style('fill', 'black');
+
+      nodeElement.select('.label-background')
+        .style('fill', 'rgba(240, 242, 245, 0.95)')
+        .style('stroke', 'rgba(200, 206, 213, 0.8)');
+
+      nodeElement.select('image')
+        .style('filter', 'none');
     });
   }
+
   focusNode(memberId: number): void {
     if (!this.svg || !this.zoomableGroup) {
       console.error('Tree visualization not initialized');
@@ -284,55 +472,51 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     }
 
     const nodes = d3.selectAll('.node');
-    let targetNode: any;
+    let targetData: any;
 
-    nodes.each(function(d: any) {
+    nodes.each(function (d: any) {
       if (d.data.id === memberId) {
-        targetNode = d;
+        targetData = d;
       }
     });
 
-    if (targetNode && this.zoom) {
-      const svgNode = this.svg.node();
-      if (!svgNode) return;
-
-      const transform = d3.zoomTransform(svgNode);
-
-      // Calculate the position using stored width/height
-      const x = Math.cos(targetNode.x - Math.PI / 2) * targetNode.y;
-      const y = Math.sin(targetNode.x - Math.PI / 2) * targetNode.y;
-
-      // Calculate the transform to center the node
-      const scale = 1.5; // Zoom level when focusing
-      const centerX = -x * scale + this.width / 2;
-      const centerY = -y * scale + this.height / 2;
-
-      this.svg.transition()
-        .duration(750)
-        .call(
-          this.zoom.transform,
-          d3.zoomIdentity
-            .translate(centerX, centerY)
-            .scale(scale)
-        );
-
-      // Also highlight the focused node
-      nodes.each(function() {
-        const nodeElement = d3.select(this);
-        // @ts-ignore
-        const isTarget = this.__data__ === targetNode;
-
-        nodeElement.select('circle')
-          .transition()
-          .duration(750)
-          .attr('stroke', isTarget ? 'orange' : '#b3a2c8')
-          .attr('stroke-width', isTarget ? 4 : 2);
-
-        nodeElement.select('text')
-          .transition()
-          .duration(750)
-          .style('font-weight', isTarget ? 'bold' : 'normal');
-      });
+    if (!targetData || !this.zoom) {
+      console.error('Target node not found');
+      return;
     }
+
+    const targetX = targetData.x;
+    const targetY = targetData.y;
+    const scale = 2;
+    const translateX = -targetX * scale;
+    const translateY = -targetY * scale;
+
+    // Apply zoom transform
+    this.svg
+      .transition()
+      .duration(750)
+      .call(
+        this.zoom.transform,
+        d3.zoomIdentity.translate(translateX, translateY).scale(scale)
+      );
+
+    // Update node styling
+    nodes.each(function (d: any) {
+      const nodeElement = d3.select(this);
+      const isTarget = d === targetData;
+
+      nodeElement
+        .select('circle')
+        .transition()
+        .duration(750)
+        .attr('stroke', isTarget ? 'orange' : '#b3a2c8')
+        .attr('stroke-width', isTarget ? 4 : 2);
+
+      nodeElement
+        .select('text')
+        .transition()
+        .duration(750)
+        .style('font-weight', isTarget ? 'bold' : 'normal');
+    });
   }
 }
