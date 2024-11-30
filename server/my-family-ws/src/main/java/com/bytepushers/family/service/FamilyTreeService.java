@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 public interface FamilyTreeService {
     FamilyTree createFamilyTree(@Valid FamilyTree familyTree);
-    FamilyTree getFamilyTree(Integer id);
+    String getFamilyTree(Integer id);
 
     FamilyMember getFamilyMemberWithChildren(Integer id);
 }

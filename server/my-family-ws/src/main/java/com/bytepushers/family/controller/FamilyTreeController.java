@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/family-trees") // Group all family-tree APIs under this base path
+@RequestMapping("/api") // Group all family-tree APIs under this base path
 @CrossOrigin
 public class FamilyTreeController {
 
@@ -33,14 +33,14 @@ public class FamilyTreeController {
         this.familyTreeService = familyTreeService;
     }
     // Simple GET test endpoint
-    @GetMapping("/ping")
+    @GetMapping("/family-trees/ping")
     public ResponseEntity<String> ping(Authentication authentication) {
         logger.info("Ping endpoint hit by user: {}",
                 authentication != null ? authentication.getName() : "anonymous");
         return ResponseEntity.ok("pong");
     }
 
-    @PostMapping
+    @PostMapping("/family-trees")
     public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree,
                                                    BindingResult bindingResult) {
         logger.debug("Received request to create family tree: {}", familyTree);
@@ -79,12 +79,8 @@ public class FamilyTreeController {
             return ResponseEntity.internalServerError().build();
         }
     }*/
-@GetMapping("/{id}")
-public FamilyMember getFamilyMemberWithChildren(@PathVariable Integer id) {
-    return familyTreeService.getFamilyMemberWithChildren(id);
-}
-
-
-
-
+    @GetMapping("/family-trees/{id}")
+    public String getFamilyMemberWithChildren(@PathVariable Integer id) {
+        return familyTreeService.getFamilyTree(id); // .getFamilyMemberWithChildren(id);
+    }
 }

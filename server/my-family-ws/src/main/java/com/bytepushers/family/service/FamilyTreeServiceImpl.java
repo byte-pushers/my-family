@@ -55,7 +55,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
 
     @Override
     @Transactional(readOnly = true)
-    public FamilyTree getFamilyTree(Integer id) {
+    public String getFamilyTree(Integer id) {
         logger.info("Retrieving family tree with ID: {}", id);
         FamilyTree familyTree = familyTreeRepository.findById(id)
                 .orElseThrow(() -> {
@@ -66,7 +66,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         // Initialize family members to ensure proper structure
         initializeFamilyMembers(familyTree.getFamilyMembers());
 
-        return familyTree;
+        return ""; // familyTree;
     }
 
     @Override

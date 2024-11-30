@@ -17,9 +17,10 @@ import { FamilyReunionTransformer } from '../transformers/FamilyReunionTransform
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
-  readonly #registeredDomainApiTransformers = new Map<string|null, FamilyReunionTransformer>();
+  readonly #registeredDomainApiTransformers = new Map<{url: string|null, httpMethod: string}, FamilyReunionTransformer>();
+
   constructor() {
-    this.#registeredDomainApiTransformers.set('api/family-trees', new FamilyTreeDomainModelApiTransformer())
+    this.#registeredDomainApiTransformers.set({url: 'http:localhost:4200/api/family-trees', httpMethod: 'GET'}, new FamilyTreeDomainModelApiTransformer());
   }
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -32,7 +33,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
           if (event instanceof HttpResponse) {
             if (event?.body) {
-              const registeredDomainApiTransformer = this.#registeredDomainApiTransformers.get(event.url);
+              const registeredDomainApiTransformer = this.#registeredDomainApiTransformers.get({url: event.url, httpMethod: 'GET'});
 
               return event.clone({ body: (registeredDomainApiTransformer != null)? registeredDomainApiTransformer.transform(event.body): event.body });
             }
