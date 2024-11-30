@@ -1,0 +1,87 @@
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Search Header -->
+  <app-search-bar></app-search-bar>
+    <!-- Family Member Profile -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex flex-col items-center">
+        <!-- Name and Status -->
+        <div class="w-full flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">
+            {{ getFullName() }}
+            <span class="text-base font-normal" *ngIf="familyMember.nickname">({{ familyMember.nickname }})</span>
+          </h2>
+          <ion-chip [class]="familyMember.isAlive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
+            {{ familyMember.isAlive ? 'Alive' : 'Deceased' }}
+          </ion-chip>
+        </div>
+
+        <!-- Profile Image -->
+        <ion-avatar class="w-32 h-32 border-2 mb-8" [class.border-blue-800]="familyMember.isAlive" [class.border-gray-400]="!familyMember.isAlive">
+          <img [src]="familyMember.profileImage || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+               [class.grayscale]="!familyMember.isAlive"
+               alt="Family member photo" />
+        </ion-avatar>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 mb-8">
+          <ion-chip class="bg-blue-100 text-blue-800" (click)="viewFamilyTree()">
+            Family Tree
+          </ion-chip>
+          <ion-chip
+            [class]="familyMember.isAlive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-400'"
+            (click)="editMember()"
+          >
+            Edit
+          </ion-chip>
+        </div>
+
+        <!-- Member Details -->
+        <ion-list class="w-full bg-transparent">
+          <ion-item lines="none" class="mb-4">
+            <ion-label class="ion-text-wrap">
+              <div class="flex flex-col gap-2">
+                <div>
+                  <div class="text-sm text-blue-500">Date of birth</div>
+                  <div class="text-base text-gray-800">{{ familyMember.birthDate | date }}</div>
+                </div>
+                <div *ngIf="!familyMember.isAlive">
+                  <div class="text-sm text-blue-500">Date of passing</div>
+                  <div class="text-base text-gray-800">{{ familyMember.dateOfPassing | date }}</div>
+                </div>
+                <div>
+                  <div class="text-sm text-blue-500">Children</div>
+                  <div class="text-base text-gray-800">None</div>
+                </div>
+                <div>
+                  <div class="text-sm text-blue-500">Spouse</div>
+                  <div class="text-base text-gray-800">{{ familyMember.spouse || 'None' }}</div>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <!-- Parents -->
+          <ion-item lines="none" class="mb-4">
+            <ion-label class="ion-text-wrap">
+              <div class="text-sm text-blue-500">Parents</div>
+              <div class="text-base text-gray-800 mt-1">{{ familyMember.parents.mother }}</div>
+              <div class="text-base text-gray-800">{{ familyMember.parents.father }}</div>
+            </ion-label>
+          </ion-item>
+
+          <!-- Siblings -->
+          <ion-item lines="none">
+            <ion-label class="ion-text-wrap">
+              <div class="text-sm text-blue-500">Siblings</div>
+              <div class="text-base text-gray-800 mt-1">
+                <div *ngFor="let sibling of familyMember.siblings">{{ sibling }}</div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<app-footer-navigation></app-footer-navigation>
