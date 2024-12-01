@@ -2,13 +2,13 @@ import { FamilyMember } from './family-member';
 import { RelationshipType } from './relationship-type';
 
 export interface FamilyTreeResponse {
-  transactionId: number;
   userId: number;
+  transactionId: number;
   familyTreeId: number;
   relationship: RelationshipType;
   familyMembers: FamilyMember[];
-  createdBy: string;
-  createdDate: string;
+  createdBy?: string | null;
+  createdDate?: Date | null;
   updatedBy?: string | null;
-  updatedDate?: string | null;
+  updatedDate?: Date | null;
 }

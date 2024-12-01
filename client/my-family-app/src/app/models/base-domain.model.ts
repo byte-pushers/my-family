@@ -1,11 +1,11 @@
 import { BaseModel } from './base.model';
 
 export abstract class BaseDomainModel implements BaseModel {
-  #id?: number;
-  #createdBy?: string;
-  #createdDate?: Date;
-  #updatedBy?: string;
-  #updatedDate?: Date;
+  #id?: number | null;
+  #createdBy?: string | null;
+  #createdDate?: Date | null;
+  #updatedBy?: string | null;
+  #updatedDate?: Date | null;
 
   protected constructor(props: { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date }) {
     this.#id = props?.id;
@@ -15,56 +15,63 @@ export abstract class BaseDomainModel implements BaseModel {
     this.#updatedDate = props?.updatedDate;
   }
 
-  public getId(): number | undefined {
+  public getId(): number | undefined | null {
     return this.#id;
   }
 
-  public get id(): number | undefined {
+  public get id(): number | undefined | null {
     return this.#id;
   }
 
-  public getCreatedBy(): string | undefined {
+  public getCreatedBy(): string | undefined | null {
     return this.#createdBy;
   }
 
-  public get createdBy(): string | undefined {
+  public get createdBy(): string | undefined | null {
     return this.#createdBy;
   }
 
-  public getCreatedDate(): Date | undefined {
+  public getCreatedDate(): Date | undefined | null {
     return this.#createdDate;
   }
 
-  public get createdDate(): Date | undefined {
+  public get createdDate(): Date | undefined | null {
     return this.#createdDate;
   }
 
-  public getUpdatedBy(): string | undefined {
+  public getUpdatedBy(): string | undefined | null {
     return this.#updatedBy;
   }
 
-  public get updatedBy(): string | undefined {
+  public get updatedBy(): string | undefined | null {
     return this.#updatedBy;
   }
 
-  public getUpdatedDate(): Date | undefined {
+  public getUpdatedDate(): Date | undefined | null {
     return this.#updatedDate;
   }
 
-  public get updatedDate(): Date | undefined {
+  public get updatedDate(): Date | undefined | null {
     return this.#updatedDate;
   }
 
-  public toString(): string {
-    return `{
-      "id": ${this.#id},
-      ${this.getPartialJSON()},
-      "createdBy": "${this.#createdBy}",
-      "updatedBy": "${this.#updatedBy}",
-      "createdDate": "${this.#createdDate}",
-      "updatedDate": "${this.#updatedDate}"
-    }`;
+  public getAttributeString(criteria: { id?: number | null, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null }): string {
+    let s = '';
+
+    if (criteria == null || criteria?.id) s += `"id": ${this.#id}, `;
+    if (criteria == null || criteria?.createdBy) s += `"createdBy": ${this.#createdBy}, `;
+    if (criteria == null || criteria?.createdDate) s += `"createdDate": ${this.#createdDate?.toISOString()}, `;
+    if (criteria == null || criteria?.updatedBy) s += `"updatedBy": ${this.#updatedBy}, `;
+    if (criteria == null || criteria?.updatedDate) s += `"updatedDate": ${this.#updatedDate?.toISOString()}, `;
+
+    return s;
   }
 
-  public abstract getPartialJSON(): string;
+  public getAttributeIdString(criteria: { id?: number | null } = {id: this.id}): string {
+    return this.getAttributeString(criteria);
+  }
+
+  public getAttributeAuditStrings(criteria: { id?: number, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } = {createdBy: this.createdBy, createdDate: this.createdDate, updatedBy: this.updatedBy, updatedDate: this.updatedDate}): string {
+    return this.getAttributeString(criteria);
+  }
 }

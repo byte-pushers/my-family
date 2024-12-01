@@ -1,6 +1,7 @@
 import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
 import { FamilyMember } from './family-member';
+import { idCard } from 'ionicons/icons';
 
 export class PersonModel extends BaseDomainModel implements Person {
   readonly #firstName: string;
@@ -77,12 +78,14 @@ export class PersonModel extends BaseDomainModel implements Person {
     return age;
   }
 
-  public getPartialJSON(): string {
+  public toString(): string {
     return`
+      ${super.getAttributeIdString({id: this.id})}
       "firstName": "${this.#firstName}",
       "lastName": "${this.#lastName}",
       "birthDate": "${this.#birthDate.toISOString()}",
       "familyMembers": [${this.#familyMembers.map(fm => fm.toString()).join(', ')}]
+      ${super.getAttributeAuditStrings({createdBy: this.createdBy})}
     `;
   }
 }
