@@ -7,6 +7,8 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #firstName: string;
   readonly #lastName: string;
   readonly #birthDate: Date;
+  readonly #gender: string;
+  readonly #deceased: boolean;
   readonly #familyMembers: FamilyMember[];
 
   constructor(
@@ -14,6 +16,8 @@ export class PersonModel extends BaseDomainModel implements Person {
     firstName: string,
     lastName: string,
     birthDate: Date,
+    gender: string,
+    deceased: boolean,
     familyMembers: FamilyMember[] = [],
     createdBy?: string,
     createdDate?: Date,
@@ -24,6 +28,8 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#firstName = firstName;
     this.#lastName = lastName;
     this.#birthDate = birthDate;
+    this.#gender = gender;
+    this.#deceased = deceased;
     this.#familyMembers = familyMembers;
   }
 
@@ -52,6 +58,18 @@ export class PersonModel extends BaseDomainModel implements Person {
 
   public getBirthDate(): Date {
     return this.#birthDate;
+  }
+
+  public get gender(): string {
+    return this.#gender;
+  }
+
+  public getGender(): string {
+    return this.#gender;
+  }
+
+  public isDeceased(): boolean {
+    return this.#deceased;
   }
 
   // Property-style and Method-style combined for familyMembers

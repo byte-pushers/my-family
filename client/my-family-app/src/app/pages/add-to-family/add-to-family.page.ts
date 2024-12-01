@@ -140,8 +140,7 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.childrenForm, this.children);
   }
 
-  // todo: make request payload here
-  // todo: http post
+  // todo: Update based on new FamilyTreeRequestPayload variables
   // Add To Family button call
   addToFamilyButton(): void {
     this.fillFamilyMemberArray(this.unclesForm, this.uncles);
