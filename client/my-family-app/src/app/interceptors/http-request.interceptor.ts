@@ -17,10 +17,16 @@ import { FamilyReunionTransformer } from '../transformers/FamilyReunionTransform
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
-  readonly #registeredDomainApiTransformers = new Map<{url: string|null, httpMethod: string}, FamilyReunionTransformer>();
+  readonly #registeredApiRequests = new Set<{url: string|null, httpMethod: string}>();
+  readonly #registeredDomainApiTransformers = new Map<{url: string|null, httpMethod: string}, FamilyReunionTransformer>;
 
   constructor() {
-    this.#registeredDomainApiTransformers.set({url: 'http:localhost:4200/api/family-trees', httpMethod: 'GET'}, new FamilyTreeDomainModelApiTransformer());
+    this.#registeredApiRequests.add(FamilyTreeDomainModelApiTransformer.FIND_FAMILY_TREE_API_REQUEST);
+
+    this.#registeredDomainApiTransformers.set(
+      FamilyTreeDomainModelApiTransformer.FIND_FAMILY_TREE_API_REQUEST,
+      new FamilyTreeDomainModelApiTransformer()
+    );
   }
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -32,8 +38,16 @@ export class HttpRequestInterceptor implements HttpInterceptor {
           console.log('Incoming HTTP response', event);
 
           if (event instanceof HttpResponse) {
-            if (event?.body) {
-              const registeredDomainApiTransformer = this.#registeredDomainApiTransformers.get({url: event.url, httpMethod: 'GET'});
+            if (event?.body && event?.url) {
+              const url = new URL(event.url);
+              const registeredDomainApiTransformerKey = Array.from(this.#registeredApiRequests).find(registeredApiRequest => {
+                if (registeredApiRequest.url === this.#matchUrlPathIds(`${url.pathname}`) && registeredApiRequest.httpMethod === 'GET') {
+                  return registeredApiRequest;
+                }
+
+                return undefined;
+              });
+              const registeredDomainApiTransformer = registeredDomainApiTransformerKey ? this.#registeredDomainApiTransformers.get(registeredDomainApiTransformerKey): undefined;
 
               return event.clone({ body: (registeredDomainApiTransformer != null)? registeredDomainApiTransformer.transform(event.body): event.body });
             }
@@ -63,5 +77,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         return throwError(new HttpErrorModel(httpErrorInfoArray));
       })
     );
+  }
+
+  #matchUrlPathIds(url: string): string {
+    if (/\/api\/family-trees\/[0-9]+/mg.test(url)) {
+      url = url.replace(/[0-9]+/g, '{id}');
+    }
+
+    return url;
   }
 }
