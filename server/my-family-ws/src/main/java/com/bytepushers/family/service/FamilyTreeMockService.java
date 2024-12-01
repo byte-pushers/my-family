@@ -33,6 +33,9 @@ public class FamilyTreeMockService implements FamilyTreeService {
     public String getFamilyTree(Integer id) {
         return """
             {
+                "id": 1,
+                "relationship": "Son",
+                "person": null,
                 "familyMembers": [
                     {
                         "relationship": "Father",
