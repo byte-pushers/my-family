@@ -37,16 +37,7 @@ export class FamilyTreeService {
   public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
     return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
       headers: this.getHeaders()
-    })
-    .pipe(
-      catchError(error => {
-        if (error.status === 404) {
-          // Handle not found
-          console.error('Family tree not found:', error);
-        }
-        return throwError(() => error);
-      })
-    );
+    });
   }
 
   // UPDATE - Adding additional family members after initial creation
