@@ -1,7 +1,7 @@
 import { FamilyMemberModel } from './family-member.model';  // Import the FamilyMember model
 
 export class FamilyTreeRequestPayload {
-  // Private fields for encapsulation
+  /*// Private fields for encapsulation
   readonly #parents: FamilyMemberModel[];
   readonly #grandparents: FamilyMemberModel[];
   readonly #siblings: FamilyMemberModel[];
@@ -9,11 +9,80 @@ export class FamilyTreeRequestPayload {
   readonly #children: FamilyMemberModel[] | null;
   readonly #uncles: FamilyMemberModel[] | null;
   readonly #aunts: FamilyMemberModel[] | null;
-  readonly #cousins: FamilyMemberModel[] | null;
+  readonly #cousins: FamilyMemberModel[] | null;*/
+  #userId: number;
+  #transactionId: string;
+  #familyTreeId: number;
+  #familyMembers: FamilyMemberModel[];
+
 
   // Constructor to initialize the fields
-  constructor(
-    parents: FamilyMemberModel[],
+  constructor(userId: number, transactionId: string, familyTreeId: number, familyMembers: FamilyMemberModel[]) {
+    this.#userId = userId;
+    this.#transactionId = transactionId;
+    this.#familyTreeId = familyTreeId;
+    this.#familyMembers = familyMembers;
+  }
+
+  public get userId(): number {
+    return this.#userId;
+  }
+
+  public getUserId(): number {
+    return this.#userId;
+  }
+
+  public set userId(userId: number) {
+    this.#userId = userId;
+  }
+
+  public get transactionId(): string {
+    return this.#transactionId
+  }
+
+  public getTransactionId(): string {
+    return this.#transactionId
+  }
+
+  public setTransactionId(transactionId: string) {
+    this.#transactionId = transactionId;
+  }
+
+  public get familyTreeId(): number {
+    return this.#familyTreeId;
+  }
+
+  public getFamilyTreeId(): number {
+    return this.#familyTreeId;
+  }
+
+  public set FamilyTreeId(familyTreeId: number) {
+    this.#familyTreeId = familyTreeId;
+  }
+
+  public get familyMembers(): FamilyMemberModel[] {
+    return this.#familyMembers;
+  }
+
+  public getFamilyMembers(): FamilyMemberModel[] {
+    return this.#familyMembers;
+  }
+
+  public set FamilyMembers(familyMembers: FamilyMemberModel[]) {
+    this.#familyMembers = familyMembers;
+  }
+
+  public toString(): string {
+    return `"userId": ${this.#userId},
+            "transactionId:": ${this.#transactionId},
+            "familyTreeId": ${this.#familyTreeId},
+            "familyMembers": [
+              {
+                  ${this.#familyMembers}
+              }`
+  }
+
+    /*parents: FamilyMemberModel[],
     grandparents: FamilyMemberModel[],
     siblings: FamilyMemberModel[],
     spouse: FamilyMemberModel | null,  // Allow null for spouse
@@ -98,7 +167,7 @@ export class FamilyTreeRequestPayload {
     return this.#cousins;
   }
 
-  /*
+
   // Method to generate the payload (organizes and gathers each family into the right format)
   public generatePayload() {
     return {
@@ -127,7 +196,7 @@ export class FamilyTreeRequestPayload {
         }))
       }
     }
-  }*/
+  }
 
   public toString(): string {
     return this.parents.toString() +
@@ -138,5 +207,5 @@ export class FamilyTreeRequestPayload {
       this.uncles?.toString() +
       this.aunts?.toString() +
       this.cousins?.toString();
-  }
+  }*/
 }
