@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -10,12 +11,8 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonIcon,
-  AlertController,
-  ToastController
+  AlertController
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
-import {alert} from "ionicons/icons";  // Import Router for navigation
 
 @Component({
   selector: 'app-login-page',
@@ -31,75 +28,84 @@ import {alert} from "ionicons/icons";  // Import Router for navigation
     IonLabel,
     IonInput,
     IonButton,
-    IonIcon,
     CommonModule,
+    ReactiveFormsModule,
     FormsModule
   ]
 })
 export class LoginPagePage implements OnInit {
+  profileForm!: FormGroup;
   username: string = '';
   password: string = '';
-  submitted: boolean = false;
+  loading = false;
+  showPassword = false;
+  submitted = false; // Flag to check form submission state
 
-  passwordType: string = 'password';  // Default is hidden
+  constructor(
+    public alertCtrl: AlertController,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.profileForm = new FormGroup({
+      userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),])
+    });
+  }
+  toggleShow() {
+    this.showPassword = !this.showPassword;
+  }
+  isValid(): boolean{
+    this.submitted = true;
+    if (this.profileForm.invalid) {
+      for (const control in this.profileForm.controls) {
+        if (this.profileForm.controls.hasOwnProperty(control)) {
+          this.profileForm.controls[control].markAsTouched();
+        }
+      }
+      return false;
+    }
+    return true;
+  }
 
-  constructor(private alertCtrl: AlertController, private router: Router, private toastController: ToastController ) {}  // Inject Router
 
-  ngOnInit() {}
 
   async onSignIn() {
-    // Ensure both username and password are provided
-    this.submitted = true;
-    if (!this.username || !this.password) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Username and password are required',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
+    this.submitted = true;  // Set the flag to true when form is submitted
+    this.loading = true;
+    //console.log(this.profileForm.getRawValue())
+    if (this.isValid()) {
+      console.log(this.profileForm.value); // Process the form data
+      await this.successAlert();
+    } else {
+      console.log('Form is invalid');
+      const firstInvalidControl = Object.keys(this.profileForm.controls).find(key => this.profileForm.controls[key].invalid);
+      // Focus on the first invalid field, if found
+      if (firstInvalidControl) {
+        document.getElementById(firstInvalidControl)?.focus();
+      }
     }
+    this.loading = false;
+  }
 
-    // Minimal validation for demonstration
-    if (this.password.length < 8) {
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Password must be at least 8 characters long.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
-    // Note to self: The login logic to call an API or perform authentication
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    // Show success toast
-    const toast = await this.toastController.create({
-      message: '✨ Welcome to My Family Reunion!',
-      duration: 2000,
-      position: 'top',
-      color: 'primary',
-      buttons: [
-        {
-          text: 'OK',
-          role: 'cancel'
-        }
-      ]
+  async successAlert(){
+    // Show a success alert or navigate to another page
+    const successAlert = await this.alertCtrl.create({
+      header: 'Success',
+      message: 'Log-in successful!',
+      buttons: ['OK'],
+      cssClass: 'custom-alert',
     });
-    await toast.present();
-
-    // Navigate after a short delay
-    setTimeout(() => {
-      this.router.navigate(['/home']);
-    }, 1000);
-    // Optional: Navigate to another page or reset form after alert dismissal
-    // this.router.navigate(['/home']);  // Replace with your desired route after login
+    await successAlert.present();
+    await successAlert.onDidDismiss();
+    this.router.navigate(['/home']);
   }
 
   // Method to navigate back to the welcome page
   async goBack() {
-    this.router.navigate(['/welcome-page']);  // Adjust this to your welcome page route
+    this.router.navigate(['/welcome-page']); // Adjust this to your welcome page route
   }
+  async createAccount() {
+    this.router.navigate(['/create-account']); // Adjust this to your welcome page route
+  }
+  ngOnInit() {}
 }
