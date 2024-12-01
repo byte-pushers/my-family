@@ -6,83 +6,45 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "merchandiseType", visible = true)
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Wearable.class, name = "WEARABLE"),
-        @JsonSubTypes.Type(value = Book.class, name = "BOOK")
+        @JsonSubTypes.Type(value = Wearable.class, name = "wearable"),
+        @JsonSubTypes.Type(value = Book.class, name = "book")
 })
-public abstract class Merchandise {
+public class Merchandise extends ShoppingItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private MerchandiseType merchandiseType;
-    private String productName;
-    private float productPrice;
+    public Merchandise(String type, String name, String description, double price, int quantity) {
+        super(type, name, description, price);
+    }
 
-    @Column(name = "product_description", length = 1000)
-    private String productDescription;
-    private String productImageUrl;
+    public Merchandise(String type, String name, String description, double price, String imageUrl) {
+        super(type, name, description, price);
+        this.imageUrl = imageUrl;
+    }
 
     public Merchandise() {
+
     }
 
-    public Merchandise(Long id, MerchandiseType merchandiseType, String productName, float productPrice, String productDescription, String productImageUrl) {
-        this.id = id;
-        this.merchandiseType = merchandiseType;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
-        this.productImageUrl = productImageUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public Long getId() {
-        return id;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public static double calculateTotalCost(Package packages){
+        return packages.getPrice() * packages.getQuantity();
+    };
+
+    @Override
+    public double calculateTotalCost(int attendees) {
+        return 0;
     }
 
-    public MerchandiseType getMerchandiseType() {
-        return merchandiseType;
-    }
 
-    public void setMerchandiseType(MerchandiseType merchandiseType) {
-        this.merchandiseType = merchandiseType;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public float getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(float productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public String getProductDescription() {
-        return productDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public String getProductImageUrl() {
-        return productImageUrl;
-    }
-
-    public void setProductImageUrl(String productImageUrl) {
-        this.productImageUrl = productImageUrl;
-    }
 }

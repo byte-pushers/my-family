@@ -1,25 +1,24 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "book_id")
 public class Book extends Merchandise{
 
     private String author;
     private String ISBN;
 
-    public Book() {
-        super();
+    public Book(String type, String name, String description, double price, int quantity) {
+        super(type, name, description, price, quantity);
     }
 
-    public Book(Long id, MerchandiseType merchandiseType, String productName, float productPrice, String productDescription, String productImageUrl, String ISBN, String author) {
-        super(id, merchandiseType, productName, productPrice, productDescription, productImageUrl);
-        this.ISBN = ISBN;
+    public Book(String type, String name, String description, double price, int quantity, String author, String ISBN) {
+        super(type, name, description, price, quantity);
         this.author = author;
+        this.ISBN = ISBN;
+    }
+
+    public Book() {
     }
 
     public String getISBN() {

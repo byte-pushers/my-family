@@ -1,20 +1,14 @@
 package com.bytepushers.family.model;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 
-@Entity
-@DiscriminatorValue("INDIVIDUAL")
 public class IndividualPackage extends Package {
 
-    public IndividualPackage() {}
-
-    public IndividualPackage(String name, Double basePrice) {
-        super(name, basePrice);
+    public IndividualPackage() {
+        super("Package","individual package","individual package",150);
     }
 
     @Override
-    public Double calculateTotalPrice(int numPeople) {
-        return getBasePrice() * numPeople;
-    }
+    public double calculateTotalCost(int attendees){
+        return this.getPrice()*1;
+    };
 }
