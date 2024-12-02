@@ -23,11 +23,11 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
   }
 
   public toString(): string {
-    return`
+    return`{
       ${super.getAttributeIdString({id: this.id})}
       "relationship": "${this?.relationship}",
       "person": ${this?.person?.toString()}
       ${super.getAttributeAuditStrings({createdBy: this.createdBy})}
-    `;
+    }`;
   }
 }
