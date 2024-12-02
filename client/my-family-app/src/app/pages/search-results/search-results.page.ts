@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../../models/event';
 import { Person } from '../../models/family-tree/person';
+import { PersonDisplay } from '../profile/family-member/person-display'
 import { Router, ActivatedRoute } from '@angular/router';
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 
@@ -31,7 +32,7 @@ export class SearchResultsPage implements OnInit {
   searchQuery: string = '';
   filters: SearchFilters | null = null;
   events: Event[] = [];
-  people: Person[] = [];
+  people: PersonDisplay[] = [];
 
   // Mock data using your interfaces
   private mockEvents: Event[] = [
@@ -48,19 +49,37 @@ export class SearchResultsPage implements OnInit {
     // ... other mock events
   ];
 
-  private mockPeople: Person[] = [
-    new Person(
-      1,
-      "Julia",
-      "Harris",
-      new Date('1990-01-01'),
-      [],
-      'system',
-      new Date(),
-      'system',
-      new Date()
-    ),
-    // ... other mock people
+  private mockPeople: PersonDisplay[] = [
+    {
+      person: new Person(
+        1,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Marge',
+      address: '1258 Titan Dr, Dallas, TX 75247'
+    },
+    {
+      person: new Person(
+        2,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Gabby',
+      address: '1330 Regal Row, Dallas, TX 75000'
+    }
   ];
 
   constructor(
@@ -121,17 +140,12 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
-  private filterPeople(people: Person[]): Person[] {
-    return people.filter(person => {
+  private filterPeople(people: PersonDisplay[]): PersonDisplay[] {
+    return people.filter(personDisplay => {
       if (this.searchQuery) {
-        const fullName = `${person.firstName} ${person.lastName}`.toLowerCase();
-        if (!fullName.includes(this.searchQuery.toLowerCase())) {
-          return false;
-        }
+        const fullName = `${personDisplay.person.firstName} ${personDisplay.person.lastName}`.toLowerCase();
+        return fullName.includes(this.searchQuery.toLowerCase());
       }
-
-      // Add more filter conditions as needed
-
       return true;
     });
   }
@@ -148,11 +162,12 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
-  navigateToProfile(person: Person) {
-    if (person.id) {
-      this.router.navigate(['/profile', person.id]);
+  navigateToProfile(personDisplay: PersonDisplay) {
+    if (personDisplay.person.id) {
+      this.router.navigate(['/family-member', personDisplay.person.id]);
     }
   }
+
 
   navigateToFamilyTree() {
       this.router.navigate(['/family-tree']);

@@ -15,13 +15,13 @@
   </div>
 
   <!-- List Container -->
-  <ion-list class="rounded-lg shadow bg-white">
+  <ion-list class="rounded-lg shadow bg-white divide-y divide-gray-100">
     <ng-container *ngIf="sortedMembers.length > 0; else noMembers">
-      <ion-item-sliding *ngFor="let member of sortedMembers">
+      <ion-item-sliding *ngFor="let member of sortedMembers" class="mb-1">
         <ion-item
           [class.selected-member]="member.getId() === selectedMemberId"
           (click)="onMemberClick(member)"
-          class="hover:bg-gray-50 transition-colors">
+          class="hover:bg-gray-50 transition-colors py-2">
 
           <!-- Profile Image/Initial -->
           <div class="w-12 h-12 rounded-full overflow-hidden mr-4 flex-shrink-0">
@@ -43,11 +43,12 @@
 
           <!-- Action Buttons -->
           <div slot="end" class="flex gap-2">
-            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
-              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" size="small" (click)="$event.stopPropagation()">
-              <ion-icon slot="icon-only" name="git-merge-outline"></ion-icon>
+            <ion-button
+              fill="outline"
+              size="small"
+              (click)="$event.stopPropagation(); navigateToProfile()"
+              class="rounded-full">
+              Profile
             </ion-button>
           </div>
         </ion-item>

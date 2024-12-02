@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { FamilyMember } from '../../models/family-tree/family-member.model';
 import {today} from "ionicons/icons";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-family-member-list',
@@ -19,6 +20,8 @@ export class FamilyMemberListComponent implements OnInit {
   @Output() memberSelected = new EventEmitter<number>();
   @Output() memberDeleted = new EventEmitter<number>();
   @Output() memberEdited = new EventEmitter<number>();
+
+  constructor(private router: Router) {}
 
   sortOption: 'name' | 'relationship' = 'name';
 
@@ -62,6 +65,10 @@ export class FamilyMemberListComponent implements OnInit {
   onDeleteMember(event: Event, memberId: number): void {
     event.stopPropagation();
     this.memberDeleted.emit(memberId);
+  }
+
+  navigateToProfile() {
+    this.router.navigate(['/family-member', 1]); // Default to ID 1 (Marge)
   }
 
   ngOnInit(): void {
