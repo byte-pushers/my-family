@@ -1,54 +1,95 @@
-<ion-content [fullscreen]="true">
-  <div class="login-container">
-    <h2 class="login-title">Sign In</h2>
+<ion-content [fullscreen]="true" class="flex justify-center items-center h-screen p-0">
+  <!-- Centralized Login Form -->
+  <div class="login-container m-auto p-[50px] max-w-[600px] text-center bg-white shadow-xl rounded-[15px] h-[100vh] lg:h-auto lg:mt-[6.25rem]">
+    <div class="second-login-container relative sm:top-0 top-[10rem]">
+      <!--    <img src="assets/img/family-1.jpg">-->
+      <h2 class="login-title text-[30px] mb-[1rem] font-bold">
+        Welcome Back</h2>
+      <h3 class="no-account">
+        Don’t have an account?
+        <span class="text-[#0054e9] cursor-pointer" (click)="createAccount()">Create a new account</span>
+      </h3>
 
-    <div class="input-container">
-      <ion-item lines="none" class="login-input" [class.error]="submitted && usernameInput.invalid">
-        <ion-input
-          [(ngModel)]="username"
-          type="text"
-          placeholder="Username"
-          required
-          #usernameInput="ngModel">
-        </ion-input>
-        <!-- Red "X" Icon -->
-        <span *ngIf="submitted && usernameInput.invalid"
-              class="error-x">
-                  X
-                </span>
-      </ion-item>
-      <div *ngIf="submitted && usernameInput.invalid" class="error">
-        Username is required.
+      <div class="sm:col-span-4 input-field">
+        <label for="user-name" class="block text-sm font-medium leading-6"></label>
+        <div class="mt-5 relative">
+          <input type="text" placeholder="User Name" name="user-name" id="user-name"
+                 autocomplete="family-name" formControlName="userName"
+                 [ngClass]="{
+              'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['userName'].invalid,
+              'pr-8': submitted && profileForm.controls['userName'].invalid
+            }"
+                 class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-base placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:leading-6"
+          />
+          <!-- Red "X" Icon (inside the input box) -->
+          <span *ngIf="submitted && profileForm.controls['userName'].invalid"
+                class="absolute inset-y-0 right-2 flex items-center justify-center pb-4 h-full text-red-800 font-bold">
+            X
+          </span>
+          <!-- User Name Error Message -->
+          <div *ngIf="submitted && profileForm.controls['userName'].errors?.['minlength']"
+               class="text-red-800 text-sm font-bold">
+            User Name must be at least 4 characters long.
+          </div>
+          <div *ngIf="submitted && profileForm.controls['userName'].errors?.['required']"
+               class="text-red-800 text-sm font-bold">
+            User Name is required.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="input-container">
-      <ion-item lines="none" class="login-input" [class.error]="submitted && passwordInput.invalid">
-        <ion-input
-          [(ngModel)]="password"
-          [type]="passwordType"
-          placeholder="Password"
-          required
-          minlength="8"
-          #passwordInput="ngModel">
-        </ion-input>
-        <!-- Red "X" Icon -->
-        <span *ngIf="submitted && passwordInput.invalid"
-              class="error-x">
-                  X
-                </span>
-      </ion-item>
-      <div *ngIf="submitted && passwordInput.invalid" class="error">
-        Password is required and must be at least 8 characters.
+      <div class="sm:col-span-3 input-field">
+        <label for="password" class="block text-sm font-medium leading-6 text-gray-900"></label>
+        <div class="mt-2 relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Password"
+            name="password"
+            id="password"
+            autocomplete="new-password"
+            formControlName="password"
+            [ngClass]="{
+              'border-red-800 ring-red-800 focus:ring-red-800': submitted && profileForm.controls['password'].invalid,
+              'pr-8': submitted && profileForm.controls['password'].invalid
+            }"
+            class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-base placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:leading-6 leading-[2rem]"
+          />
+          <!-- Password Error Messages -->
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['minlength']"
+               class="text-red-800 text-sm font-bold mt-2">
+            Password must be at least 8 characters long.
+          </div>
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['pattern']"
+               class="text-red-800 text-sm font-bold mt-2">
+            Password must include at least 1 uppercase, special character, and number.
+          </div>
+
+          <div *ngIf="submitted && profileForm.controls['password'].errors?.['required']"
+               class="text-red-800 text-sm font-bold ">
+            Password is required.
+          </div>
+          <span class="input-group-text cursor-pointer">
+            <!-- Password Toggle Button -->
+            <div class="absolute inset-y-0 right-2 flex items-center">
+              <img
+                [src]="showPassword ? 'assets/icon/eye-off.svg' : 'assets/icon/eye.svg'" alt="Toggle Password Visibility" class="cursor-pointer" (click)="toggleShow()" width="16" height="16"
+              />
+            </div>
+          </span>
+        </div>
       </div>
+
+      <!-- Sign In Button -->
+      <ion-button expand="block" class="login-button w-[80%] sm:w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[11px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="onSignIn()" [disabled]="loading">
+        Sign In
+      </ion-button>
+
+      <!-- Back to Welcome Page-->
+      <ion-button expand="block" class="back-button w-[80%] sm:w-full max-w-[400px] m-auto mt-[20px] text-[18px] h-[55px] rounded-[5px] bg-[#007bff] text-white border-none cursor-pointer hover:bg-[#0056b3]" (click)="goBack()">
+        Back to Welcome Page
+      </ion-button>
+
+
     </div>
-
-    <ion-button expand="block" class="login-button" (click)="onSignIn()">
-      Sign In
-    </ion-button>
-
-    <ion-button expand="block" class="back-button" (click)="goBack()">
-      Back to Welcome Page
-    </ion-button>
   </div>
 </ion-content>
