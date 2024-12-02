@@ -22,7 +22,7 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
     return this.#person;
   }
 
-  public toString(): string {
+  public override toString(): string {
     return`{
       ${super.getAttributeIdString({id: this.id})}
       "relationship": "${this?.relationship}",

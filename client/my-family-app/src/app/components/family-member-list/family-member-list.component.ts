@@ -15,7 +15,7 @@ import {today} from "ionicons/icons";
 })
 export class FamilyMemberListComponent implements OnInit {
   @Input() members: FamilyMemberModel[] = [];
-  @Input() selectedMemberId?: number;
+  @Input() selectedMemberId?: number | null;
   @Output() memberSelected = new EventEmitter<number>();
   @Output() memberDeleted = new EventEmitter<number>();
   @Output() memberEdited = new EventEmitter<number>();
@@ -49,7 +49,7 @@ export class FamilyMemberListComponent implements OnInit {
 
   onMemberClick(member: FamilyMemberModel): void {
     const id = member.getId();
-    if (id !== undefined) {
+    if (id != null) {
       this.memberSelected.emit(id);
     }
   }

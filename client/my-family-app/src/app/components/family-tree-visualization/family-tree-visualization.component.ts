@@ -17,7 +17,7 @@ import {
   styleUrls: ['./family-tree-visualization.component.scss']
 })
 export class FamilyTreeVisualizationComponent implements OnChanges {
-  @Input() selectedMemberId?: number;
+  @Input() selectedMemberId?: number | null;
   @Input() familyTreeData!: FamilyTreeResponse;
   private resizeObserver: ResizeObserver;
   private svg: any;

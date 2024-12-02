@@ -119,7 +119,7 @@ export class AddToFamilyPage implements OnInit {
       let firstName = parsedName[0];
       let lastName = parsedName[1];
 
-      const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), [], "system", new Date(), undefined, undefined);
+      const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), 'male', false, [], "system", new Date(), undefined, undefined);
       const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', new Date(today), 'updatedBy', new Date(today));
       arr.push(familyMember);
     });
@@ -151,13 +151,15 @@ export class AddToFamilyPage implements OnInit {
     if (this.spouse[0]) {
       console.log(`spouse[0] = ${this.spouse[0]}`);
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
-        this.uncles, this.aunts, this.cousins
+        1, 'transaction-id', 1, []
+        /*this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
+        this.uncles, this.aunts, this.cousins*/
       );
     } else {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, null, this.children,
-        this.uncles, this.aunts, this.cousins
+        1, 'transaction-id', 1, []
+        /*this.parents, this.grandparents, this.siblings, null, this.children,
+        this.uncles, this.aunts, this.cousins*/
       );
     }
     // Try to save data

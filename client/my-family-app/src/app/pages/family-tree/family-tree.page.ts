@@ -37,7 +37,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   familyTreeData: FamilyTreeResponse | null = null;
   familyMembers: FamilyMemberModel[] = [];
   filteredMembers: FamilyMemberModel[] = [];
-  selectedId?: number;
+  selectedId?: number | null;
   loading = true;
   error: string | null = null;
   searchQuery = '';
