@@ -8,12 +8,7 @@
               <div class="profile-photo grid col-span-full place-items-center">
 
                 <!-- Default Placeholder (SVG) -->
-                <svg *ngIf="!selectedImage" class="profile-image h-40 w-40 text-gray-300" viewBox="0 0 24 24"
-                     fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                        clip-rule="evenodd"/>
-                </svg>
+                <img *ngIf="!selectedImage" src="assets/img/placeholder1.png" alt="Default Placeholder" class="profile-image h-40 w-40 object-cover rounded-full text-gray-300" />
 
                 <!-- Uploaded Image Preview -->
                 <div *ngIf="selectedImage" class="image-preview">
@@ -21,8 +16,8 @@
                 </div>
 
                 <!-- File Upload Button -->
-                <div class="file-upload-wrapper mt-0">
-                  <button type="button" class="btn btn-secondary text-[#97d2ec] hover:bg-[#0D4C92]  rounded-md px-4 py-2" (click)="fileInput.click()">Upload
+                <div class="file-upload-wrapper mt-1">
+                  <button type="button" class="btn btn-secondary text-[#0D4C92] hover:bg-[#0D4C92] hover:text-[#ffffff]  rounded-md px-4 py-1" (click)="fileInput.click()">Upload Image
                   </button>
                   <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" hidden>
                 </div>
@@ -223,7 +218,9 @@
       <span class="input-group-text cursor-pointer">
         <!-- Password Toggle Button -->
           <div class="absolute inset-y-0 right-2 flex items-center">
-            <ion-icon name="{{ showPassword ? 'eye-off' : 'eye' }}" (click)="toggleShow()" size="small"></ion-icon>
+<!--            <ion-icon name="{{ showPassword ? 'eye-off' : 'eye' }}" (click)="toggleShow()" size="small"></ion-icon>-->
+          <img
+            [src]="showPassword ? 'assets/icon/eye-off.svg' : 'assets/icon/eye.svg'" alt="Toggle Password Visibility" class="cursor-pointer" (click)="toggleShow()" width="16" height="16"/>
           </div>
       </span>
             </div>
