@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule,  DatePipe } from '@angular/common';
 import {FormsModule, NgModel, ReactiveFormsModule, Validators, FormGroup, FormControl} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar,AlertController, } from '@ionic/angular/standalone';
 
 @Component({
@@ -22,7 +22,12 @@ export class CreateAccountPage implements OnInit {
   selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
   file: File | null = null; // The selected file, it is a type of javascript api and file here is object
 
-  constructor(public alertCtrl: AlertController ) {
+  constructor
+    (
+      public alertCtrl: AlertController,
+      private router: Router,
+    ) {
+
     this.profileForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
       lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
@@ -64,20 +69,29 @@ export class CreateAccountPage implements OnInit {
 
   // Method to handle form submission
   async onSubmit() {
-    this.submitted = true;  // Set the flag to true when form is submitted
+    this.submitted = true; // Set the flag to true when form is submitted
     this.loading = true;
-    //console.log(this.profileForm.getRawValue())
+
     if (this.isValid()) {
       console.log(this.profileForm.value); // Process the form data
+
+      // Show the success alert
       await this.successAlert();
+
+      // Navigate to /payment-plan after success
+      this.router.navigate(['/subscription-plan']);
     } else {
       console.log('Form is invalid');
-      const firstInvalidControl = Object.keys(this.profileForm.controls).find(key => this.profileForm.controls[key].invalid);
+      const firstInvalidControl = Object.keys(this.profileForm.controls).find(
+        key => this.profileForm.controls[key].invalid
+      );
+
       // Focus on the first invalid field, if found
       if (firstInvalidControl) {
         document.getElementById(firstInvalidControl)?.focus();
       }
     }
+
     this.loading = false;
   }
 

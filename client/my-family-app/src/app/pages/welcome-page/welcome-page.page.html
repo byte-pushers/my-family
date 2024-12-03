@@ -1,21 +1,37 @@
 <ion-content [fullscreen]="true" class="flex justify-center items-center h-screen p-0">
-  <!-- Centralized Login Form -->
   <div class="w-full max-w-[600px] p-[4rem] text-center bg-white shadow-md mx-auto h-screen sm:h-auto sm:rounded-t-[15px] sm:rounded-b-none">
     <div class="second-container">
       <h2 class="text-[28px] mb-[30px] text-[#0D4C92]">Welcome to My Family!</h2>
-      <p class="text-[#97D2EC]">Stay connected with your family effortlessly. Build your tree, plan events, and share updates in one place. Let's get started!</p>
+      <p class="text-[#97D2EC]">
+        Stay connected with your family effortlessly. Build your tree, plan events, and share updates in one place.
+        Let's get started!
+      </p>
 
-      <img class="mt-3" src="assets/img/my-family-logo.png" alt="my family welcome picture" width="500" height="600">
+      <img
+        class="mt-3"
+        src="assets/img/my-family-logo.png"
+        alt="my family welcome picture"
+        width="500"
+        height="600"
+      />
 
       <!-- Sign In Button -->
-      <ion-button expand="block" class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white" [routerLink]="['/login-page']" color="#0D4C92">
+      <ion-button
+        expand="block"
+        class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white"
+        (click)="navigateToSignIn()"
+      >
         Sign In
       </ion-button>
+
       <!-- Create Account Button -->
-      <ion-button expand="block" class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white" [routerLink]="['/create-account']" color="#0D4C92">
+      <ion-button
+        expand="block"
+        class="mt-[30px] text-[20px] h-[55px] rounded-[5px] bg-[#0D4C92] text-white"
+        (click)="navigateToCreateAccount()"
+      >
         Create Account
       </ion-button>
-
     </div>
   </div>
 </ion-content>

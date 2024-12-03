@@ -35,77 +35,39 @@ import {
 })
 export class LoginPagePage implements OnInit {
   profileForm!: FormGroup;
-  username: string = '';
-  password: string = '';
   loading = false;
   showPassword = false;
-  submitted = false; // Flag to check form submission state
+  submitted = false;
 
-  constructor(
-    public alertCtrl: AlertController,
-    private router: Router,
-    private fb: FormBuilder
-  ) {
-    this.profileForm = new FormGroup({
-      userName: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/),])
+  constructor(private router: Router, private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.profileForm = this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/)]],
     });
   }
+
   toggleShow() {
     this.showPassword = !this.showPassword;
   }
-  isValid(): boolean{
-    this.submitted = true;
-    if (this.profileForm.invalid) {
-      for (const control in this.profileForm.controls) {
-        if (this.profileForm.controls.hasOwnProperty(control)) {
-          this.profileForm.controls[control].markAsTouched();
-        }
-      }
-      return false;
-    }
-    return true;
-  }
-
-
 
   async onSignIn() {
-    this.submitted = true;  // Set the flag to true when form is submitted
-    this.loading = true;
-    //console.log(this.profileForm.getRawValue())
-    if (this.isValid()) {
-      console.log(this.profileForm.value); // Process the form data
-      await this.successAlert();
+    this.submitted = true;
+    if (this.profileForm.valid) {
+      console.log(this.profileForm.value);
+      this.router.navigate(['/home']); // Navigate to home
     } else {
       console.log('Form is invalid');
-      const firstInvalidControl = Object.keys(this.profileForm.controls).find(key => this.profileForm.controls[key].invalid);
-      // Focus on the first invalid field, if found
-      if (firstInvalidControl) {
-        document.getElementById(firstInvalidControl)?.focus();
-      }
     }
-    this.loading = false;
   }
 
-  async successAlert(){
-    // Show a success alert or navigate to another page
-    const successAlert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Log-in successful!',
-      buttons: ['OK'],
-      cssClass: 'custom-alert',
-    });
-    await successAlert.present();
-    await successAlert.onDidDismiss();
-    this.router.navigate(['/home']);
+  goBack() {
+    this.router.navigate(['/welcome-page']); // Navigate to welcome page
   }
 
-  // Method to navigate back to the welcome page
-  async goBack() {
-    this.router.navigate(['/welcome-page']); // Adjust this to your welcome page route
+  createAccount() {
+    this.router.navigate(['/create-account']); // Navigate to create account
   }
-  async createAccount() {
-    this.router.navigate(['/create-account']); // Adjust this to your welcome page route
-  }
-  ngOnInit() {}
 }
+
