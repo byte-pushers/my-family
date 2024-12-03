@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule,  DatePipe } from '@angular/common';
 import {FormsModule, NgModel, ReactiveFormsModule, Validators, FormGroup, FormControl} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar,AlertController, } from '@ionic/angular/standalone';
 
 @Component({
@@ -22,7 +22,7 @@ export class CreateAccountPage implements OnInit {
   selectedImage: string | ArrayBuffer | null = null; // Stores the image URL for preview
   file: File | null = null; // The selected file, it is a type of javascript api and file here is object
 
-  constructor(public alertCtrl: AlertController ) {
+  constructor(public alertCtrl: AlertController, private router: Router ) {
     this.profileForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.minLength(4)]),  // firstName: required, minimum length of 4 characters
       lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),   // lastName: required, minimum length of 1 character
@@ -86,16 +86,25 @@ export class CreateAccountPage implements OnInit {
     this.submitted = false;
   }
 
-  async successAlert(){
-    // Show a success alert or navigate to another page
+  async successAlert() {
+    // Show a success alert
     const successAlert = await this.alertCtrl.create({
       header: 'Success',
       message: 'Your account has been created successfully!',
       buttons: ['OK'],
       cssClass: 'custom-alert',
     });
+
+    // Present the alert
     await successAlert.present();
+
+    // Wait for the alert to be dismissed
+    await successAlert.onDidDismiss();
+
+    // Navigate to /subscription-plan after success
+    this.router.navigate(['/subscription-plan']);
   }
+
 
 
 // Handle file input change
