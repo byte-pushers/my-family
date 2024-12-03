@@ -12,23 +12,56 @@
 
     <!-- Main Content -->
     <div class="flex-1">
-      <!-- TODO: Search Bar Component -->
-  <app-search-bar></app-search-bar>
+      <!-- Search Bar Component -->
+      <app-search-bar></app-search-bar>
 
-  <!--TODO: Make "No Featured Events & No Announcements" for empty ones-->
+      <!-- Featured Event Section -->
+      <ng-container *ngIf="featuredEvent !== null; else noFeaturedEvent">
+        <app-featured-event [event]="featuredEvent"></app-featured-event>
+      </ng-container>
 
-      <!-- Featured Event Card -->
-      <app-featured-event [event]="featuredEvent"></app-featured-event>
+      <ng-template #noFeaturedEvent>
+        <div class="max-w-4xl mx-auto px-4 mb-6">
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="text-center">
+              <ion-icon name="calendar-outline" class="text-4xl text-gray-400 mb-3"></ion-icon>
+              <h2 class="text-xl font-semibold text-gray-800 mb-2">No Upcoming Events</h2>
+              <p class="text-gray-600 mb-4">There are no family events scheduled at the moment.</p>
+              <ion-button fill="solid" color="primary" routerLink="/events/create">
+                <ion-icon name="add-outline" slot="start"></ion-icon>
+                Create an Event
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
 
       <!-- Announcements Section -->
-      <app-announcements
-        [announcements]="upcomingAnnouncements"
-        class="block mt-4"
-      ></app-announcements>
+      <ng-container *ngIf="upcomingAnnouncements.length > 0; else noAnnouncements">
+        <app-announcements
+          [announcements]="upcomingAnnouncements"
+          class="block mt-4"
+        ></app-announcements>
+      </ng-container>
+
+      <ng-template #noAnnouncements>
+        <div class="max-w-4xl mx-auto px-4">
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="text-center">
+              <ion-icon name="megaphone-outline" class="text-4xl text-gray-400 mb-3"></ion-icon>
+              <h2 class="text-xl font-semibold text-gray-800 mb-2">No Announcements</h2>
+              <p class="text-gray-600 mb-4">There are no recent announcements to display.</p>
+              <ion-button fill="solid" color="primary" routerLink="/announcements/create">
+                <ion-icon name="add-outline" slot="start"></ion-icon>
+                Create Announcement
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </ion-content>
 
-<ion-footer>
-  <app-footer-navigation></app-footer-navigation>
-</ion-footer>
+
+<app-footer-navigation></app-footer-navigation>

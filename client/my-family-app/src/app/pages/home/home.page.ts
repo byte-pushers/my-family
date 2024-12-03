@@ -34,7 +34,9 @@ export class HomePage implements OnInit {
       location: 'Mount Nebo, Arkansas',
     }
   ];
-
+/*
+  upcomingAnnouncements: Announcement[] = [];
+*/
 
   constructor() {
     console.log('Announcements data:', this.upcomingAnnouncements);
