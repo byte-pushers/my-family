@@ -10,9 +10,9 @@ export abstract class BaseDomainModel implements BaseModel {
   protected constructor(props: { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date }) {
     this.#id = props?.id;
     this.#createdBy = props?.createdBy;
-    this.#createdDate = props?.createdDate;
+    this.#createdDate = props?.createdDate? new Date(props.createdDate): null;
     this.#updatedBy = props?.updatedBy;
-    this.#updatedDate = props?.updatedDate;
+    this.#updatedDate = props?.updatedDate? new Date(props.updatedDate): null;
   }
 
   public getId(): number | undefined | null {
@@ -55,23 +55,43 @@ export abstract class BaseDomainModel implements BaseModel {
     return this.#updatedDate;
   }
 
-  public getAttributeString(criteria: { id?: number | null, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null }): string {
-    let s = '';
+  public getAttributeString(criteria: { id?: number | null, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } | null): string {
+    const attributeArray = [];
 
-    if (criteria == null || criteria?.id) s += `"id": ${this.#id}, `;
-    if (criteria == null || criteria?.createdBy) s += `"createdBy": ${this.#createdBy}, `;
-    if (criteria == null || criteria?.createdDate) s += `"createdDate": ${this.#createdDate?.toISOString()}, `;
-    if (criteria == null || criteria?.updatedBy) s += `"updatedBy": ${this.#updatedBy}, `;
-    if (criteria == null || criteria?.updatedDate) s += `"updatedDate": ${this.#updatedDate?.toISOString()}, `;
+    if (criteria && criteria.id !== undefined && this.#id !== undefined) {
+      attributeArray.push(`"id": ${this.#id}`);
+    }
+    if (criteria && criteria.createdBy !== undefined && this.#createdBy !== undefined) {
+      attributeArray.push(`"createdBy": "${this.#createdBy}"`);
+    }
+    if (criteria && criteria.createdDate !== undefined && this.#createdDate !== undefined) {
+      attributeArray.push(`"createdDate": "${this.#createdDate?.toISOString()}"`);
+    }
+    if (criteria && criteria.updatedBy !== undefined && this.#updatedBy !== undefined) {
+      attributeArray.push(`"updatedBy": "${this.#updatedBy}"`);
+    }
+    if (criteria && criteria.updatedDate !== undefined && this.#updatedDate !== undefined) {
+      attributeArray.push(`"updatedDate": "${this.#updatedDate?.toISOString()}"`);
+    }
 
-    return s;
+    return attributeArray.reduce((result, attribute, attributeIndex, attributeArray) => {
+      if (attributeIndex < attributeArray.length -1 ) {
+        result += attribute + ',\n\t  ';
+      } else if (attributeArray.length == 1) {
+        result += attribute.startsWith("id")? attribute + ',' : attribute;
+      } else {
+        result += attribute + '\n\t  '
+      }
+
+      return result;
+    }, '');
   }
 
-  public getAttributeIdString(criteria: { id?: number | null } = {id: this.id}): string {
+  public getAttributeIdString(criteria: { id?: number | null } = {id: null}): string {
     return this.getAttributeString(criteria);
   }
 
-  public getAttributeAuditStrings(criteria: { id?: number, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } = {createdBy: this.createdBy, createdDate: this.createdDate, updatedBy: this.updatedBy, updatedDate: this.updatedDate}): string {
+  public getAttributeAuditStrings(criteria: { id?: number, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } = {createdBy: null, createdDate: null, updatedBy: null, updatedDate: null}): string {
     return this.getAttributeString(criteria);
   }
 }
