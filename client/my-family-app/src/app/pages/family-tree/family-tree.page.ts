@@ -8,11 +8,11 @@ import { FamilyTreeVisualizationComponent } from "../../components/family-tree-v
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { FamilyTreeService } from "../../services/family-tree.service";
 import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
-import {createFamilyMemberFromResponse, FamilyTreeResponse} from "../../models/family-tree/family-tree-response";
+import { createFamilyMemberFromResponse, FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
 import { FamilyMember } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
-import {FamilySearchService} from "../../services/family-search.service";
+import { FamilySearchService } from "../../services/family-search.service";
 import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
 
@@ -30,7 +30,6 @@ import { Router } from '@angular/router';
     FamilyMemberListComponent
   ]
 })
-
 export class FamilyTreePage implements OnInit, OnDestroy {
   @ViewChild(FamilyTreeVisualizationComponent)
   familyTreeVisualization!: FamilyTreeVisualizationComponent;
@@ -38,6 +37,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   familyTreeData: FamilyTreeResponse | null = null;
   familyMembers: FamilyMember[] = [];
   filteredMembers: FamilyMember[] = [];
+  rootMember?: FamilyMember;  // Added rootMember property
   selectedId?: number;
   loading = true;
   error: string | null = null;
@@ -88,17 +88,34 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.error = null;
 
     try {
-      this.familyTreeService.getFamilyTree(1).subscribe(familyTree => {
-        this.familyTreeData = familyTree;
+      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
+
+      // Create root member from the top-level data
+      this.rootMember = createFamilyMemberFromResponse({
+        id: this.familyTreeData.id,
+        relationship: this.familyTreeData.relationship,
+        person: this.familyTreeData.person,
+        parent: this.familyTreeData.parent,
+        familyMembers: [],
+        createdBy: this.familyTreeData.createdBy,
+        updatedBy: this.familyTreeData.updatedBy,
+        createdDate: this.familyTreeData.createdDate,
+        updatedDate: this.familyTreeData.updatedDate
       });
 
       // Convert response to FamilyMember instances for the list
-      this.familyMembers = MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(memberData =>
-        createFamilyMemberFromResponse(memberData)
-      );
+      // Filter out the root member if it exists in familyMembers
+      this.familyMembers = this.familyTreeData.familyMembers
+        .filter(member => member.id !== this.rootMember?.getId())
+        .map(memberData => createFamilyMemberFromResponse(memberData));
 
-      this.familySearchService.searchMembers('', this.familyMembers);
+      // Include root member in search
+      const allMembers = [this.rootMember, ...this.familyMembers];
+      this.familySearchService.searchMembers('', allMembers);
       this.loading = false;
+
+      console.log('Root Member:', this.rootMember);
+      console.log('Family Members:', this.familyMembers);
     } catch (error) {
       console.error('Error loading mock data:', error);
       this.error = 'Failed to load family tree data.';
@@ -109,21 +126,35 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   onSearch(event: CustomEvent): void {
     const query = event.detail.value?.toLowerCase() ?? '';
     this.searchQuery = query;
-    this.familySearchService.searchMembers(query, this.familyMembers);
+    // Include root member in search
+    const allMembers = this.rootMember
+      ? [this.rootMember, ...this.familyMembers]
+      : this.familyMembers;
+    this.familySearchService.searchMembers(query, allMembers);
 
-    // Highlight matching nodes in tree visualization
     if (this.familyTreeVisualization) {
       this.familyTreeVisualization.highlightNodes(query);
     }
   }
 
   onMemberSelected(memberId: number) {
-    const member = this.familyMembers.find(m => m.getId() === memberId);
+    console.log('Member selected in list:', memberId);
+    // Check both root member and family members
+    const member = this.rootMember?.getId() === memberId
+      ? this.rootMember
+      : this.familyMembers.find(m => m.getId() === memberId);
+
     if (member) {
+      console.log('Found member:', member);
       this.familySearchService.selectMember(member);
       if (this.familyTreeVisualization) {
+        console.log('Calling focusNode with ID:', memberId);
         this.familyTreeVisualization.focusNode(memberId);
+      } else {
+        console.error('Tree visualization component not available');
       }
+    } else {
+      console.error('Member not found with ID:', memberId);
     }
   }
 }
