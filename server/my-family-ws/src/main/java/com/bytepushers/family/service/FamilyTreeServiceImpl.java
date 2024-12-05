@@ -29,7 +29,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
 
     @Override
     @Transactional
-    public FamilyTree createFamilyTree(@Valid FamilyTree familyTree) {
+    public String createFamilyTree(@Valid FamilyTree familyTree) {
         logger.debug("Creating new family tree");
 
         // Set audit fields
@@ -50,7 +50,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         // Save and return
         FamilyTree savedTree = familyTreeRepository.save(familyTree);
         logger.info("Created family tree with ID: {}", savedTree.getId());
-        return savedTree;
+        return ""; // savedTree;
     }
 
     @Override

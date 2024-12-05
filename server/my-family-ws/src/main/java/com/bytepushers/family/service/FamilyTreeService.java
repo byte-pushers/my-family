@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 public interface FamilyTreeService {
-    FamilyTree createFamilyTree(@Valid FamilyTree familyTree);
+    String createFamilyTree(@Valid FamilyTree familyTree);
     String getFamilyTree(Integer id);
 
     FamilyMember getFamilyMemberWithChildren(Integer id);

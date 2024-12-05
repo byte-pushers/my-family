@@ -41,25 +41,21 @@ public class FamilyTreeController {
     }
 
     @PostMapping("/family-trees")
-    public ResponseEntity<Object> createFamilyTree(@Valid @RequestBody FamilyTree familyTree,
+    public ResponseEntity<String> createFamilyTree(@Valid @RequestBody FamilyTree familyTree,
                                                    BindingResult bindingResult) {
         logger.debug("Received request to create family tree: {}", familyTree);
-        if (bindingResult.hasErrors()) {
-            ApiResponse errorResponse = new ApiResponse(List.of());
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        }
 
-        try {
-            FamilyTree createdTree = familyTreeService.createFamilyTree(familyTree);
-            logger.info("Successfully created family tree with ID: {}", createdTree.getId());
+        //try {
+            String createdTree = familyTreeService.createFamilyTree(familyTree);
+            //logger.info("Successfully created family tree with ID: {}", createdTree.getId());
             return new ResponseEntity<>(createdTree, HttpStatus.CREATED);
-        } catch (Exception e) {
+        /*} catch (Exception e) {
             logger.error("Error creating family tree: ", e);  // This will print the full stack trace
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
             errorResponse.put("cause", e.getCause() != null ? e.getCause().getMessage() : "Unknown");
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
 
 /*    @GetMapping("/{id}")

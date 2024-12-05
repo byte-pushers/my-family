@@ -21,7 +21,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   readonly #registeredDomainApiTransformers = new Map<{url: string|null, httpMethod: string}, FamilyReunionTransformer>;
 
   constructor() {
+    this.#registeredApiRequests.add(FamilyTreeDomainModelApiTransformer.CREATE_FAMILY_TREE_API_REQUEST);
     this.#registeredApiRequests.add(FamilyTreeDomainModelApiTransformer.FIND_FAMILY_TREE_API_REQUEST);
+
+    this.#registeredDomainApiTransformers.set(
+      FamilyTreeDomainModelApiTransformer.CREATE_FAMILY_TREE_API_REQUEST,
+      new FamilyTreeDomainModelApiTransformer()
+    );
 
     this.#registeredDomainApiTransformers.set(
       FamilyTreeDomainModelApiTransformer.FIND_FAMILY_TREE_API_REQUEST,
@@ -41,7 +47,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
             if (event?.body && event?.url) {
               const url = new URL(event.url);
               const registeredDomainApiTransformerKey = Array.from(this.#registeredApiRequests).find(registeredApiRequest => {
-                if (registeredApiRequest.url === this.#matchUrlPathIds(`${url.pathname}`) && registeredApiRequest.httpMethod === 'GET') {
+                if (registeredApiRequest.url === this.#matchUrlPathIds(`${url.pathname}`)) {
                   return registeredApiRequest;
                 }
 

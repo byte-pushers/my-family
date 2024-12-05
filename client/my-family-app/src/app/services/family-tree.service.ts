@@ -28,9 +28,7 @@ export class FamilyTreeService {
 
     return this.http.post<any>(`${this.apiBaseUrl}/family-trees/`, payload, {
       headers: this.getHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
+    });
   }
 
   // GET - Retrieve family tree by ID

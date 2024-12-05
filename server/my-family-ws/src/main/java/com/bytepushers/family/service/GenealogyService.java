@@ -1,5 +1,6 @@
 package com.bytepushers.family.service;
 
+import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.repo.FamilyTreeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,14 @@ public abstract class GenealogyService implements FamilyTreeService {
     }
 
     @Override
-    public FamilyTree createFamilyTree(FamilyTree familyTree) {
+    public String createFamilyTree(FamilyTree familyTree) {
         // Call repository to save the entity
-        return familyTreeRepository.save(familyTree);
+        //return familyTreeRepository.save(familyTree);
+        return "";
     }
 
-
+    @Override
+    public FamilyMember getFamilyMemberWithChildren(Integer id) {
+        return null;
+    }
 }
