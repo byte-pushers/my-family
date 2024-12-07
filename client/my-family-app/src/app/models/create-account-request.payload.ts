@@ -1,10 +1,10 @@
-import { AccountInfo } from "./account-info";
+import { AccountInfoModel } from "./account-info.model";
 
 export class CreateAccountRequestPayload {
   #transactionID: string; // GUID
-  #accountInfo: AccountInfo;
+  #accountInfo: AccountInfoModel;
 
-  constructor(accountInfo: AccountInfo) {
+  constructor(accountInfo: AccountInfoModel) {
     this.#transactionID = this.getGUID();
     this.#accountInfo = accountInfo;
   }

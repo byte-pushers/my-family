@@ -140,17 +140,17 @@
           <div class="sm:col-span-full">
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
-              <input id="email" name="email" type="email" placeholder="Email Address..." autocomplete="email"
+              <input id="email" name="email" type="email" placeholder="Email AddressModel..." autocomplete="email"
                      formControlName="email"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
 
               <!--              <div *ngIf="profileForm.controls['email'].invalid && profileForm.controls['email'].touched" class="text-red-500 text-sm font-bold">-->
-              <!--                Invalid Email Address.-->
+              <!--                Invalid Email AddressModel.-->
               <!--              </div>-->
               <!-- Error message for invalid email format -->
               <div *ngIf="submitted && profileForm.controls['email'].errors?.['email']"
                    class="text-red-500 text-sm font-bold">
-                Invalid Email Address.
+                Invalid Email AddressModel.
               </div>
               <div *ngIf="submitted && profileForm.controls['email'].errors?.['required']"
                    class="text-red-500 text-sm font-bold">
@@ -160,14 +160,14 @@
             </div>
           </div>
           <div class="col-span-full mt-6">
-            <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
+            <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">AddressModel</label>
             <div class="mt-2">
-              <input type="text" placeholder="Enter Address.." name="street-address" id="street-address"
+              <input type="text" placeholder="Enter AddressModel.." name="street-address" id="street-address"
                      autocomplete="street-address" formControlName="address"
                      class="bg-[#f5fbff] block w-full rounded-md border-0 border-[#97d2ec] py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] sm:text-sm sm:leading-6">
               <div *ngIf="submitted && profileForm.controls['address'].errors?.['required']"
                    class="text-red-500 text-sm font-bold">
-                Address is required.
+                AddressModel is required.
               </div>
             </div>
           </div>

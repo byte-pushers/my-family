@@ -10,9 +10,9 @@ import { Observable } from 'rxjs'; */ // will be used for api call later
 import { DatePipe } from '@angular/common';
 import { CreateAccountService } from "../../services/create-account.service";
 import { CreateAccountRequestPayload } from "../../models/create-account-request.payload";
-import { AccountInfo } from "../../models/account-info";
-import { Address } from "../../models/address"
-import { PhoneNumber } from "../../models/phone-number";
+import { AccountInfoModel } from "../../models/account-info.model";
+import { AddressModel } from "../../models/address.model"
+import { PhoneNumberModel } from "../../models/phone-number.model";
 import {create} from "ionicons/icons";
 import {Router} from "@angular/router";
 import { ToastController }  from "@ionic/angular";
@@ -60,7 +60,7 @@ export class CreateAccountPage implements OnInit {
     if (this.profileForm.valid) {
       console.log(this.profileForm.value);
 
-      const address = new Address(
+      const address = new AddressModel(
         this.profileForm.get("address")?.value,
         "AddressLine2",
         "City",
@@ -68,14 +68,14 @@ export class CreateAccountPage implements OnInit {
         "Zipcode"
       );
 
-      const phoneNumber = new PhoneNumber(
+      const phoneNumber = new PhoneNumberModel(
         "Type",
         "CountryCode",
         "AreaCode",
         "SubscriberNumber"
       );
 
-      const accountInfo = new AccountInfo(
+      const accountInfo: AccountInfo = new AccountInfoModel(
         this.profileForm.get("firstName")?.value,
         "middleNamePlaceholder",
         this.profileForm.get("lastName")?.value,

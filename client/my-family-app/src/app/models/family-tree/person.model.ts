@@ -66,8 +66,6 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.createdDate = createdDate;
         props.updatedBy = updatedBy;
         props.updatedDate = updatedDate;
-
-        // props = {id: id, firstName, lastName, birthDate, gender, deceased, familyMembers, createdBy: createdBy, createdDate: createdDate, updatedBy: updatedBy, updatedDate: updatedDate};
       }
 
       return props;
