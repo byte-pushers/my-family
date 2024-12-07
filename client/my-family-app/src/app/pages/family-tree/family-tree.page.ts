@@ -12,7 +12,7 @@ import { /*createFamilyMemberFromResponse, */FamilyTreeResponse} from "../../mod
 import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
-import {FamilySearchService} from "../../services/family-search.service";
+import { FamilySearchService } from "../../services/family-search.service";
 import { Router } from '@angular/router';
 
 @Component({
@@ -87,8 +87,8 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.error = null;
 
     try {
-      this.familyTreeService.getFamilyTree(1).subscribe(familyTreeResponse => {
-        console.log(`FamilyTree: ${familyTreeResponse.familyTree}`);
+      this.familyTreeService.getFamilyTree(1).subscribe(familyTree => {
+        console.log(`FamilyTree: ${familyTree}`);
         this.familyTreeData = null; // TODO: re-factor to use familyTreeResponse.familyTree;
       });
 

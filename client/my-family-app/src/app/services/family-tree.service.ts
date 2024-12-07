@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FamilyTreeRequestPayload } from '../models/family-tree/family-tree-request.payload';
 import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
+import { FamilyTree } from '../models/family-tree/family-tree';
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +24,27 @@ export class FamilyTreeService {
   }
 
   // POST - Submit the family tree data
-  public create(payload: FamilyTreeRequestPayload): Observable<any> {
+  public create(payload: FamilyTreeRequestPayload): Observable<FamilyTree> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
-
-    return this.http.post<any>(`${this.apiBaseUrl}/family-trees/`, payload, {
-      headers: this.getHeaders()
+    return new Observable<FamilyTree>((observer) => {
+      return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/`, payload, {
+        headers: this.getHeaders()
+      }).subscribe(familyTreeResponse => {
+        observer.next(familyTreeResponse.data);
+      });
     });
   }
 
   // GET - Retrieve family tree by ID
-  public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
-    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
-      headers: this.getHeaders()
+  public getFamilyTree(id: number): Observable<FamilyTree> {
+    return new Observable<FamilyTree>((observer) => {
+      return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
+        headers: this.getHeaders()
+      }).subscribe(familyTreeResponse => {
+        observer.next(familyTreeResponse.data);
+      });
     });
+
   }
 
   // UPDATE - Adding additional family members after initial creation
