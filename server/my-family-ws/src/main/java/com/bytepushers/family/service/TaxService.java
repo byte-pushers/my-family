@@ -4,8 +4,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+/**
+ * The {@code TaxService} class provides functionality for retrieving the sales tax rate
+ * for a given state. The tax rates are predefined for each state and territory in the United States,
+ * as well as for Puerto Rico and the District of Columbia.
+ *
+ * <p>The service provides a method to fetch the tax rate based on the state code.</p>
+ *
+ * <p>States that do not charge sales tax (e.g., Alaska, Delaware, Montana, New Hampshire, Oregon)
+ * have a tax rate of 0.0.</p>
+ *
+ * @author Adish Timalsina
+ */
 @Service
 public class TaxService {
+
+    /**
+     * A static map that stores the sales tax rates for each state.
+     * The key is the state abbreviation (e.g., "TX" for Texas), and the value is the tax rate for that state.
+     */
     private static final HashMap<String, Double> STATE_TAX_RATES = new HashMap<>();
 
     static {
@@ -64,6 +81,12 @@ public class TaxService {
 
     }
 
+    /**
+     * Retrieves the sales tax rate for the given state.
+     *
+     * @param state the two-letter abbreviation for the state (e.g., "TX" for Texas)
+     * @return the sales tax rate for the given state, or 0.0 if the state does not charge sales tax
+     */
     public double getTaxRate(String state) {
         return STATE_TAX_RATES.getOrDefault(state, 0.0);
     }

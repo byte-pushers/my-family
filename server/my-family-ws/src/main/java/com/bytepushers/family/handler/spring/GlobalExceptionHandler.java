@@ -21,15 +21,42 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code GlobalExceptionHandler} class handles various types of exceptions that may occur during
+ * the execution of the application. It provides centralized exception handling for different error
+ * scenarios such as invalid inputs, authorization issues, and resource not found.
+ *
+ * <p>This class uses the {@code @ControllerAdvice} annotation to handle exceptions globally across
+ * all controllers in the Spring application. It provides specific error responses for common exceptions
+ * like {@code IllegalArgumentException}, {@code DuplicateKeyException}, and custom exceptions such as
+ * {@code UserNotFoundException}.</p>
+ *
+ * <p>The error responses are structured in the {@code ErrorResponse} format, with detailed error codes and
+ * messages tailored to the specific exception.</p>
+ *
+ * @author Adish Timalsina
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     private final HttpMessageConverters messageConverters;
 
+    /**
+     * Constructor for the GlobalExceptionHandler.
+     *
+     * @param messageConverters provides HTTP message converters for the handler.
+     */
     public GlobalExceptionHandler(HttpMessageConverters messageConverters) {
         this.messageConverters = messageConverters;
     }
 
+    /**
+     * Handles {@link IllegalArgumentException} by returning a BAD_REQUEST response with a specific error message.
+     *
+     * @param ex      the exception thrown
+     * @param request the HTTP request that caused the exception
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handlerIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -40,6 +67,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles {@link AuthorizationException} by returning an UNAUTHORIZED response with an error message.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(AuthorizationException.class)
     public ResponseEntity<ErrorResponse> handleAuthorizationException(AuthorizationException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -51,6 +84,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    /**
+     * Handles {@link DuplicateKeyException} by returning a CONFLICT response with an error message indicating
+     * that the user already exists.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DuplicateKeyException ex) {
 
@@ -63,6 +103,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    /**
+     * Handles {@link ConstraintViolationException} by returning a BAD_REQUEST response with a detailed list of
+     * validation errors.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing a list of {@link ErrorResponse}s with details of the validation errors
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(ConstraintViolationException ex) {
         List<ErrorResponse> errorResponses = new ArrayList<>();
@@ -75,9 +122,9 @@ public class GlobalExceptionHandler {
 
 
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-          String fieldName = violation.getPropertyPath().toString();
-          String messageTemplate = violation.getMessageTemplate();
-          String errorCode = violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
+            String fieldName = violation.getPropertyPath().toString();
+            String messageTemplate = violation.getMessageTemplate();
+            String errorCode = violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
 
             System.out.println(errorCode + " " + fieldName + " " + messageTemplate);
 
@@ -122,9 +169,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponses, HttpStatus.BAD_REQUEST);
     }
 
-
+    /**
+     * Handles {@link UserNotFoundException} by returning a NOT_FOUND response indicating that the user could
+     * not be found.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex){
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "User Not Found",
@@ -135,8 +188,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Handles {@link DuplicateUserException} by returning a BAD_REQUEST response indicating that the user
+     * already exists.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<Object> handleDuplicateUserException(DuplicateUserException ex){
+    public ResponseEntity<Object> handleDuplicateUserException(DuplicateUserException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_ALREADY_EXIST,
                 "Duplicate User",
@@ -147,8 +207,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles {@link InvalidUserException} by returning a BAD_REQUEST response indicating that the user data
+     * is invalid.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(InvalidUserException.class)
-    public ResponseEntity<Object> handleInvalidUserException(InvalidUserException ex){
+    public ResponseEntity<Object> handleInvalidUserException(InvalidUserException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_NOT_FOUND,
                 "Invalid User Data",
@@ -158,8 +225,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles {@link UserDeletionFailedException} by returning an INTERNAL_SERVER_ERROR response indicating
+     * that user deletion failed.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(UserDeletionFailedException.class)
-    public ResponseEntity<Object> handleUserDeletionFailedException(Exception ex){
+    public ResponseEntity<Object> handleUserDeletionFailedException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_USER_DELETION_FAILED,
                 "User Deletion Failed",
@@ -169,8 +243,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Handles {@link NotFoundException} by returning a NOT_FOUND response with a message from the exception.
+     *
+     * @param ex the exception thrown
+     * @return a {@link ResponseEntity} containing an {@link ErrorResponse} with details of the error
+     */
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex){
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 APIErrorConstant.API_ERROR_SOURCE_NOT_FOUND,
                 ex.getMessage(),
