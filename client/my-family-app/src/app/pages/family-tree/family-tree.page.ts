@@ -87,8 +87,9 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.error = null;
 
     try {
-      this.familyTreeService.getFamilyTree(1).subscribe(familyTree => {
-        this.familyTreeData = familyTree;
+      this.familyTreeService.getFamilyTree(1).subscribe(familyTreeResponse => {
+        console.log(`FamilyTree: ${familyTreeResponse.familyTree}`);
+        this.familyTreeData = null; // TODO: re-factor to use familyTreeResponse.familyTree;
       });
 
       // Convert response to FamilyMember instances for the list

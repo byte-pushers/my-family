@@ -6,6 +6,10 @@ export class FamilyTreeDomainModelApiTransformer implements FamilyReunionTransfo
   public static readonly FIND_FAMILY_TREE_API_REQUEST = { url: '/api/family-trees/{id}', httpMethod: 'GET' }
 
   transform(data: any): any {
-    return new FamilyTreeResponseModel(data);
+    const familyTreeResponse = new FamilyTreeResponseModel(data);
+
+    console.log(`FamilyTreeResponseModel: ${familyTreeResponse}`);
+
+    return familyTreeResponse;
   }
 }

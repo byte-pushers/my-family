@@ -1,12 +1,8 @@
-import { FamilyMember } from './family-member';
-import { RelationshipType } from './relationship-type';
+import { FamilyTree } from './family-tree';
 
 export interface FamilyTreeResponse {
-  userId: number;
-  transactionId: number;
-  familyTreeId: number;
-  relationship: RelationshipType;
-  familyMembers: FamilyMember[];
+  id?: number | null;
+  familyTree: FamilyTree;
   createdBy?: string | null;
   createdDate?: Date | null;
   updatedBy?: string | null;

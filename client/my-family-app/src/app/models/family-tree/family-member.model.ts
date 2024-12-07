@@ -62,10 +62,14 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
 
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings({createdBy: this.createdBy, updatedDate: this.updatedDate})}`;
-    return`{
+    const s = `{
       ${super.getAttributeIdString()}
       "relationship": "${this?.relationship}",
       "person": ${this?.person?.toString()}${auditString.trim() === ''? `,\n\t  ${auditString}` : ''}
     }`;
+
+    console.log(`FamilyMember: ${s}`);
+
+    return s;
   }
 }
