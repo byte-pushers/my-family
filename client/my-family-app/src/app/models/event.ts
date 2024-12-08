@@ -1,13 +1,17 @@
-import { AgendaItem } from '../interfaces/agenda-item.interface';
+import { Address } from './address';
+import { BaseModel } from './base.model';
+import { MerchandiseItem } from './merchandise-item';
+import { AgendaItem } from './agenda-item';
 
 
-export interface Event {
+export interface Event extends BaseModel {
   name: string;
   type: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-  agendas: AgendaItem[];
+  startDate: Date | null;
+  endDate: Date | null;
+  startTime: Date | null;
+  endTime: Date | null;
+  location: Address | null;
+  agendas: AgendaItem[] | null;
+  merchandiseList: MerchandiseItem[] | null;
 }

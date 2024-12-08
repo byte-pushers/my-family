@@ -35,7 +35,8 @@ export class SearchResultsPage implements OnInit {
   people: Person[] = [];
 
   // Mock data using your interfaces
-  private mockEvents: Event[] = [
+  // TODO: Need to create mock event with proper attributes.
+  /*private mockEvents: Event[] = [
     {
       name: "Alejandro's Graduation",
       type: "graduation",
@@ -45,9 +46,10 @@ export class SearchResultsPage implements OnInit {
       endTime: "18:30",
       location: "Dallas University",
       agendas: []
-    },
+    }
     // ... other mock events
-  ];
+  ];*/
+  private mockEvents: Event[] = [{}] as Event[];
 
   private mockPeople: Array<Person> = [];
 
@@ -100,16 +102,16 @@ export class SearchResultsPage implements OnInit {
         return false;
       }
 
-      if (this.filters?.location?.state && !event.location.includes(this.filters.location.state)) {
+      if (this.filters?.location?.state && !event.location?.state?.includes(this.filters.location.state)) {
         return false;
       }
 
-      if (this.filters?.location?.city && !event.location.includes(this.filters.location.city)) {
+      if (this.filters?.location?.city && !event.location?.city?.includes(this.filters.location.city)) {
         return false;
       }
 
       if (this.filters?.dateRange?.from && this.filters?.dateRange?.to) {
-        const eventDate = new Date(event.startDate);
+        const eventDate = event && event.startDate? event.startDate : new Date(); //TODO consider remove the null from object property types declaration so we don't have to deal with the possibilty of it being null.
         const fromDate = new Date(this.filters.dateRange.from);
         const toDate = new Date(this.filters.dateRange.to);
         if (eventDate < fromDate || eventDate > toDate) {
@@ -141,11 +143,11 @@ export class SearchResultsPage implements OnInit {
   }
 
   formatEventDate(event: Event): string {
-    return new Date(event.startDate).toLocaleDateString('en-US', {
+    return event?.startDate? event.startDate.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'short',
       day: 'numeric'
-    });
+    }): '';
   }
 
   navigateToProfile(person: Person) {

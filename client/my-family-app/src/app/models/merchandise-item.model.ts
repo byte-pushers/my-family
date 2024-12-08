@@ -1,7 +1,7 @@
 import { MerchandiseItem } from './merchandise-item';
+import { BaseDomainModel } from './base-domain.model';
 
-export class MerchandiseItemModel implements MerchandiseItem {
-  id: string;
+export class MerchandiseItemModel extends BaseDomainModel implements MerchandiseItem {
   name: string;
   description?: string;
   price: number;
@@ -13,7 +13,7 @@ export class MerchandiseItemModel implements MerchandiseItem {
   category?: string;
 
   constructor(data: MerchandiseItem) {
-    this.id = data.id;
+    super(data as { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date });
     this.name = data.name;
     this.description = data.description;
     this.price = data.price;
@@ -26,7 +26,7 @@ export class MerchandiseItemModel implements MerchandiseItem {
   }
 
   // Behavior methods
-/*  getFormattedPrice(): string {
+  /*getFormattedPrice(): string {
     return `$${this.price.toFixed(2)}`;
   }
 
@@ -37,4 +37,18 @@ export class MerchandiseItemModel implements MerchandiseItem {
   hasSize(size: string): boolean {
     return this.sizes?.includes(size) ?? false;
   }*/
+
+  public override toString(): string {
+    return `{
+      "name": "${this.name}",
+      "description": "${this.description}",
+      "price": "${this.price}",
+      "image": "${this.image}",
+      "sizes": "${this.sizes}",
+      "maxQuantity": "${this.maxQuantity}",
+      "type": "${this.type}",
+      "available": "${this.available}",
+      "category": "${this.category}"
+   }`;
+  }
 }

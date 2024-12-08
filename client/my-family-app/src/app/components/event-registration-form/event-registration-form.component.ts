@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MerchandiseItemModel} from "../../models/merchandise-item.model";
 import {Router} from '@angular/router';
+import { MerchandiseItem } from '../../models/merchandise-item';
 
 @Component({
   selector: 'app-event-registration-form',
@@ -21,7 +22,7 @@ export class EventRegistrationFormComponent implements OnInit {
   paymentMethod: 'card' | 'paypal' = 'card';
 
   merchandiseItems: MerchandiseItemModel[] = [
-    new MerchandiseItemModel(    {
+    new MerchandiseItemModel(   /* {
       id: 'tshirt-001',
       name: 'Event T-Shirt',
       description: 'Comfortable cotton t-shirt with event logo',
@@ -32,7 +33,7 @@ export class EventRegistrationFormComponent implements OnInit {
       type: 'clothing',
       available: true,
       category: 'apparel'
-    })
+    }*/{} as MerchandiseItem)
   ];
 
   constructor(private fb: FormBuilder, private router: Router) {

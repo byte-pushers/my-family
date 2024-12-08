@@ -90,7 +90,7 @@ export class AddressModel extends BaseDomainModel implements Address {
     return this.#zipcode;
   }
 
-  public toString(): string {
+  public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
     return `{
       ${super.getAttributeIdString()}

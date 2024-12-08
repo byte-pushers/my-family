@@ -18,16 +18,19 @@ export class PhoneNumberModel extends BaseDomainModel implements PhoneNumber {
         props.id = args[0].id;
         props.phoneType = args[0].phoneType;
         props.countryCode = args[0].countryCode;
+        props.areaCode = args[0].areaCode;
         props.subscriberNumber = args[0].subscriberNumber;
       } else {
         const id = args[0];
         const phoneType = args[1];
         const countryCode = args[2];
+        const areaCode = args[3];
         const subscriberNumber = args[4];
 
         props.id = id;
         props.phoneType = phoneType;
         props.countryCode = countryCode;
+        props.areaCode = areaCode;
         props.subscriberNumber = subscriberNumber;
       }
 
@@ -38,6 +41,7 @@ export class PhoneNumberModel extends BaseDomainModel implements PhoneNumber {
 
     this.#phoneType = props?.phoneType;
     this.#countryCode = props?.countryCode;
+    this.#areaCode = props?.areaCode;
     this.#subscriberNumber = props?.subscriberNumber;
   }
 
@@ -73,7 +77,7 @@ export class PhoneNumberModel extends BaseDomainModel implements PhoneNumber {
     return this.#subscriberNumber;
   }
 
-  public toString(): string {
+  public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
 
     return `{
