@@ -3,6 +3,7 @@ package com.bytepushers.family.controller;
 import com.bytepushers.family.api.APIErrorConstant;
 import com.bytepushers.family.api.ApiResponse;
 import com.bytepushers.family.api.ErrorResponse;
+import com.bytepushers.family.api.LoginRequestPayload;
 import com.bytepushers.family.model.ErrorDetail;
 import com.bytepushers.family.model.Login;
 import com.bytepushers.family.model.User;
@@ -31,22 +32,18 @@ public class LoginController {
 
     // Basic login API for testing
     @GetMapping(value = "/sessions", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> login(@Valid @RequestBody Login login, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // Handling validation errors
-            ArrayList<String> errors = new ArrayList<>();
-            bindingResult.getAllErrors().forEach(error -> {
-                errors.add(error.getDefaultMessage());
-            });
-            return new ResponseEntity<>(new ErrorResponse(APIErrorConstant.API_ERROR_LOGIN_VALIDATION_FAILED, "Invalid Request", null,null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestPayload payload) {
+        User user = null;
+
+        if (payload.getCredentials() != null) {
+            user = userService.login(payload.getCredentials().getUserName(), payload.getCredentials().getPassword());
         }
 
-        boolean isValid = userService.login(login.getEmail(), login.getPassword());
-        if (isValid) {
-            ApiResponse<User> response = new ApiResponse<>(null);
+        if (user != null) {
+            ApiResponse<User> response = new ApiResponse<>(user);
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(APIErrorConstant.API_ERROR_UNAUTHORIZED_ACCESS, "Unauthorized", null, null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(APIErrorConstant.API_ERROR_DATA_NOT_FOUND, "Data Not Found", null, null));
         }
     }
 }

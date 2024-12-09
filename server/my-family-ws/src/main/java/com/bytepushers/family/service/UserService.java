@@ -25,25 +25,22 @@ public class UserService {
     }
 
 
-    public boolean login(String email, String password) {
+    public User login(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
+
         if (userOptional.isPresent()) {
-            logger.warn("User not found in DB for email: " + email);
-            return false;
+            // Extract the User from Optional
+            User user = userOptional.get();
+
+            logger.info("User found: " + user.getEmail());
+            logger.info("Database password: " + user.getPassword());
+            logger.info("Input password: " + password);
+
+            if (user.getPassword().equals(password)) {
+                return user;  // Login successful
+            }
         }
 
-        // Extract the User from Optional
-        User user = userOptional.get();
-
-        logger.info("User found: " + user.getEmail());
-        logger.info("Database password: " + user.getPassword());
-        logger.info("Input password: " + password);
-
-        if (user.getPassword().equals(password)) {
-            return true;  // Login successful
-        }
-
-        logger.warn("Password mismatch for email: " + email);
-        return false;  // Login failed
+        return null;  // Login failed
     }
 }
