@@ -1,3 +1,12 @@
+/**
+ * @file merchandise-item.ts
+ * @description This file contains the MerchandiseItem interface which represents a merchandise item with its details.
+ * @version 1.0.0
+ */
+
+/**
+ * Interface representing a merchandise item.
+ */
 export interface MerchandiseItem {
   id: string;           // Unique identifier for the item
   name: string;         // Name of the merchandise item

@@ -1,3 +1,10 @@
+/**
+ * @file footer-navigation.component.ts
+ * @description This file contains the FooterNavigationComponent which handles the navigation between different tabs in the application.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from "@ionic/angular";
 import { RouterLink, RouterLinkActive, Router } from "@angular/router";
@@ -31,6 +38,10 @@ export class FooterNavigationComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * Sets the initial selected tab based on the current route.
+   */
   ngOnInit(): void {
     // Set initial selected tab based on current route
     const currentPath = this.router.url;
@@ -38,7 +49,7 @@ export class FooterNavigationComponent implements OnInit {
   }
 
   /**
-   * Sets the initially selected tab based on the current route
+   * Sets the initially selected tab based on the current route.
    * @param path - Current router path
    */
   private setInitialTab(path: string): void {
@@ -48,7 +59,7 @@ export class FooterNavigationComponent implements OnInit {
   }
 
   /**
-   * Handles tab selection
+   * Handles tab selection.
    * @param tabName - Name of the selected tab
    */
   selectTab(tabName: TabName): void {

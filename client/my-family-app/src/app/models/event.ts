@@ -1,4 +1,4 @@
-import { AgendaItem } from '../interfaces/agenda-item.interface';
+import { AgendaItem } from './agenda-item.interface';
 
 
 export interface Event {

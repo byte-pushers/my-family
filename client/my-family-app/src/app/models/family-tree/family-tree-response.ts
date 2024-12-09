@@ -1,9 +1,18 @@
+/**
+ * @file family-tree-response.ts
+ * @description This file contains the FamilyTreeResponse interface and helper functions to manage family tree response data.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { BaseDomainModel } from '../base-domain-model';
 import { Person } from './person';
 import { FamilyMember } from './family-member.model';
-import {RelationshipType} from "./relationship-type";
+import { RelationshipType } from './relationship-type';
 
-// Raw person data from API before instantiation
+/**
+ * Interface representing raw person data from API before instantiation.
+ */
 export interface PersonResponseData {
   id: number;
   createdBy: string;
@@ -16,7 +25,11 @@ export interface PersonResponseData {
   gender: string;
 }
 
-// Helper function to convert API data to Person instance
+/**
+ * Helper function to convert API data to Person instance.
+ * @param {PersonResponseData} data - Raw person data from API.
+ * @returns {Person} Instance of Person.
+ */
 export function createPersonFromResponse(data: PersonResponseData): Person {
   return new Person(
     data.id,
@@ -31,7 +44,9 @@ export function createPersonFromResponse(data: PersonResponseData): Person {
   );
 }
 
-// Main response interface
+/**
+ * Interface representing the main response for a family tree.
+ */
 export interface FamilyTreeResponse {
   id: number;
   createdBy: string;
@@ -44,7 +59,11 @@ export interface FamilyTreeResponse {
   familyMembers: FamilyTreeResponse[];
 }
 
-// Helper function to convert API response to FamilyMember instance
+/**
+ * Helper function to convert API response to FamilyMember instance.
+ * @param {FamilyTreeResponse} data - Raw family tree response data from API.
+ * @returns {FamilyMember} Instance of FamilyMember.
+ */
 export function createFamilyMemberFromResponse(data: FamilyTreeResponse): FamilyMember {
   const person = createPersonFromResponse(data.person);
 

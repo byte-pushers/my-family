@@ -1,8 +1,13 @@
-// family-search.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FamilyMember } from '../models/family-tree/family-member.model';
 
+/**
+ * Service for searching and selecting family members.
+ *
+ * @author Danny Amezquita
+ * @version 1.0.0
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +18,12 @@ export class FamilySearchService {
 
   constructor() {}
 
-  // Search both tree and list
+  /**
+   * Searches for family members based on the query.
+   *
+   * @param query The search query string.
+   * @param members The list of family members to search within.
+   */
   searchMembers(query: string, members: FamilyMember[]): void {
     this.searchQuery.next(query);
 
@@ -36,19 +46,36 @@ export class FamilySearchService {
     return this.searchQuery.asObservable();
   }
 
-  // Rest of the service methods remain the same
+  /**
+   * Selects a family member from the list.
+   *
+   * @param member The family member to select.
+   */
   selectMember(member: FamilyMember): void {
     this.selectedMember.next(member);
   }
 
+  /**
+   * Returns an observable of the search results.
+   *
+   * @returns An observable of the search results.
+   */
   getSearchResults(): Observable<FamilyMember[]> {
     return this.searchResults.asObservable();
   }
 
+  /**
+   * Returns an observable of the selected family member.
+   *
+   * @returns An observable of the selected family member.
+   */
   getSelectedMember(): Observable<FamilyMember | null> {
     return this.selectedMember.asObservable();
   }
 
+  /**
+   * Clears the search results and selected member.
+   */
   clearSearch(): void {
     this.searchResults.next([]);
     this.selectedMember.next(null);

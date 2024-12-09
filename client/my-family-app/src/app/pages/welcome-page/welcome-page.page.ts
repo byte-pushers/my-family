@@ -1,3 +1,10 @@
+/**
+ * @file welcome-page.page.ts
+ * @description This file contains the WelcomePagePage component which provides navigation options to sign in or create an account.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -22,10 +29,16 @@ import {
 export class WelcomePagePage {
   constructor(private router: Router) {}
 
+  /**
+   * Navigates to the sign-in page.
+   */
   navigateToSignIn() {
     this.router.navigate(['/login-page']); // Navigate to the sign-in page
   }
 
+  /**
+   * Navigates to the create account page.
+   */
   navigateToCreateAccount() {
     this.router.navigate(['/create-account']); // Navigate to the create account page
   }

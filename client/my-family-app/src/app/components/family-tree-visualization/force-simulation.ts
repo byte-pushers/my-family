@@ -1,7 +1,7 @@
 // force-simulation.service.ts
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { FamilyNode } from '../../interfaces/family-node';
+import { FamilyNode } from '../../models/family-node';
 import { Selection } from 'd3';
 
 @Injectable({

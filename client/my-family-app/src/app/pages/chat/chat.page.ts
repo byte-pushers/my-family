@@ -1,11 +1,20 @@
-// chat.page.ts
+/**
+ * @file chat.page.ts
+ * @description This file contains the ChatPage component which handles the chat functionality.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, IonContent } from '@ionic/angular';
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
-import {RouterLink} from "@angular/router";
+import { RouterLink } from "@angular/router";
 
+/**
+ * Interface representing a chat message.
+ */
 interface ChatMessage {
   id: string;
   content: string;
@@ -13,6 +22,9 @@ interface ChatMessage {
   sender: 'user' | 'other';
 }
 
+/**
+ * Interface representing a chat thread.
+ */
 interface ChatThread {
   id: string;
   name: string;
@@ -189,6 +201,10 @@ export class ChatPage {
     }
   ];
 
+  /**
+   * Selects a chat thread and scrolls to the bottom of the chat.
+   * @param thread The chat thread to select.
+   */
   selectThread(thread: ChatThread) {
     this.selectedThread = thread;
     // Scroll to bottom when opening thread
@@ -196,6 +212,7 @@ export class ChatPage {
       this.scrollToBottom();
     }, 100);
   }
+
   searchTerm = '';
   filteredThreads: ChatThread[] = [];
 
@@ -203,6 +220,12 @@ export class ChatPage {
     // Initialize filteredThreads with all threads
     this.filteredThreads = this.mockThreads;
   }
+
+  /**
+   * Gets the count of messages matching the search term in a thread.
+   * @param thread The chat thread to search in.
+   * @returns The count of matching messages.
+   */
   getMatchingMessagesCount(thread: ChatThread): number {
     if (!this.searchTerm) return 0;
 
@@ -211,9 +234,19 @@ export class ChatPage {
     ).length;
   }
 
+  /**
+   * Checks if a thread has any messages matching the search term.
+   * @param thread The chat thread to check.
+   * @returns True if there are matching messages, false otherwise.
+   */
   hasMatchingMessages(thread: ChatThread): boolean {
     return this.getMatchingMessagesCount(thread) > 0;
   }
+
+  /**
+   * Handles the search input and filters the chat threads.
+   * @param event The input event containing the search term.
+   */
   handleSearch(event: any) {
     const searchText = event.target.value.toLowerCase().trim();
     this.searchTerm = searchText;
@@ -240,7 +273,11 @@ export class ChatPage {
     });
   }
 
-  // Helper method to highlight matching text
+  /**
+   * Highlights the matching text in the search results.
+   * @param text The text to highlight.
+   * @returns The highlighted text.
+   */
   highlightText(text: string): string {
     if (!this.searchTerm) return text;
 
@@ -248,9 +285,17 @@ export class ChatPage {
     return text.replace(regex, '<span class="bg-yellow-200">$1</span>');
   }
 
+  /**
+   * Deselects the current chat thread and goes back to the thread list.
+   */
   backToList() {
     this.selectedThread = undefined;
   }
+
+  /**
+   * Automatically adjusts the height of the textarea based on its content.
+   * @param event The input event from the textarea.
+   */
   autoGrow(event: any): void {
     const element = event.target as HTMLTextAreaElement;
     element.style.height = 'auto';
@@ -265,6 +310,10 @@ export class ChatPage {
       element.style.overflowY = 'hidden';
     }
   }
+
+  /**
+   * Sends a new message in the selected chat thread.
+   */
   async sendMessage() {
     if (!this.newMessage?.trim() || !this.selectedThread) return;
 
@@ -292,6 +341,9 @@ export class ChatPage {
     await this.scrollToBottom();
   }
 
+  /**
+   * Scrolls to the bottom of the chat content.
+   */
   private async scrollToBottom() {
     if (this.content) {
       await this.content.scrollToBottom(300);

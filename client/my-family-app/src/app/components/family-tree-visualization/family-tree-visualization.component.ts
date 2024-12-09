@@ -1,9 +1,15 @@
-// family-tree-visualization.component.ts
-import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+/**
+ * @file family-tree-visualization.component.ts
+ * @description This file contains the FamilyTreeVisualizationComponent which visualizes a family tree using D3.js.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
 import * as familyData from './mock-data.json';
-import {FamilyNode} from "../../interfaces/family-node";
-import {ForceSimulation} from './force-simulation';
+import { FamilyNode } from "../../models/family-node";
+import { ForceSimulation } from './force-simulation';
 import {
   createFamilyMemberFromResponse,
   createPersonFromResponse,
@@ -17,7 +23,9 @@ import {
   styleUrls: ['./family-tree-visualization.component.scss']
 })
 export class FamilyTreeVisualizationComponent implements OnChanges {
+  /** The ID of the selected family member */
   @Input() selectedMemberId?: number;
+  /** The family tree data to visualize */
   @Input() familyTreeData!: FamilyTreeResponse;
   private resizeObserver: ResizeObserver;
   private svg: any;
@@ -35,31 +43,39 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       this.handleResize();
     });
   }
+
+  /**
+   * Lifecycle hook that is called after the component's view has been fully initialized.
+   * Starts observing the container for resize events.
+   */
   ngAfterViewInit() {
-    // Start observing the container
     const element = this.el.nativeElement.querySelector('#family-tree');
     if (element) {
       this.resizeObserver.observe(element);
     }
   }
 
+  /**
+   * Lifecycle hook that is called when the component is destroyed.
+   * Disconnects the resize observer.
+   */
   ngOnDestroy() {
     this.resizeObserver.disconnect();
   }
+
+  /**
+   * Handles resize events and recreates the family tree.
+   */
   private handleResize() {
     if (this.familyTreeData) {
       this.createFamilyTree();
     }
   }
 
-  // TODO: Call Family Tree Service for API GET Calls
-/*  ngOnInit(): void {
-    this.createFamilyTree();
-    // this.familyTreeService.getFamilyMembers().subscribe(
-    //   data => this.createFamilyTree(data)
-    // );
-
-  }*/
+  /**
+   * Lifecycle hook that is called when any data-bound property of a directive changes.
+   * @param {SimpleChanges} changes - The changes that occurred.
+   */
   ngOnChanges(changes: SimpleChanges) {
     console.log('FamilyTreeVisualization: ngOnChanges', changes);
     if (changes['familyTreeData'] && changes['familyTreeData'].currentValue) {
@@ -68,33 +84,35 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     }
   }
 
-
-// @ts-ignore
+  /**
+   * Transforms the API response to a FamilyNode structure.
+   * @param {FamilyTreeResponse} data - The raw API data.
+   * @returns {FamilyNode} The transformed family node.
+   */
   private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
     console.log('FamilyTreeVisualization: Raw API Data:', data);
 
-    // Convert raw data to our domain model instances
     const rootMember = createFamilyMemberFromResponse(data);
 
-    // Recursive function to build the tree structure
     const buildFamilyNode = (member: FamilyTreeResponse): FamilyNode => {
       const person = createPersonFromResponse(member.person);
 
       return {
-        id: member.id, // Add the ID here
+        id: member.id,
         name: `${person.firstName} ${person.lastName}`,
         image: `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(person.firstName)}`,
         children: member.familyMembers.map(child => buildFamilyNode(child))
       };
     };
 
-    // Build the tree starting from the root data
     const rootNode = buildFamilyNode(data);
     console.log('FamilyTreeVisualization: Transformed Root Node:', rootNode);
     return rootNode;
   }
 
-
+  /**
+   * Creates the family tree visualization using D3.js.
+   */
   createFamilyTree(): void {
     console.log('FamilyTreeVisualization: Starting createFamilyTree');
     if (!this.familyTreeData) {
@@ -108,9 +126,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     const root = d3.hierarchy(familyNodeData);
     console.log('FamilyTreeVisualization: D3 hierarchy:', root);
 
-
-    // Define radius based on the smaller dimension and leave margin
-
     const element = this.el.nativeElement.querySelector('#family-tree');
     if (!element) {
       console.error('FamilyTreeVisualization: SVG container not found');
@@ -119,14 +134,12 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     console.log('FamilyTreeVisualization: Found container element');
     element.innerHTML = '';
 
-    // Get container dimensions with responsive adjustments
     const bbox = element.getBoundingClientRect();
     this.width = bbox.width;
     this.height = bbox.height;
     const minDimension = Math.min(this.width, this.height);
-    const radius = minDimension / 2 * 0.9; // 80% of half the minimum dimension
+    const radius = minDimension / 2 * 0.9;
 
-    // Create SVG with responsive attributes
     const svg = d3.select(element)
       .append('svg')
       .attr('width', '100%')
@@ -135,41 +148,19 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       .attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`)
       .style('font', minDimension < 600 ? '8px sans-serif' : '10px sans-serif');
 
-
-    // Create a container for zoom, centered in the SVG
     const zoomableGroup = svg.append('g')
-      .attr('class', 'zoomable-group')
-  // .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      .attr('class', 'zoomable-group');
 
-
-/*
-    // Setup radial tree layout
-    const radialTreeLayout = d3.tree<FamilyNode>()
-      .size([2 * Math.PI, radius])
-      .separation((a, b) => (a.parent === b.parent ? 2 : 3)); // Increase separation
-
-    // Apply the layout
-    radialTreeLayout(root);
-*/
-
-    // Convert coordinates from polar to Cartesian
-    root.each(d => {
-      d.x = (d as any).x;
-      d.y = (d as any).y;
+    const totalNodes = root.descendants().length;
+    const nodes = root.descendants();
+    nodes.forEach((node, i) => {
+      const angle = (2 * Math.PI * i) / totalNodes;
+      node.x = Math.cos(angle) * radius;
+      node.y = Math.sin(angle) * radius;
     });
-
-  // Manually assign polar coordinates to nodes
-      const totalNodes = root.descendants().length;
-      const nodes = root.descendants();
-      nodes.forEach((node, i) => {
-        const angle = (2 * Math.PI * i) / totalNodes; // Spread evenly in a circle
-        node.x = Math.cos(angle) * radius; // Convert polar to Cartesian
-        node.y = Math.sin(angle) * radius; // Convert polar to Cartesian
-      });
 
     const links = root.links();
 
-    // Setup links
     const link = zoomableGroup.selectAll('line')
       .data(links)
       .enter()
@@ -188,8 +179,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       .append('g')
       .attr('class', 'node')
       .attr('transform', d => `translate(${d.x},${d.y})`);
-
-
 
     node.append('image')
       .attr('xlink:href', 'assets/img/placeholder1.png')
@@ -231,16 +220,12 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     node.append('g')
       .attr('class', 'label-group')
       .style('opacity', () => {
-        // Show labels permanently if screen is small
         return minDimension < 600 ? 1 : 0;
       })
       .each(function(d) {
         const group = d3.select(this);
-
-        // Split the name into two lines
         const nameParts = d.data.name.split(' ');
 
-        // Add background rectangle for text
         group.append('rect')
           .attr('class', 'label-background')
           .attr('x', -35)
@@ -257,7 +242,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
           .style('stroke-width', '1px')
           .style('pointer-events', 'none');
 
-        // Add text labels (multi-line)
         nameParts.forEach((part, index) => {
           group.append('text')
             .attr('class', 'label-text')
@@ -276,10 +260,8 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
         });
       });
 
-// Only add hover events if not in mobile/responsive mode
     if (minDimension >= 600) {
       node.on('mouseenter', function(event, d) {
-        // Show the label group with a transition
         d3.select(this)
           .select('.label-group')
           .transition()
@@ -287,7 +269,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
           .style('opacity', 1);
       })
         .on('mouseleave', function(event, d) {
-          // Hide the label group with a transition
           d3.select(this)
             .select('.label-group')
             .transition()
@@ -295,7 +276,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
             .style('opacity', 0);
         });
 
-      // Optional: Add hover effect to the circle only in desktop mode
       node.select('circle')
         .style('cursor', 'pointer')
         .on('mouseenter', function() {
@@ -312,23 +292,19 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
         });
     }
 
-// Make sure the node container has pointer events
     node.style('pointer-events', 'all');
 
-// Add resize handler to update the labels visibility
     const updateLabelsVisibility = () => {
       const currentDimension = Math.min(this.width, this.height);
       node.selectAll('.label-group')
         .style('opacity', currentDimension < 600 ? 1 : 0);
 
-      // Remove or add hover events based on current dimension
       if (currentDimension < 600) {
         node.on('mouseenter', null).on('mouseleave', null);
         node.select('circle')
           .on('mouseenter', null)
           .on('mouseleave', null);
       } else {
-        // Reattach hover events
         node.on('mouseenter', function(event, d) {
           d3.select(this)
             .select('.label-group')
@@ -346,8 +322,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       }
     };
 
-
-    // Setup force simulation
     const simulation = this.forceSimulation.setupForceSimulation(
       nodes,
       links,
@@ -357,27 +331,21 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       link
     );
 
-    // Enable dragging on nodes
     // @ts-ignore
     node.call(this.forceSimulation.setupDragBehavior(simulation) as any);
 
-    // Setup zoom behavior
     this.zoom = d3.zoom()
       .scaleExtent([0.5, 3])
       .on('zoom', (event) => {
         zoomableGroup.attr('transform', `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`);
       });
 
-    // Add zoom behavior to SVG
     svg.call(this.zoom as any);
-
-    // Double tap to reset zoom
     svg.on('dblclick.zoom', null);
 
-    // Store references
     this.svg = svg;
     this.zoomableGroup = zoomableGroup;
-    this.svg.call(this.zoom).on('wheel.zoom'); // zoom feature disabled
+    this.svg.call(this.zoom).on('wheel.zoom');
 
     const resizeObserver = new ResizeObserver(() => {
       const newBbox = element.getBoundingClientRect();
@@ -390,6 +358,10 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     resizeObserver.observe(element);
   }
 
+  /**
+   * Highlights nodes that match the search query.
+   * @param {string} query - The search query.
+   */
   highlightNodes(query: string): void {
     if (!query) {
       this.resetNodeHighlighting();
@@ -403,22 +375,19 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       const name = d.data.name.toLowerCase();
 
       if (name.includes(query.toLowerCase())) {
-        // Highlight matching nodes
         nodeElement.select('circle')
           .attr('stroke', 'orange')
           .attr('stroke-width', 4);
 
-        // Highlight all text elements in the node
         nodeElement.selectAll('.label-text')
           .style('font-weight', 'bold')
-          .style('fill', '#FF6B00'); // Optional: change text color for better visibility
+          .style('fill', '#FF6B00');
 
-        // Highlight the background rectangle
         nodeElement.select('.label-background')
           .style('fill', 'rgba(255, 243, 230, 0.95)')  // Light orange background
           .style('stroke', '#FFB366');  // Light orange border
 
-        // Optionally add a highlight effect to the avatar
+        // Optionally, add a highlight effect to the avatar
         nodeElement.select('image')
           .style('filter', 'brightness(1.2)');
       } else {
@@ -443,6 +412,9 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     });
   }
 
+  /**
+   * Resets the highlighting of nodes.
+   */
   private resetNodeHighlighting(): void {
     const nodes = d3.selectAll('.node');
 
@@ -465,6 +437,10 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     });
   }
 
+  /**
+   * Focuses on a specific node by member ID.
+   * @param {number} memberId - The ID of the member to focus on.
+   */
   focusNode(memberId: number): void {
     if (!this.svg || !this.zoomableGroup) {
       console.error('Tree visualization not initialized');
@@ -500,7 +476,6 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
         d3.zoomIdentity.translate(translateX, translateY).scale(scale)
       );
 
-    // Update node styling
     nodes.each(function (d: any) {
       const nodeElement = d3.select(this);
       const isTarget = d === targetData;
