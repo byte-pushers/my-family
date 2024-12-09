@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AgendaItem } from '../../pages/create-event/agenda-item.model';
+import { AgendaItem } from '../../pages/profile/events/create-event/agenda-item.model';
 
 
 @Component({

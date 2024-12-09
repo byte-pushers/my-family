@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddToFamilyPage } from './add-to-family.page';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {AddToFamilyPage} from './add-to-family.page';
 
 describe('AddToFamilyPage', () => {
   let component: AddToFamilyPage;

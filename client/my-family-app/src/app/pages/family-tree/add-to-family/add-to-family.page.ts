@@ -1,17 +1,16 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { FamilyMember } from "../../models/family-tree/family-member.model";
-import { RelationshipType } from "../../models/family-tree/relationship-type";
-import { Person } from "../../models/family-tree/person";
-import { today } from "ionicons/icons";
-import { FamilyTreeRequestPayload } from "../../models/family-tree/family-tree-request.payload";
-import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
-import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
-import { IonicModule } from "@ionic/angular";
-import { RouterLink } from "@angular/router";
-import { FamilyTreeService } from '../../services/family-tree.service';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators} from '@angular/forms';
+import {FamilyMember} from "../../../models/family-tree/family-member.model";
+import {RelationshipType} from "../../../models/family-tree/relationship-type";
+import {Person} from "../../../models/family-tree/person";
+import {today} from "ionicons/icons";
+import {FamilyTreeRequestPayload} from "../../../models/family-tree/family-tree-request.payload";
+import {FamilyMemberFormComponent} from "../../../components/family-member-form/family-member-form.component";
+import {FooterNavigationComponent} from "../../../components/shared/footer-navigation/footer-navigation.component";
+import {IonicModule} from "@ionic/angular";
+import {FamilyTreeService} from '../../../services/family-tree.service';
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.

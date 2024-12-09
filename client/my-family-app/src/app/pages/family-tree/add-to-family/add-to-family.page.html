@@ -81,7 +81,7 @@
       <div class="flex justify-center items-center space-x-4 mt-3">
         <!-- Upload box -->
         <div class="w-full h-48 bg-gray-100 border-2 border-dashed flex flex-col justify-end items-center" (click)="fileInput.click()">
-          <img src="assets/icon/upload-cloud.png" class="w-20 h-20 mt-2" alt="Upload Cloud icon"/>
+          <img alt="Upload Cloud icon" class="w-20 h-20 mt-2" src="../../../../assets/icon/upload-cloud.png"/>
           <div class="font-inter font-bold text-xl text-center text-black mb-3">Upload Crest (optional)</div>
           <div class="font-inter text-sm text-center text-gray-400 mb-3">Click here to upload image</div>
           <input type="file" #fileInput (change)="onFileChange($event)" accept="image/" class="hidden"/>

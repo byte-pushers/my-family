@@ -8,12 +8,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {EventDetailsComponent} from "../../components/event-details/event-details.component";
-import {FooterNavigationComponent} from "../../components/shared/footer-navigation/footer-navigation.component";
+import {EventDetailsComponent} from "../../../components/event-details/event-details.component";
+import {FooterNavigationComponent} from "../../../components/shared/footer-navigation/footer-navigation.component";
 import {IonicModule} from "@ionic/angular";
 import {
   EventRegistrationFormComponent
-} from "../../components/event-registration-form/event-registration-form.component";
+} from "../../../components/event-registration-form/event-registration-form.component";
 import { Router } from "@angular/router";
 
 /**
