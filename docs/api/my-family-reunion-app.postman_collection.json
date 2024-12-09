@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "7f929dcd-1d00-4c8a-9699-6f723d1ad15f",
+		"_postman_id": "fd3c6bba-220a-4c01-b845-6076506dead7",
 		"name": "my-family-reunion-app",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "35578910"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -42,6 +41,52 @@
 					"response": []
 				},
 				{
+					"name": "Login User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"userName\": \"john@doe.com\",\r\n        \"password\": \"123456\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get User",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -68,61 +113,6 @@
 							"path": [
 								"users",
 								"94"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login User",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "12345",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "john",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept-Versions",
-								"value": "0.0.0.1",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"username\": \"user@example.com\",\r\n        \"password\": \"cGFzc3dvcmQxMjM=\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/session",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"session"
 							]
 						}
 					},
