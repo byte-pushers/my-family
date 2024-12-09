@@ -10,11 +10,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+/**
+ * Controller for managing user-related operations.
+ * <p>
+ * This controller provides endpoints to create, read, update, and delete users,
+ * and includes error handling for common issues like validation errors, duplicate users,
+ * and weak passwords.
+ * </p>
+ *
+ * <p>Base URL: <code>/api/users</code></p>
+ *
+ * @author Danny Amezquita
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -22,8 +32,13 @@ public class UserController {
     @Autowired
     private UserRepository userDao;
 
-    // Create User Error with /{id} in URL
-    @PostMapping("/users/{id}")
+    /**
+     * Handles requests to create a user with an ID error.
+     * This endpoint demonstrates returning a validation error if an ID is provided when creating a new user.
+     *
+     * @param id The ID provided in the request URL, which should not be present when creating a new user.
+     * @return A {@link ResponseEntity} with a list of validation errors and an HTTP 400 status.
+     */    @PostMapping("/users/{id}")
     public ResponseEntity<Object> createUserWithIdError(@PathVariable Long id) {
         List<Map<String, String>> errors = new ArrayList<>();
 
@@ -38,8 +53,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    // Create User
-    @PostMapping(value = "/users", consumes = "application/json", produces = "application/json")
+    /**
+     * Creates a new user in the system.
+     *
+     * @param user           The {@link User} object to create, validated against constraints.
+     * @param bindingResult  Contains validation results for the provided user object.
+     * @return A {@link ResponseEntity} containing the created user or a list of errors.
+     */    @PostMapping(value = "/users", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> createUser(
             @Valid @RequestBody User user,
             BindingResult bindingResult
@@ -53,8 +73,8 @@ public class UserController {
                 errors.add(Map.of(
                         "field", error.getField(),
                         "code", "INVALID_FIELD",
-                        "message", error.getDefaultMessage(),
-                        "messageKey", error.getCode()
+                        "message", Objects.requireNonNull(error.getDefaultMessage()),
+                        "messageKey", Objects.requireNonNull(error.getCode())
                 ));
             });
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -106,7 +126,12 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return A {@link ResponseEntity} containing the user data or an error if not found.
+     */
     // Get User by ID
     @GetMapping(value = "/users/{id}", produces = "application/json")
     public ResponseEntity<Object> getUserById(
@@ -152,8 +177,14 @@ public class UserController {
         }
     }
 
-    // Update User
-    @PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
+    /**
+     * Updates an existing user.
+     *
+     * @param id            The ID of the user to update.
+     * @param user          The updated {@link User} data.
+     * @param bindingResult Contains validation results for the provided user object.
+     * @return A {@link ResponseEntity} containing the updated user or a list of errors.
+     */    @PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody User user,
@@ -177,8 +208,8 @@ public class UserController {
                 errors.add(Map.of(
                         "field", error.getField(),
                         "code", "INVALID_FIELD",
-                        "message", error.getDefaultMessage(),
-                        "messageKey", error.getCode()
+                        "message", Objects.requireNonNull(error.getDefaultMessage()),
+                        "messageKey", Objects.requireNonNull(error.getCode())
                 ));
             });
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -263,8 +294,12 @@ public class UserController {
         }
     }
 
-    // Delete User
-    @DeleteMapping(value = "/users/{id}", produces = "application/json")
+    /**
+     * Deletes a user by their ID.
+     *
+     * @param id The ID of the user to delete.
+     * @return A {@link ResponseEntity} with HTTP 204 (No Content) on success or an error if not found.
+     */    @DeleteMapping(value = "/users/{id}", produces = "application/json")
     public ResponseEntity<Object> deleteUser(
             @PathVariable Long id
     ) {

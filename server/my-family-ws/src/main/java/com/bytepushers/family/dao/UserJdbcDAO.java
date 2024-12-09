@@ -13,6 +13,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * JDBC implementation of the UserDAO interface.
+ * Handles database operations for User entities using raw SQL and JDBC.
+ *
+ * Includes exception handling for database connectivity and operational errors.
+ *
+ * @author Danny Amezquita
+ * @version 1.0
+ */
 
 @Repository
 public class UserJdbcDAO implements UserDAO {
@@ -26,6 +35,12 @@ public class UserJdbcDAO implements UserDAO {
     @Value("${spring.datasource.password}")
     private String jdbcPassword;
 
+    /**
+     * Establishes a connection to the database.
+     *
+     * @return A Connection object for interacting with the database.
+     * @throws SQLException If a database access error occurs.
+     */
     private Connection getConnection() throws SQLException {
         try{
             return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
@@ -35,8 +50,12 @@ public class UserJdbcDAO implements UserDAO {
         }
     }
 
-    // TODO: CRUD Happy Path, then Exceptions. Follow: Try, Catch, Finally. Make our own Application Exceptions
-    @Override
+    /**
+     * Creates a new user.
+     *
+     * @param someUser The User object to be created.
+     * @return The created User object with a generated ID.
+     */    @Override
     public User createUser(User someUser) {
         // Validate user data before proceeding
 //        if (!isValidEmail(someUser.getEmail())) {
@@ -93,6 +112,12 @@ public class UserJdbcDAO implements UserDAO {
         return createdUser;
     }
 
+    /**
+     * Finds a user by their unique ID.
+     *
+     * @param id The ID of the user to be retrieved.
+     * @return The User object matching the given ID.
+     */
     @Override
     public User findUserById(Long id) {
         String sql = "SELECT * FROM users WHERE id = ?";
@@ -114,6 +139,12 @@ public class UserJdbcDAO implements UserDAO {
         }
     }
 
+    /**
+     * Finds a user by their email address.
+     *
+     * @param email The email address of the user to be retrieved.
+     * @return The User object matching the given email, or null if not found.
+     */
     @Override
     public User findUserByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
@@ -131,6 +162,11 @@ public class UserJdbcDAO implements UserDAO {
         return null;
     }
 
+    /**
+     * Retrieves all users in the system.
+     *
+     * @return A list of all User objects.
+     */
     @Override
     public List<User> findAllUsers() {
         String sql = "SELECT * FROM users";
@@ -148,6 +184,12 @@ public class UserJdbcDAO implements UserDAO {
         return users;
     }
 
+    /**
+     * Updates an existing user's information.
+     *
+     * @param user The User object with updated information.
+     * @return The updated User object.
+     */
     @Override
     public User updateUser(User user) {
         String sql = "UPDATE users SET email = ?, password = ?, username = ?, enabled = ? WHERE id = ?";
@@ -175,6 +217,12 @@ public class UserJdbcDAO implements UserDAO {
         return updatedUser;
     }
 
+    /**
+     * Deletes a user by their unique ID.
+     *
+     * @param id The ID of the user to be deleted.
+     * @return True if the user was successfully deleted, false otherwise.
+     */
     @Override
     public boolean deleteUser(Long id) {
         String sql = "DELETE FROM users WHERE id = ?";
@@ -197,7 +245,13 @@ public class UserJdbcDAO implements UserDAO {
         }
     }
 
-    // Helper method to map a ResultSet row to a User object
+    /**
+     * Maps a ResultSet row to a User object.
+     *
+     * @param rs The ResultSet object containing user data.
+     * @return A User object populated with data from the ResultSet.
+     * @throws SQLException If an error occurs while accessing the ResultSet.
+     */
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getLong("id"));
