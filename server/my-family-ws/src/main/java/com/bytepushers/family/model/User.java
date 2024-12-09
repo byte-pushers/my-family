@@ -27,7 +27,7 @@ public class User extends BaseIdGeneratedValueEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Person person;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
