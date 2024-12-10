@@ -1,17 +1,13 @@
 import { FamilyMemberModel } from './family-member.model';  // Import the FamilyMember model
 
 export class FamilyTreeRequestPayload {
-  // Private fields for encapsulation
   #userId: number;
   #transactionId: string;
-  #familyTreeId: number;
   #familyMembers: FamilyMemberModel[];
 
-  // Constructor to initialize the fields
   constructor(userId: number, transactionId: string, familyTreeId: number, familyMembers: FamilyMemberModel[]) {
     this.#userId = userId;
     this.#transactionId = transactionId;
-    this.#familyTreeId = familyTreeId;
     this.#familyMembers = [...familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
   }
 
@@ -35,20 +31,8 @@ export class FamilyTreeRequestPayload {
     return this.#transactionId
   }
 
-  public setTransactionId(transactionId: string) {
+  public set transactionId(transactionId: string) {
     this.#transactionId = transactionId;
-  }
-
-  public get familyTreeId(): number {
-    return this.#familyTreeId;
-  }
-
-  public getFamilyTreeId(): number {
-    return this.#familyTreeId;
-  }
-
-  public set FamilyTreeId(familyTreeId: number) {
-    this.#familyTreeId = familyTreeId;
   }
 
   public get familyMembers(): FamilyMemberModel[] {
@@ -59,7 +43,7 @@ export class FamilyTreeRequestPayload {
     return this.#familyMembers;
   }
 
-  public set FamilyMembers(familyMembers: FamilyMemberModel[]) {
+  public set familyMembers(familyMembers: FamilyMemberModel[]) {
     this.#familyMembers = familyMembers;
   }
 
@@ -67,7 +51,6 @@ export class FamilyTreeRequestPayload {
     return `{
       "userId": ${this.#userId},
       "transactionId:": ${this.#transactionId},
-      "familyTreeId": ${this.#familyTreeId},
       "familyMembers": [
         ${this.familyMembers.map(fm => fm.toString()).join(', ')}
       ]
