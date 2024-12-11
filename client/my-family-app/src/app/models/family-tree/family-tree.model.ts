@@ -16,11 +16,15 @@ export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
 
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings({createdBy: this.createdBy})}`;
+    const familyMemberArrayString = this.familyMembers.map(fm => fm.toString()).join(', ');
+
+    //TODO: remove trailing comma and space from familyMemberArrayString
+
     const s = `{
       ${super.getAttributeIdString()}
       "relationship": "${this?.relationship}",
       "familyMembers": [
-        ${this.familyMembers.map(fm => fm.toString()).join(', ')}
+        ${familyMemberArrayString}
       ]${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
     }`;
 
