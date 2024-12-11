@@ -1,14 +1,15 @@
-import { FamilyMemberModel } from './family-member.model';  // Import the FamilyMember model
+import { FamilyMemberModel } from './family-member.model';
+import { FamilyTree } from './family-tree';  // Import the FamilyMember model
 
 export class FamilyTreeRequestPayload {
   #userId: number;
   #transactionId: string;
-  #familyMembers: FamilyMemberModel[];
+  #familyTree: FamilyTree;
 
-  constructor(userId: number, transactionId: string, familyTreeId: number, familyMembers: FamilyMemberModel[]) {
+  constructor(userId: number, transactionId: string, familyTree: FamilyTree) {
     this.#userId = userId;
     this.#transactionId = transactionId;
-    this.#familyMembers = [...familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
+    this.#familyTree = familyTree;
   }
 
   public get userId(): number {
@@ -31,29 +32,35 @@ export class FamilyTreeRequestPayload {
     return this.#transactionId
   }
 
+  public setTransactionId(transactionId: string) {
+    this.#transactionId = transactionId;
+  }
+
   public set transactionId(transactionId: string) {
     this.#transactionId = transactionId;
   }
 
-  public get familyMembers(): FamilyMemberModel[] {
-    return this.#familyMembers;
+  public get familyTree(): FamilyTree {
+    return this.#familyTree;
   }
 
-  public getFamilyMembers(): FamilyMemberModel[] {
-    return this.#familyMembers;
+  public getFamilyTree(): FamilyTree {
+    return this.#familyTree;
   }
 
-  public set familyMembers(familyMembers: FamilyMemberModel[]) {
-    this.#familyMembers = familyMembers;
+  public set familyTree(familyTree: FamilyTree) {
+    this.#familyTree = familyTree;
+  }
+
+  public setFamilyTree(familyTree: FamilyTree) {
+    this.#familyTree = familyTree;
   }
 
   public toString(): string {
     return `{
       "userId": ${this.#userId},
       "transactionId:": ${this.#transactionId},
-      "familyMembers": [
-        ${this.familyMembers.map(fm => fm.toString()).join(', ')}
-      ]
+      "familyTree": ${this.familyTree}
     }`;
   }
 }

@@ -5,6 +5,5 @@ import { FamilyMember } from './family-member';
 
 export interface FamilyTree extends BaseModel {
   relationship: RelationshipType;
-  person: Person;
   familyMembers: FamilyMember[];
 }

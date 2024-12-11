@@ -13,6 +13,7 @@ import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 import { PersonModel } from '../../models/family-tree/person.model';
+import { FamilyTree } from '../../models/family-tree/family-tree';
 
 @Component({
   selector: 'app-add-to-family',
@@ -151,15 +152,11 @@ export class AddToFamilyPage implements OnInit {
     if (this.spouse[0]) {
       console.log(`spouse[0] = ${this.spouse[0]}`);
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        1, 'transaction-id', 1, []
-        /*this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
-        this.uncles, this.aunts, this.cousins*/
+        1, 'transaction-id', {} as FamilyTree
       );
     } else {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        1, 'transaction-id', 1, []
-        /*this.parents, this.grandparents, this.siblings, null, this.children,
-        this.uncles, this.aunts, this.cousins*/
+        1, 'transaction-id', {} as FamilyTree
       );
     }
     // Try to save data
