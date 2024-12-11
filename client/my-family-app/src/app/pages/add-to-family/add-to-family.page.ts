@@ -13,6 +13,10 @@ import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 
+/**
+ * The AddToFamilyPage component handles the addition of family members to a family tree.
+ * @author Stella Choi
+ */
 @Component({
   selector: 'app-add-to-family',
   templateUrl: './add-to-family.page.html',
@@ -22,13 +26,22 @@ import { FamilyTreeService } from '../../services/family-tree.service';
   providers: [FamilyTreeService]
 })
 export class AddToFamilyPage implements OnInit {
+  /**
+   * A list of FamilyMemberFormComponent for easier traversal through all the forms.
+   * @property {QueryList<FamilyMemberFormComponent>} viewFamilyMemberForms - QueryList of FamilyMemberFormComponent
+   */
   @ViewChildren(FamilyMemberFormComponent) viewFamilyMemberForms: QueryList<FamilyMemberFormComponent> | undefined;
 
-  currentStep: number = 1; // Step 2; decreased by 1 because of indexing in the *ngFor
-  totalSteps: number = 3;
-  selectedImage: string | ArrayBuffer | null = null;
+  /** @property {number} currentStep - The current step in the form process. */
+  currentStep: number = 1; // Tracks the current step in the form process.
 
-  // FormGroup that is passed into child component
+  /** @property {number} totalSteps - The total number of steps in the form process. */
+  totalSteps: number = 3; // Total number of steps in the form process.
+
+  /** @property {string} selectedImage - The selected crest image. */
+  selectedImage: string | ArrayBuffer | null = null; // Selected crest image.
+
+  // Reactive forms for each family relationship type.
   parentsForm: FormGroup;
   grandparentsForm: FormGroup;
   siblingsForm: FormGroup;
@@ -38,18 +51,22 @@ export class AddToFamilyPage implements OnInit {
   auntsForm: FormGroup;
   cousinsForm: FormGroup;
 
-  // Array of FamilyMember's to pass in to the FamilyTreeRequestPayload
+  // Arrays to hold added family members.
   parents: FamilyMember[] = [];
   grandparents: FamilyMember[] = [];
   siblings: FamilyMember[] = [];
-  spouse: FamilyMember[] = []; // Need to pass in as FamilyMember for the payload
+  spouse: FamilyMember[] = [];
   children: FamilyMember[] = [];
   uncles: FamilyMember[] = [];
   aunts: FamilyMember[] = [];
   cousins: FamilyMember[] = [];
 
-  previousUrl: string = '';
-
+  /**
+   * Initializes all the form groups
+   * @param {FormBuilder} fb - The form builder.
+   * @param {FamilyTreeService} familyTreeService - The service for the api call.
+   * @param {Router} router - The router for page changes.
+   */
   constructor(private fb: FormBuilder, private familyTreeService: FamilyTreeService, private router: Router) {
     this.parentsForm = this.constructFormGroup();
     this.grandparentsForm = this.constructFormGroup();
@@ -61,15 +78,15 @@ export class AddToFamilyPage implements OnInit {
     this.cousinsForm = this.constructFormGroup();
   }
 
+  /**
+   * Navigates back to the previous step or page.
+   */
   public goBack(): void {
     const currentUrl = this.router.url;
 
-    // If we came from family tree page
     if (currentUrl.includes('add-to-family') && this.currentStep === 2) {
-      // If on step 3, go back to step 2
       this.previousStep();
     } else if (currentUrl.includes('add-to-family') && this.currentStep === 1) {
-      // If on step 2, check if we should go to family-tree or create-account
       const fromFamilyTree = sessionStorage.getItem('fromFamilyTree');
       if (fromFamilyTree === 'true') {
         this.router.navigate(['/family-tree']);
@@ -79,7 +96,10 @@ export class AddToFamilyPage implements OnInit {
     }
   }
 
-  // Created this method to prevent constructor being super long
+  /**
+   * Constructs a new reactive form group.
+   * @returns {FormGroup} A new FormGroup instance.
+   */
   private constructFormGroup(): FormGroup {
     return this.fb.group({
       name: new FormControl('', Validators.required),
@@ -88,7 +108,10 @@ export class AddToFamilyPage implements OnInit {
     });
   }
 
-  // Uploading Crest image from user's file explorer
+  /**
+   * Handles file upload for the crest image.
+   * @param {any} event The file change event.
+   */
   onFileChange(event: any): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -107,7 +130,11 @@ export class AddToFamilyPage implements OnInit {
     }
   }
 
-  // Taking family members from form and populating respective FamilyMember[]
+  /**
+   * Populates the respective FamilyMember array from the form group.
+   * @param {FormGroup} fg The form group.
+   * @param {FamilyMember[]} arr The FamilyMember array to populate.
+   */
   private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMember[]): void {
     const formArray = fg.get('familyMembers') as FormArray;
     formArray.controls.forEach((control) => {
@@ -124,14 +151,14 @@ export class AddToFamilyPage implements OnInit {
     });
   }
 
-  // Next button
+  /**
+   * Goes to the next step in the form process.
+   */
   nextStep(): void {
-    // Increment currentStep to show step 3
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
     }
 
-    // Saving added family members from step 2 into their respective FamilyMember[]
     this.fillFamilyMemberArray(this.parentsForm, this.parents);
     this.fillFamilyMemberArray(this.grandparentsForm, this.grandparents);
     this.fillFamilyMemberArray(this.siblingsForm, this.siblings);
@@ -139,7 +166,10 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.childrenForm, this.children);
   }
 
-  // Add To Family button call
+  /**
+   * Handles the "Add to Family" button click.
+   * Creates a FamilyTreeRequestPayload and calls a POST method
+   */
   addToFamilyButton(): void {
     this.fillFamilyMemberArray(this.unclesForm, this.uncles);
     this.fillFamilyMemberArray(this.auntsForm, this.aunts);
@@ -147,7 +177,6 @@ export class AddToFamilyPage implements OnInit {
 
     let familyMemberRequestPayload: FamilyTreeRequestPayload;
     if (this.spouse[0]) {
-      console.log(`spouse[0] = ${this.spouse[0]}`);
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
         this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
         this.uncles, this.aunts, this.cousins
@@ -158,7 +187,7 @@ export class AddToFamilyPage implements OnInit {
         this.uncles, this.aunts, this.cousins
       );
     }
-    // Try to save data
+
     this.familyTreeService.create(familyMemberRequestPayload).subscribe({
       next: (response) => {
         console.log('Add To Family successful.', response);
@@ -171,31 +200,34 @@ export class AddToFamilyPage implements OnInit {
       }
     });
 
-    // immediate navigation regardless of API:
     this.router.navigate(['/tree-loading']);
   }
 
+  /**
+   * Goes back to the previous step in the form process.
+   */
   previousStep(): void {
     if (this.currentStep > 0) {
       this.currentStep--;
     }
   }
 
-  // Clear button call
+  /**
+   * Clears all forms and resets the crest image.
+   */
   clearButton(): void {
-    // Resetting all the forms
     this.viewFamilyMemberForms?.forEach(form => form.removeAllFamilyMembers());
-
-    // Resetting crest image for step 3
-    if(this.selectedImage) {
+    if (this.selectedImage) {
       this.selectedImage = '';
     }
   }
 
-  // Pre-populating form with required family members for faster testing/demos
+  /**
+   * Autofills forms with test data for quicker demo purposes.
+   */
   autofillFormButton(): void {
     let name = 'Alejandro Quintanilla';
-    let type = 'Father'
+    let type = 'Father';
     let member = this.fb.group({
       name: new FormControl(name, Validators.required),
       type: new FormControl(type, Validators.required)
@@ -225,6 +257,5 @@ export class AddToFamilyPage implements OnInit {
     formArray3.push(member);
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }
