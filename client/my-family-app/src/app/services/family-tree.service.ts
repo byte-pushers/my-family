@@ -40,11 +40,14 @@ export class FamilyTreeService {
     return new Observable<FamilyTree>((observer) => {
       return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
         headers: this.getHeaders()
-      }).subscribe(familyTreeResponse => {
+      }).subscribe((response: any) => {
+        // Create a FamilyTreeResponse structure
+        const familyTreeResponse: FamilyTreeResponse = {
+          data: response  // The raw response IS our FamilyTree
+        };
         observer.next(familyTreeResponse.data);
       });
     });
-
   }
 
   // UPDATE - Adding additional family members after initial creation

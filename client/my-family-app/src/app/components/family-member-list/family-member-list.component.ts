@@ -1,10 +1,17 @@
-// family-member-list.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
-import {today} from "ionicons/icons";
+import { addIcons } from 'ionicons';
+import {
+  peopleOutline,
+  createOutline,
+  trashOutline,
+  informationCircleOutline,
+  gitMergeOutline
+} from 'ionicons/icons';
+import {FamilyMember} from "../../models/family-tree/family-member";
 
 @Component({
   selector: 'app-family-member-list',
@@ -22,26 +29,44 @@ export class FamilyMemberListComponent implements OnInit {
 
   sortOption: 'name' | 'relationship' = 'name';
 
+  constructor() {
+    // Register the Ionic icons
+    addIcons({
+      'people-outline': peopleOutline,
+      'create-outline': createOutline,
+      'trash-outline': trashOutline,
+      'information-circle-outline': informationCircleOutline,
+      'git-merge-outline': gitMergeOutline
+    });
+  }
+
   get sortedMembers(): FamilyMemberModel[] {
-    return this.members.sort((a, b) => {
+    // Create a new array before sorting to avoid mutating the input
+    return [...this.members].sort((a, b) => {
       if (this.sortOption === 'name') {
-        return `${a.person.firstName} ${a.person.lastName}`
-          .localeCompare(`${b.person.firstName} ${b.person.lastName}`);
+        return `${a.person?.firstName || ''} ${a.person?.lastName || ''}`
+          .localeCompare(`${b.person?.firstName || ''} ${b.person?.lastName || ''}`);
       }
-      return a.relationship.toString().localeCompare(b.relationship.toString());
+      return (a.relationship || '').localeCompare(b.relationship || '');
     });
   }
 
   getInitials(member: FamilyMemberModel): string {
+    if (!member.person || !member.person.firstName || !member.person.lastName) {
+      return '??';
+    }
     return (member.person.firstName.charAt(0) + member.person.lastName.charAt(0)).toUpperCase();
   }
 
-  calculateAge(birthDate: Date): number {
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+  calculateAge(birthDate: Date | string | undefined): number {
+    if (!birthDate) return 0;
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    const bDate = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - bDate.getFullYear();
+    const monthDiff = today.getMonth() - bDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < bDate.getDate())) {
       age--;
     }
     return age;
@@ -54,16 +79,23 @@ export class FamilyMemberListComponent implements OnInit {
     }
   }
 
-  onEditMember(event: Event, memberId: number): void {
+  onEditMember(event: Event, member: FamilyMemberModel): void {
     event.stopPropagation();
-    this.memberEdited.emit(memberId);
+    const id = member.getId();
+    if (id != null) {
+      this.memberEdited.emit(id);
+    }
   }
 
-  onDeleteMember(event: Event, memberId: number): void {
+  onDeleteMember(event: Event, member: FamilyMemberModel): void {
     event.stopPropagation();
-    this.memberDeleted.emit(memberId);
+    const id = member.getId();
+    if (id != null) {
+      this.memberDeleted.emit(id);
+    }
   }
 
   ngOnInit(): void {
+    console.log('Initial members:', this.members);
   }
 }
