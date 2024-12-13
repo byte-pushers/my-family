@@ -16,17 +16,36 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the {@link FamilyTreeService} interface.
+ * Provides transactional methods for creating and retrieving {@link FamilyTree} and {@link FamilyMember} entities.
+ * Handles recursive family tree processing and ensures proper audit fields are set.
+ */
 @Service
 public class FamilyTreeServiceImpl implements FamilyTreeService {
+
+    /** Logger for logging service operations. */
     private static final Logger logger = LoggerFactory.getLogger(FamilyTreeServiceImpl.class);
 
+    /** Repository for managing {@link FamilyTree} entities. */
     private final FamilyTreeRepository familyTreeRepository;
 
+    /**
+     * Constructs a new FamilyTreeServiceImpl with the specified repository.
+     *
+     * @param familyTreeRepository the repository for family tree operations
+     */
     @Autowired
     public FamilyTreeServiceImpl(FamilyTreeRepository familyTreeRepository) {
         this.familyTreeRepository = familyTreeRepository;
     }
 
+    /**
+     * Creates a new {@link FamilyTree}, setting unique audit fields and processing its members recursively.
+     *
+     * @param familyTree the family tree to create
+     * @return the created family tree with all members processed and saved
+     */
     @Override
     @Transactional
     public FamilyTree createFamilyTree(@Valid FamilyTree familyTree) {
@@ -40,19 +59,24 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
             familyTree.setCreatedDate(LocalDateTime.now());
         }
 
-        // Process each family member and set the family tree reference
+        // Process each family member
         if (familyTree.getFamilyMembers() != null) {
             for (FamilyMember rootMember : familyTree.getFamilyMembers()) {
-                processFamilyMember(rootMember, familyTree, null); // Top-level members have no parent
+                processFamilyMember(rootMember, familyTree, null);
             }
         }
 
-        // Save and return
         FamilyTree savedTree = familyTreeRepository.save(familyTree);
         logger.info("Created family tree with ID: {}", savedTree.getId());
         return savedTree;
     }
 
+    /**
+     * Retrieves a {@link FamilyTree} by its unique ID, ensuring all family members are properly initialized.
+     *
+     * @param id the unique identifier of the family tree
+     * @return the family tree, or throws a {@link NotFoundException} if not found
+     */
     @Override
     @Transactional(readOnly = true)
     public FamilyTree getFamilyTree(Integer id) {
@@ -63,18 +87,27 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
                     return new NotFoundException("Family tree not found with id: " + id);
                 });
 
-        // Initialize family members to ensure proper structure
         initializeFamilyMembers(familyTree.getFamilyMembers());
-
         return familyTree;
     }
 
+    /**
+     * Retrieves a {@link FamilyMember} along with its child members by the member's unique ID.
+     *
+     * @param id the unique identifier of the family member
+     * @return the {@link FamilyMember} with its child members, or null if not found
+     */
     @Override
     @Transactional(readOnly = true)
     public FamilyMember getFamilyMemberWithChildren(Integer id) {
         return familyTreeRepository.findFamilyMemberWithChildren(id);
     }
 
+    /**
+     * Recursively initializes the family members to ensure proper structure.
+     *
+     * @param members the list of family members to initialize
+     */
     private void initializeFamilyMembers(List<FamilyMember> members) {
         if (members != null) {
             for (FamilyMember member : members) {
@@ -84,7 +117,14 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         }
     }
 
-
+    /**
+     * Recursively processes a {@link FamilyMember}, setting audit fields, family tree references,
+     * parent relationships, and processing child members.
+     *
+     * @param member     the family member to process
+     * @param familyTree the family tree the member belongs to
+     * @param parent     the parent family member, or null if this is a root member
+     */
     private void processFamilyMember(FamilyMember member, FamilyTree familyTree, FamilyMember parent) {
         logger.debug("Processing family member with relationship: {}", member.getRelationship());
 
@@ -94,7 +134,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         // Set the parent reference if present
         if (parent != null) {
             member.setParent(parent);
-            if (!parent.getFamilyMembers().contains(member)) { // Prevent duplicate additions
+            if (!parent.getFamilyMembers().contains(member)) {
                 parent.getFamilyMembers().add(member);
             }
         }
@@ -118,17 +158,14 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
             }
         }
 
-        // Recursively process child members using a copy of the list
+        // Recursively process child members
         if (member.getFamilyMembers() != null) {
             List<FamilyMember> childMembers = new ArrayList<>(member.getFamilyMembers());
-            member.getFamilyMembers().clear(); // Clear to avoid duplicate additions during recursion
+            member.getFamilyMembers().clear();
             for (FamilyMember child : childMembers) {
                 processFamilyMember(child, familyTree, member);
             }
         }
         logger.debug("Family tree ID set for member: {}", familyTree.getId());
     }
-
-
-
 }
