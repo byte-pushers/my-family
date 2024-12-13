@@ -14,6 +14,7 @@ import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 import { PersonModel } from '../../models/family-tree/person.model';
 import { FamilyTree } from '../../models/family-tree/family-tree';
+import {FamilyTreeModel} from "../../models/family-tree/family-tree.model";
 
 @Component({
   selector: 'app-add-to-family',
@@ -148,7 +149,21 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.auntsForm, this.aunts);
     this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
 
+    const allFamilyMembers: FamilyMemberModel[] = [
+      ...this.parents,
+      ...this.grandparents,
+      ...this.siblings,
+      ...this.spouse,
+      ...this.children,
+      ...this.uncles,
+      ...this.aunts,
+      ...this.cousins
+    ];
     let familyMemberRequestPayload: FamilyTreeRequestPayload;
+    const familyTree: FamilyTreeModel = new FamilyTreeModel({
+      familyMembers: allFamilyMembers
+    });
+
     if (this.spouse[0]) {
       console.log(`spouse[0] = ${this.spouse[0]}`);
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
@@ -156,7 +171,7 @@ export class AddToFamilyPage implements OnInit {
       );
     } else {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        1, 'transaction-id', {} as FamilyTree
+        1, 'transaction-id', familyTree
       );
     }
     // Try to save data

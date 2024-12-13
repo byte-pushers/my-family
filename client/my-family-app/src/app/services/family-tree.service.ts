@@ -27,7 +27,7 @@ export class FamilyTreeService {
   public create(payload: FamilyTreeRequestPayload): Observable<FamilyTree> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
     return new Observable<FamilyTree>((observer) => {
-      return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/`, payload, {
+      return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees`, payload, {
         headers: this.getHeaders()
       }).subscribe(familyTreeResponse => {
         observer.next(familyTreeResponse.data);

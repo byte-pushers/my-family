@@ -5,12 +5,10 @@ import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
 
 export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
-  public relationship: RelationshipType;
   public familyMembers: FamilyMember[];
 
   constructor(props: any) {
     super(props);
-    this.relationship = props?.relationship;
     this.familyMembers = [...props?.familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
   }
 
@@ -18,11 +16,8 @@ export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
     const auditString = `${super.getAttributeAuditStrings({createdBy: this.createdBy})}`;
     const familyMemberArrayString = this.familyMembers.map(fm => fm.toString()).join(', ');
 
-    //TODO: remove trailing comma and space from familyMemberArrayString
-
     const s = `{
       ${super.getAttributeIdString()}
-      "relationship": "${this?.relationship}",
       "familyMembers": [
         ${familyMemberArrayString}
       ]${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
