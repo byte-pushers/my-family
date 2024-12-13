@@ -1,15 +1,28 @@
-// src/app/pages/family-tree/mock-family-data.ts
+/**
+ * @file mock-family-data.ts
+ * @description This file contains mock data for the family tree, including family members and their relationships.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { FamilyMember } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilyTreeResponse, PersonResponseData, createFamilyMemberFromResponse } from '../../models/family-tree/family-tree-response';
 
+/**
+ * Creates the current date in ISO string format.
+ * @returns {Object} An object containing the created and updated dates.
+ */
 const createDates = () => ({
   created: new Date().toISOString(),
   updated: new Date().toISOString()
 });
 
-// Mock person response data
+/**
+ * Mock person response data.
+ * @type {PersonResponseData}
+ */
 const MOCK_PERSON_DATA: PersonResponseData = {
   id: 1,
   firstName: "John",
@@ -22,7 +35,10 @@ const MOCK_PERSON_DATA: PersonResponseData = {
   updatedDate: null
 };
 
-
+/**
+ * Mock family tree response data.
+ * @type {FamilyTreeResponse}
+ */
 export const MOCK_FAMILY_TREE_RESPONSE: FamilyTreeResponse = {
   id: 1,
   relationship: RelationshipType.FATHER,
@@ -144,7 +160,6 @@ export const MOCK_FAMILY_TREE_RESPONSE: FamilyTreeResponse = {
       createdDate: createDates().created,
       updatedDate: null
     },
-    // Maternal Grandparents
     {
       id: 7,
       relationship: RelationshipType.GRANDPARENT,
@@ -187,7 +202,6 @@ export const MOCK_FAMILY_TREE_RESPONSE: FamilyTreeResponse = {
       createdDate: createDates().created,
       updatedDate: null
     },
-    // Extended Family
     {
       id: 9,
       relationship: RelationshipType.AUNT,
@@ -208,8 +222,7 @@ export const MOCK_FAMILY_TREE_RESPONSE: FamilyTreeResponse = {
       updatedBy: null,
       createdDate: createDates().created,
       updatedDate: null
-    },
-    // ... continue with the rest of the family members in the same format
+    }
   ],
   createdBy: "system",
   updatedBy: null,
@@ -217,7 +230,10 @@ export const MOCK_FAMILY_TREE_RESPONSE: FamilyTreeResponse = {
   updatedDate: null
 };
 
-// Convert the response data to FamilyMember instances
+/**
+ * Mock family members converted from the response data.
+ * @type {FamilyMember[]}
+ */
 export const MOCK_FAMILY_MEMBERS: FamilyMember[] = MOCK_FAMILY_TREE_RESPONSE.familyMembers.map(
   memberData => createFamilyMemberFromResponse(memberData)
 );

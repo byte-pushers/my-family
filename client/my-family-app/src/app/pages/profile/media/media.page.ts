@@ -1,11 +1,18 @@
-// src/app/pages/media/media.page.ts
+/**
+ * @file media.page.ts
+ * @description This file contains the MediaPage component
+ * which handles displaying and managing media items such as photos and videos.
+ * @version 1.0.0
+ * @autor Danny Amezquita
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { MediaService, MediaItem } from '../../../services/media.service';
 import { FooterNavigationComponent } from '../../../components/shared/footer-navigation/footer-navigation.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-media',
@@ -15,10 +22,24 @@ import {FormsModule} from "@angular/forms";
   imports: [IonicModule, CommonModule, RouterLink, FooterNavigationComponent, FormsModule]
 })
 export class MediaPage implements OnInit {
+  /**
+   * The currently selected segment, either 'photos' or 'videos'.
+   */
   selectedSegment: 'photos' | 'videos' = 'photos';
+
+  /**
+   * Array of photo media items.
+   */
   photos: MediaItem[] = [];
+
+  /**
+   * Array of video media items.
+   */
   videos: MediaItem[] = [];
 
+  /**
+   * Array of social connections for importing media.
+   */
   socialConnections = [
     {
       name: 'Import from Facebook',
@@ -44,6 +65,10 @@ export class MediaPage implements OnInit {
 
   constructor(private mediaService: MediaService) {}
 
+  /**
+   * Lifecycle hook called after data-bound properties of a directive are initialized.
+   * Fetches photos and videos from the media service.
+   */
   ngOnInit() {
     this.mediaService.getPhotos().subscribe(photos => {
       this.photos = photos;
@@ -54,14 +79,25 @@ export class MediaPage implements OnInit {
     });
   }
 
+  /**
+   * Handles the segment change event.
+   * @param {any} event - The event object containing the selected segment value.
+   */
   segmentChanged(event: any) {
     this.selectedSegment = event.detail.value;
   }
 
+  /**
+   * Toggles the connection status of a social connection.
+   * @param {any} socialConnection - The social connection object to toggle.
+   */
   connect(socialConnection: any) {
     socialConnection.connected = !socialConnection.connected;
   }
 
+  /**
+   * Handles the add media action.
+   */
   addMedia() {
     console.log('Add media clicked');
   }

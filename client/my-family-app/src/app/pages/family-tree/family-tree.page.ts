@@ -1,4 +1,10 @@
-// family-tree.page.ts
+/**
+ * @file family-tree.page.ts
+ * @description This file contains the FamilyTreePage component which handles displaying and managing the family tree.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,15 +40,49 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   @ViewChild(FamilyTreeVisualizationComponent)
   familyTreeVisualization!: FamilyTreeVisualizationComponent;
 
+  /**
+   * The family tree data.
+   */
   familyTreeData: FamilyTreeResponse | null = null;
+
+  /**
+   * Array of family members.
+   */
   familyMembers: FamilyMember[] = [];
+
+  /**
+   * Array of filtered family members based on search query.
+   */
   filteredMembers: FamilyMember[] = [];
-  rootMember?: FamilyMember;  // Added rootMember property
+
+  /**
+   * The root member of the family tree.
+   */
+  rootMember?: FamilyMember;
+
+  /**
+   * The ID of the selected family member.
+   */
   selectedId?: number;
+
+  /**
+   * Indicates whether the data is loading.
+   */
   loading = true;
+
+  /**
+   * Error message if data loading fails.
+   */
   error: string | null = null;
+
+  /**
+   * The search query for filtering family members.
+   */
   searchQuery = '';
 
+  /**
+   * Subject to handle component destruction.
+   */
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -67,21 +107,35 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Navigates to the add family member page.
+   */
   navigateToAddFamily() {
     sessionStorage.setItem('fromFamilyTree', 'true');
     this.router.navigate(['/add-to-family']);
   }
 
+  /**
+   * Lifecycle hook called after data-bound properties of a directive are initialized.
+   * Loads the family tree data.
+   */
   ngOnInit() {
     console.log('FamilyTreePage: ngOnInit');
     this.loadFamilyTree();
   }
 
+  /**
+   * Lifecycle hook that is called when a directive, pipe, or service is destroyed.
+   * Cleans up subscriptions.
+   */
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  /**
+   * Loads the family tree data.
+   */
   loadFamilyTree() {
     console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
@@ -123,6 +177,10 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Handles the search event.
+   * @param {CustomEvent} event - The event object containing the search query.
+   */
   onSearch(event: CustomEvent): void {
     const query = event.detail.value?.toLowerCase() ?? '';
     this.searchQuery = query;
@@ -137,6 +195,10 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Handles the selection of a family member.
+   * @param {number} memberId - The ID of the selected family member.
+   */
   onMemberSelected(memberId: number) {
     console.log('Member selected in list:', memberId);
     // Check both root member and family members

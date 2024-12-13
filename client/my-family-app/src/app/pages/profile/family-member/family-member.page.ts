@@ -1,11 +1,17 @@
-// family-member.component.ts
+/**
+ * @file family-member.page.ts
+ * @description This file contains the FamilyMemberPage component which handles displaying and managing family member details.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import {SearchBarComponent} from "../../../components/shared/search-bar/search-bar.component";
-import {FooterNavigationComponent} from "../../../components/shared/footer-navigation/footer-navigation.component";
+import { SearchBarComponent } from "../../../components/shared/search-bar/search-bar.component";
+import { FooterNavigationComponent } from "../../../components/shared/footer-navigation/footer-navigation.component";
 
 interface FamilyMember {
   id: number;
@@ -38,6 +44,9 @@ interface FamilyMember {
   templateUrl: './family-member.page.html'
 })
 export class FamilyMemberPage implements OnInit {
+  /**
+   * The family member details.
+   */
   familyMember: FamilyMember = {
     id: 0,
     firstName: '',
@@ -57,6 +66,10 @@ export class FamilyMemberPage implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   * Subscribes to route parameters and loads the family member details.
+   */
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
@@ -65,6 +78,10 @@ export class FamilyMemberPage implements OnInit {
     });
   }
 
+  /**
+   * Loads the family member details based on the given ID.
+   * @param {number} id - The ID of the family member to load.
+   */
   loadFamilyMember(id: number) {
     // Mock data for different family members
     const familyMembers = {
@@ -107,25 +124,42 @@ export class FamilyMemberPage implements OnInit {
     this.familyMember = familyMembers[id] || familyMembers[1];
   }
 
+  /**
+   * Handles the search event.
+   * @param {any} event - The event object containing the search term.
+   */
   handleSearch(event: any) {
     const searchTerm = event.target.value?.toLowerCase() || '';
     console.log('Searching:', searchTerm);
   }
 
+  /**
+   * Toggles the visibility of filters.
+   */
   toggleFilters() {
     console.log('Toggling filters');
   }
 
+  /**
+   * Navigates to the family tree page.
+   */
   viewFamilyTree() {
     this.router.navigate(['/family-tree'], {
       queryParams: { memberId: this.familyMember.id }
     });
   }
 
+  /**
+   * Navigates to the edit family member page.
+   */
   editMember() {
     this.router.navigate(['/edit-family-member', this.familyMember.id]);
   }
 
+  /**
+   * Gets the full name of the family member.
+   * @returns {string} The full name of the family member.
+   */
   getFullName(): string {
     return `${this.familyMember.firstName} ${this.familyMember.lastName}`;
   }

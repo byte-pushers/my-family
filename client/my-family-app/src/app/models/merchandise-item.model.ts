@@ -1,5 +1,14 @@
+/**
+ * @file merchandise-item.model.ts
+ * @description This file contains the MerchandiseItemModel class which implements the MerchandiseItem interface and represents a merchandise item with its details.
+ * @version 1.0.0
+ */
+
 import { MerchandiseItem } from './merchandise-item';
 
+/**
+ * Class representing a merchandise item.
+ */
 export class MerchandiseItemModel implements MerchandiseItem {
   id: string;
   name: string;
@@ -12,6 +21,10 @@ export class MerchandiseItemModel implements MerchandiseItem {
   available: boolean;
   category?: string;
 
+  /**
+   * Constructor to initialize the fields.
+   * @param {MerchandiseItem} data - Data to initialize the merchandise item.
+   */
   constructor(data: MerchandiseItem) {
     this.id = data.id;
     this.name = data.name;
@@ -26,15 +39,29 @@ export class MerchandiseItemModel implements MerchandiseItem {
   }
 
   // Behavior methods
-/*  getFormattedPrice(): string {
+
+  /**
+   * Get the formatted price.
+   * @returns {string} Formatted price.
+   */
+  public getFormattedPrice(): string {
     return `$${this.price.toFixed(2)}`;
   }
 
-  isInStock(): boolean {
+  /**
+   * Check if the item is in stock.
+   * @returns {boolean} True if the item is available, false otherwise.
+   */
+  public isInStock(): boolean {
     return this.available;
   }
 
-  hasSize(size: string): boolean {
+  /**
+   * Check if the item has a specific size.
+   * @param {string} size - The size to check.
+   * @returns {boolean} True if the size is available, false otherwise.
+   */
+  public hasSize(size: string): boolean {
     return this.sizes?.includes(size) ?? false;
-  }*/
+  }
 }
