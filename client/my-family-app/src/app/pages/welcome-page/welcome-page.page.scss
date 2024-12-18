@@ -1,11 +1,12 @@
-ion-content {
+/*ion-content {
   display: flex;
   justify-content: center;  // Center horizontally
   align-items: center;      // Center vertically
   height: 100vh;            // Take full viewport height
   padding: 0;               // Remove any potential padding that could offset the centering
-}
+}*/
 
+/*
 .login-container {
   width: 100%;
   max-width: 600px;          // Increased size for better visibility
@@ -16,16 +17,17 @@ ion-content {
   border-radius: 15px;       // Optional: Add rounded corners
   margin: 0 auto;            // Ensure the container is centered horizontally
 }
+*/
 
-.login-title {
+/*.login-title {
   font-size: 28px;           // Increase the title size
   margin-bottom: 30px;       // Add more space below the title
   color: #0D4C92;
-}
+}*/
 
-.welcome-text {
+/*.welcome-text {
   color: #97D2EC;
-}
+}*/
 
 .login-input {
   margin-bottom: 15px;       // Increase the margin between inputs
@@ -39,15 +41,15 @@ ion-input {
   width: 100%;
 }
 
-.login-button {
+/*.login-button {
   margin-top: 30px;          // Add space above the button
   font-size: 20px;           // Make the button text larger
   height: 55px;              // Increase button height
   border-radius: 5px;
   background-color: #0D4C92;
   color: white;
-}
-
+}*/
+/*
 .create-account-button {
   margin-top: 30px;          // Add space above the button
   font-size: 20px;           // Make the button text larger
@@ -56,8 +58,8 @@ ion-input {
   background-color: white;
   color: #0D4C92;
   border: red;
-}
-
+}*/
+/*
 .login-options {
   margin-top: 30px;
   font-size: 16px;           // Adjust font size for the "sign up" link
@@ -66,4 +68,4 @@ ion-input {
 
 .button-native {
   background-color: purple;
-}
+}*/

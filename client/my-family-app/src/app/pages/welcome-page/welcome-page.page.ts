@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+/**
+ * @file welcome-page.page.ts
+ * @description This file contains the WelcomePagePage component which provides navigation options to sign in or create an account.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonLabel,
-  IonInput,
   IonButton,
-  AlertController
 } from '@ionic/angular/standalone';
-import { RouterModule } from '@angular/router';  // <-- Import RouterModule for routing
 
 @Component({
   selector: 'app-welcome-page',
@@ -21,30 +21,25 @@ import { RouterModule } from '@angular/router';  // <-- Import RouterModule for 
   standalone: true,
   imports: [
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonItem,
-    IonLabel,
-    IonInput,
     IonButton,
     CommonModule,
     FormsModule,
-    RouterModule  // <-- Add RouterModule to imports array
-  ]
+  ],
 })
-export class WelcomePagePage implements OnInit {
-  username: string = '';
-  password: string = '';
-  passwordType: string = 'password';  // Default is hidden
+export class WelcomePagePage {
+  constructor(private router: Router) {}
 
-  constructor(private alertCtrl: AlertController) {}
+  /**
+   * Navigates to the sign-in page.
+   */
+  navigateToSignIn() {
+    this.router.navigate(['/login-page']); // Navigate to the sign-in page
+  }
 
-  ngOnInit() {}
-
-  async onSignIn() {
-    if (!this.username ) {
-      return;
-    }
+  /**
+   * Navigates to the create account page.
+   */
+  navigateToCreateAccount() {
+    this.router.navigate(['/create-account']); // Navigate to the create account page
   }
 }

@@ -1,11 +1,25 @@
+/**
+ * @file agenda-item.model.ts
+ * @description This file contains the AgendaItemModel class which implements the AgendaItem interface and represents an agenda item with its details.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { AgendaItem } from './agenda-item';
 
+/**
+ * Class representing an agenda item.
+ */
 export class AgendaItemModel implements AgendaItem {
   startTime: Date;
   endTime: Date;
   title: string;
   description: string;
 
+  /**
+   * Constructor to initialize the fields.
+   * @param {AgendaItem} data - Data to initialize the agenda item.
+   */
   constructor(data: AgendaItem) {
     this.startTime = data.startTime;
     this.endTime = data.endTime;
@@ -14,22 +28,22 @@ export class AgendaItemModel implements AgendaItem {
   }
 
   // Behavior methods
-  /*getTimeRange(): string {
-    return `${this.startTime} - ${this.endTime}`;
+
+  /**
+   * Get the time range of the agenda item.
+   * @returns {string} Time range in the format "start - end".
+   */
+  /* getTimeRange(): string {
+    return `${this.timeStart} - ${this.timeEnd}`;
   }
 
-  getDuration(): number {
-    const start = new Date(`1970/01/01 ${this.startTime}`);
-    const end = new Date(`1970/01/01 ${this.endTime}`);
+  /**
+   * Get the duration of the agenda item in minutes.
+   * @returns {number} Duration in minutes.
+   */
+  /* getDuration(): number {
+    const start = new Date(`1970/01/01 ${this.timeStart}`);
+    const end = new Date(`1970/01/01 ${this.timeEnd}`);
     return (end.getTime() - start.getTime()) / (1000 * 60); // Returns minutes
-  }*/
-
-  public toString(): string {
-    return `{
-      "title": "${this.title}",
-      "startTime": "${this.startTime.toISOString()}",
-      "endDate": "${this.endTime.toISOString()}",
-      "description": "${this.description}"
-   }`;
-  }
+  } */
 }

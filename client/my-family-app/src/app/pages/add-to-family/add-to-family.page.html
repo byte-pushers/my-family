@@ -55,6 +55,9 @@
           Clear
         </button>
       </div>
+      <button (click)="autofillFormButton()">
+        Autofill
+      </button>
     </div>
 
     <!-- Step 3 forms -->
@@ -99,7 +102,6 @@
           (click)="goBack()">
           Back
         </button>
-        <!-- TODO: route to family tree and create FamilyMember objects for all family members submitted -->
         <!-- Add to family button for step 3 -->
         <button
           type="submit"
@@ -107,7 +109,10 @@
           (click)="addToFamilyButton()">
           Add to family
         </button>
-        <button type="button" class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200" (click)="clearButton()">
+        <button
+          type="button"
+          class="text-gray-800 bg-red-100 px-4 py-2 rounded-md hover:bg-red-200"
+          (click)="clearButton()">
           Clear
         </button>
       </div>

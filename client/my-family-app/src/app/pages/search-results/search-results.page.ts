@@ -1,9 +1,16 @@
-// search-results.page.ts
+/**
+ * @file search-results.page.ts
+ * @description This file contains the SearchResultsPage component which handles displaying search results for events and family members.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../../models/event';
 import { Person } from '../../models/family-tree/person';
+import { PersonDisplay } from '../profile/family-member/person-display'
 import { Router, ActivatedRoute } from '@angular/router';
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { PersonModel } from '../../models/family-tree/person.model';
@@ -29,26 +36,39 @@ interface SearchFilters {
   imports: [CommonModule, IonicModule, FooterNavigationComponent]
 })
 export class SearchResultsPage implements OnInit {
+  /**
+   * The search query entered by the user.
+   */
   searchQuery: string = '';
-  filters: SearchFilters | null = null;
-  events: Event[] = [];
-  people: Person[] = [];
 
-  // Mock data using your interfaces
-  private mockEvents: Event[] = [{
-    id: 1,
-    name: "Alejandro's Graduation",
-    type: "graduation",
-    startDate: new Date("2023-12-24"),
-    endDate: new Date("2023-12-24"),
-    startTime: new Date("2023-12-24T18:00:00"),
-    endTime: new Date("2023-12-24T18:30:00"),
-    location: {
-      addressLine1: "123 University Drive",
-      addressLine2: "",
-      city: "Dallas",
-      state: "TX",
-      zipcode: "75001",
+  /**
+   * The filters applied to the search results.
+   */
+  filters: SearchFilters | null = null;
+
+  /**
+   * The list of events matching the search criteria.
+   */
+  events: Event[] = [];
+
+  /**
+   * The list of people matching the search criteria.
+   */
+  people: PersonDisplay[] = [];
+
+  /**
+   * Mock data for events.
+   */
+  private mockEvents: Event[] = [
+    {
+      name: "Alejandro's Graduation",
+      type: "graduation",
+      startDate: "2023-12-25",
+      endDate: "2023-12-25",
+      startTime: "18:00",
+      endTime: "18:30",
+      location: "Dallas University",
+      agendas: []
     },
     agendas: [],
     merchandiseList: [],
@@ -88,9 +108,41 @@ export class SearchResultsPage implements OnInit {
     merchandiseList: [],
   }];
 
-  // private mockEvents: Event[] = [{}] as Event[];
-
-  private mockPeople: Array<Person> = [];
+  /**
+   * Mock data for people.
+   */
+  private mockPeople: PersonDisplay[] = [
+    {
+      person: new Person(
+        1,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Marge',
+      address: '1258 Titan Dr, Dallas, TX 75247'
+    },
+    {
+      person: new Person(
+        2,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Gabby',
+      address: '1330 Regal Row, Dallas, TX 75000'
+    }
+  ];
 
   constructor(
     private router: Router,
@@ -134,6 +186,10 @@ export class SearchResultsPage implements OnInit {
     ];
   }
 
+  /**
+   * Lifecycle hook called after data-bound properties of a directive are initialized.
+   * Subscribes to query parameters and updates search results.
+   */
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.searchQuery = params['query'] || '';
@@ -147,6 +203,9 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
+  /**
+   * Updates the search results based on the current filters and search query.
+   */
   updateResults() {
     if (this.filters?.type === 'events') {
       this.events = this.filterEvents(this.mockEvents);
@@ -160,6 +219,11 @@ export class SearchResultsPage implements OnInit {
     }
   }
 
+  /**
+   * Filters the list of events based on the search query and filters.
+   * @param {Event[]} events - The list of events to filter.
+   * @returns {Event[]} The filtered list of events.
+   */
   private filterEvents(events: Event[]): Event[] {
     return events.filter(event => {
       if (this.searchQuery && event.name &&
@@ -189,21 +253,26 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
-  private filterPeople(people: Person[]): Person[] {
-    return people.filter(person => {
+  /**
+   * Filters the list of people based on the search query.
+   * @param {PersonDisplay[]} people - The list of people to filter.
+   * @returns {PersonDisplay[]} The filtered list of people.
+   */
+  private filterPeople(people: PersonDisplay[]): PersonDisplay[] {
+    return people.filter(personDisplay => {
       if (this.searchQuery) {
-        const fullName = `${person.firstName} ${person.lastName}`.toLowerCase();
-        if (!fullName.includes(this.searchQuery.toLowerCase())) {
-          return false;
-        }
+        const fullName = `${personDisplay.person.firstName} ${personDisplay.person.lastName}`.toLowerCase();
+        return fullName.includes(this.searchQuery.toLowerCase());
       }
-
-      // Add more filter conditions as needed
-
       return true;
     });
   }
 
+  /**
+   * Formats the event time for display.
+   * @param {Event} event - The event to format.
+   * @returns {string} The formatted event time.
+   */
   formatEventTime(event: Event): string {
     if (!event.startTime || !event.endTime) return '';
 
@@ -222,6 +291,11 @@ export class SearchResultsPage implements OnInit {
     return `${startTime} - ${endTime}`;
   }
 
+  /**
+   * Formats the event date for display.
+   * @param {Event} event - The event to format.
+   * @returns {string} The formatted event date.
+   */
   formatEventDate(event: Event): string {
     if (!event.startDate) return '';
 
@@ -232,34 +306,26 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
-  formatEventLocation(event: Event): string {
-    if (!event.location) return '';
-
-    // Create an array of address parts
-    const addressParts = [
-      event.location.addressLine1,
-      event.location.addressLine2,
-      event.location.city,
-      event.location.state,
-      event.location.zipcode
-    ];
-
-    // Filter out empty strings and join with proper separators
-    return addressParts
-      .filter(part => part && part.trim() !== '')
-      .join(', ');
-  }
-
-  navigateToProfile(person: Person) {
-    if (person.id) {
-      this.router.navigate(['/profile', person.id]);
+  /**
+   * Navigates to the profile page of the selected person.
+   * @param {PersonDisplay} personDisplay - The person to navigate to.
+   */
+  navigateToProfile(personDisplay: PersonDisplay) {
+    if (personDisplay.person.id) {
+      this.router.navigate(['/family-member', personDisplay.person.id]);
     }
   }
 
+  /**
+   * Navigates to the family tree page.
+   */
   navigateToFamilyTree() {
-      this.router.navigate(['/family-tree']);
+    this.router.navigate(['/family-tree']);
   }
 
+  /**
+   * Navigates to the event signup page.
+   */
   navigateToEventSignup() {
     this.router.navigate(['/event-signup']);
   }

@@ -1,3 +1,10 @@
+/**
+ * @file family-tree.page.ts
+ * @description This file contains the FamilyTreePage component which handles displaying and managing the family tree.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,11 +14,12 @@ import { FamilyTreeVisualizationComponent } from "../../components/family-tree-v
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { FamilyTreeService } from "../../services/family-tree.service";
 import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
-import { FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
-import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
+import { createFamilyMemberFromResponse, FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
+import { FamilyMember } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilySearchService } from "../../services/family-search.service";
+import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
 import {FamilyMember} from "../../models/family-tree/family-member";
 import {FamilyTreeResponseModel} from "../../models/family-tree/family-tree-response.model";
@@ -31,19 +39,53 @@ import {FamilyTree} from "../../models/family-tree/family-tree";
     FamilyMemberListComponent
   ]
 })
-
 export class FamilyTreePage implements OnInit, OnDestroy {
   @ViewChild(FamilyTreeVisualizationComponent)
   familyTreeVisualization!: FamilyTreeVisualizationComponent;
 
+  /**
+   * The family tree data.
+   */
   familyTreeData: FamilyTreeResponse | null = null;
-  familyMembers: FamilyMemberModel[] = [];
-  filteredMembers: FamilyMemberModel[] = [];
-  selectedId?: number | null;
+
+  /**
+   * Array of family members.
+   */
+  familyMembers: FamilyMember[] = [];
+
+  /**
+   * Array of filtered family members based on search query.
+   */
+  filteredMembers: FamilyMember[] = [];
+
+  /**
+   * The root member of the family tree.
+   */
+  rootMember?: FamilyMember;
+
+  /**
+   * The ID of the selected family member.
+   */
+  selectedId?: number;
+
+  /**
+   * Indicates whether the data is loading.
+   */
   loading = true;
+
+  /**
+   * Error message if data loading fails.
+   */
   error: string | null = null;
+
+  /**
+   * The search query for filtering family members.
+   */
   searchQuery = '';
 
+  /**
+   * Subject to handle component destruction.
+   */
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -68,112 +110,116 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Navigates to the add family member page.
+   */
   navigateToAddFamily() {
     sessionStorage.setItem('fromFamilyTree', 'true');
     this.router.navigate(['/add-to-family']);
   }
 
+  /**
+   * Lifecycle hook called after data-bound properties of a directive are initialized.
+   * Loads the family tree data.
+   */
   ngOnInit() {
     console.log('FamilyTreePage: ngOnInit');
     this.loadFamilyTree();
   }
 
+  /**
+   * Lifecycle hook that is called when a directive, pipe, or service is destroyed.
+   * Cleans up subscriptions.
+   */
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-// family-tree.page.ts
+  /**
+   * Loads the family tree data.
+   */
   loadFamilyTree() {
     console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
     this.error = null;
 
-    this.familyTreeService.getFamilyTree(1).subscribe({
-      next: (familyTreeData: FamilyTree) => {
-        console.log('FamilyTree Data:', familyTreeData);
+    try {
+      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
 
-        // Store the data in the expected FamilyTreeResponse format
-        this.familyTreeData = {
-          data: familyTreeData
-        };
-
-        // Now process the members from familyTreeData
-        if (familyTreeData?.familyMembers?.[0]) {
-          const rootMember = familyTreeData.familyMembers[0];
-
-          // Start with the root member
-          this.familyMembers = [
-            new FamilyMemberModel({
-              relationship: rootMember.relationship,
-              person: rootMember.person
-            })
-          ];
-
-          // If root member has person with family members, process those too
-          if (rootMember.person?.familyMembers?.length > 0) {
-            const nestedMembers = this.extractAllFamilyMembers(rootMember.person.familyMembers);
-            this.familyMembers.push(...nestedMembers);
-          }
-
-          console.log('Processed family members:', this.familyMembers);
-          this.familySearchService.searchMembers('', this.familyMembers);
-        } else {
-          console.warn('No family members found');
-          this.familyMembers = [];
-        }
-
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading family tree:', error);
-        this.error = 'Failed to load family tree data.';
-        this.loading = false;
-      }
-    });
-  }
-
-  private extractAllFamilyMembers(members: FamilyMember[]): FamilyMemberModel[] {
-    const allMembers: FamilyMemberModel[] = [];
-
-    const processMembers = (memberList: FamilyMember[]) => {
-      memberList.forEach(member => {
-        // Add current member
-        allMembers.push(new FamilyMemberModel({
-          relationship: member.relationship,
-          person: member.person
-        }));
-
-        // Process children if they exist
-        if (member.person?.familyMembers?.length > 0) {
-          processMembers(member.person.familyMembers);
-        }
+      // Create root member from the top-level data
+      this.rootMember = createFamilyMemberFromResponse({
+        id: this.familyTreeData.id,
+        relationship: this.familyTreeData.relationship,
+        person: this.familyTreeData.person,
+        parent: this.familyTreeData.parent,
+        familyMembers: [],
+        createdBy: this.familyTreeData.createdBy,
+        updatedBy: this.familyTreeData.updatedBy,
+        createdDate: this.familyTreeData.createdDate,
+        updatedDate: this.familyTreeData.updatedDate
       });
-    };
 
-    processMembers(members);
-    return allMembers;
+      // Convert response to FamilyMember instances for the list
+      // Filter out the root member if it exists in familyMembers
+      this.familyMembers = this.familyTreeData.familyMembers
+        .filter(member => member.id !== this.rootMember?.getId())
+        .map(memberData => createFamilyMemberFromResponse(memberData));
+
+      // Include root member in search
+      const allMembers = [this.rootMember, ...this.familyMembers];
+      this.familySearchService.searchMembers('', allMembers);
+      this.loading = false;
+
+      console.log('Root Member:', this.rootMember);
+      console.log('Family Members:', this.familyMembers);
+    } catch (error) {
+      console.error('Error loading mock data:', error);
+      this.error = 'Failed to load family tree data.';
+      this.loading = false;
+    }
   }
 
-
+  /**
+   * Handles the search event.
+   * @param {CustomEvent} event - The event object containing the search query.
+   */
   onSearch(event: CustomEvent): void {
     const query = event.detail.value?.toLowerCase() ?? '';
     this.searchQuery = query;
-    this.familySearchService.searchMembers(query, this.familyMembers);
+    // Include root member in search
+    const allMembers = this.rootMember
+      ? [this.rootMember, ...this.familyMembers]
+      : this.familyMembers;
+    this.familySearchService.searchMembers(query, allMembers);
 
-    // Highlight matching nodes in tree visualization
     if (this.familyTreeVisualization) {
       // this.familyTreeVisualization.highlightNodes(query);
     }
   }
 
+  /**
+   * Handles the selection of a family member.
+   * @param {number} memberId - The ID of the selected family member.
+   */
   onMemberSelected(memberId: number) {
-    const member = this.familyMembers.find(m => m.getId() === memberId);
+    console.log('Member selected in list:', memberId);
+    // Check both root member and family members
+    const member = this.rootMember?.getId() === memberId
+      ? this.rootMember
+      : this.familyMembers.find(m => m.getId() === memberId);
+
     if (member) {
+      console.log('Found member:', member);
       this.familySearchService.selectMember(member);
       if (this.familyTreeVisualization) {
+        console.log('Calling focusNode with ID:', memberId);
         this.familyTreeVisualization.focusNode(memberId);
+      } else {
+        console.error('Tree visualization component not available');
       }
+    } else {
+      console.error('Member not found with ID:', memberId);
     }
   }
 }

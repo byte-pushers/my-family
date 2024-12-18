@@ -1,7 +1,17 @@
+/**
+ * @file merchandise-item.model.ts
+ * @description This file contains the MerchandiseItemModel class which implements the MerchandiseItem interface and represents a merchandise item with its details.
+ * @version 1.0.0
+ */
+
 import { MerchandiseItem } from './merchandise-item';
 import { BaseDomainModel } from './base-domain.model';
 
-export class MerchandiseItemModel extends BaseDomainModel implements MerchandiseItem {
+/**
+ * Class representing a merchandise item.
+ */
+export class MerchandiseItemModel implements MerchandiseItem {
+  id: string;
   name: string;
   description?: string;
   price: number;
@@ -12,6 +22,10 @@ export class MerchandiseItemModel extends BaseDomainModel implements Merchandise
   available: boolean;
   category?: string;
 
+  /**
+   * Constructor to initialize the fields.
+   * @param {MerchandiseItem} data - Data to initialize the merchandise item.
+   */
   constructor(data: MerchandiseItem) {
     super(data as { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date });
     this.name = data.name;
@@ -26,29 +40,29 @@ export class MerchandiseItemModel extends BaseDomainModel implements Merchandise
   }
 
   // Behavior methods
-  /*getFormattedPrice(): string {
+
+  /**
+   * Get the formatted price.
+   * @returns {string} Formatted price.
+   */
+  public getFormattedPrice(): string {
     return `$${this.price.toFixed(2)}`;
   }
 
-  isInStock(): boolean {
+  /**
+   * Check if the item is in stock.
+   * @returns {boolean} True if the item is available, false otherwise.
+   */
+  public isInStock(): boolean {
     return this.available;
   }
 
-  hasSize(size: string): boolean {
+  /**
+   * Check if the item has a specific size.
+   * @param {string} size - The size to check.
+   * @returns {boolean} True if the size is available, false otherwise.
+   */
+  public hasSize(size: string): boolean {
     return this.sizes?.includes(size) ?? false;
-  }*/
-
-  public override toString(): string {
-    return `{
-      "name": "${this.name}",
-      "description": "${this.description}",
-      "price": "${this.price}",
-      "image": "${this.image}",
-      "sizes": "${this.sizes}",
-      "maxQuantity": "${this.maxQuantity}",
-      "type": "${this.type}",
-      "available": "${this.available}",
-      "category": "${this.category}"
-   }`;
   }
 }

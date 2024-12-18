@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .authorizeRequests()
                 .expressionHandler(customWebSecurityExpressionHandler())
-                .requestMatchers("/login", "/api/create-account", "/api/users/**")
+                .requestMatchers("/api/sessions", "/login", "/api/create-account")
                 .permitAll()
                 .requestMatchers("/api/family-trees", "/api/events")
                 .hasRole("ADMIN")

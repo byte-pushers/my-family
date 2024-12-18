@@ -76,80 +76,71 @@
               </div>
             </div>
 
-            <!-- RSVP Button -->
-            <div class="flex-shrink-0 self-center">
+          <!-- RSVP Button -->
+          <div class="flex-shrink-0 self-center">
+            <ion-button
+              fill="outline"
+              size="small"
+              color="primary"
+              (click)="navigateToEventSignup()"
+              class="min-w-0 px-4"
+            >
+              RSVP
+            </ion-button>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <!-- People List -->
+    <ion-list *ngIf="people.length > 0" class="ion-no-padding">
+      <ion-item *ngFor="let personDisplay of people" class="bg-blue-50">
+        <div class="flex gap-4 w-full p-4">
+          <!-- Avatar -->
+          <div class="flex-shrink-0">
+            <ion-avatar class="w-16 h-16">
+              <img
+                alt="Profile picture"
+                src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                class="w-full h-full object-cover rounded-full"
+              />
+            </ion-avatar>
+          </div>
+
+          <!-- Person Details and Buttons -->
+          <div class="flex-1">
+            <!-- Details -->
+            <div class="mb-3">
+              <h2 class="text-lg font-medium text-gray-900">
+                {{personDisplay.person.firstName}} {{personDisplay.person.lastName}}
+                <span *ngIf="personDisplay.nickname">({{personDisplay.nickname}})</span>
+              </h2>
+              <p class="text-sm text-gray-600">{{personDisplay.address}}</p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2">
               <ion-button
                 fill="outline"
                 size="small"
-                color="primary"
-                (click)="navigateToEventSignup()"
+                (click)="navigateToProfile(personDisplay)"
                 class="min-w-0 px-4"
               >
-                RSVP
+                Profile
+              </ion-button>
+              <ion-button
+                fill="outline"
+                size="small"
+                (click)="navigateToFamilyTree()"
+                class="min-w-0 px-4"
+              >
+                Family Tree
               </ion-button>
             </div>
           </div>
-        </ion-item>
-      </ion-list>
-    </div>
-
-    <!-- Family Members Section -->
-    <div *ngIf="people.length > 0" class="mt-4">
-    <div class="px-4 py-3 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg shadow-md">
-      <h3 class="text-lg font-semibold text-gray-700 flex items-center">
-        <ion-icon name="people-outline" class="align-middle mr-2 text-green-500"></ion-icon>
-        Family Members
-      </h3>
-    </div>
-
-      <!-- People List -->
-      <ion-list *ngIf="people.length > 0" class="ion-no-padding">
-        <ion-item *ngFor="let person of people" class="bg-blue-50">
-          <div class="flex gap-4 w-full p-4">
-            <!-- Avatar -->
-            <div class="flex-shrink-0">
-              <ion-avatar class="w-16 h-16">
-                <img
-                  alt="Profile picture"
-                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
-                  class="w-full h-full object-cover rounded-full"
-                />
-              </ion-avatar>
-            </div>
-
-            <!-- Person Details and Buttons -->
-            <div class="flex-1">
-              <!-- Details -->
-              <div class="mb-3">
-                <h2 class="text-lg font-medium text-gray-900">{{person.firstName}} {{person.lastName}}</h2>
-                <p class="text-sm text-gray-600">{{'1330 Regal Row, Dallas, Tx'}}</p>
-              </div>
-
-              <!-- Buttons -->
-              <div class="flex gap-2">
-                <ion-button
-                  fill="outline"
-                  size="small"
-                  (click)="navigateToProfile(person); $event.stopPropagation();"
-                  class="min-w-0 px-4"
-                >
-                  Profile
-                </ion-button>
-                <ion-button
-                  fill="outline"
-                  size="small"
-                  (click)="navigateToFamilyTree(); $event.stopPropagation();"
-                  class="min-w-0 px-4"
-                >
-                  Family Tree
-                </ion-button>
-              </div>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
-    </div>
-
+        </div>
+      </ion-item>
+    </ion-list>
     <!-- No Results Message -->
     <div *ngIf="events.length === 0 && people.length === 0"
          class="p-4 text-center text-gray-500">
