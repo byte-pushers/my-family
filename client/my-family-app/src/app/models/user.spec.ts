@@ -1,31 +1,30 @@
 // src/app/models/user.model.spec.ts
-
-import { User } from './user';
-import { Role } from './role';
 import { FamilyMemberModel } from './family-tree/family-member.model';
-import { Person } from './family-tree/person';
+import { PersonModel } from './family-tree/person.model';
 import { RelationshipType } from './family-tree/relationship-type';
-import { Permission } from './permission';
+import { PermissionModel } from "./permission.model";
+import { RoleModel } from "./role.model";
+import { UserModel } from "./user.model";
 
 //jasmine describe which helps group related test cases, to be used
 describe('User Model', () => {
-  let user: User;
-  let roles: Role[];
+  let user: UserModel;
+  let roles: RoleModel[];
   let familyMembers: FamilyMemberModel[];
 
   beforeEach(() => {
     // Mock data for permissions(array permission)
-    const permissions = [new Permission('READ'), new Permission('WRITE')];
+    const permissions = [new PermissionModel('READ'), new PermissionModel('WRITE')];
 
     // creating to roles that have different permissions.Mock data for roles with permissions
     roles = [
-      new Role('Admin', permissions),
-      new Role('User', [new Permission('READ')])
+      new RoleModel('Admin', permissions),
+      new RoleModel('User', [new PermissionModel('READ')])
     ];
 
     //  Person object class
 
-    const person1 = new Person(
+    const person1 = new PersonModel(
       1,                                // id: number
       'John',                           // firstName: string
       'Doe',                            // lastName: string
@@ -37,7 +36,7 @@ describe('User Model', () => {
       new Date()                        // updatedDate?: Date
     );
 
-    const person2 = new Person(
+    const person2 = new PersonModel(
       2,                                // id: number
       'Jane',                           // firstName: string
       'Doe',                            // lastName: string
@@ -72,7 +71,7 @@ describe('User Model', () => {
     ];
 
     // Initialize the User model with mock data
-    user = new User('testUser', 'password123', roles, familyMembers);
+    user = new UserModel('testUser', 'password123', roles, familyMembers);
   });
 
   it('should create an instance', () => {
