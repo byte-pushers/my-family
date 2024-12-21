@@ -21,6 +21,11 @@ export class MerchandiseItemModel implements MerchandiseItem {
   type: 'clothing' | 'ticket' | 'other';
   available: boolean;
   category?: string;
+  SKU?: string;
+  color?: string;
+  author?: string;
+  ISBN?: string;
+  wearableType?: string;
 
   /**
    * Constructor to initialize the fields.

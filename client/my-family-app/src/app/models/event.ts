@@ -1,4 +1,7 @@
-import { AgendaItem } from './agenda-item.interface';
+import { AgendaItem } from './agenda-item';
+import { BaseModel } from "./base.model";
+import { Address } from "./address";
+import { MerchandiseItem } from "./merchandise-item";
 
 
 export interface Event extends BaseModel {

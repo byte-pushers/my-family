@@ -1,4 +1,3 @@
-import { AgendaItem } from './agenda-item.interface';
 import { Event } from './event';
 import { BaseDomainModel } from './base-domain.model';
 import { Address } from './address';

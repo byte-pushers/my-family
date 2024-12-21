@@ -14,7 +14,7 @@ import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 import { PersonModel } from '../../models/family-tree/person.model';
 import { FamilyTree } from '../../models/family-tree/family-tree';
-import {FamilyTreeModel} from "../../models/family-tree/family-tree.model";
+import { FamilyTreeModel } from "../../models/family-tree/family-tree.model";
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.
@@ -55,14 +55,14 @@ export class AddToFamilyPage implements OnInit {
   cousinsForm: FormGroup;
 
   // Arrays to hold added family members.
-  parents: FamilyMember[] = [];
-  grandparents: FamilyMember[] = [];
-  siblings: FamilyMember[] = [];
-  spouse: FamilyMember[] = [];
-  children: FamilyMember[] = [];
-  uncles: FamilyMember[] = [];
-  aunts: FamilyMember[] = [];
-  cousins: FamilyMember[] = [];
+  parents: FamilyMemberModel[] = [];
+  grandparents: FamilyMemberModel[] = [];
+  siblings: FamilyMemberModel[] = [];
+  spouse: FamilyMemberModel[] = [];
+  children: FamilyMemberModel[] = [];
+  uncles: FamilyMemberModel[] = [];
+  aunts: FamilyMemberModel[] = [];
+  cousins: FamilyMemberModel[] = [];
 
   /**
    * Initializes all the form groups
@@ -138,7 +138,7 @@ export class AddToFamilyPage implements OnInit {
    * @param {FormGroup} fg The form group.
    * @param {FamilyMember[]} arr The FamilyMember array to populate.
    */
-  private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMember[]): void {
+  private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMemberModel[]): void {
     const formArray = fg.get('familyMembers') as FormArray;
     formArray.controls.forEach((control) => {
       const name = control.get('name')?.value;
@@ -149,7 +149,7 @@ export class AddToFamilyPage implements OnInit {
       let lastName = parsedName[1];
 
       const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), 'male', false, [], "system", new Date(), undefined, undefined);
-      const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', new Date(today), 'updatedBy', new Date(today));
+      const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', 'updatedBy', new Date(today), new Date(today));
       arr.push(familyMember);
     });
   }

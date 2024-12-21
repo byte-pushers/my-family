@@ -3,7 +3,7 @@ import { Person } from './person';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
 
-export class PersonModel extends BaseDomainModel implements Person {
+export class PersonModel extends BaseDomainModel implements Person{
   readonly #firstName: string;
   readonly #lastName: string;
   readonly #birthDate: Date;
