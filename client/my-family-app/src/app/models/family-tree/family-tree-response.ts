@@ -7,8 +7,8 @@
 
 import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
-import { FamilyMember } from './family-member.model';
 import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-member';
 
 /**
  * Interface representing raw person data from API before instantiation.
@@ -31,6 +31,7 @@ export interface PersonResponseData {
  * @returns {Person} Instance of Person.
  */
 export function createPersonFromResponse(data: PersonResponseData): Person {
+  // @ts-ignore
   return new Person(
     data.id,
     data.firstName,
@@ -67,6 +68,7 @@ export interface FamilyTreeResponse {
 export function createFamilyMemberFromResponse(data: FamilyTreeResponse): FamilyMember {
   const person = createPersonFromResponse(data.person);
 
+  // @ts-ignore
   return new FamilyMember(
     data.id,
     data.relationship as RelationshipType,

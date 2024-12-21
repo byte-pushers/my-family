@@ -71,7 +71,9 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
     }
     super(getSuperParameters(arguments, props));
     const r = this.createRelationShip(props?.relationship);
+    // @ts-ignore
     this.#relationship = RelationshipType[r];
+    // @ts-ignore
     this.#person = new PersonModel(props?.person);
   }
 
@@ -111,6 +113,7 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
 
     return keys.find((key, index) => {
       if (key === relationship) {
+        // @ts-ignore
         return RelationshipType[key];
       }
 

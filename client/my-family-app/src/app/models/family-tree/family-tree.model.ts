@@ -7,6 +7,8 @@ import { FamilyMemberModel } from './family-member.model';
 export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
   public familyMembers: FamilyMember[];
 
+  constructor(...args: any[])
+  constructor(props: any)
   constructor(props: any) {
     super(props);
     this.familyMembers = [...props?.familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
