@@ -9,7 +9,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { FamilyMember } from '../../models/family-tree/family-member.model';
+import { FamilyMember } from "../../models/family-tree/family-member";
 import { Router } from "@angular/router";
 import { FamilySearchService } from "../../services/family-search.service";
 import { Subject, takeUntil } from "rxjs";
@@ -94,7 +94,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
       const memberId = member.getId();
       if (
         memberId !== undefined &&
-        !memberIds.has(memberId) &&
+        !memberIds.has(Number(memberId)) &&
         (!this.currentSearchQuery || this.memberMatchesSearch(member))
       ) {
         memberIds.add(memberId);

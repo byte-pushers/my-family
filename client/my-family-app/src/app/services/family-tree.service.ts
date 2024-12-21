@@ -15,7 +15,7 @@ import { FamilyTree } from '../models/family-tree/family-tree';
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
+  private apiBaseUrl = '/api'; // Replace it with actual API URL (ask whose working on it)
 
   constructor(private http: HttpClient) {}
 

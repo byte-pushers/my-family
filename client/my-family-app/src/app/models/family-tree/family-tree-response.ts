@@ -9,6 +9,7 @@ import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
 import { RelationshipType } from './relationship-type';
 import { FamilyMember } from './family-member';
+import {FamilyTree} from "./family-tree";
 
 /**
  * Interface representing raw person data from API before instantiation.
@@ -58,6 +59,7 @@ export interface FamilyTreeResponse {
   person: PersonResponseData;  // Raw data that will be converted to Person
   parent: number | null;
   familyMembers: FamilyTreeResponse[];
+  data: FamilyTree;
 }
 
 /**
