@@ -17,5 +17,4 @@ export interface Address {
 
   /** @property {string} zipcode - The postal code of the address. */
   zipcode: string;
-
 }

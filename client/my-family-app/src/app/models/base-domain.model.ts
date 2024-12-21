@@ -1,6 +1,6 @@
-import { BaseModel } from './base.model';
+import { BaseDomain } from './base-domain';
 
-export abstract class BaseDomainModel implements BaseModel {
+export abstract class BaseDomainModel implements BaseDomain {
   #id?: number | null;
   #createdBy?: string | null;
   #createdDate?: Date | null;

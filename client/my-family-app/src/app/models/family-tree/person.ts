@@ -5,9 +5,9 @@
  * @author Danny Amezquita
  */
 import { FamilyMember } from "./family-member";
-import { BaseModel } from "../base.model";
+import { BaseDomain } from "../base-domain";
 
-export interface Person extends BaseModel {
+export interface Person extends BaseDomain {
   firstName: string;
   lastName: string;
   birthDate: Date;

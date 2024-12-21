@@ -1,10 +1,10 @@
 import { AgendaItem } from './agenda-item';
-import { BaseModel } from "./base.model";
+import { BaseDomain } from "./base-domain";
 import { Address } from "./address";
 import { MerchandiseItem } from "./merchandise-item";
 
 
-export interface Event extends BaseModel {
+export interface Event extends BaseDomain {
   name: string;
   type: string;
   startDate: Date | null;

@@ -26,5 +26,4 @@ export interface AccountInfo {
 
   /** @property {Address} address - The address of the account holder. */
   address: Address | null;
-
 }

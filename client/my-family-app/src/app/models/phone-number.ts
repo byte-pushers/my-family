@@ -14,5 +14,4 @@ export interface PhoneNumber {
 
   /** @property {string} subscriberNumber - The subscriber's unique phone number. */
   subscriberNumber: string | null;
-
 }

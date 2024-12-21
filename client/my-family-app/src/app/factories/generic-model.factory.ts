@@ -1,6 +1,6 @@
-import { BaseModel } from '../models/base.model';
+import { BaseDomain } from '../models/base-domain';
 
-export class GenericModelFactory <T extends BaseModel> {
+export class GenericModelFactory <T extends BaseDomain> {
 
   constructor() {
 

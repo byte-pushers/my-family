@@ -5,7 +5,6 @@
  */
 
 import { MerchandiseItem } from './merchandise-item';
-import { BaseDomainModel } from './base-domain.model';
 
 /**
  * Class representing a merchandise item.
