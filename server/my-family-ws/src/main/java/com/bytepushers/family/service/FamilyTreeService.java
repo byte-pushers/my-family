@@ -17,7 +17,7 @@ public interface FamilyTreeService {
      * @param familyTree the family tree to create
      * @return the created {@link FamilyTree}
      */
-    FamilyTree createFamilyTree(@Valid FamilyTree familyTree);
+    String createFamilyTree(@Valid FamilyTree familyTree);
 
     /**
      * Retrieves a {@link FamilyTree} by its unique ID.
@@ -25,7 +25,7 @@ public interface FamilyTreeService {
      * @param id the unique identifier of the family tree
      * @return the family tree, or null if not found
      */
-    FamilyTree getFamilyTree(Integer id);
+    String getFamilyTree(Integer id);
 
     /**
      * Retrieves a {@link FamilyMember} along with its child members by the member's unique ID.
