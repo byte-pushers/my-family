@@ -3,7 +3,7 @@ import { Person } from './person';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
 
-export class PersonModel extends BaseDomainModel implements Person{
+export class PersonModel extends BaseDomainModel implements Person {
   readonly #firstName: string;
   readonly #lastName: string;
   readonly #birthDate: Date;
@@ -77,7 +77,7 @@ export class PersonModel extends BaseDomainModel implements Person{
     this.#lastName = props?.lastName;
     this.#birthDate = new Date(props?.birthDate);
     this.#gender = props?.gender;
-    this.#deceased = (props && props.deceased != null)? props.deceased: false;
+    this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#familyMembers = this.#createFamilyMembers(props?.familyMembers);
   }
 
@@ -116,6 +116,15 @@ export class PersonModel extends BaseDomainModel implements Person{
     return this.#gender;
   }
 
+  /**
+   * Gets the deceased status of the person.
+   *
+   * @returns {boolean} True if the person is deceased, false otherwise.
+   */
+  public get deceased(): boolean {
+    return this.#deceased;
+  }
+
   public isDeceased(): boolean {
     return this.#deceased;
   }
@@ -151,15 +160,16 @@ export class PersonModel extends BaseDomainModel implements Person{
       "firstName": "${this.#firstName}",
       "lastName": "${this.#lastName}",
       "birthDate": "${this.#birthDate.toISOString()}",
+      "deceased": ${this.#deceased},
       "familyMembers": [
         ${this.#familyMembers.join()}
-      ]${auditString.trim() === ''? `,\n\t  ${auditString}` : ''}
+      ]${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
    }`;
   }
 
   #createFamilyMembers(familyMembers?: FamilyMember[]) {
     const familyMembersArray = Array.isArray(familyMembers) && familyMembers.map(familyMember => new FamilyMemberModel(familyMember));
 
-    return familyMembersArray? familyMembersArray: [];
+    return familyMembersArray ? familyMembersArray : [];
   }
 }
