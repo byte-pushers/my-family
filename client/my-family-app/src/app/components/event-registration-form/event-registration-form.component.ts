@@ -11,6 +11,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { MerchandiseItemModel } from "../../models/merchandise-item.model";
 import { Router } from '@angular/router';
+import {MerchandiseItem} from "../../models/merchandise-item";
 
 @Component({
   selector: 'app-event-registration-form',
@@ -33,8 +34,9 @@ export class EventRegistrationFormComponent implements OnInit {
   /** The selected payment method */
   paymentMethod: 'card' | 'paypal' = 'card';
 
+  merchandiseItems:MerchandiseItem[] = [];
   /** The list of merchandise items available for purchase */
-  merchandiseItems: MerchandiseItemModel[] = [
+/*  merchandiseItems: MerchandiseItemModel[] = [
     new MerchandiseItemModel({
       id: 'tshirt-001',
       name: 'Event T-Shirt',
@@ -46,8 +48,8 @@ export class EventRegistrationFormComponent implements OnInit {
       type: 'clothing',
       available: true,
       category: 'apparel'
-    }*/{} as MerchandiseItem)
-  ];
+    }*!/{} as MerchandiseItem)
+  ];*/
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.registrationForm = this.fb.group({

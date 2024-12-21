@@ -5,7 +5,7 @@
  * @author Danny Amezquita
  * @version 1.0.0
  */
-import { BaseDomainModel } from '../base-domain-model';  // Import BaseDomainModel
+import { BaseDomainModel } from '../base-domain.model';  // Import BaseDomainModel
 import { Person } from './person';                      // Import Person
 import { RelationshipType } from './relationship-type';
 import { FamilyMember } from './family-member';
@@ -35,7 +35,7 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
       createdDate: Date,
       updatedDate: Date
   ) {
-    super(id, createdBy, createdDate, updatedBy, updatedDate);  // Initialize BaseDomainModel fields
+    super({id, createdBy, createdDate, updatedBy, updatedDate});  // Initialize BaseDomainModel fields
     this.#relationship = relationship;
     this.#person = person;
   }

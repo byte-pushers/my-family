@@ -59,7 +59,7 @@ export class SearchResultsPage implements OnInit {
   /**
    * Mock data for events.
    */
-  private mockEvents: Event[] = [
+  /*private mockEvents: Event[] = [
     {
       name: "Alejandro's Graduation",
       type: "graduation",
@@ -106,12 +106,12 @@ export class SearchResultsPage implements OnInit {
     },
     agendas: [],
     merchandiseList: [],
-  }];
+  }];*/
 
   /**
    * Mock data for people.
    */
-  private mockPeople: PersonDisplay[] = [
+ /* private mockPeople: PersonDisplay[] = [
     {
       person: new Person(
         1,
@@ -142,14 +142,14 @@ export class SearchResultsPage implements OnInit {
       nickname: 'Gabby',
       address: '1330 Regal Row, Dallas, TX 75000'
     }
-  ];
+  ];*/
 
   constructor(
     private router: Router,
     private route: ActivatedRoute
   ){
     // Initialize with a few mock family members
-    this.mockPeople = [
+  /*  this.mockPeople = [
       new PersonModel(
         1,
         "Julia",
@@ -183,7 +183,7 @@ export class SearchResultsPage implements OnInit {
         'system',
         new Date()
       )
-    ];
+    ];*/
   }
 
   /**
@@ -195,7 +195,7 @@ export class SearchResultsPage implements OnInit {
       this.searchQuery = params['query'] || '';
       try {
         this.filters = params['filters'] ? JSON.parse(params['filters']) : null;
-        this.updateResults();
+        // this.updateResults();
       } catch (e) {
         console.error('Error parsing filters:', e);
         this.filters = null;
@@ -206,7 +206,7 @@ export class SearchResultsPage implements OnInit {
   /**
    * Updates the search results based on the current filters and search query.
    */
-  updateResults() {
+/*  updateResults() {
     if (this.filters?.type === 'events') {
       this.events = this.filterEvents(this.mockEvents);
       this.people = [];
@@ -217,7 +217,7 @@ export class SearchResultsPage implements OnInit {
       this.events = this.filterEvents(this.mockEvents);
       this.people = this.filterPeople(this.mockPeople);
     }
-  }
+  }*/
 
   /**
    * Filters the list of events based on the search query and filters.

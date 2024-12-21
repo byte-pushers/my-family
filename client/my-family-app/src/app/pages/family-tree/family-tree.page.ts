@@ -19,9 +19,9 @@ import { FamilyMember } from '../../models/family-tree/family-member.model';
 import { Person } from '../../models/family-tree/person';
 import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilySearchService } from "../../services/family-search.service";
-import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
+// import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
-import {FamilyMember} from "../../models/family-tree/family-member";
+// import {FamilyMember} from "../../models/family-tree/family-member";
 import {FamilyTreeResponseModel} from "../../models/family-tree/family-tree-response.model";
 import {FamilyTree} from "../../models/family-tree/family-tree";
 
@@ -124,7 +124,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
    */
   ngOnInit() {
     console.log('FamilyTreePage: ngOnInit');
-    this.loadFamilyTree();
+    // this.loadFamilyTree();
   }
 
   /**
@@ -139,14 +139,14 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   /**
    * Loads the family tree data.
    */
-  loadFamilyTree() {
+  /*loadFamilyTree() {
     console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
     this.error = null;
 
     try {
-      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
-
+      // this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
+      this.familyTreeData = null;
       // Create root member from the top-level data
       this.rootMember = createFamilyMemberFromResponse({
         id: this.familyTreeData.id,
@@ -178,7 +178,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       this.error = 'Failed to load family tree data.';
       this.loading = false;
     }
-  }
+  }*/
 
   /**
    * Handles the search event.

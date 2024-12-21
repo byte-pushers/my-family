@@ -5,7 +5,7 @@
  * @author Danny Amezquita
  */
 
-import { BaseDomainModel } from '../base-domain-model';
+import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
 import { FamilyMember } from './family-member.model';
 import { RelationshipType } from './relationship-type';
