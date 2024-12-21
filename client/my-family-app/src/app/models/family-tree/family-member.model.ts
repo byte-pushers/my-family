@@ -5,11 +5,11 @@
  * @author Danny Amezquita
  * @version 1.0.0
  */
-import { BaseDomainModel } from '../base-domain.model';  // Import BaseDomainModel
-import { Person } from './person';                      // Import Person
+import { BaseDomainModel } from '../base-domain.model'; // Import BaseDomainModel
+import { Person } from './person'; // Import Person
 import { RelationshipType } from './relationship-type';
 import { FamilyMember } from './family-member';
-import { PersonModel } from './person.model'; // Import RelationshipType
+import { PersonModel } from './person.model';
 
 export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
   readonly #relationship: RelationshipType;
@@ -26,6 +26,8 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
    * @param {Date} createdDate - The date the record was created.
    * @param {Date} updatedDate - The date the record was last updated.
    */
+  constructor(...args: any[])
+  constructor(props: any)
   constructor(
       id: number,
       relationship: RelationshipType,
@@ -34,10 +36,43 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
       updatedBy: string,
       createdDate: Date,
       updatedDate: Date
-  ) {
-    super({id, createdBy, createdDate, updatedBy, updatedDate});  // Initialize BaseDomainModel fields
-    this.#relationship = relationship;
-    this.#person = person;
+  )
+  constructor() {
+    const props: any = {};
+
+    function getSuperParameters(args: IArguments, props: any): any {
+      if (args.length === 1) {
+        props.id = args[0].id;
+        props.relationship = args[0].relationship;
+        props.person = args[0].person;
+        props.createdBy = args[0].createdBy;
+        props.updatedBy = args[0].updatedBy;
+        props.createdDate = args[0].createdDate;
+        props.updatedDate = args[0].updatedDate;
+      } else {
+        const id = args[0];
+        const relationship = args[1];
+        const person = args[2];
+        const createdBy = args[4];
+        const createdDate = args[5];
+        const updatedBy = args[6];
+        const updatedDate = args[7];
+
+        props.id = id;
+        props.relationship = relationship;
+        props.person = person;
+        props.createdBy = createdBy;
+        props.updatedBy = updatedBy;
+        props.createdDate = createdDate;
+        props.updatedDate = updatedDate;
+      }
+
+      return props;
+    }
+    super(getSuperParameters(arguments, props));
+    const r = this.createRelationShip(props?.relationship);
+    this.#relationship = RelationshipType[r];
+    this.#person = new PersonModel(props?.person);
   }
 
   /**
@@ -69,9 +104,17 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
       "relationship": "${this.#relationship}",
       "person": ${this.#person.toString()}
     }`;
+  }
 
-    console.log(`FamilyMember: ${s}`);
+  private createRelationShip(relationship: any): string | undefined {
+    const keys = Object.keys(RelationshipType);
 
-    return s;
+    return keys.find((key, index) => {
+      if (key === relationship) {
+        return RelationshipType[key];
+      }
+
+      return undefined;
+    });
   }
 }
