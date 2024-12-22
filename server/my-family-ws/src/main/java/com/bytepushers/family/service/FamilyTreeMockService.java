@@ -1,12 +1,11 @@
 package com.bytepushers.family.service;
 
 import com.bytepushers.family.model.BaseModel;
-import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import com.bytepushers.family.model.Person;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -28,12 +27,12 @@ public class FamilyTreeMockService implements FamilyTreeService {
      * @return the created family tree with assigned IDs and audit fields
      */
     @Override
-    public FamilyTree createFamilyTree(FamilyTree familyTree) {
+    public FamilyTree createFamilyTree(Long userId, FamilyTree familyTree) {
         familyTree.setId(idGenerator.getAndIncrement());
         setAuditFields(familyTree);
 
-        if (familyTree.getFamilyMembers() != null) {
-            for (FamilyMember familyMember : familyTree.getFamilyMembers()) {
+        if (familyTree.getPeople() != null) {
+            for (Person familyMember : familyTree.getPeople()) {
                 assignIdsAndSetAuditFields(familyMember);
             }
         }
@@ -49,20 +48,18 @@ public class FamilyTreeMockService implements FamilyTreeService {
      * @return the family tree, or null if not found
      */
     @Override
-    public FamilyTree getFamilyTree(Integer id) {
-        return null; // Not implemented for mock service.
+    public FamilyTree getFamilyTree(Long id) {
+        return null;
     }
 
-    /**
-     * Retrieves a {@link FamilyMember} along with its child members by the member's unique ID.
-     * Currently returns null as this is a mock implementation.
-     *
-     * @param id the unique identifier of the family member
-     * @return the family member with its child members, or null if not found
-     */
     @Override
-    public FamilyMember getFamilyMemberWithChildren(Integer id) {
-        return null; // Not implemented for mock service.
+    public FamilyTree updateFamilyTree(Long userId, FamilyTree familyTree) {
+        return null;
+    }
+
+    @Override
+    public String deleteFamilyTree(Long id) {
+        return null;
     }
 
     /**
@@ -71,21 +68,22 @@ public class FamilyTreeMockService implements FamilyTreeService {
      *
      * @param familyMember the family member to process
      */
-    private void assignIdsAndSetAuditFields(FamilyMember familyMember) {
-        familyMember.setId(idGenerator.getAndIncrement());
-        setAuditFields(familyMember);
+    private void assignIdsAndSetAuditFields(Person person) {
+        person.setId(idGenerator.getAndIncrement());
+        setAuditFields(person);
 
-        if (familyMember.getPerson() != null) {
-            Person person = familyMember.getPerson();
+        if (person != null) {
             person.setId(idGenerator.getAndIncrement());
             setAuditFields(person);
+
+            /*if (person.getFamilyMembers() != null && person.getFamilyMembers().size() > 0) {
+                for (FamilyMember child : person.getFamilyMembers()) {
+                    assignIdsAndSetAuditFields(child);
+                }
+            }*/
         }
 
-        if (familyMember.getFamilyMembers() != null) {
-            for (FamilyMember child : familyMember.getFamilyMembers()) {
-                assignIdsAndSetAuditFields(child);
-            }
-        }
+
     }
 
     /**
@@ -100,11 +98,14 @@ public class FamilyTreeMockService implements FamilyTreeService {
             entity.setCreatedBy("defaultUser");
         }
         if (entity.getCreatedDate() == null) {
-            entity.setCreatedDate(LocalDateTime.now());
+            entity.setCreatedDate( new Date());
         }
         if (entity.getUpdatedBy() == null) {
             entity.setUpdatedBy(entity.getCreatedBy());
         }
-        entity.setUpdatedDate(LocalDateTime.now());
+        if (entity.getUpdatedDate() == null) {
+            entity.setUpdatedDate( new Date());
+        }
+        //entity.setUpdatedDate(new Date());
     }
 }

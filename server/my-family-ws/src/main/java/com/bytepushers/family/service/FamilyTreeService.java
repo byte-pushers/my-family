@@ -1,6 +1,5 @@
 package com.bytepushers.family.service;
 
-import com.bytepushers.family.model.FamilyMember;
 import com.bytepushers.family.model.FamilyTree;
 import jakarta.validation.Valid;
 
@@ -9,7 +8,6 @@ import jakarta.validation.Valid;
  * Defines operations for creating and retrieving {@link FamilyTree} and {@link FamilyMember} entities.
  */
 public interface FamilyTreeService {
-
     /**
      * Creates a new {@link FamilyTree}.
      * Validates the input family tree object and assigns necessary metadata.
@@ -17,21 +15,14 @@ public interface FamilyTreeService {
      * @param familyTree the family tree to create
      * @return the created {@link FamilyTree}
      */
-    FamilyTree createFamilyTree(@Valid FamilyTree familyTree);
-
+    FamilyTree createFamilyTree(Long userId, @Valid FamilyTree familyTree);
     /**
      * Retrieves a {@link FamilyTree} by its unique ID.
      *
      * @param id the unique identifier of the family tree
      * @return the family tree, or null if not found
      */
-    FamilyTree getFamilyTree(Integer id);
-
-    /**
-     * Retrieves a {@link FamilyMember} along with its child members by the member's unique ID.
-     *
-     * @param id the unique identifier of the family member
-     * @return the {@link FamilyMember} with its child members, or null if not found
-     */
-    FamilyMember getFamilyMemberWithChildren(Integer id);
+    FamilyTree getFamilyTree(Long id);
+    FamilyTree updateFamilyTree(Long id, FamilyTree familyTree);
+    String deleteFamilyTree(Long id);
 }
