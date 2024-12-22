@@ -1,5 +1,5 @@
-import { AddressModel } from "./address.model";
-import { PhoneNumberModel } from "./phone-number.model";
+import { AddressModel } from './address.model';
+import { PhoneNumberModel } from './phone-number.model';
 import { Address } from './address';
 import { AccountInfo } from './account-info';
 import { PhoneNumber } from './phone-number';

@@ -5,5 +5,5 @@ export interface FamilyMember {
   relationship: RelationshipType;
   person: Person;
 
-  getId(): number | undefined;
+  getId(): number | undefined | null;
 }

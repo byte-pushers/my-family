@@ -1,12 +1,12 @@
-import { HttpErrorInfo } from "./http-error-info";
-import { HttpErrorInfoProperties } from "./http-error-info.properties";
-import { ErrorInfoModel } from "../error/error-info.model";
+import { HttpErrorInfo } from './http-error-info';
+import { HttpErrorInfoProperties } from './http-error-info.properties';
+import { ErrorInfoModel } from '../error/error-info.model';
 
 export class HttpErrorInfoModel
   extends ErrorInfoModel
   implements HttpErrorInfo
 {
-  #httpStatusCode: number;
+  #httpStatusCode?: number;
 
   constructor(config: HttpErrorInfoProperties) {
     super(config);

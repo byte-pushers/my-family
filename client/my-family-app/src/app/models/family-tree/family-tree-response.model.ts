@@ -9,7 +9,6 @@ import { BaseDomainModel } from '../base-domain.model'; // Import BaseDomainMode
 import { FamilyTreeResponse } from './family-tree-response'; // Import FamilyTreeResponse
 import { FamilyTree } from './family-tree'; // Import FamilyTree
 import { FamilyTreeModel } from './family-tree.model'; // Import FamilyTreeModel
-import { FamilyMemberModel } from './family-member.model'; // Import FamilyMemberModel
 import { RelationshipType } from './relationship-type'; // Import RelationshipType
 
 // @ts-ignore

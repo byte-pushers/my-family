@@ -1,5 +1,5 @@
 import { Permission } from './permission';
-import { Role } from "./role";
+import { Role } from './role';
 
 export class RoleModel implements Role{
   #name: string;

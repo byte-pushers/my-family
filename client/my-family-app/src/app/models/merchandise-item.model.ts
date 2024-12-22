@@ -10,8 +10,7 @@ import { MerchandiseItem } from './merchandise-item';
  * Class representing a merchandise item.
  */
 export class MerchandiseItemModel implements MerchandiseItem {
-  // @ts-ignore
-  id?: string;
+  id: string;
   name: string;
   description?: string;
   price: number;

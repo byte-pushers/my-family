@@ -1,5 +1,5 @@
-import { HttpErrorInfo } from "./http-error-info";
-import { HttpErrorProperties } from "./http-error.properties";
+import { HttpErrorInfo } from './http-error-info';
+import { HttpErrorProperties } from './http-error.properties';
 
 export interface HttpError extends HttpErrorProperties {
   getName(): string;

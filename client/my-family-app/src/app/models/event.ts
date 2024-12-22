@@ -1,7 +1,7 @@
 import { AgendaItem } from './agenda-item';
-import { BaseDomain } from "./base-domain";
-import { Address } from "./address";
-import { MerchandiseItem } from "./merchandise-item";
+import { BaseDomain } from './base-domain';
+import { Address } from './address';
+import { MerchandiseItem } from './merchandise-item';
 
 
 export interface Event extends BaseDomain {

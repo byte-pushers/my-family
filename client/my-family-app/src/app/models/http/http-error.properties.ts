@@ -1,4 +1,4 @@
-import { HttpErrorInfo } from "./http-error-info";
+import { HttpErrorInfo } from './http-error-info';
 
 export interface HttpErrorProperties {
   name: string;

@@ -1,6 +1,5 @@
 import { BaseDomainModel } from '../base-domain.model';
 import { FamilyTree } from './family-tree';
-import { RelationshipType } from './relationship-type';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
 

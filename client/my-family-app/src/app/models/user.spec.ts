@@ -2,9 +2,9 @@
 import { FamilyMemberModel } from './family-tree/family-member.model';
 import { PersonModel } from './family-tree/person.model';
 import { RelationshipType } from './family-tree/relationship-type';
-import { PermissionModel } from "./permission.model";
-import { RoleModel } from "./role.model";
-import { UserModel } from "./user.model";
+import { PermissionModel } from './permission.model';
+import { RoleModel } from './role.model';
+import { UserModel } from './user.model';
 
 //jasmine describe which helps group related test cases, to be used
 describe('User Model', () => {

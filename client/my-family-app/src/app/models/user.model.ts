@@ -1,6 +1,6 @@
 import { Role } from './role';
 import { FamilyMember } from './family-tree/family-member';
-import { User } from "./user";
+import { User } from './user';
 
 export class UserModel implements User {
   #username: string;

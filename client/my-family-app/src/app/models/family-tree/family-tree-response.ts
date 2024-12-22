@@ -50,11 +50,11 @@ export function createPersonFromResponse(data: PersonResponseData): Person {
  * Interface representing the main response for a family tree.
  */
 export interface FamilyTreeResponse {
-  id: number;
-  createdBy: string;
-  updatedBy: string | null;
-  createdDate: string;
-  updatedDate: string | null;
+  id?: number | null;
+  createdBy?: string;
+  updatedBy?: string | null;
+  createdDate?: string;
+  updatedDate?: string | null;
   relationship: string;
   person: PersonResponseData;  // Raw data that will be converted to Person
   parent: number | null;

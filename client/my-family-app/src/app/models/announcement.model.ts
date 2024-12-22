@@ -7,7 +7,7 @@
 /**
  * Represents an announcement.
  */
-import { Announcement} from "./announcement";
+import { Announcement} from './announcement';
 
 export class AnnouncementModel implements Announcement {
   title: string;
