@@ -40,8 +40,8 @@ export function createPersonFromResponse(data: PersonResponseData): Person {
     new Date(data.birthDate),
     [], // Initialize empty family members array
     data.createdBy,
-    new Date(data.createdDate),
     data.updatedBy || undefined,
+    new Date(data.createdDate),
     data.updatedDate ? new Date(data.updatedDate) : undefined
   );
 }
@@ -76,8 +76,8 @@ export function createFamilyMemberFromResponse(data: FamilyTreeResponse): Family
     data.relationship as RelationshipType,
     person,
     data.createdBy,
-    data.updatedBy || '',
-    new Date(data.createdDate),
-    data.updatedDate ? new Date(data.updatedDate) : new Date()
+    data.updatedBy || undefined,
+    data.createdDate,
+    data.updatedDate ? new Date(data.updatedDate) : undefined
   );
 }

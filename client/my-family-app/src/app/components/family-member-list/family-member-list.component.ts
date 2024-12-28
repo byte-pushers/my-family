@@ -84,7 +84,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
 
     if (this.rootMember && (!this.currentSearchQuery || this.memberMatchesSearch(this.rootMember))) {
       const rootId = this.rootMember.getId();
-      if (rootId !== undefined) {
+      if (rootId !== undefined && rootId !== null) {
         memberIds.add(rootId);
         filteredMembers.push(this.rootMember);
       }
@@ -94,6 +94,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
       const memberId = member.getId();
       if (
         memberId !== undefined &&
+        memberId !== null &&
         !memberIds.has(Number(memberId)) &&
         (!this.currentSearchQuery || this.memberMatchesSearch(member))
       ) {
@@ -167,8 +168,8 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calculates the age of a family member based on their birth date.
-   * @param {Date} birthDate - The birth date of the family member.
+   * Calculates the age of a family member based on their birthdate.
+   * @param {Date} birthDate - The birthdate of the family member.
    * @returns {number} The age of the family member.
    */
   calculateAge(birthDate: Date): number {

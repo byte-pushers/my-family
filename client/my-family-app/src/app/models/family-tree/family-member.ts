@@ -1,7 +1,8 @@
 import { RelationshipType } from './relationship-type';
 import { Person } from './person';
+import { BaseDomain } from "../base-domain";
 
-export interface FamilyMember {
+export interface FamilyMember extends BaseDomain {
   relationship: RelationshipType;
   person: Person;
 

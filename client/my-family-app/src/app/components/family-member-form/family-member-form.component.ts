@@ -12,7 +12,7 @@ import {
 } from "@angular/forms";
 
 /**
- * A standalone Angular component for adding and managing family members of one relationship.
+ * A standalone Angular component for adding and removing family members of one relationship.
  * @author Stella Choi
  */
 @Component({
