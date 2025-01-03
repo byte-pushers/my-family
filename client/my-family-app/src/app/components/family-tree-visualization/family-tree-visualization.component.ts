@@ -98,7 +98,7 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       const person = createPersonFromResponse(member.person);
 
       return {
-        id: member.id,
+        id: member.id as number,
         name: `${person.firstName} ${person.lastName}`,
         image: `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(person.firstName)}`,
         children: member.familyMembers.map(child => buildFamilyNode(child))
