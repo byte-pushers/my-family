@@ -27,7 +27,7 @@ import java.util.Map;
  * </p>
  */
 @RestController
-@RequestMapping("/api/family-trees")
+@RequestMapping("/api")
 @CrossOrigin
 public class FamilyTreeController {
 
@@ -76,7 +76,7 @@ public class FamilyTreeController {
      * @param id the ID of the family member to retrieve
      * @return the family member with their associated children
      */
-/*    @GetMapping("/{id}")
+/*    @GetMapping("/family-trees/{id}")
     public ResponseEntity<FamilyTree> getFamilyTree(@PathVariable Integer id) {
         logger.info("Attempting to get family tree with id: {}", id);
         try {
