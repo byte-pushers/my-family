@@ -15,15 +15,9 @@ import { FooterNavigationComponent } from "../../components/shared/footer-naviga
 import { FamilyTreeService } from "../../services/family-tree.service";
 import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
 import { createFamilyMemberFromResponse, FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
-import { FamilyMember } from '../../models/family-tree/family-member.model';
-import { Person } from '../../models/family-tree/person';
-import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilySearchService } from "../../services/family-search.service";
-// import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
-// import {FamilyMember} from "../../models/family-tree/family-member";
-import {FamilyTreeResponseModel} from "../../models/family-tree/family-tree-response.model";
-import {FamilyTree} from "../../models/family-tree/family-tree";
+import { FamilyMember } from '../../models/family-tree/family-member';
 
 @Component({
   selector: 'app-family-tree',
@@ -66,7 +60,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   /**
    * The ID of the selected family member.
    */
-  selectedId?: number;
+  selectedId?: number| null;
 
   /**
    * Indicates whether the data is loading.

@@ -6,5 +6,5 @@ import { HttpErrorInfoProperties } from './http-error-info.properties';
  *
  */
 export interface HttpErrorInfo extends HttpErrorInfoProperties {
-  getHttpStatusCode(): number;
+  getHttpStatusCode(): number | undefined;
 }

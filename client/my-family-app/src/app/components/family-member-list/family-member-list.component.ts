@@ -27,7 +27,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
   /** The root member of the family tree */
   @Input() rootMember?: FamilyMember;
   /** The ID of the selected family member */
-  @Input() selectedMemberId?: number;
+  @Input() selectedMemberId?: number | null;
   /** Event emitted when a family member is selected */
   @Output() memberSelected = new EventEmitter<number>();
   /** Event emitted when a family member is deleted */

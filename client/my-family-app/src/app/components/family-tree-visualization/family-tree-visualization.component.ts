@@ -24,7 +24,7 @@ import {
 })
 export class FamilyTreeVisualizationComponent implements OnChanges {
   /** The ID of the selected family member */
-  @Input() selectedMemberId?: number;
+  @Input() selectedMemberId?: number | null;
   /** The family tree data to visualize */
   @Input() familyTreeData!: FamilyTreeResponse;
   private resizeObserver: ResizeObserver;

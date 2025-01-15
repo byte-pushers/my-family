@@ -13,11 +13,11 @@ export class HttpErrorInfoModel
     this.#httpStatusCode = config?.httpStatusCode;
   }
 
-  getHttpStatusCode(): number {
+  getHttpStatusCode(): number | undefined {
     return this.#httpStatusCode;
   }
 
-  get httpStatusCode(): number {
+  get httpStatusCode(): number | undefined{
     return this.#httpStatusCode;
   }
 }
