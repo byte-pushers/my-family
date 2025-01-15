@@ -88,7 +88,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
                 });
 
         initializeFamilyMembers(familyTree.getFamilyMembers());
-        return familyTree;
+        return ""; // familyTree;
     }
 
     /**

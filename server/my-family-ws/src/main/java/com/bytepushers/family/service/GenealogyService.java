@@ -35,7 +35,7 @@ public abstract class GenealogyService implements FamilyTreeService {
      * @return the created family tree
      */
     @Override
-    public FamilyTree createFamilyTree(FamilyTree familyTree) {
-        return familyTreeRepository.save(familyTree);
+    public /*FamilyTree*/ String createFamilyTree(FamilyTree familyTree) {
+        return ""; // familyTreeRepository.save(familyTree);
     }
 }
