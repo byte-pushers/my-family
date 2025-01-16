@@ -1,5 +1,5 @@
-import { BaseModel } from '../base.model';
 import { FamilyMember } from './family-member';
+import { BaseDomain } from '../base-domain';
 
 export interface Person extends BaseDomain {
   firstName: string;

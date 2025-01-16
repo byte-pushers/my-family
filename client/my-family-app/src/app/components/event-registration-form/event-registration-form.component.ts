@@ -8,10 +8,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {MerchandiseItemModel} from "../../models/merchandise-item.model";
-import {Router} from '@angular/router';
-import { MerchandiseItem } from '../../models/merchandise-item';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { MerchandiseItemModel } from "../../models/merchandise-item.model";
+import { Router } from '@angular/router';
+import {MerchandiseItem} from "../../models/merchandise-item";
 
 @Component({
   selector: 'app-event-registration-form',
@@ -36,8 +36,8 @@ export class EventRegistrationFormComponent implements OnInit {
 
   merchandiseItems:MerchandiseItem[] = [];
   /** The list of merchandise items available for purchase */
-  merchandiseItems: MerchandiseItemModel[] = [
-    new MerchandiseItemModel(   /* {
+/*  merchandiseItems: MerchandiseItemModel[] = [
+    new MerchandiseItemModel({
       id: 'tshirt-001',
       name: 'Event T-Shirt',
       description: 'Comfortable cotton t-shirt with event logo',

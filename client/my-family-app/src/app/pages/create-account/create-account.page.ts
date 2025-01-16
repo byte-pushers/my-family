@@ -1,21 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormGroup, FormControl } from '@angular/forms';
-/* import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs'; */ // will be used for api call later
-import { DatePipe } from '@angular/common';
-import { CreateAccountService } from "../../services/create-account.service";
-import { CreateAccountRequestPayload } from "../../models/create-account-request.payload";
-import { AccountInfoModel } from "../../models/account-info.model";
-import { AddressModel } from "../../models/address.model"
-import { PhoneNumberModel } from "../../models/phone-number.model";
-import {create} from "ionicons/icons";
-import {Router} from "@angular/router";
-import { ToastController }  from "@ionic/angular";
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { Router, RouterModule } from '@angular/router';
+import { AlertController } from '@ionic/angular/standalone';
 
 /**
  * Component for handling the Create Account page.
@@ -121,70 +109,21 @@ export class CreateAccountPage implements OnInit {
     this.userAge = ageInYears;
   }
 
-  // Method to handle form submission
-  onSubmit() {
-    // Comment out validation and API logic for now
-    /*
-    this.submitted = true;
-    console.log(this.profileForm.getRawValue())
-    if (this.profileForm.valid) {
-      console.log(this.profileForm.value);
+  /**
+   * Handles the form submission and displays success or error messages.
+   */
+  async onSubmit(): Promise<void> {
+    this.submitted = true; // Set the flag to true when the form is submitted
+    this.loading = true;
 
-      const address = new AddressModel(
-        this.profileForm.get("address")?.value,
-        "AddressLine2",
-        "City",
-        "State",
-        "Zipcode"
-      );
+    if (this.isValid()) {
+      console.log(this.profileForm.value); // Process the form data
 
-      const phoneNumber = new PhoneNumberModel(
-        "Type",
-        "CountryCode",
-        "AreaCode",
-        "SubscriberNumber"
-      );
+      // Show the success alert
+      await this.successAlert();
 
-      const accountInfo: AccountInfo = new AccountInfoModel(
-        this.profileForm.get("firstName")?.value,
-        "middleNamePlaceholder",
-        this.profileForm.get("lastName")?.value,
-        this.profileForm.get("email")?.value,
-        "passwordPlaceholder",
-        phoneNumber,
-        address
-      );
-
-      const createAccountRequestPayload = new CreateAccountRequestPayload(accountInfo);
-
-      this.createAccountService.createAccount(createAccountRequestPayload).subscribe(async response => {
-        console.log(`Account created successfully with Transaction id: ${createAccountRequestPayload.getTransactionID()}`, response);
-    */
-
-    // Just show success toast and navigate
-    this.toastCtrl.create({
-      message: 'Account Successfully Created!',
-      duration: 2000,
-      position: 'top',
-      color: 'success'
-    }).then(toast => toast.present());
-
-    // Navigate to subscription plan page
-    this.router.navigate(['/subscription-plan']);
-
-    /*
-      },
-        async error => {
-          console.error('Account creation failed:', error);
-          const toast = await this.toastCtrl.create({
-            message: 'Account creation failed. Please try again.',
-            duration: 2000,
-            position: 'top',
-            color: 'danger'
-          });
-          await toast.present();
-
-      })
+      // Navigate to /subscription-plan after success
+      this.router.navigate(['/subscription-plan']);
     } else {
       console.log('Form is invalid');
       const firstInvalidControl = Object.keys(this.profileForm.controls).find(

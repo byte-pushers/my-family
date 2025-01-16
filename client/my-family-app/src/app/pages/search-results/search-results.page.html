@@ -104,7 +104,7 @@
 
       <!-- People List -->
       <ion-list *ngIf="people.length > 0" class="ion-no-padding">
-        <ion-item *ngFor="let person of people" class="bg-blue-50">
+        <ion-item *ngFor="let personDisplay of people" class="bg-blue-50">
           <div class="flex gap-4 w-full p-4">
             <!-- Avatar -->
             <div class="flex-shrink-0">
@@ -121,7 +121,7 @@
             <div class="flex-1">
               <!-- Details -->
               <div class="mb-3">
-                <h2 class="text-lg font-medium text-gray-900">{{person.firstName}} {{person.lastName}}</h2>
+                <h2 class="text-lg font-medium text-gray-900">{{personDisplay.person.firstName}} {{personDisplay.person.lastName}}</h2>
                 <p class="text-sm text-gray-600">{{'1330 Regal Row, Dallas, Tx'}}</p>
               </div>
 
@@ -130,7 +130,7 @@
                 <ion-button
                   fill="outline"
                   size="small"
-                  (click)="navigateToProfile(person); $event.stopPropagation();"
+                  (click)="navigateToProfile(personDisplay); $event.stopPropagation();"
                   class="min-w-0 px-4"
                 >
                   Profile
@@ -159,7 +159,6 @@
         <span *ngIf="filters?.type"> in {{filters?.type}}</span>
       </p>
     </div>
-  </div>
   </div>
 </ion-content>
 

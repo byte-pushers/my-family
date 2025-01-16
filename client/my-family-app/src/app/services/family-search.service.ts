@@ -13,13 +13,21 @@ import { FamilyMember } from "../models/family-tree/family-member";
   providedIn: 'root'
 })
 export class FamilySearchService {
-  private searchResults = new BehaviorSubject<FamilyMemberModel[]>([]);
-  private selectedMember = new BehaviorSubject<FamilyMemberModel | null>(null);
+  private searchResults = new BehaviorSubject<FamilyMember[]>([]);
+  private selectedMember = new BehaviorSubject<FamilyMember | null>(null);
+  private searchQuery = new BehaviorSubject<string>('');
 
   constructor() {}
 
-  // Search both tree and list
-  searchMembers(query: string, members: FamilyMemberModel[]): void {
+  /**
+   * Searches for family members based on the query.
+   *
+   * @param query The search query string.
+   * @param members The list of family members to search within.
+   */
+  searchMembers(query: string, members: FamilyMember[]): void {
+    this.searchQuery.next(query);
+
     if (!query.trim()) {
       // When no search query, show all members
       this.searchResults.next(members);
@@ -35,17 +43,34 @@ export class FamilySearchService {
     this.searchResults.next(filtered);
   }
 
-  // Handle member selection from list
-  selectMember(member: FamilyMemberModel): void {
+  getSearchQuery(): Observable<string> {
+    return this.searchQuery.asObservable();
+  }
+
+  /**
+   * Selects a family member from the list.
+   *
+   * @param member The family member to select.
+   */
+  selectMember(member: FamilyMember): void {
     this.selectedMember.next(member);
   }
 
-  // Observable for components to subscribe to
-  getSearchResults(): Observable<FamilyMemberModel[]> {
+  /**
+   * Returns an observable of the search results.
+   *
+   * @returns An observable of the search results.
+   */
+  getSearchResults(): Observable<FamilyMember[]> {
     return this.searchResults.asObservable();
   }
 
-  getSelectedMember(): Observable<FamilyMemberModel | null> {
+  /**
+   * Returns an observable of the selected family member.
+   *
+   * @returns An observable of the selected family member.
+   */
+  getSelectedMember(): Observable<FamilyMember | null> {
     return this.selectedMember.asObservable();
   }
 

@@ -1,7 +1,7 @@
 import { Address } from './address';
-import { BaseModel } from './base.model';
 import { MerchandiseItem } from './merchandise-item';
 import { AgendaItem } from './agenda-item';
+import { BaseDomain } from './base-domain';
 
 
 export interface Event extends BaseDomain {

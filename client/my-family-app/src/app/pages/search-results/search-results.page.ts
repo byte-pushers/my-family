@@ -56,21 +56,19 @@ export class SearchResultsPage implements OnInit {
    */
   people: PersonDisplay[] = [];
 
-  // Mock data using your interfaces
-  private mockEvents: Event[] = [{
-    id: 1,
-    name: "Alejandro's Graduation",
-    type: "graduation",
-    startDate: new Date("2023-12-24"),
-    endDate: new Date("2023-12-24"),
-    startTime: new Date("2023-12-24T18:00:00"),
-    endTime: new Date("2023-12-24T18:30:00"),
-    location: {
-      addressLine1: "123 University Drive",
-      addressLine2: "",
-      city: "Dallas",
-      state: "TX",
-      zipcode: "75001",
+  /**
+   * Mock data for events.
+   */
+  /*private mockEvents: Event[] = [
+    {
+      name: "Alejandro's Graduation",
+      type: "graduation",
+      startDate: "2023-12-25",
+      endDate: "2023-12-25",
+      startTime: "18:00",
+      endTime: "18:30",
+      location: "Dallas University",
+      agendas: []
     },
     agendas: [],
     merchandiseList: [],
@@ -110,9 +108,41 @@ export class SearchResultsPage implements OnInit {
     merchandiseList: [],
   }];*/
 
-  // private mockEvents: Event[] = [{}] as Event[];
-
-  private mockPeople: Array<Person> = [];
+  /**
+   * Mock data for people.
+   */
+ /* private mockPeople: PersonDisplay[] = [
+    {
+      person: new Person(
+        1,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Marge',
+      address: '1258 Titan Dr, Dallas, TX 75247'
+    },
+    {
+      person: new Person(
+        2,
+        "Julia",
+        "Harris",
+        new Date('1994-10-03'),
+        [],
+        'system',
+        new Date(),
+        'system',
+        new Date()
+      ),
+      nickname: 'Gabby',
+      address: '1330 Regal Row, Dallas, TX 75000'
+    }
+  ];*/
 
   constructor(
     private router: Router,
@@ -276,27 +306,13 @@ export class SearchResultsPage implements OnInit {
     });
   }
 
-  formatEventLocation(event: Event): string {
-    if (!event.location) return '';
-
-    // Create an array of address parts
-    const addressParts = [
-      event.location.addressLine1,
-      event.location.addressLine2,
-      event.location.city,
-      event.location.state,
-      event.location.zipcode
-    ];
-
-    // Filter out empty strings and join with proper separators
-    return addressParts
-      .filter(part => part && part.trim() !== '')
-      .join(', ');
-  }
-
-  navigateToProfile(person: Person) {
-    if (person.id) {
-      this.router.navigate(['/profile', person.id]);
+  /**
+   * Navigates to the profile page of the selected person.
+   * @param {PersonDisplay} personDisplay - The person to navigate to.
+   */
+  navigateToProfile(personDisplay: PersonDisplay) {
+    if (personDisplay.person.id) {
+      this.router.navigate(['/family-member', personDisplay.person.id]);
     }
   }
 

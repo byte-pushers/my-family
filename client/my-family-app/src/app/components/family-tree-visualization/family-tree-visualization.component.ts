@@ -1,13 +1,20 @@
+/**
+ * @file family-tree-visualization.component.ts
+ * @description This file contains the FamilyTreeVisualizationComponent which visualizes a family tree using D3.js.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
+
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
-import { FamilyNode } from "../../interfaces/family-node";
+import * as familyData from './mock-data.json';
+import { FamilyNode } from "../../models/family-node";
 import { ForceSimulation } from './force-simulation';
-import { FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
-import { FamilyMemberModel } from '../../models/family-tree/family-member.model';
-import { PersonModel } from '../../models/family-tree/person.model';
-import { RelationshipType } from '../../models/family-tree/relationship-type';
-import {FamilyMember} from "../../models/family-tree/family-member";
-import {Person} from "../../models/family-tree/person";
+import {
+  createFamilyMemberFromResponse,
+  createPersonFromResponse,
+  FamilyTreeResponse
+} from "../../models/family-tree/family-tree-response";
 
 @Component({
   selector: 'app-family-tree-visualization',
@@ -16,7 +23,9 @@ import {Person} from "../../models/family-tree/person";
   styleUrls: ['./family-tree-visualization.component.scss']
 })
 export class FamilyTreeVisualizationComponent implements OnChanges {
+  /** The ID of the selected family member */
   @Input() selectedMemberId?: number | null;
+  /** The family tree data to visualize */
   @Input() familyTreeData!: FamilyTreeResponse;
   private resizeObserver: ResizeObserver;
   private svg: any;
@@ -75,58 +84,14 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     }
   }
 
+  /**
+   * Transforms the API response to a FamilyNode structure.
+   * @param {FamilyTreeResponse} data - The raw API data.
+   * @returns {FamilyNode} The transformed family node.
+   */
   private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
     console.log('FamilyTreeVisualization: Raw API Data:', data);
 
-    // Get the root member (Father)
-    const rootMember = data.data.familyMembers[0];
-
-    if (!rootMember || !rootMember.person) {
-      return {
-        name: 'No Data',
-        children: []
-      };
-    }
-
-    // Recursive function to build the tree structure
-    const buildFamilyNode = (member: FamilyMember): FamilyNode => {
-      if (!member.person) {
-        return {
-          name: `Unknown ${member.relationship}`,
-          children: []
-        };
-      }
-
-      const node: FamilyNode = {
-        name: `${member.person.firstName} ${member.person.lastName}`,
-        children: []
-      };
-
-      // Add ID if available
-      if (member.person.id) {
-        node.id = member.person.id;
-      }
-
-      // Add image
-      node.image = `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(member.person.firstName)}`;
-
-      // Process children from person's familyMembers
-      if (member.person.familyMembers && member.person.familyMembers.length > 0) {
-        node.children = member.person.familyMembers
-          .filter(child => child.person !== null)
-          .map(child => buildFamilyNode(child));
-      }
-
-      return node;
-    };
-
-    // Start with the root member (Father)
-    return buildFamilyNode(rootMember);
-  } // @ts-ignore
-  /*private transformResponseToFamilyNode(data: FamilyTreeResponse): FamilyNode {
-    console.log('FamilyTreeVisualization: Raw API Data:', data);
-
-    // Convert raw data to our domain model instances
     const rootMember = createFamilyMemberFromResponse(data);
 
     const buildFamilyNode = (member: FamilyTreeResponse): FamilyNode => {

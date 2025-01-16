@@ -6,7 +6,11 @@
 
 import { MerchandiseItem } from './merchandise-item';
 
-export class MerchandiseItemModel extends BaseDomainModel implements MerchandiseItem {
+/**
+ * Class representing a merchandise item.
+ */
+export class MerchandiseItemModel implements MerchandiseItem {
+  id: string;
   name: string;
   description?: string;
   price: number;
@@ -119,7 +123,12 @@ export class MerchandiseItemModel extends BaseDomainModel implements Merchandise
   }
 
   // Behavior methods
-  /*getFormattedPrice(): string {
+
+  /**
+   * Get the formatted price.
+   * @returns {string} Formatted price.
+   */
+  public getFormattedPrice(): string {
     return `$${this.price.toFixed(2)}`;
   }
 
@@ -138,19 +147,5 @@ export class MerchandiseItemModel extends BaseDomainModel implements Merchandise
    */
   public hasSize(size: string): boolean {
     return this.sizes?.includes(size) ?? false;
-  }*/
-
-  public override toString(): string {
-    return `{
-      "name": "${this.name}",
-      "description": "${this.description}",
-      "price": "${this.price}",
-      "image": "${this.image}",
-      "sizes": "${this.sizes}",
-      "maxQuantity": "${this.maxQuantity}",
-      "type": "${this.type}",
-      "available": "${this.available}",
-      "category": "${this.category}"
-   }`;
   }
 }

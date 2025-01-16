@@ -76,6 +76,8 @@ export class FamilyMemberModel extends BaseDomainModel implements FamilyMember {
       "relationship": "${this?.relationship}",
       "person": ${this?.person?.toString()}${auditString.trim() === ''? `,\n\t  ${auditString}` : ''}
     }`;
+
+    return s;
   }
 
   private createRelationShip(relationship: any): string | undefined {

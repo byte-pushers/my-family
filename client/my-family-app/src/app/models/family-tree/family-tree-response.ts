@@ -1,5 +1,83 @@
-import { FamilyTree } from './family-tree';
+/**
+ * @file family-tree-response.ts
+ * @description This file contains the FamilyTreeResponse interface and helper functions to manage family tree response data.
+ * @version 1.0.0
+ * @author Danny Amezquita
+ */
 
+import { BaseDomainModel } from '../base-domain.model';
+import { Person } from './person';
+import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-member';
+import {FamilyTree} from "./family-tree";
+
+/**
+ * Interface representing raw person data from API before instantiation.
+ */
+export interface PersonResponseData {
+  id: number;
+  createdBy: string;
+  updatedBy: string | null;
+  createdDate: string;
+  updatedDate: string | null;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  gender: string;
+}
+
+/**
+ * Helper function to convert API data to Person instance.
+ * @param {PersonResponseData} data - Raw person data from API.
+ * @returns {Person} Instance of Person.
+ */
+export function createPersonFromResponse(data: PersonResponseData): Person {
+  // @ts-ignore
+  return new Person(
+    data.id,
+    data.firstName,
+    data.lastName,
+    new Date(data.birthDate),
+    [], // Initialize empty family members array
+    data.createdBy,
+    data.updatedBy || undefined,
+    new Date(data.createdDate),
+    data.updatedDate ? new Date(data.updatedDate) : undefined
+  );
+}
+
+/**
+ * Interface representing the main response for a family tree.
+ */
 export interface FamilyTreeResponse {
+  id?: number | null;
+  createdBy?: string;
+  updatedBy?: string | null;
+  createdDate?: string;
+  updatedDate?: string | null;
+  relationship: string;
+  person: PersonResponseData;  // Raw data that will be converted to Person
+  parent: number | null;
+  familyMembers: FamilyTreeResponse[];
   data: FamilyTree;
+}
+
+/**
+ * Helper function to convert API response to FamilyMember instance.
+ * @param {FamilyTreeResponse} data - Raw family tree response data from API.
+ * @returns {FamilyMember} Instance of FamilyMember.
+ */
+export function createFamilyMemberFromResponse(data: FamilyTreeResponse): FamilyMember {
+  const person = createPersonFromResponse(data.person);
+
+  // @ts-ignore
+  return new FamilyMember(
+    data.id,
+    data.relationship as RelationshipType,
+    person,
+    data.createdBy,
+    data.updatedBy || undefined,
+    data.createdDate,
+    data.updatedDate ? new Date(data.updatedDate) : undefined
+  );
 }

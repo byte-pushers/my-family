@@ -32,8 +32,12 @@ export class FamilyTreeService {
     });
   }
 
-  // POST - Submit the family tree data
-  public create(payload: FamilyTreeRequestPayload): Observable<FamilyTree> {
+  /**
+   * Creates a new family tree.
+   * @param {FamilyTreeRequestPayload} payload - The family tree data to be submitted.
+   * @returns {Observable<any>} An observable that emits the server response.
+   */
+  public create(payload: FamilyTreeRequestPayload): Observable<any> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
     return new Observable<FamilyTree>((observer) => {
       return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees`, payload, {
@@ -44,19 +48,24 @@ export class FamilyTreeService {
     });
   }
 
-  // GET - Retrieve family tree by ID
-  public getFamilyTree(id: number): Observable<FamilyTree> {
-    return new Observable<FamilyTree>((observer) => {
-      return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
-        headers: this.getHeaders()
-      }).subscribe((response: any) => {
-        // Create a FamilyTreeResponse structure
-        const familyTreeResponse: FamilyTreeResponse = {
-          data: response  // The raw response IS our FamilyTree
-        };
-        observer.next(familyTreeResponse.data);
-      });
-    });
+  /**
+   * Retrieves a family tree by its ID.
+   * @param {number} id - The ID of the family tree to retrieve.
+   * @returns {Observable<FamilyTreeResponse>} An observable that emits the family tree data.
+   */
+  public getFamilyTree(id: number): Observable<FamilyTreeResponse> {
+    return this.http.get<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees/${id}`, {
+      headers: this.getHeaders()
+    })
+    .pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          // Handle not found
+          console.error('Family tree not found:', error);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
