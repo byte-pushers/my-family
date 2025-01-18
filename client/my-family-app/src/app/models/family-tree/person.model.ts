@@ -11,6 +11,8 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #deceased: boolean;
   readonly #familyMembers: FamilyMember[];
 
+  public parents: Person[];
+
   constructor(...args: any[])
   constructor(props: any)
   constructor(
@@ -21,6 +23,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     gender: string,
     deceased: boolean,
     familyMembers: FamilyMember[],
+    parents: Person[],
     createdBy?: string,
     createdDate?: Date,
     updatedBy?: string,
@@ -38,6 +41,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.gender = args[0].gender;
         props.deceased = args[0].deceased;
         props.familyMembers = args[0].familyMembers;
+        props.parents = args[0].parents;
         props.createdBy = args[0].createdBy;
         props.createdDate = args[0].createdDate;
         props.updatedBy = args[0].updatedBy;
@@ -50,10 +54,11 @@ export class PersonModel extends BaseDomainModel implements Person {
         const gender = args[5];
         const deceased = args[6];
         const familyMembers = args[7];
-        const createdBy = args[8];
-        const createdDate = args[9];
-        const updatedBy = args[10];
-        const updatedDate = args[11];
+        const parents = args[8];
+        const createdBy = args[9];
+        const createdDate = args[10];
+        const updatedBy = args[11];
+        const updatedDate = args[12];
 
         props.id = id;
         props.firstName = firstName;
@@ -62,6 +67,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.gender = gender;
         props.deceased = deceased;
         props.familyMembers = familyMembers;
+        props.parents = parents;
         props.createdBy = createdBy;
         props.createdDate = createdDate;
         props.updatedBy = updatedBy;
@@ -79,6 +85,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#gender = props?.gender;
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#familyMembers = this.#createFamilyMembers(props?.familyMembers);
+    this.parents = props?.parents;
   }
 
   // Property-style and Method-style combined for firstName
@@ -138,6 +145,10 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#familyMembers;
   }
 
+  public getParents(): Person[] {
+    return this.parents;
+  }
+
   // Method to calculate age based on birthdate
   public calculateAge(): number {
     const today = new Date();
@@ -163,6 +174,9 @@ export class PersonModel extends BaseDomainModel implements Person {
       "deceased": ${this.#deceased},
       "familyMembers": [
         ${this.#familyMembers.join()}
+      ],
+      "parents": [
+        ${this.parents}
       ]${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
    }`;
   }
