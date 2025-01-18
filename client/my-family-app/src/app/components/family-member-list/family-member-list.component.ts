@@ -9,7 +9,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { FamilyMember } from '../../models/family-tree/family-member.model';
+import { FamilyMember } from "../../models/family-tree/family-member";
 import { Router } from "@angular/router";
 import { FamilySearchService } from "../../services/family-search.service";
 import { Subject, takeUntil } from "rxjs";
@@ -27,7 +27,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
   /** The root member of the family tree */
   @Input() rootMember?: FamilyMember;
   /** The ID of the selected family member */
-  @Input() selectedMemberId?: number;
+  @Input() selectedMemberId?: number | null;
   /** Event emitted when a family member is selected */
   @Output() memberSelected = new EventEmitter<number>();
   /** Event emitted when a family member is deleted */
@@ -84,7 +84,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
 
     if (this.rootMember && (!this.currentSearchQuery || this.memberMatchesSearch(this.rootMember))) {
       const rootId = this.rootMember.getId();
-      if (rootId !== undefined) {
+      if (rootId !== undefined && rootId !== null) {
         memberIds.add(rootId);
         filteredMembers.push(this.rootMember);
       }
@@ -94,7 +94,8 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
       const memberId = member.getId();
       if (
         memberId !== undefined &&
-        !memberIds.has(memberId) &&
+        memberId !== null &&
+        !memberIds.has(Number(memberId)) &&
         (!this.currentSearchQuery || this.memberMatchesSearch(member))
       ) {
         memberIds.add(memberId);
@@ -167,8 +168,8 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calculates the age of a family member based on their birth date.
-   * @param {Date} birthDate - The birth date of the family member.
+   * Calculates the age of a family member based on their birthdate.
+   * @param {Date} birthDate - The birthdate of the family member.
    * @returns {number} The age of the family member.
    */
   calculateAge(birthDate: Date): number {
@@ -189,7 +190,7 @@ export class FamilyMemberListComponent implements OnInit, OnDestroy {
    */
   onMemberClick(member: FamilyMember): void {
     const id = member.getId();
-    if (id !== undefined) {
+    if (id != null) {
       this.memberSelected.emit(id);
     }
   }

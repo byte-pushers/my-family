@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FamilyTreeRequestPayload } from '../models/family-tree/family-tree-request.payload';
 import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
+import { FamilyTree } from '../models/family-tree/family-tree';
 
 /**
  * Service for managing family tree data through API calls.
@@ -14,7 +15,7 @@ import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
+  private apiBaseUrl = '/api'; // Replace it with actual API URL (ask whose working on it)
 
   constructor(private http: HttpClient) {}
 
@@ -38,12 +39,13 @@ export class FamilyTreeService {
    */
   public create(payload: FamilyTreeRequestPayload): Observable<any> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
-
-    return this.http.post<any>(`${this.apiBaseUrl}/family-trees/`, payload, {
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
+    return new Observable<FamilyTree>((observer) => {
+      return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees`, payload, {
+        headers: this.getHeaders()
+      }).subscribe(familyTreeResponse => {
+        observer.next(familyTreeResponse.data);
+      });
+    });
   }
 
   /**

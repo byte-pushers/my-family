@@ -1,4 +1,4 @@
-import { AccountInfo } from "./account-info";
+import { AccountInfo } from './account-info';
 
 /**
  * Represents the payload for creating an account request.
@@ -6,18 +6,10 @@ import { AccountInfo } from "./account-info";
  * @author Stella Choi
  */
 export class CreateAccountRequestPayload {
-  /** @private @property {string} #transactionID - A unique identifier (GUID) for the transaction. */
-  #transactionID: string;
+  #transactionID: string; // GUID
+  #accountInfo: AccountInfoModel;
 
-  /** @private @property {AccountInfo} #accountInfo - The account information associated with the request. */
-  #accountInfo: AccountInfo;
-
-  /**
-   * Constructs a new instance of CreateAccountRequestPayload.
-   * Automatically generates a unique transaction ID upon initialization.
-   * @param {AccountInfo} accountInfo - The account information for the request.
-   */
-  constructor(accountInfo: AccountInfo) {
+  constructor(accountInfo: AccountInfoModel) {
     this.#transactionID = this.getGUID();
     this.#accountInfo = accountInfo;
   }

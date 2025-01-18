@@ -18,4 +18,9 @@ export interface MerchandiseItem {
   type: 'clothing' | 'ticket' | 'other'; // Type of merchandise
   available: boolean;   // Whether the item is in stock/available
   category?: string;    // Optional category for grouping items
+  SKU?: string;
+  color?: string;
+  author?: string;
+  ISBN?: string;
+  wearableType?: string;
 }
