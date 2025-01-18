@@ -10,6 +10,7 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #gender: string;
   readonly #deceased: boolean;
   readonly #familyMembers: FamilyMember[];
+  public siblings: Person[];
   public parents: Person[];
 
   constructor(...args: any[])
@@ -22,6 +23,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     gender: string,
     deceased: boolean,
     familyMembers: FamilyMember[],
+    siblings: Person[],
     parents: Person[],
     createdBy?: string,
     createdDate?: Date,
@@ -40,6 +42,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.gender = args[0].gender;
         props.deceased = args[0].deceased;
         props.familyMembers = args[0].familyMembers;
+        props.siblings = args[0].siblings;
         props.parents = args[0].parents;
         props.createdBy = args[0].createdBy;
         props.createdDate = args[0].createdDate;
@@ -53,11 +56,12 @@ export class PersonModel extends BaseDomainModel implements Person {
         const gender = args[5];
         const deceased = args[6];
         const familyMembers = args[7];
-        const parents = args[8];
-        const createdBy = args[9];
-        const createdDate = args[10];
-        const updatedBy = args[11];
-        const updatedDate = args[12];
+        const siblings = args[8];
+        const parents = args[9];
+        const createdBy = args[10];
+        const createdDate = args[11];
+        const updatedBy = args[12];
+        const updatedDate = args[13];
 
         props.id = id;
         props.firstName = firstName;
@@ -66,6 +70,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.gender = gender;
         props.deceased = deceased;
         props.familyMembers = familyMembers;
+        props.siblings = siblings;
         props.parents = parents;
         props.createdBy = createdBy;
         props.createdDate = createdDate;
@@ -84,6 +89,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#gender = props?.gender;
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#familyMembers = this.#createFamilyMembers(props?.familyMembers);
+    this.siblings = props?.siblings;
     this.parents = props?.parents;
   }
 
@@ -144,6 +150,10 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#familyMembers;
   }
 
+  public getSiblings(): Person[] {
+    return this.siblings;
+  }
+
   public getParents(): Person[] {
     return this.parents;
   }
@@ -174,9 +184,12 @@ export class PersonModel extends BaseDomainModel implements Person {
       "familyMembers": [
         ${this.#familyMembers.join()}
       ],
+      "siblings": [
+        ${this.siblings}
+      ],
       "parents": [
         ${this.parents}
-      ]${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
+      ],${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
    }`;
   }
 
