@@ -10,7 +10,6 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #gender: string;
   readonly #deceased: boolean;
   readonly #familyMembers: FamilyMember[];
-
   public parents: Person[];
 
   constructor(...args: any[])

@@ -8,6 +8,7 @@ export interface Person extends BaseDomain {
   gender: string;
   deceased: boolean;
   familyMembers: FamilyMember[];
+  parents: Person[];
 
   /*constructor(
     id: number,
