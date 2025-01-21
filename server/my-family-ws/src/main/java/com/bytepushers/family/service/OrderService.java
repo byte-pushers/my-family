@@ -3,9 +3,20 @@ package com.bytepushers.family.service;
 import com.bytepushers.family.model.*;
 import com.bytepushers.family.model.Package;
 import com.bytepushers.family.repo.OrderRepository;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import com.stripe.model.Invoice;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.checkout.SessionCreateParams;
+import com.stripe.param.checkout.SessionListParams;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The {@code OrderService} class provides services for managing and processing {@link Order} entities.
@@ -30,6 +41,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final AccountService accountService;
     private final TaxService taxService;
+    private final ApiService apiService;
 
     /**
      * Constructs a new {@code OrderService} with the given {@code OrderRepository}, {@code AccountService}, and {@code TaxService}.
@@ -38,10 +50,11 @@ public class OrderService {
      * @param accountService  the service to manage {@link Account} entities
      * @param taxService      the service to handle tax calculations
      */
-    public OrderService(OrderRepository orderRepository, AccountService accountService, TaxService taxService) {
+    public OrderService(OrderRepository orderRepository, AccountService accountService, TaxService taxService, ApiService apiService) {
         this.orderRepository = orderRepository;
         this.accountService = accountService;
         this.taxService = taxService;
+        this.apiService = apiService;
     }
 
     /**
@@ -55,16 +68,118 @@ public class OrderService {
 
     }
 
+    public String getOrCreateCustomer(String email) throws StripeException {
+
+        Account account = accountService.getAccountByEmail("zayan12@gmail.com");
+
+        Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("email", email);
+
+        List<Customer> customers = Customer.list(searchParams).getData();
+
+       // System.out.println("here is customer matching with your email: " + customers);
+
+        if(customers.isEmpty()){
+            //System.out.println(customers.getEmail());
+
+            //get the address of customer from account
+            Address address = account.getAddress();
+
+            //create params for customer address
+            CustomerCreateParams.Address customerAddressParams = CustomerCreateParams.Address.builder()
+                    .setLine1(address.getAddressLine1())
+                    .setLine2(address.getAddressLine2())
+                    .setCity(address.getCity())
+                    .setState(address.getState())
+                    .setPostalCode(address.getZipcode())
+                    .setCountry(address.getCountry())
+                    .build();
+
+            CustomerCreateParams person =
+                    CustomerCreateParams.builder()
+                            .setName(account.getFirstName() + " " + account.getLastName())
+                            .setEmail(account.getEmail())
+                            .setAddress(customerAddressParams)
+                            .build();
+
+            Customer customer = Customer.create(person);
+            return customer.getId();
+        }
+        return customers.getFirst().getId();
+    }
+
     /**
      * Processes an order (e.g., through a payment gateway like Stripe).
      *
-     * @param totalPrice the total price of the order
      * @param order      the list of {@link Order} entities to be processed
      * @return {@code true} if the order is processed successfully, {@code false} otherwise
      */
     //TODO: process order through stripe
-    public boolean processOrder(double totalPrice, List<Order> order) {
-        return true;
+    public String processOrder(List<Order> order) throws StripeException {
+        Account account = accountService.getAccountByEmail("zayan12@gmail.com");
+        if(account == null){
+            return "Account not found";
+        }
+
+        //calculate the price of order with the tax
+        double Price = Math.ceil(calaculatePrice(order, account.getEmail()));
+
+        Stripe.apiKey = apiService.getStripeApiKey();
+       String customerId =  getOrCreateCustomer(account.getEmail());
+
+        List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
+
+        for (Order orderItem : order) {
+            SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
+                    .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
+                            .setCurrency("USD")
+                            .setProductData(
+                                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                            .setName(orderItem.getName())
+                                            .setDescription(orderItem.getDescription())
+                                            .build()
+                            )
+                                    .setUnitAmount((long)(orderItem.getPrice()*100))
+                                    .build()
+                            )
+                    .setQuantity((long)orderItem.getQuantity())
+                    .build();
+            lineItems.add(lineItem);
+        }
+
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setCustomer(customerId)
+                .setSuccessUrl("https://www.google.com")
+                .setAutomaticTax(SessionCreateParams.AutomaticTax.builder()
+                        .setEnabled(true)
+                        .build()
+                )
+                .addAllLineItem(lineItems)
+                .setInvoiceCreation(
+                        SessionCreateParams.InvoiceCreation.builder()
+                                .setEnabled(true)
+                        .build()
+                )
+                .build();
+        Session session = Session.create(params);
+        return session.getUrl();
+    }
+
+    //retrieve customer current invoice
+    public Invoice getInvoice(String invoiceId) throws StripeException {
+            return Invoice.retrieve(invoiceId);
+    }
+
+    //get all customer orders history
+    public List<Session> getCustomerPurchases(String email) throws StripeException {
+            Stripe.apiKey = apiService.getStripeApiKey();
+            String customerId = getOrCreateCustomer(email);
+
+            SessionListParams params = SessionListParams.builder()
+                    .setCustomer(customerId)
+                    .build();
+            return Session.list(params).getData();
     }
 
     /**

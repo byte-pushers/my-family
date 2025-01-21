@@ -1,19 +1,29 @@
 package com.bytepushers.family.model;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+
+@Entity
 public class Address extends BaseIdGeneratedValueEntity {
     private String addressLine1;
     private String addressLine2;
     private String city;
     private String state;
     private String zipcode;
+    private String country;
 
-    public Address(String addressLine1, String addressLine2, String city, String state, String zipcode) {
+    public Address(String addressLine1, String addressLine2, String city, String state, String zipcode, String country) {
         super();
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+        this.country = country;
+    }
+
+    public Address() {
+
     }
 
     public String getAddressLine1() {
@@ -56,14 +66,22 @@ public class Address extends BaseIdGeneratedValueEntity {
         this.zipcode = zipcode;
     }
 
+    public String getCountry() {
+        return country;
+    }
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     @Override
     public String toString() {
-        return super.toString().replaceFirst("}$", "") +
-                ", addressLine1='" + addressLine1 + '\'' +
+        return "Address{" +
+                "addressLine1='" + addressLine1 + '\'' +
                 ", addressLine2='" + addressLine2 + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
+                ", country='" + country + '\'' +
                 '}';
     }
 }

@@ -1,8 +1,17 @@
 package com.bytepushers.family.controller;
 
+import com.bytepushers.family.model.Account;
 import com.bytepushers.family.model.Order;
-import com.bytepushers.family.model.User;
+import com.bytepushers.family.service.AccountService;
+import com.bytepushers.family.service.ApiService;
 import com.bytepushers.family.service.OrderService;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import com.stripe.model.CustomerCollection;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.CustomerListParams;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,14 +38,36 @@ import java.util.List;
 @SecurityRequirement(name = "X-API-Version")
 public class PaymentController {
     private final OrderService orderService;
+    private final ApiService apiService;
+    private final AccountService accountService;
 
     /**
      * Constructs an instance of {@link PaymentController} with the specified {@link OrderService}.
      *
      * @param orderService the service responsible for order-related business logic
      */
-    public PaymentController(OrderService orderService) {
+    public PaymentController(OrderService orderService, ApiService apiService, AccountService accountService) {
         this.orderService = orderService;
+        this.apiService = apiService;
+        this.accountService = accountService;
+    }
+
+    @GetMapping(value = "/payments", consumes = {"application/json"}, produces = {"application/json"})
+    public String payment(@Valid @RequestBody List<Order> order) throws StripeException {
+
+        Stripe.apiKey = apiService.getStripeApiKey();
+
+        String text = orderService.processOrder( order);
+        System.out.println(text);
+       orderService.getCustomerPurchases("Casey11@gmail.com");
+        return "your payment has successfully completed with id: " + text;
+
+    }
+
+    @GetMapping(value = "/payments/history")
+    public ResponseEntity<?>paymentHistory(@RequestParam String email) throws StripeException {
+        List<Session> history = orderService.getCustomerPurchases(email);
+        return ResponseEntity.ok(history);
     }
 
     /**

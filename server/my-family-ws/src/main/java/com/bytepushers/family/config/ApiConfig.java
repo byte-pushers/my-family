@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -47,7 +49,16 @@ import io.swagger.v3.oas.annotations.servers.Server;
         paramName = "X-API-Version"
 )
 
-
+@Component
+@ConfigurationProperties(prefix = "stripe")
 public class ApiConfig {
+    private String apiKey;
+
+    public String getApiKey() {
+        return apiKey;
+    }
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
 }
