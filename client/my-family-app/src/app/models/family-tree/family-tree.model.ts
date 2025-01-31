@@ -6,7 +6,7 @@ import { Person } from "./person";
 
 export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
   public name: string;
-  public people: Person;
+  public people: Person[];
 
   constructor(...args: any[])
   constructor(props: any)
@@ -14,7 +14,7 @@ export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
     super(props);
     //this.familyMembers = [...props?.familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
     this.name = props?.name;
-    this.people = props?.person;
+    this.people = props?.people;
   }
 
   public override toString(): string {

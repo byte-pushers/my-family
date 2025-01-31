@@ -4,5 +4,5 @@ import { Person } from './person';
 
 export interface FamilyTree extends BaseDomain {
   name: string;
-  people: Person;
+  people: Person[];
 }

@@ -1,4 +1,3 @@
-import { FamilyMemberModel } from './family-member.model';
 import { FamilyTree } from './family-tree';  // Import the FamilyMember model
 
 /**
@@ -62,8 +61,8 @@ export class FamilyTreeRequestPayload {
   public toString(): string {
     return `{
       "userId": ${this.#userId},
-      "transactionId:": ${this.#transactionId},
-      "familyTree": ${this.familyTree}
+      "transactionId": ${this.#transactionId},
+      "familyTree": ${this.#familyTree},
     }`;
   }
 }
