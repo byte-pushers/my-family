@@ -55,10 +55,10 @@ public class Person extends BaseModel implements Human {
     @OneToMany(cascade=CascadeType.ALL)
     private List<Union> unions;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<Person> siblings;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<Person> parents;
 
     @ManyToMany(mappedBy = "parents")
