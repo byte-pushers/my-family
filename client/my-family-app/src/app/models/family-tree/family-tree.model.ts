@@ -2,26 +2,32 @@ import { BaseDomainModel } from '../base-domain.model';
 import { FamilyTree } from './family-tree';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
+import { Person } from "./person";
 
 export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
-  public familyMembers: FamilyMember[];
+  public name: string;
+  public people: Person[];
 
   constructor(...args: any[])
   constructor(props: any)
   constructor(props: any) {
     super(props);
-    this.familyMembers = [...props?.familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
+    //this.familyMembers = [...props?.familyMembers].map(familyMember => new FamilyMemberModel(familyMember));
+    this.name = props?.name;
+    this.people = props?.people;
   }
 
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings({createdBy: this.createdBy})}`;
-    const familyMemberArrayString = this.familyMembers.map(fm => fm.toString()).join(', ');
+    //const familyMemberArrayString = this.familyMembers.map(fm => fm.toString()).join(', ');
 
     const s = `{
+      "name": "${this.name}",
+      "people": [
+        ${this.people}
+      ],
       ${super.getAttributeIdString()}
-      "familyMembers": [
-        ${familyMemberArrayString}
-      ]${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
+      ${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
     }`;
 
     console.log(`FamilyTreeResponseModel: ${s}`);

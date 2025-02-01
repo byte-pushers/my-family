@@ -58,6 +58,9 @@ export class AddToFamilyPage implements OnInit {
   parents: FamilyMemberModel[] = [];
   grandparents: FamilyMemberModel[] = [];
   siblings: FamilyMemberModel[] = [];
+
+  siblingsModelList: PersonModel[] = [];
+
   spouse: FamilyMemberModel[] = []; // Need to pass in as FamilyMember for the payload
   children: FamilyMemberModel[] = [];
   uncles: FamilyMemberModel[] = [];
@@ -144,9 +147,10 @@ export class AddToFamilyPage implements OnInit {
       let firstName = parsedName[0];
       let lastName = parsedName[1];
 
-      const person: Person = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), 'male', false, [], "system", new Date(), undefined, undefined);
+      const person: PersonModel = new PersonModel(1, firstName, lastName, new Date('2015-03-25'), 'male', false, [], "system", new Date(), undefined, undefined);
       const familyMember = new FamilyMemberModel(1, type, person, 'createdBy', 'updatedBy', new Date(today), new Date(today));
       arr.push(familyMember);
+      this.siblingsModelList.push(person);
     });
   }
 
@@ -165,10 +169,9 @@ export class AddToFamilyPage implements OnInit {
     this.fillFamilyMemberArray(this.childrenForm, this.children);
   }
 
-  // todo: Update based on new FamilyTreeRequestPayload variables
   // Add To Family button call
   addToFamilyButton(): void {
-    this.fillFamilyMemberArray(this.unclesForm, this.uncles);
+    /*this.fillFamilyMemberArray(this.unclesForm, this.uncles);
     this.fillFamilyMemberArray(this.auntsForm, this.aunts);
     this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
 
@@ -181,13 +184,29 @@ export class AddToFamilyPage implements OnInit {
       ...this.uncles,
       ...this.aunts,
       ...this.cousins
-    ];
-    let familyMemberRequestPayload: FamilyTreeRequestPayload;
-    const familyTree: FamilyTreeModel = new FamilyTreeModel({
-      familyMembers: allFamilyMembers
+    ];*/
+
+    //let familyMemberRequestPayload: FamilyTreeRequestPayload;
+
+    const tempPeople: PersonModel[] = [];
+    const tempPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
+    console.log("tempPerson: " + tempPerson);
+    tempPeople.push(tempPerson);
+
+    // todo: add tempSibling to test out JSON.stringify
+
+    const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
+      name: "The Pouncils",
+      people: tempPeople
     });
 
-    if (this.spouse[0]) {
+    const familyMemberRequestPayload: FamilyTreeRequestPayload = new FamilyTreeRequestPayload(
+      7,
+      'transaction-id',
+      tempFamilyTree
+    );
+
+    /*if (this.spouse[0]) {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
         1, 'transaction-id', {} as FamilyTree
       );
@@ -195,7 +214,7 @@ export class AddToFamilyPage implements OnInit {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
         1, 'transaction-id', familyTree
       );
-    }
+    }*/
 
     this.familyTreeService.create(familyMemberRequestPayload).subscribe({
       next: (response) => {

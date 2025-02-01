@@ -1,4 +1,3 @@
-import { FamilyMember } from './family-member';
 import { BaseDomain } from '../base-domain';
 
 export interface Person extends BaseDomain {
@@ -7,17 +6,6 @@ export interface Person extends BaseDomain {
   birthDate: Date;
   gender: string;
   deceased: boolean;
-  familyMembers: FamilyMember[];
-
-  /*constructor(
-    id: number,
-    firstName: string,
-    lastName: string,
-    birthDate: Date,
-    familyMembers: FamilyMember[] = [],
-    createdBy?: string,
-    createdDate?: Date,
-    updatedBy?: string,
-    updatedDate?: Date
-  );*/
+  siblings: Person[] | null;
+  parents: Person[] | null;
 }

@@ -9,7 +9,8 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #birthDate: Date;
   readonly #gender: string;
   readonly #deceased: boolean;
-  readonly #familyMembers: FamilyMember[];
+  public siblings: Person[] | null;
+  public parents: Person[] | null;
 
   constructor(...args: any[])
   constructor(props: any)
@@ -20,7 +21,8 @@ export class PersonModel extends BaseDomainModel implements Person {
     birthDate: Date,
     gender: string,
     deceased: boolean,
-    familyMembers: FamilyMember[],
+    siblings: Person[] | null,
+    parents: Person[] | null,
     createdBy?: string,
     createdDate?: Date,
     updatedBy?: string,
@@ -37,7 +39,8 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.birthDate = args[0].birthDate;
         props.gender = args[0].gender;
         props.deceased = args[0].deceased;
-        props.familyMembers = args[0].familyMembers;
+        props.siblings = args[0].siblings;
+        props.parents = args[0].parents;
         props.createdBy = args[0].createdBy;
         props.createdDate = args[0].createdDate;
         props.updatedBy = args[0].updatedBy;
@@ -46,10 +49,11 @@ export class PersonModel extends BaseDomainModel implements Person {
         const id = args[0];
         const firstName = args[1];
         const lastName = args[2];
-        const birthDate = args[4];
-        const gender = args[5];
-        const deceased = args[6];
-        const familyMembers = args[7];
+        const birthDate = args[3];
+        const gender = args[4];
+        const deceased = args[5];
+        const siblings = args[6];
+        const parents = args[7];
         const createdBy = args[8];
         const createdDate = args[9];
         const updatedBy = args[10];
@@ -61,7 +65,8 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.birthDate = birthDate;
         props.gender = gender;
         props.deceased = deceased;
-        props.familyMembers = familyMembers;
+        props.siblings = siblings;
+        props.parents = parents;
         props.createdBy = createdBy;
         props.createdDate = createdDate;
         props.updatedBy = updatedBy;
@@ -78,7 +83,8 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#birthDate = new Date(props?.birthDate);
     this.#gender = props?.gender;
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
-    this.#familyMembers = this.#createFamilyMembers(props?.familyMembers);
+    this.siblings = props?.siblings;
+    this.parents = props?.parents;
   }
 
   // Property-style and Method-style combined for firstName
@@ -116,11 +122,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#gender;
   }
 
-  /**
-   * Gets the deceased status of the person.
-   *
-   * @returns {boolean} True if the person is deceased, false otherwise.
-   */
+
   public get deceased(): boolean {
     return this.#deceased;
   }
@@ -129,13 +131,12 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#deceased;
   }
 
-  // Property-style and Method-style combined for familyMembers
-  public get familyMembers(): FamilyMember[] {
-    return this.#familyMembers;
+  public getSiblings(): Person[] | null {
+    return this.siblings;
   }
 
-  public getFamilyMembers(): FamilyMember[] {
-    return this.#familyMembers;
+  public getParents(): Person[] | null {
+    return this.parents;
   }
 
   // Method to calculate age based on birthdate
@@ -153,6 +154,12 @@ export class PersonModel extends BaseDomainModel implements Person {
     return age;
   }
 
+  /*
+  "firstName": "John",
+                "lastName": "Davis",
+                "birthDate": "1970-01-01",
+                "gender": "Male",
+   */
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
     return `{
@@ -160,12 +167,18 @@ export class PersonModel extends BaseDomainModel implements Person {
       "firstName": "${this.#firstName}",
       "lastName": "${this.#lastName}",
       "birthDate": "${this.#birthDate.toISOString()}",
-      "deceased": ${this.#deceased},
-      "familyMembers": [
-        ${this.#familyMembers.join()}
-      ]${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
+      "deceased:" ${this.#deceased},
+      "siblings": ${JSON.stringify(this.siblings)}, //todo: then try this.convertArrayToJSON(this.siblings)
+      "parents": ${JSON.stringify(this.parents)}, //todo: then try this.convertArrayToJSON(this.siblings)
+      ${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
    }`;
   }
+
+  /*#convertArrayToJSON(array: any[]): string {
+    let jsonArray = "[]";
+
+    return jsonArray;
+  }*/
 
   #createFamilyMembers(familyMembers?: FamilyMember[]) {
     const familyMembersArray = Array.isArray(familyMembers) && familyMembers.map(familyMember => new FamilyMemberModel(familyMember));
