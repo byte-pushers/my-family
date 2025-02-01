@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "People")
-public class Person extends BaseModel {
+public class Person extends BaseModel implements Human {
 
     /**
      * The unique identifier for the person entity.
@@ -41,7 +41,7 @@ public class Person extends BaseModel {
     @NotNull(message = "Last name is required")
     private String lastName;
 
-    /** The birth date of the person in the format yyyy-MM-dd. */
+    /** The birthdate of the person in the format yyyy-MM-dd. */
     @Column(name = "birth_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Birth date is required")
@@ -81,11 +81,11 @@ public class Person extends BaseModel {
     }
 
     /**
-     * Constructs a Person with basic details like name, birth date, and gender.
+     * Constructs a Person with basic details like name, birthdate, and gender.
      *
      * @param firstName the first name of the person
      * @param lastName  the last name of the person
-     * @param birthDate the birth date of the person
+     * @param birthDate the birthdate of the person
      * @param gender    the gender of the person
      */
     public Person(String firstName, String lastName, Date birthDate, String gender) {
@@ -97,12 +97,12 @@ public class Person extends BaseModel {
     }
 
     /**
-     * Constructs a Person with metadata, name, birth date, gender, and associated family members.
+     * Constructs a Person with metadata, name, birthdate, gender, and associated family members.
      *
      * @param createdBy     the username of the entity creator
      * @param firstName     the first name of the person
      * @param lastName      the last name of the person
-     * @param birthDate     the birth date of the person
+     * @param birthDate     the birthdate of the person
      * @param gender        the gender of the person
      */
     public Person(String firstName, String middleName, String lastName, Date birthDate, String gender, String createdBy) {

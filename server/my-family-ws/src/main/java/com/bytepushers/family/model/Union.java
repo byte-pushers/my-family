@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "CivalUnion")
+@Table(name = "CivilUnion")
 public class Union {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
