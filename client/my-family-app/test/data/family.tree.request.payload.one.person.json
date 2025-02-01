@@ -1,0 +1,20 @@
+{
+  "userId": 1,
+  "transactionId": "transaction-id-value",
+  "familyTree": {
+    "name": "The Pouncils",
+    "people": [
+      {
+        "firstName": "John",
+        "lastName": "Davis",
+        "birthDate": "1970-01-01",
+        "gender": "Male",
+        "deceased": false,
+        "createdBy": "adminUser",
+        "createdDate": "2024-10-16T10:00:00Z"
+      }
+    ],
+    "createdBy": "adminUser",
+    "createdDate": "2024-10-16T10:00:00Z"
+  }
+}
