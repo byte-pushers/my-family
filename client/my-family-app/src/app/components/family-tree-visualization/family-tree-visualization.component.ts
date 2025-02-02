@@ -120,6 +120,56 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
       return;
     }
 
+/*  Updated Code
+
+    const config = setupConfig(data, svg);
+    const nodes = calculateNodePositions(data, config)
+    const links = generateLinks(data, nodes)
+
+
+    drawLines(svg, links, config);
+    drawNodes(svg, nodes, config);
+    drawImages(svg, nodes, config);
+    drawLabels(svg, nodes, config);
+*/
+
+    /*
+    // 2. Set up configurations like margins, scales, etc.
+    function setupConfig(data, svg) {
+
+    }
+
+    // 3. Calculate node positions (this could involve some algorithm based on your tree layout).
+    Function calculateNodePositions(data, config) {
+
+    }
+
+    // 4. Generate links based on the data. This might involve mapping source/target IDs to positions.
+    function generateLinks(data, nodesWithPositions) {
+
+    }
+
+    // 5. Draw the lines connecting nodes.
+    function drawLines(svg, links, config) {
+
+    }
+
+    // 6. Draw the nodes (e.g., circles).
+    function drawNodes(svg, nodes, config) {
+
+    }
+
+    // 7. Attach images to the nodes.
+    function drawImages(svg, nodes, config) {
+
+    }
+
+    // 8. Add labels to the nodes.
+    function drawLabels(svg, nodes, config) {
+
+    }
+    */
+
     const familyNodeData = this.transformResponseToFamilyNode(this.familyTreeData);
     console.log('FamilyTreeVisualization: Created node data:', familyNodeData);
 
@@ -140,13 +190,27 @@ export class FamilyTreeVisualizationComponent implements OnChanges {
     const minDimension = Math.min(this.width, this.height);
     const radius = minDimension / 2 * 0.9;
 
-    const svg = d3.select(element)
+    // 1. Set up the SVG element.
+    const setupSVG = () => {
+      const svg = d3.select(element)
+        .append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`)
+        .style('font', minDimension < 600 ? '8px sans-serif' : '10px sans-serif');
+      return svg;
+    }
+    const svg = setupSVG();
+
+
+/*    const svg = d3.select(element)
       .append('svg')
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('preserveAspectRatio', 'xMidYMid meet')
       .attr('viewBox', `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`)
-      .style('font', minDimension < 600 ? '8px sans-serif' : '10px sans-serif');
+      .style('font', minDimension < 600 ? '8px sans-serif' : '10px sans-serif');*/
 
     const zoomableGroup = svg.append('g')
       .attr('class', 'zoomable-group');
