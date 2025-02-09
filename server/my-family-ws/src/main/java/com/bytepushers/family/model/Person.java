@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Represents a person entity in the system.
  * This class contains basic information about a person, such as their name, birth date, gender, and related family members.
@@ -18,7 +20,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "People")
-public class Person extends BaseModel implements Human {
+public class Person extends BaseModel {
 
     /**
      * The unique identifier for the person entity.
@@ -52,16 +54,19 @@ public class Person extends BaseModel implements Human {
     @NotNull(message = "Gender is required")
     private String gender;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    private List<Union> unions;
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Union> unions = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    private List<Person> siblings;
+    private List<Person> siblings = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    private List<Person> parents;
+    @CollectionTable(
+            joinColumns=@JoinColumn(name = "parent_id", referencedColumnName = "id")
+    )
+    private List<Person> parents = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "parents")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "parents")
     private Set<Person> children = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -114,10 +119,12 @@ public class Person extends BaseModel implements Human {
         this.gender = gender;
     }
 
-    public Person(PersonBuilder builder) {
-        this.firstName = builder.build().firstName;
+    public Person(Builder builder) {
+        super(builder.createdBy, builder.createdDate, builder.updatedBy, builder.updatedDate);
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.middleName = builder.middleName;
         this.lastName = builder.lastName;
-        this.middleName = builder.build().middleName;
         this.birthDate = builder.birthDate;
         this.gender = builder.gender;
         this.unions = builder.unions;
@@ -252,6 +259,10 @@ public class Person extends BaseModel implements Human {
         parent2.getChildren().add(this);
     }
 
+    private void addParentUnidirectionalRelationship(Person parent) {
+        this.parents.add(parent);
+    }
+
     public Set<Person> getChildren() {
         return children;
     }
@@ -336,30 +347,129 @@ public class Person extends BaseModel implements Human {
         this.user = user;
     }
 
-    public static class PersonBuilder {
+    public Person removeParentChildren() {
+        Person copy = this.createShallowCopy(this);
+
+        this.parents.forEach(p -> {
+            copy.parents.add(this.createShallowCopy(p));
+        });
+
+        copy.siblings = this.siblings;
+
+        this.children.forEach(c -> {
+            Person childCopy = this.createShallowCopy(c);
+
+            childCopy.siblings = c.siblings;
+            c.parents.forEach(p -> {
+                childCopy.parents.add(this.createShallowCopy(p));
+            });
+
+            copy.children.add(childCopy);
+        });
+
+        return copy;
+    }
+
+    private Person createShallowCopy(Person p) {
+        return new Person.Builder()
+            .withId(p.id)
+            .withFirstName(p.firstName)
+            .withMiddleName(p.middleName)
+            .withLastName(p.lastName)
+            .withBirthDate(p.birthDate)
+            .withGender(p.gender)
+            .withCreatedBy(p.createdBy)
+            .withCreatedDate(p.createdDate)
+            .withUpdatedBy(p.updatedBy)
+            .withUpdatedDate(p.updatedDate)
+            .build();
+    }
+
+    public static class Builder {
+        private Long id;
         private String firstName;
+        private String middleName;
         private String lastName;
         private Date birthDate;
         private String gender;
         private List<Union> unions = new ArrayList<>();
+        private String createdBy;
+        private Date createdDate;
+        private String updatedBy;
+        private Date updatedDate;
 
-        public PersonBuilder(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
+        public Builder() {
+
         }
 
-        public PersonBuilder withBirthDate(Date birthDate) {
+        public Builder withId(Long id) {
+            this.id = id;
+
+            return this;
+        }
+
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+
+            return this;
+        }
+
+        public Builder withMiddleName(String middleName) {
+            this.middleName = middleName;
+
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+
+            return this;
+        }
+
+        public Builder withBirthDate(Date birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
-        public PersonBuilder withGender(String gender) {
+        public Builder withGender(String gender) {
             this.gender = gender;
+
             return this;
         }
 
-        public PersonBuilder withUnion(Union union) {
+        public Builder withUnions(List<Union> unions) {
+            this.unions = unions;
+
+            return this;
+        }
+
+        public Builder withUnion(Union union) {
             this.unions.add(union);
+
+            return this;
+        }
+
+        public Builder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+
+            return this;
+        }
+
+        public Builder withCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+
+            return this;
+        }
+
+        public Builder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+
+            return this;
+        }
+
+        public Builder withUpdatedDate(Date updatedDate) {
+            this.updatedDate = updatedDate;
+
             return this;
         }
 

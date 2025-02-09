@@ -24,7 +24,7 @@ public abstract class BaseModel {
 
     /** The timestamp when the entity was created. */
     @Column(name = "created_date")
-    private Date createdDate;
+    protected Date createdDate;
 
     /** The timestamp when the entity was last updated. */
     @Column(name = "updated_date")
