@@ -28,10 +28,11 @@ describe('FamilyTreeRequestPayload Object', () => {
   }
 
   it('should create the app', async () => {
-    const expectPayload: any = {};
+    // const expectPayload: any = {};
+    const expectPayload = jsonData;
     const actualPayload = generateFamilyTreeRequestPayload();
 
-    flatten(jsonData, '', expectPayload);
+    // flatten(jsonData, '', expectPayload);
 
     // expect(JSON.stringify(actualPayload.toString())).toBe(JSON.stringify(expectPayload));
     expect(actualPayload.getFamilyTree().people[0].firstName).toBe(expectPayload.familyTree.people[0].firstName);
