@@ -4,7 +4,7 @@ import { FamilyTreeModel } from './family-tree.model';
 import { FamilyTreeRequestPayload } from './family-tree-request.payload';
 
 describe('FamilyTreeRequestPayload Object', () => {
-  const createdDate = '2024-10-16T10:00:00Z';
+  const createdDate = '2024-10-16T10:00:00.000Z';
   const createdBy = 'adminUser';
 
   function generateFamilyTreeRequestPayload() {
