@@ -12,7 +12,11 @@
         "deceased": false,
         "gender": "Male",
         "siblings": null,
-        "parents": null
+        "parents": null,
+        "createdBy":"adminUser",
+        "createdDate": "2024-10-16T10:00:00.000Z",
+        "updatedBy":"technicianUser",
+        "updatedDate":"2024-10-17T10:00:00.000Z"
       }
     ],
     "createdBy": "adminUser"

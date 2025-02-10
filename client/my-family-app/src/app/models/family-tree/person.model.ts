@@ -171,7 +171,7 @@ export class PersonModel extends BaseDomainModel implements Person {
       "gender": "${this.#gender}",
       "siblings": ${JSON.stringify(this.siblings)},
       "parents": ${JSON.stringify(this.parents)}
-      ${auditString.trim() === '' ? `${auditString}` : ''}
+      ${auditString.trim() === '' ? '' : `, ${auditString}`}
    }`;
 
     // "siblings": ${JSON.stringify(this.siblings)}, //todo: then try this.convertArrayToJSON(this.siblings)

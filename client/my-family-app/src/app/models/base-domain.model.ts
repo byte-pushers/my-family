@@ -80,11 +80,11 @@ export abstract class BaseDomainModel implements BaseDomain {
 
     return attributeArray.reduce((result, attribute, attributeIndex, attributeArray) => {
       if (attributeIndex < attributeArray.length - 1 ) {
-        result += attribute + ',\n\t  ';
+        result += attribute;
       } else if (attributeArray.length == 1) {
         result += attribute.startsWith("id")? attribute + ',' : attribute;
       } else {
-        result += attribute + '\n\t  '
+        result += attribute
       }
 
       return result;

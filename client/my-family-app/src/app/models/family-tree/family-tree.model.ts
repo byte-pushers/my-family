@@ -27,7 +27,7 @@ export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
       "people": [
         ${this.people}
       ]
-      ${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
+      ${auditString.trim() !== ''? `,${auditString}` : ''}
     }`;
 
     // console.log(`FamilyTreeResponseModel: ${s}`);
