@@ -5,16 +5,16 @@
     "name": "The Pouncils",
     "people": [
       {
+        "id": 1,
         "firstName": "John",
         "lastName": "Davis",
-        "birthDate": "1970-01-01",
-        "gender": "Male",
+        "birthDate": "1970-01-01T00:00:00:000Z",
         "deceased": false,
-        "createdBy": "adminUser",
-        "createdDate": "2024-10-16T10:00:00Z"
+        "gender": "Male",
+        "siblings": null,
+        "parents": null
       }
     ],
-    "createdBy": "adminUser",
-    "createdDate": "2024-10-16T10:00:00Z"
+    "createdBy": "adminUser"
   }
 }

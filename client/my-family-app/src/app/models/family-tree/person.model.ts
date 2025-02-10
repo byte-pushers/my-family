@@ -167,11 +167,15 @@ export class PersonModel extends BaseDomainModel implements Person {
       "firstName": "${this.#firstName}",
       "lastName": "${this.#lastName}",
       "birthDate": "${this.#birthDate.toISOString()}",
-      "deceased:" ${this.#deceased},
-      "siblings": ${JSON.stringify(this.siblings)}, //todo: then try this.convertArrayToJSON(this.siblings)
-      "parents": ${JSON.stringify(this.parents)}, //todo: then try this.convertArrayToJSON(this.siblings)
-      ${auditString.trim() === '' ? `,\n\t  ${auditString}` : ''}
+      "deceased": ${this.#deceased},
+      "gender": "${this.#gender}",
+      "siblings": ${JSON.stringify(this.siblings)},
+      "parents": ${JSON.stringify(this.parents)}
+      ${auditString.trim() === '' ? `${auditString}` : ''}
    }`;
+
+    // "siblings": ${JSON.stringify(this.siblings)}, //todo: then try this.convertArrayToJSON(this.siblings)
+    // "parents": ${JSON.stringify(this.parents)}, //todo: then try this.convertArrayToJSON(this.siblings)
   }
 
   /*#convertArrayToJSON(array: any[]): string {

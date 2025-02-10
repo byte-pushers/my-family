@@ -61,8 +61,8 @@ export class FamilyTreeRequestPayload {
   public toString(): string {
     return `{
       "userId": ${this.#userId},
-      "transactionId": ${this.#transactionId},
-      "familyTree": ${this.#familyTree},
+      "transactionId": "${this.#transactionId}",
+      "familyTree": ${this.#familyTree}
     }`;
   }
 }

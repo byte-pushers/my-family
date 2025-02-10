@@ -1,7 +1,7 @@
 import { BaseDomain } from './base-domain';
 
 export abstract class BaseDomainModel implements BaseDomain {
-  #id?: number | null;
+  #id?: any; // string | number | null;
   #createdBy?: string | null;
   #createdDate?: Date | null;
   #updatedBy?: string | null;
@@ -55,11 +55,15 @@ export abstract class BaseDomainModel implements BaseDomain {
     return this.#updatedDate;
   }
 
-  public getAttributeString(criteria: { id?: number | null, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } | null): string {
+  public getAttributeString(criteria: { id?: string | number | null, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } | null): string {
     const attributeArray = [];
 
     if (criteria && criteria.id !== undefined && this.#id !== undefined) {
-      attributeArray.push(`"id": ${this.#id}`);
+      if (typeof this.#id === 'string' || this.#id instanceof String) {
+        attributeArray.push(`"id": "${this.#id}",`);
+      } else {
+        attributeArray.push(`"id": ${this.#id},`);
+      }
     }
     if (criteria && criteria.createdBy !== undefined && this.#createdBy !== undefined) {
       attributeArray.push(`"createdBy": "${this.#createdBy}"`);
@@ -75,7 +79,7 @@ export abstract class BaseDomainModel implements BaseDomain {
     }
 
     return attributeArray.reduce((result, attribute, attributeIndex, attributeArray) => {
-      if (attributeIndex < attributeArray.length -1 ) {
+      if (attributeIndex < attributeArray.length - 1 ) {
         result += attribute + ',\n\t  ';
       } else if (attributeArray.length == 1) {
         result += attribute.startsWith("id")? attribute + ',' : attribute;

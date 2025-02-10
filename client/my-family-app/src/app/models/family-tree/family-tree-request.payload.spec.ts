@@ -7,15 +7,6 @@ describe('FamilyTreeRequestPayload Object', () => {
   const createdDate = '2024-10-16T10:00:00Z';
   const createdBy = 'adminUser';
 
-  function flatten(obj: any, prefix = '', flattenedObj: any) {
-    for (const key in obj) {
-      if (typeof obj[key] === 'object') {
-        flatten(obj[key], prefix + key + '.', flattenedObj);
-      } else {
-        flattenedObj[prefix + key] = obj[key];
-      }
-    }
-  }
   function generateFamilyTreeRequestPayload() {
     const somePerson: PersonModel = new PersonModel(1, 'John', 'Davis', new Date('1970-01-01'), 'Male', false, null, null, createdBy, new Date(createdDate));
     const someFamilyTree: FamilyTreeModel = new FamilyTreeModel({
@@ -28,13 +19,16 @@ describe('FamilyTreeRequestPayload Object', () => {
   }
 
   it('should create the app', async () => {
-    // const expectPayload: any = {};
-    const expectPayload = jsonData;
+    const expectPayload = JSON.parse(JSON.stringify(jsonData));
+    delete expectPayload.default;
+    const expectFlattenPayload = JSON.stringify(expectPayload).replace(/(\r\n|\r|\n|\t| )/gm, "");
     const actualPayload = generateFamilyTreeRequestPayload();
+    const actualFlattenPayload = actualPayload.toString().replace(/(\r\n|\r|\n|\t| )/gm, "");
 
-    // flatten(jsonData, '', expectPayload);
+    console.log(`expectFlattenPayload: "${expectFlattenPayload}"`);
+    console.log(`actualFlattenPayload: "${actualFlattenPayload}"`);
 
-    // expect(JSON.stringify(actualPayload.toString())).toBe(JSON.stringify(expectPayload));
+    expect(actualFlattenPayload).toBe(expectFlattenPayload);
     expect(actualPayload.getFamilyTree().people[0].firstName).toBe(expectPayload.familyTree.people[0].firstName);
   });
 });

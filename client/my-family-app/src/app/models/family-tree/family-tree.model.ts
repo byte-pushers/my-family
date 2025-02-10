@@ -22,15 +22,15 @@ export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {
     //const familyMemberArrayString = this.familyMembers.map(fm => fm.toString()).join(', ');
 
     const s = `{
+      ${super.getAttributeIdString()}
       "name": "${this.name}",
       "people": [
         ${this.people}
-      ],
-      ${super.getAttributeIdString()}
+      ]
       ${auditString.trim() !== ''? `,\n\t  ${auditString}` : ''}
     }`;
 
-    console.log(`FamilyTreeResponseModel: ${s}`);
+    // console.log(`FamilyTreeResponseModel: ${s}`);
 
     return s;
   }
