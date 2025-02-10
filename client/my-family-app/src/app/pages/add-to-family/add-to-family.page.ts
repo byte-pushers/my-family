@@ -6,7 +6,7 @@ import { FamilyMemberModel } from "../../models/family-tree/family-member.model"
 import { RelationshipType } from "../../models/family-tree/relationship-type";
 import { Person } from "../../models/family-tree/person";
 import { today } from "ionicons/icons";
-import { FamilyTreeRequestPayload } from "../../models/family-tree/family-tree-request.payload";
+import { FamilyTreeRequestPayloadModel } from "../../models/family-tree/family-tree-request.payload.model";
 import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { IonicModule } from "@ionic/angular";
@@ -186,25 +186,34 @@ export class AddToFamilyPage implements OnInit {
       ...this.cousins
     ];*/
 
-    //let familyMemberRequestPayload: FamilyTreeRequestPayload;
-
+    // todo: fix tempSiblings -> console keeps printing wrong. take a look at toString of person and
+    // todo: make sure values are stored correctly
     const tempPeople: PersonModel[] = [];
-    const tempPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
-    console.log("tempPerson: " + tempPerson);
-    tempPeople.push(tempPerson);
+    const tempSiblings: PersonModel[] = [];
 
-    // todo: add tempSibling to test out JSON.stringify
+    const tempSibling1: PersonModel = new PersonModel(2, "Jimmy", "Davis", new Date("1970-01-01"), "Male", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
+    const tempSibling2: PersonModel = new PersonModel(3, "Jessica", "Davis", new Date("1970-01-01"), "Female", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
+    tempSiblings.push(tempSibling1, tempSibling2);
+    console.log("siblings: " + tempSiblings);
+
+    const tempPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, tempSiblings, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
+    tempPeople.push(tempPerson);
+    console.log("stringify test: " + tempPerson);
+    console.log("\"people\": [" + tempPeople);
 
     const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
+      id: 1,
       name: "The Pouncils",
       people: tempPeople
     });
+    console.log("familyTree: " + tempFamilyTree);
 
-    const familyMemberRequestPayload: FamilyTreeRequestPayload = new FamilyTreeRequestPayload(
-      7,
+    const familyMemberRequestPayload: FamilyTreeRequestPayloadModel = new FamilyTreeRequestPayloadModel(
+      1,
       'transaction-id',
       tempFamilyTree
     );
+    console.log("payload: " + familyMemberRequestPayload);
 
     /*if (this.spouse[0]) {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
