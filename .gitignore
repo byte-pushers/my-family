@@ -3,6 +3,7 @@
 ./**/node_modules/
 node_modules
 client/my-family-app/www/
+server/my-family-ws/src/main/resources/application-secretkey.properties
 
 # Compiled class file
 *.class

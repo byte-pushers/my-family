@@ -100,6 +100,11 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>4.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>28.3.0-beta.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

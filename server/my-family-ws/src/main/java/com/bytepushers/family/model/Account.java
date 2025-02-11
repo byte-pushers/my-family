@@ -1,8 +1,5 @@
 package com.bytepushers.family.model;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -80,9 +77,11 @@ public class Account {
     private String email;
 
     /** The address of the account holder. Required and cannot be blank. */
-    @Column(nullable = false)
-    @NotBlank(message="Address is Required")
-    private String address;
+    //@Column(nullable = false)
+    //@NotBlank(message="Address is Required")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "address_id")
+    private Address address;
 
     /**
      * Default constructor for JPA.
@@ -105,7 +104,7 @@ public class Account {
      * @param email      the email of the account holder.
      * @param address    the address of the account holder.
      */
-    public Account(Long Id, String firstName, String middleName, String lastName, String userName, String nickName, LocalDate birthday, int age, String password, String email, String address) {
+    public Account(Long Id, String firstName, String middleName, String lastName, String userName, String nickName, LocalDate birthday, int age, String password, String email, Address address) {
         this.Id = Id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -187,11 +186,11 @@ public class Account {
         this.email = email;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

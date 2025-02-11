@@ -68,7 +68,9 @@ public abstract class BaseItem implements Item{
         return name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getPrice() {
         return price;
