@@ -122,11 +122,10 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#gender;
   }
 
-
   public get deceased(): boolean {
     return this.#deceased;
   }
-  
+
   public getDeceased(): boolean {
     return this.#deceased;
   }
