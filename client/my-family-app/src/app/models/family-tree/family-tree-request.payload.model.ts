@@ -1,18 +1,22 @@
 import { FamilyTree } from './family-tree';
-import { FamilyTreeRequestPayload } from "./family-tree-request.payload";  // Import the FamilyMember model
+import { FamilyTreeRequestPayload } from "./family-tree-request.payload";
+import { BaseDomainModel } from "../base-domain.model";  // Import the FamilyMember model
 
 /**
  * Class representing the payload for a family tree request.
  */
-export class FamilyTreeRequestPayloadModel implements FamilyTreeRequestPayload {
+export class FamilyTreeRequestPayloadModel extends BaseDomainModel implements FamilyTreeRequestPayload {
   #userId: number;
   #transactionId: string;
   #familyTree: FamilyTree;
 
-  constructor(userId: number, transactionId: string, familyTree: FamilyTree) {
-    this.#userId = userId;
-    this.#transactionId = transactionId;
-    this.#familyTree = familyTree;
+  constructor(...args: any[])
+  constructor(props: any)
+  constructor(props: any) {
+    super(props);
+    this.#userId = props?.userId;
+    this.#transactionId = props?.transactionId;
+    this.#familyTree = props?.familyTree;
   }
 
   public get userId(): number {
@@ -59,19 +63,13 @@ export class FamilyTreeRequestPayloadModel implements FamilyTreeRequestPayload {
     this.#familyTree = familyTree;
   }
 
-  public toJSON() {
-    return {
-      userId: this.#userId,
-      transactionId: this.#transactionId,
-      familyTree: this.#familyTree
-    }
-  }
-
-  public toString(): string {
+  public override toString(): string {
+    const auditString = `${super.getAttributeAuditStrings({createdBy: this.createdBy})}`;
     return `{
-      "userId": ${this.#userId},
-      "transactionId": ${this.#transactionId},
-      "familyTree": ${this.#familyTree},
+      "userId": ${this.userId},
+      "transactionId": "${this.transactionId}",
+      "familyTree": ${this.familyTree},
+      ${auditString.trim() !== ''? `,${auditString}` : ''}
     }`;
   }
 }
