@@ -1,4 +1,4 @@
-<div class="add-family-form" [formGroup]="addFamilyMemberForm">
+<div class="add-family-form font-inter" [formGroup]="addFamilyMemberForm">
   <div class="mr-7 mt-4 flex g justify-center">
     <div class="w-full">
       <div class="flex justify-between">
@@ -8,7 +8,7 @@
         </button>
       </div>
 
-      <!-- Name input box with -->
+      <!-- Name input box -->
       <input type="text"
              placeholder="Enter Name..."
              id="input-box"
@@ -36,6 +36,23 @@
     </div>
   </div>
 
+  <!-- BirthDate input box -->
+  <div class="justify">
+    <label for="birthDate" class="text-sm">Birth Date</label>
+    <input
+      class="block w-1/5 placeholder:text-xs text-xs text-gray-400 rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)"
+      type="text"
+      placeholder="YYYY-MM-DD"
+      id="birthDate"
+      formControlName="birthDate"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    >
+    <div *ngIf="addFamilyMemberForm.controls['birthDate'].errors?.['required'] && submitted" class="text-red-700 text-xs">
+      Birth Date required.
+    </div>
+  </div>
+
   <!-- List of family members -->
   <div class="text-align-center ml-11" formArrayName="familyMembers">
     <ul
@@ -46,7 +63,7 @@
         <span class="ml-5 text-sm">{{member.get('name')?.value}}</span>
         <span class="ml-1 text-gray-500 text-sm">({{member.get('type')?.value}})</span>
       </div>
-      <button (click)="removeFamilyMember(i)" class="ml-auto mr-1 text-[#0D4C92] text-xs text-semibold font-inter">
+      <button (click)="removeFamilyMember(i)" class="ml-auto mr-1 text-[#0D4C92] text-xs text-semibold">
         Remove
       </button>
     </ul>

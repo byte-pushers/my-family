@@ -55,7 +55,7 @@ export class AddToFamilyPage implements OnInit {
   parents: PersonModel[] = [];
   grandparents: PersonModel[] = [];
   siblings: PersonModel[] = [];
-  spouse: PersonModel[] = []; // Need to pass in as FamilyMember for the payload
+  spouse: PersonModel[] = []; // Can only have one Person
   children: PersonModel[] = [];
   uncles: PersonModel[] = [];
   aunts: PersonModel[] = [];
@@ -104,6 +104,7 @@ export class AddToFamilyPage implements OnInit {
     return this.fb.group({
       name: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
+      birthDate: new FormControl('', Validators.required),
       familyMembers: this.fb.array([])
     });
   }
@@ -130,8 +131,17 @@ export class AddToFamilyPage implements OnInit {
     }
   }
 
-  // Taking family members from form and populating respective PersonModel[]
-  private fillFamilyMemberArray(fg: FormGroup, arr: PersonModel[]): void {
+  /**
+   * Goes to the next step in the form process.
+   */
+  nextStep(): void {
+    if (this.currentStep < this.totalSteps) {
+      this.currentStep++;
+    }
+  }
+
+  // Taking people from form and populating respective PersonModel[]
+  private fillPersonModelArray(fg: FormGroup, arr: PersonModel[]): void {
     const formArray = fg.get('familyMembers') as FormArray;
     formArray.controls.forEach((control) => {
       const name = control.get('name')?.value;
@@ -141,65 +151,41 @@ export class AddToFamilyPage implements OnInit {
 
       // const type = control.get('type')?.value as RelationshipType;
       const type = control.get('type')?.value as string;
+      let gender: string = '';
+      if (type === 'Dad' || type === 'Stepdad' || type === 'Grandpa' || type === 'Brother' || type === 'Husband' || type === 'Son') {
+        gender = 'Male';
+      } else {
+        gender = 'Female';
+      }
 
-      const person: PersonModel = new PersonModel(1, firstName, lastName, undefined, 'Male', false, undefined, undefined, "adminUser", new Date(), undefined, undefined);
+      const birthDate = control.get('birthDate')?.value as string;
+
+      const person: PersonModel = new PersonModel(1, firstName, lastName, new Date(birthDate), gender, false, undefined, undefined, "adminUser", new Date(), undefined, undefined);
       arr.push(person);
     });
   }
 
-  /**
-   * Goes to the next step in the form process.
-   */
-  nextStep(): void {
-    if (this.currentStep < this.totalSteps) {
-      this.currentStep++;
-    }
-
-    this.fillFamilyMemberArray(this.parentsForm, this.parents);
-    this.fillFamilyMemberArray(this.grandparentsForm, this.grandparents);
-    this.fillFamilyMemberArray(this.siblingsForm, this.siblings);
-    this.fillFamilyMemberArray(this.spouseForm, this.spouse);
-    this.fillFamilyMemberArray(this.childrenForm, this.children);
-  }
-
   // Add To Family button call
   addToFamilyButton(): void {
-    this.fillFamilyMemberArray(this.unclesForm, this.uncles);
-    this.fillFamilyMemberArray(this.auntsForm, this.aunts);
-    this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
+    this.fillPersonModelArray(this.parentsForm, this.parents);
+    this.fillPersonModelArray(this.grandparentsForm, this.grandparents);
+    this.fillPersonModelArray(this.siblingsForm, this.siblings);
+    this.fillPersonModelArray(this.spouseForm, this.spouse);
+    this.fillPersonModelArray(this.childrenForm, this.children);
+    this.fillPersonModelArray(this.unclesForm, this.uncles);
+    this.fillPersonModelArray(this.auntsForm, this.aunts);
+    this.fillPersonModelArray(this.cousinsForm, this.cousins);
 
-    /*
-    const allFamilyMembers: PersonModel[] = [
-      ...this.parents,
-      ...this.grandparents,
-      ...this.siblings,
-      ...this.spouse,
-      ...this.children,
-      ...this.uncles,
-      ...this.aunts,
-      ...this.cousins
-    ];*/
-
-    // todo: fix tempSiblings -> console keeps printing wrong. take a look at toString of person and
-    // todo: make sure values are stored correctly
     const tempPeople: PersonModel[] = [];
-    /*const tempSiblings: PersonModel[] = [];
 
-    const tempSibling1: PersonModel = new PersonModel(2, "Jimmy", "Davis", new Date("1970-01-01"), "Male", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
-    const tempSibling2: PersonModel = new PersonModel(3, "Jessica", "Davis", new Date("1970-01-01"), "Female", false, null, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
-    tempSiblings.push(tempSibling1, tempSibling2);
-    console.log("tempSibling1: " + tempSibling1.toString());*/
-    //console.log("siblings: " + tempSiblings);
-
-    const tempPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, null, "adminUser", new Date("2024-10-16T10:00:00Z"));
-    tempPeople.push(tempPerson);
-    //console.log("stringify test: " + tempPerson);
-    //console.log("\"people\": [" + tempPeople);
-    console.log("person: " + tempPerson);
+    // Get mainPerson from sign up page?
+    const mainPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, this.parents, "adminUser", new Date("2024-10-16T10:00:00Z"), undefined, undefined);
+    tempPeople.push(mainPerson);
+    console.log("person: " + mainPerson);
 
     const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
       id: 1,
-      name: `The ${tempPerson.lastName} Family`,
+      name: `The ${mainPerson.lastName} Family`,
       people: tempPeople,
       createdBy: "adminUser",
       createdDate: new Date("2024-10-16T10:00:00Z")

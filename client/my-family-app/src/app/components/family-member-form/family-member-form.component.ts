@@ -97,42 +97,51 @@ export class FamilyMemberFormComponent implements OnInit {
     this.submitted = true;
 
     // Adding members with relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid) {
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid && this.addFamilyMemberForm.controls['birthDate']?.valid) {
       // If Spouse has already been added, don't add anymore
       if (this.relationshipType === 'Spouse' && this.familyMembers.length > 0) {
         console.log('Cannot have multiple spouses.');
+        this.resetFormControls(true);
         return;
       }
 
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-      const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+      const name = this.addFamilyMemberForm.controls['name'].value;
+      const type = this.addFamilyMemberForm.controls['type'].value;
+      const birthDate = this.addFamilyMemberForm.controls['birthDate'].value;
 
       const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(familyMemberType, Validators.required)
+        name: new FormControl(name, Validators.required),
+        type: new FormControl(type, Validators.required),
+        birthDate: new FormControl(birthDate, Validators.required)
       });
 
       this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.addFamilyMemberForm.controls['type'].reset();
-      this.submitted = false;
+      this.resetFormControls(true);
     }
 
     // Adding members with no relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.relationshipTypeDropdownArray.length == 0) {
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.relationshipTypeDropdownArray.length == 0 && this.addFamilyMemberForm.controls['birthDate']?.valid) {
+      const name = this.addFamilyMemberForm.controls['name'].value;
+      const birthDate = this.addFamilyMemberForm.controls['birthDate'].value;
 
       const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(this.tempType, Validators.required)
+        name: new FormControl(name, Validators.required),
+        type: new FormControl(this.tempType, Validators.required),
+        birthDate: new FormControl(birthDate, Validators.required)
       });
 
       this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.submitted = false;
+      this.resetFormControls(false);
     }
+  }
+
+  resetFormControls(resetType: boolean) {
+    this.addFamilyMemberForm.controls['name'].reset();
+    if (resetType) {
+      this.addFamilyMemberForm.controls['type'].reset();
+    }
+    this.addFamilyMemberForm.controls['birthDate'].reset();
+    this.submitted = false;
   }
 
   /**
@@ -151,5 +160,13 @@ export class FamilyMemberFormComponent implements OnInit {
 
     this.addFamilyMemberForm.get('name')?.setValue('');
     this.addFamilyMemberForm.get('type')?.setValue('');
+  }
+
+  onFocus(event: any) {
+    event.target.placeholder = '';
+  }
+
+  onBlur(event: any) {
+    event.target.placeholder = 'YYYY-MM-DD';
   }
 }
