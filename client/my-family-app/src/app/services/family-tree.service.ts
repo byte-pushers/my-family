@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { FamilyTreeRequestPayload } from '../models/family-tree/family-tree-request.payload';
+import { FamilyTreeRequestPayloadModel } from '../models/family-tree/family-tree-request.payload.model';
 import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
 import { FamilyTree } from '../models/family-tree/family-tree';
 
@@ -34,10 +34,10 @@ export class FamilyTreeService {
 
   /**
    * Creates a new family tree.
-   * @param {FamilyTreeRequestPayload} payload - The family tree data to be submitted.
+   * @param {FamilyTreeRequestPayloadModel} payload - The family tree data to be submitted.
    * @returns {Observable<any>} An observable that emits the server response.
    */
-  public create(payload: FamilyTreeRequestPayload): Observable<any> {
+  public create(payload: FamilyTreeRequestPayloadModel): Observable<any> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
     return new Observable<FamilyTree>((observer) => {
       return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees`, payload, {
@@ -71,10 +71,10 @@ export class FamilyTreeService {
   /**
    * Updates an existing family tree.
    * @param {number} id - The ID of the family tree to update.
-   * @param {FamilyTreeRequestPayload} payload - The updated family tree data.
+   * @param {FamilyTreeRequestPayloadModel} payload - The updated family tree data.
    * @returns {Observable<any>} An observable that emits the server response.
    */
-  public updateFamilyTree(id: number, payload: FamilyTreeRequestPayload): Observable<any> {
+  public updateFamilyTree(id: number, payload: FamilyTreeRequestPayloadModel): Observable<any> {
     return this.http.put<any>(`${this.apiBaseUrl}/family-trees/${id}`, payload, {
       headers: this.getHeaders()
     }).pipe(

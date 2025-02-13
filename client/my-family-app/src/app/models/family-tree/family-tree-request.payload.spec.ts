@@ -1,7 +1,7 @@
 import * as familyTree1PearsonRequestPayload from '../../../../test/data/family.tree.request.payload.one.person.json';
 import { PersonModel } from './person.model';
 import { FamilyTreeModel } from './family-tree.model';
-import { FamilyTreeRequestPayload } from './family-tree-request.payload';
+import { FamilyTreeRequestPayloadModel } from "./family-tree-request.payload.model";
 
 describe('FamilyTreeRequestPayload Object', () => {
   const createdDate = '2024-10-16T10:00:00.000Z';
@@ -17,7 +17,7 @@ describe('FamilyTreeRequestPayload Object', () => {
       createdBy,
       createdDate
     });
-    return new FamilyTreeRequestPayload(1, 'transaction-id-value', someFamilyTree);
+    return new FamilyTreeRequestPayloadModel(1, 'transaction-id-value', someFamilyTree);
   }
 
   it('should create the app', async () => {
