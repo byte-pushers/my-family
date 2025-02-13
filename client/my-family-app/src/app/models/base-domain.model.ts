@@ -10,9 +10,9 @@ export abstract class BaseDomainModel implements BaseDomain {
   protected constructor(props: { id?: number, createdBy?: string, createdDate?: Date, updatedBy?: string, updatedDate?: Date }) {
     this.#id = props?.id;
     this.#createdBy = props?.createdBy;
-    this.#createdDate = props?.createdDate? new Date(props.createdDate): null;
+    this.#createdDate = props?.createdDate? new Date(props.createdDate): props?.createdDate;
     this.#updatedBy = props?.updatedBy;
-    this.#updatedDate = props?.updatedDate? new Date(props.updatedDate): null;
+    this.#updatedDate = props?.updatedDate? new Date(props.updatedDate): props?.createdDate;
   }
 
   public getId(): number | undefined | null {
@@ -60,9 +60,9 @@ export abstract class BaseDomainModel implements BaseDomain {
 
     if (criteria && criteria.id !== undefined && this.#id !== undefined) {
       if (typeof this.#id === 'string' || this.#id instanceof String) {
-        attributeArray.push(`"id": "${this.#id}",`);
+        attributeArray.push(`"id": "${this.#id}"`);
       } else {
-        attributeArray.push(`"id": ${this.#id},`);
+        attributeArray.push(`"id": ${this.#id}`);
       }
     }
     if (criteria && criteria.createdBy !== undefined && this.#createdBy !== undefined) {
@@ -79,12 +79,30 @@ export abstract class BaseDomainModel implements BaseDomain {
     }
 
     return attributeArray.reduce((result, attribute, attributeIndex, attributeArray) => {
-      if (attributeIndex < attributeArray.length - 1 ) {
-        result += attribute;
-      } else if (attributeArray.length == 1) {
-        result += attribute.startsWith("id")? attribute + ',' : attribute;
-      } else {
-        result += attribute
+      if (attribute.trim() !== '') {
+        if (attributeArray.length == 1) {
+          result += attribute;
+        } else if (attributeIndex < attributeArray.length - 1) {
+          result += attribute + ",";
+        } else if (attributeIndex == attributeArray.length - 1) {
+          result += attribute;
+        }
+      }
+
+      return result;
+    }, '');
+  }
+
+  public concatenateAttributeStrings(attributeStrings: string[]): string {
+    return attributeStrings.filter(attStr => attStr && attStr.trim() != '').reduce((result, attribute, attributeIndex, attributeArray) => {
+      if (attribute.trim() !== '') {
+        if (attributeArray.length == 1) {
+          result += attribute;
+        } else if (attributeIndex < attributeArray.length - 1) {
+          result += attribute + ",";
+        } else if (attributeIndex == attributeArray.length - 1) {
+          result += attribute;
+        }
       }
 
       return result;
@@ -97,5 +115,25 @@ export abstract class BaseDomainModel implements BaseDomain {
 
   public getAttributeAuditStrings(criteria: { id?: number, createdBy?: string | null, createdDate?: Date | null, updatedBy?: string | null, updatedDate?: Date | null } = {createdBy: null, createdDate: null, updatedBy: null, updatedDate: null}): string {
     return this.getAttributeString(criteria);
+  }
+
+  constructJsonDateProp(someDate: Date, propName: string, addDelimiter: boolean = true): string {
+    return someDate != null ? `"${propName}": "${someDate?.toISOString()}"${addDelimiter? ',' : ''}` : '';
+  }
+
+  constructJsonNumberProp(someNumber: number, propName: string, addDelimiter: boolean = true): string {
+    return someNumber != null ? `"${propName}": ${someNumber}${addDelimiter? ',' : ''}` : '';
+  }
+
+  constructJsonStringProp(someNumber: string, propName: string, addDelimiter: boolean = true): string {
+    return someNumber != null ? `"${propName}": "${someNumber}"${addDelimiter? ',' : ''}` : '';
+  }
+
+  constructJsonBooleanProp(someNumber: boolean, propName: string, addDelimiter: boolean = true): string {
+    return someNumber != null ? `"${propName}": ${someNumber}${addDelimiter? ',' : ''}` : '';
+  }
+
+  constructJsonArrayProp(someArray: any[] | null, propName: string, addDelimiter: boolean = true): string {
+    return someArray === null ? `"${propName}": ${someArray}${addDelimiter? ',' : ''}` : Array.isArray(someArray) && someArray.length > 0 ? `"${propName}": [${someArray}]${addDelimiter? ',' : ''}` : '';
   }
 }

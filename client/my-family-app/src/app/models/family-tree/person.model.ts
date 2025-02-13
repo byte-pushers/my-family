@@ -9,8 +9,8 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #birthDate: Date;
   readonly #gender: string;
   readonly #deceased: boolean;
-  public siblings: Person[] | null;
-  public parents: Person[] | null;
+  readonly #siblings: Person[] | null;
+  readonly #parents: Person[] | null;
 
   constructor(...args: any[])
   constructor(props: any)
@@ -80,11 +80,11 @@ export class PersonModel extends BaseDomainModel implements Person {
 
     this.#firstName = props?.firstName;
     this.#lastName = props?.lastName;
-    this.#birthDate = new Date(props?.birthDate);
+    this.#birthDate = props?.birthDate && new Date(props?.birthDate);
     this.#gender = props?.gender;
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
-    this.siblings = props?.siblings;
-    this.parents = props?.parents;
+    this.#siblings = props?.siblings;
+    this.#parents = props?.parents;
   }
 
   // Property-style and Method-style combined for firstName
@@ -132,11 +132,19 @@ export class PersonModel extends BaseDomainModel implements Person {
   }
 
   public getSiblings(): Person[] | null {
-    return this.siblings;
+    return this.#siblings;
+  }
+
+  public get siblings(): Person[] | null {
+    return this.#siblings;
   }
 
   public getParents(): Person[] | null {
-    return this.parents;
+    return this.#parents;
+  }
+
+  public get parents(): Person[] | null {
+    return this.#parents;
   }
 
   // Method to calculate age based on birthdate
@@ -162,20 +170,26 @@ export class PersonModel extends BaseDomainModel implements Person {
    */
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
+    const attributeStringsArray = [
+      `${super.getAttributeIdString()}`,
+      `${super.constructJsonStringProp(this.#firstName, 'firstName', false)}`,
+      `${super.constructJsonStringProp(this.#lastName, 'lastName', false)}`,
+      `${super.constructJsonDateProp(this.#birthDate, 'birthDate', false)}`,
+      `${super.constructJsonBooleanProp(this.#deceased, 'deceased', false)}`,
+      `${super.constructJsonStringProp(this.#gender, 'gender', false)}`,
+      `${super.constructJsonArrayProp(this.#siblings, 'siblings', false)}`,
+      `${super.constructJsonArrayProp(this.#parents, 'parents', false)}`,
+    ];
+    const attributeStrings = super.concatenateAttributeStrings(attributeStringsArray);
     return `{
-      ${super.getAttributeIdString()}
-      "firstName": "${this.#firstName}",
-      "lastName": "${this.#lastName}",
-      "birthDate": "${this.#birthDate.toISOString()}",
-      "deceased": ${this.#deceased},
-      "gender": "${this.#gender}",
-      "siblings": ${JSON.stringify(this.siblings)},
-      "parents": ${JSON.stringify(this.parents)}
+      ${attributeStrings}
       ${auditString.trim() === '' ? '' : `, ${auditString}`}
-   }`;
+   }`/*.replace(/^\s*$(?:\r\n?|\n)/gm, '')*/;
 
-    // "siblings": ${JSON.stringify(this.siblings)}, //todo: then try this.convertArrayToJSON(this.siblings)
-    // "parents": ${JSON.stringify(this.parents)}, //todo: then try this.convertArrayToJSON(this.siblings)
+    // option 1
+    // const jsonObj = JSON.parse(json)
+    // loop props looking for undefined to remove undefined attributes
+    // return JSON.stringfy(jsonObj);
   }
 
   /*#convertArrayToJSON(array: any[]): string {
