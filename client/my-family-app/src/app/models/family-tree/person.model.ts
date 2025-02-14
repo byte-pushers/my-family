@@ -44,7 +44,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.deceased = args[0].deceased;
         props.siblings = args[0].siblings;
         props.parents = args[0].parents;
-        props.unions = args[0].unions?.map((union: any) => new UnionModel(union)) || [];
+        props.unions = args[0].unions;
         props.createdBy = args[0].createdBy;
         props.createdDate = args[0].createdDate;
         props.updatedBy = args[0].updatedBy;
@@ -72,7 +72,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.deceased = deceased;
         props.siblings = siblings;
         props.parents = parents;
-        props.unions = unions?.map((union: any) => new UnionModel(union)) || [];
+        props.unions = unions;
         props.createdBy = createdBy;
         props.createdDate = createdDate;
         props.updatedBy = updatedBy;
@@ -91,7 +91,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#siblings = props?.siblings;
     this.#parents = props?.parents;
-    this.#unions = props?.unions ?? [];
+    this.#unions = props?.unions ?? [];  // props?.unions?.map((union: any) => new UnionModel(union)) || []
   }
 
   // Property-style and Method-style combined for firstName

@@ -1,6 +1,5 @@
+import { Person } from './person';
 import { PersonModel } from './person.model';
-import { FamilyTreeModel } from './family-tree.model';
-import { FamilyTreeRequestPayload } from './family-tree-request.payload';
 
 describe('Person Domain Model', () => {
   const createdDate = '2024-10-16T10:00:00.000Z';
@@ -10,16 +9,13 @@ describe('Person Domain Model', () => {
 
   function generatePersonWithOneSibling(): Person {
     const siblings = [new PersonModel(undefined, 'James', 'Davis', undefined, 'Male', true)]
-    const somePerson = new PersonModel(1, 'John', 'Davis', new Date('1970-01-01'), 'Male', false, siblings, null, createdBy, new Date(createdDate), updatedBy, new Date(updatedDate));
-
-    console.log(`some person: ${somePerson}`);
+    const somePerson = new PersonModel(1, 'John', 'Davis', new Date('1970-01-01'), 'Male', false, siblings, null, null, createdBy, new Date(createdDate), updatedBy, new Date(updatedDate));
 
     return somePerson;
   }
 
   it('should be able to serialize sibling array', async () => {
-    const expectedPerson = JSON.parse(JSON.stringify(personWithASibling));
-    delete expectedPerson.default;
+    const expectedPerson = JSON.parse(JSON.stringify(personWithASibling)).default;
     const expectFlattenPerson = JSON.stringify(expectedPerson).replace(/(\r\n|\r|\n|\t| )/gm, "");
     const actualPerson = generatePersonWithOneSibling();
     const actualFlattenPerson = actualPerson.toString().replace(/(\r\n|\r|\n|\t| )/gm, "");
@@ -31,8 +27,31 @@ describe('Person Domain Model', () => {
     expect(actualPerson.siblings && actualPerson.siblings[0].firstName).toBe(expectedPerson.siblings[0].firstName);
     expect(actualPerson.siblings && actualPerson.siblings[0].deceased).toBe(expectedPerson.siblings[0].deceased);
   });
+
+  it('union array should be undefined if not specified.', async() => {
+    const expectedPerson = JSON.parse(JSON.stringify(personWithNoUnion)).default;
+    const expectFlattenPerson = JSON.stringify(expectedPerson).replace(/(\r\n|\r|\n|\t| )/gm, "");
+    const actualPerson = new PersonModel(1, 'John', 'Davis', new Date('1970-01-01'), 'Male', false);
+    const actualFlattenPerson = actualPerson.toString().replace(/(\r\n|\r|\n|\t| )/gm, "");
+
+    console.log(`expectFlattenPayload: "${expectFlattenPerson}"`);
+    console.log(`actualFlattenPayload: "${actualFlattenPerson}"`);
+
+    expect(actualFlattenPerson).toBe(expectFlattenPerson);
+  });
+
+  it('union array should not be empty if specified with values.', async() => {
+    // todo: implement test.
+  });
+
+  it('union array should be empty if specified with empty values.', async() => {
+    // todo: implement test.
+  });
+
+  it('union array should be null if specified with a null value.', async() => {
+    // todo: implement test.
+  });
 });
 
 import * as personWithASibling from '../../../../test/data/person.with.a.sibling.json';
-import { Person } from './person';
-
+import * as personWithNoUnion from '../../../../test/data/person.with.no.union.json';

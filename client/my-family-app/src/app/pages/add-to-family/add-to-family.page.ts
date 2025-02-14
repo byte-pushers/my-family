@@ -160,7 +160,7 @@ export class AddToFamilyPage implements OnInit {
 
       const birthDate = control.get('birthDate')?.value as string;
 
-      const person: PersonModel = new PersonModel(1, firstName, lastName, new Date(birthDate), gender, false, undefined, undefined, "adminUser", new Date(), undefined, undefined);
+      const person: PersonModel = new PersonModel(1, firstName, lastName, new Date(birthDate), gender, false, undefined, undefined, undefined, "adminUser", new Date(), undefined, undefined);
       arr.push(person);
     });
   }
