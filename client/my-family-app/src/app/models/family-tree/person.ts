@@ -1,4 +1,5 @@
 import { BaseDomain } from '../base-domain';
+import {UnionModel} from "./union.model";
 
 export interface Person extends BaseDomain {
   firstName: string;
@@ -8,4 +9,5 @@ export interface Person extends BaseDomain {
   deceased: boolean;
   siblings: Person[] | null;
   parents: Person[] | null;
+  unions: UnionModel[] | null;
 }
