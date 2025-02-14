@@ -134,6 +134,6 @@ export abstract class BaseDomainModel implements BaseDomain {
   }
 
   constructJsonArrayProp(someArray: any[] | null, propName: string, addDelimiter: boolean = true): string {
-    return someArray === null ? `"${propName}": ${someArray}${addDelimiter? ',' : ''}` : Array.isArray(someArray) && someArray.length > 0 ? `"${propName}": [${someArray}]${addDelimiter? ',' : ''}` : '';
+    return someArray === null ? `"${propName}": ${someArray}${addDelimiter? ',' : ''}` : Array.isArray(someArray) && someArray.length > 0 ? `"${propName}": [${someArray}]${addDelimiter? ',' : ''}` : '[]';
   }
 }

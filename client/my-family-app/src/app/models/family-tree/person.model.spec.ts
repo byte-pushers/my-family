@@ -45,7 +45,15 @@ describe('Person Domain Model', () => {
   });
 
   it('union array should be empty if specified with empty values.', async() => {
-    // todo: implement test.
+    const expectedPerson = JSON.parse(JSON.stringify(personWithEmptyUnion)).default;
+    const expectFlattenPerson = JSON.stringify(expectedPerson).replace(/(\r\n|\r|\n|\t| )/gm, "");
+    const actualPerson = new PersonModel(1, 'John', 'Davis', new Date('1970-01-01'), 'Male', false, undefined, undefined, []);
+    const actualFlattenPerson = actualPerson.toString().replace(/(\r\n|\r|\n|\t| )/gm, "");
+
+    console.log(`expectFlattenPayload: "${expectFlattenPerson}"`);
+    console.log(`actualFlattenPayload: "${actualFlattenPerson}"`);
+
+    expect(actualFlattenPerson).toBe(expectFlattenPerson);
   });
 
   it('union array should be null if specified with a null value.', async() => {
@@ -55,3 +63,4 @@ describe('Person Domain Model', () => {
 
 import * as personWithASibling from '../../../../test/data/person.with.a.sibling.json';
 import * as personWithNoUnion from '../../../../test/data/person.with.no.union.json';
+import * as personWithEmptyUnion from '../../../../test/data/person.with.empty.union.json'
