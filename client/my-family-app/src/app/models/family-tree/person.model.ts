@@ -2,6 +2,7 @@ import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
+import {UnionModel} from "./union.model";
 
 export class PersonModel extends BaseDomainModel implements Person {
   readonly #firstName: string;
@@ -11,6 +12,7 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #deceased: boolean;
   readonly #siblings: Person[] | null;
   readonly #parents: Person[] | null;
+  readonly #unions: UnionModel[] | null;
 
   constructor(...args: any[])
   constructor(props: any)
@@ -23,6 +25,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     deceased: boolean,
     siblings: Person[] | null,
     parents: Person[] | null,
+    unions: UnionModel[] | null,
     createdBy?: string,
     createdDate?: Date,
     updatedBy?: string,
@@ -41,6 +44,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.deceased = args[0].deceased;
         props.siblings = args[0].siblings;
         props.parents = args[0].parents;
+        props.unions = args[0].unions?.map((union: any) => new UnionModel(union)) || [];
         props.createdBy = args[0].createdBy;
         props.createdDate = args[0].createdDate;
         props.updatedBy = args[0].updatedBy;
@@ -54,10 +58,11 @@ export class PersonModel extends BaseDomainModel implements Person {
         const deceased = args[5];
         const siblings = args[6];
         const parents = args[7];
-        const createdBy = args[8];
-        const createdDate = args[9];
-        const updatedBy = args[10];
-        const updatedDate = args[11];
+        const unions = args[8];
+        const createdBy = args[9];
+        const createdDate = args[10];
+        const updatedBy = args[11];
+        const updatedDate = args[12];
 
         props.id = id;
         props.firstName = firstName;
@@ -67,6 +72,7 @@ export class PersonModel extends BaseDomainModel implements Person {
         props.deceased = deceased;
         props.siblings = siblings;
         props.parents = parents;
+        props.unions = unions?.map((union: any) => new UnionModel(union)) || [];
         props.createdBy = createdBy;
         props.createdDate = createdDate;
         props.updatedBy = updatedBy;
@@ -85,6 +91,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#siblings = props?.siblings;
     this.#parents = props?.parents;
+    this.#unions = props?.unions ?? [];
   }
 
   // Property-style and Method-style combined for firstName
@@ -146,6 +153,14 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#parents;
   }
 
+  public get unions(): UnionModel[] | null {
+    return this.#unions;
+  }
+
+  public getUnions(): UnionModel[] | null {
+    return this.#unions;
+  }
+
   // Method to calculate age based on birthdate
   public calculateAge(): number {
     const today = new Date();
@@ -178,6 +193,7 @@ export class PersonModel extends BaseDomainModel implements Person {
       `${super.constructJsonStringProp(this.#gender, 'gender', false)}`,
       `${super.constructJsonArrayProp(this.#siblings, 'siblings', false)}`,
       `${super.constructJsonArrayProp(this.#parents, 'parents', false)}`,
+      `${super.constructJsonArrayProp(this.#unions, 'unions', false)}`,
     ];
     const attributeStrings = super.concatenateAttributeStrings(attributeStringsArray);
     return `{
