@@ -176,12 +176,6 @@ export class PersonModel extends BaseDomainModel implements Person {
     return age;
   }
 
-  /*
-  "firstName": "John",
-                "lastName": "Davis",
-                "birthDate": "1970-01-01",
-                "gender": "Male",
-   */
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
     const attributeStringsArray = [

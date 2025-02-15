@@ -12,6 +12,7 @@ import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 import { PersonModel } from '../../models/family-tree/person.model';
 import { FamilyTreeModel } from "../../models/family-tree/family-tree.model";
+import { UnionModel } from "../../models/family-tree/union.model";
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.
@@ -177,15 +178,16 @@ export class AddToFamilyPage implements OnInit {
     this.fillPersonModelArray(this.cousinsForm, this.cousins);
 
     const tempPeople: PersonModel[] = [];
+    const tempUnions: UnionModel = new UnionModel(1, this.spouse.length > 0, this.spouse[0], this.children);
 
     // Get mainPerson from sign up page?
-    const mainPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, this.parents, "adminUser", new Date("2024-10-16T10:00:00Z"), undefined, undefined);
+    const mainPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, this.parents, tempUnions, "adminUser", new Date("2024-10-16T10:00:00Z"), undefined, undefined);
     tempPeople.push(mainPerson);
     console.log("person: " + mainPerson);
 
     const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
       id: 1,
-      name: `The ${mainPerson.lastName} Family`,
+      name: `The Pouncils`,
       people: tempPeople,
       createdBy: "adminUser",
       createdDate: new Date("2024-10-16T10:00:00Z")
@@ -200,7 +202,7 @@ export class AddToFamilyPage implements OnInit {
       createdDate: new Date("2024-10-16T10:00:00Z")
     })
 
-    console.log("payload:\n" + familyMemberRequestPayload);
+    console.log("payload:\n" + familyMemberRequestPayload.toString());
 
     /*if (this.spouse[0]) {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
