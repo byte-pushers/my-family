@@ -187,7 +187,7 @@ export class AddToFamilyPage implements OnInit {
 
     const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
       id: 1,
-      name: `The Pouncils`,
+      name: `The ${mainPerson.lastName} Family`,
       people: tempPeople,
       createdBy: "adminUser",
       createdDate: new Date("2024-10-16T10:00:00Z")
@@ -202,7 +202,7 @@ export class AddToFamilyPage implements OnInit {
       createdDate: new Date("2024-10-16T10:00:00Z")
     })
 
-    console.log("payload:\n" + familyMemberRequestPayload.toString());
+    console.log("payload:\n" + familyMemberRequestPayload);
 
     /*if (this.spouse[0]) {
       familyMemberRequestPayload = new FamilyTreeRequestPayload(
