@@ -1,8 +1,8 @@
 {
   "name": "my-family",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Tonté Pouncil",
+  "homepage": "https://bytepushers.software/",
   "scripts": {
     "ng": "ng",
     "start": "npm install && ng serve",
