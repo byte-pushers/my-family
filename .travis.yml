@@ -4,7 +4,7 @@ services:
 - docker
 deploy:
   - edge:
-      branch: v2.0.3-beta.4
+      branch: true
   - provider: script
     skip_cleanup: true
     script:
