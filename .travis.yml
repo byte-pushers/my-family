@@ -1,19 +1,17 @@
 language: bash
 sudo: required
 services:
-- docker
+  docker
 deploy:
-  - edge:
-      branch: v2.0.5-beta
-  - provider: script
-    skip_cleanup: true
-    script:
-      - make dockerpush
-  - on:
-      branch: feature/dockerize-apps
+  provider: script
+  skip_cleanup: true
+  script:
+    make dockerpush
+  on:
+    all_branches: true
 notifications:
   email:
     recipients:
-      - tonte.pouncil@bytepushers.software
+      tonte.pouncil@bytepushers.software
     on_success: always
     on_failure: always
