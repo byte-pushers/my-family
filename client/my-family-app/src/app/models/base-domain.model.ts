@@ -125,17 +125,27 @@ export abstract class BaseDomainModel implements BaseDomain {
     return someNumber != null ? `"${propName}": ${someNumber}${addDelimiter? ',' : ''}` : '';
   }
 
-  constructJsonStringProp(someNumber: string, propName: string, addDelimiter: boolean = true): string {
-    return someNumber != null ? `"${propName}": "${someNumber}"${addDelimiter? ',' : ''}` : '';
+  constructJsonStringProp(someString: string, propName: string, addDelimiter: boolean = true): string {
+    return someString != null ? `"${propName}": "${someString}"${addDelimiter? ',' : ''}` : '';
   }
 
-  constructJsonBooleanProp(someNumber: boolean, propName: string, addDelimiter: boolean = true): string {
-    return someNumber != null ? `"${propName}": ${someNumber}${addDelimiter? ',' : ''}` : '';
+  constructJsonBooleanProp(someBoolean: boolean, propName: string, addDelimiter: boolean = true): string {
+    return someBoolean != null ? `"${propName}": ${someBoolean}${addDelimiter? ',' : ''}` : '';
   }
 
   constructJsonArrayProp(someArray: any[] | null, propName: string, addDelimiter: boolean = true): string {
     return someArray === null ? `"${propName}": ${someArray}${addDelimiter? ',' : ''}` :
       someArray === undefined ? '' : Array.isArray(someArray) && someArray.length === 0 ? `"${propName}": []${someArray}${addDelimiter? ',' : ''}` :
         Array.isArray(someArray) && someArray.length > 0 ? `"${propName}": [${someArray}]${addDelimiter? ',' : ''}` : '';
+  }
+
+  constructJsonDomainModelProp(someDomainModel: BaseDomain | null, propName: string, addDelimiter: boolean = true): string {
+    return someDomainModel === null ? `"${propName}": ${someDomainModel}${addDelimiter? ',' : ''}` :
+      someDomainModel === undefined ? '' : `"${propName}": [${someDomainModel}]${addDelimiter? ',' : ''}`;
+  }
+
+  constructJsonObjectProp(someObject: any, propName: string, addDelimiter: boolean = true): string {
+    return someObject === null ? `"${propName}": ${someObject}${addDelimiter? ',' : ''}` :
+      someObject === undefined ? '' : `"${propName}": ${someObject}${addDelimiter? ',' : ''}`;
   }
 }

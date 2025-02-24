@@ -3,6 +3,6 @@
   "firstName": "John",
   "lastName": "Davis",
   "birthDate": "1970-01-01T00:00:00.000Z",
-  "deceased": false,
-  "gender": "Male"
+  "gender": "Male",
+  "deceased": false
 }

@@ -1,7 +1,5 @@
 import { BaseDomainModel } from '../base-domain.model';
 import { FamilyTree } from './family-tree';
-import { FamilyMember } from './family-member';
-import { FamilyMemberModel } from './family-member.model';
 import { Person } from "./person";
 
 export class FamilyTreeModel extends BaseDomainModel implements FamilyTree {

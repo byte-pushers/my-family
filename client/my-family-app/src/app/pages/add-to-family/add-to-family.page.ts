@@ -12,7 +12,8 @@ import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
 import { PersonModel } from '../../models/family-tree/person.model';
 import { FamilyTreeModel } from "../../models/family-tree/family-tree.model";
-import { UnionModel } from "../../models/family-tree/union.model";
+import { UnionsModel } from "../../models/family-tree/unions.model";
+import { Person } from "../../models/family-tree/person";
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.
@@ -53,14 +54,14 @@ export class AddToFamilyPage implements OnInit {
   cousinsForm: FormGroup;
 
   // Array of FamilyMember's to pass in to the FamilyTreeRequestPayload
-  parents: PersonModel[] = [];
-  grandparents: PersonModel[] = [];
-  siblings: PersonModel[] = [];
-  spouse: PersonModel[] = []; // Can only have one Person
-  children: PersonModel[] = [];
-  uncles: PersonModel[] = [];
-  aunts: PersonModel[] = [];
-  cousins: PersonModel[] = [];
+  parents: Person[] = [];
+  grandparents: Person[] = [];
+  siblings: Person[] = [];
+  spouse: Person[] = []; // Can only have one Person
+  children: Person[] = [];
+  uncles: Person[] = [];
+  aunts: Person[] = [];
+  cousins: Person[] = [];
 
   /**
    * Initializes all the form groups
@@ -142,7 +143,7 @@ export class AddToFamilyPage implements OnInit {
   }
 
   // Taking people from form and populating respective PersonModel[]
-  private fillPersonModelArray(fg: FormGroup, arr: PersonModel[]): void {
+  private fillPersonModelArray(fg: FormGroup, arr: Person[]): void {
     const formArray = fg.get('familyMembers') as FormArray;
     formArray.controls.forEach((control) => {
       const name = control.get('name')?.value;
@@ -178,7 +179,7 @@ export class AddToFamilyPage implements OnInit {
     this.fillPersonModelArray(this.cousinsForm, this.cousins);
 
     const tempPeople: PersonModel[] = [];
-    const tempUnions: UnionModel = new UnionModel(1, this.spouse.length > 0, this.spouse[0], this.children);
+    const tempUnions: UnionsModel = new UnionsModel(1, this.spouse.length > 0, this.spouse[0], this.children);
 
     // Get mainPerson from sign up page?
     const mainPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, this.parents, tempUnions, "adminUser", new Date("2024-10-16T10:00:00Z"), undefined, undefined);
@@ -203,16 +204,6 @@ export class AddToFamilyPage implements OnInit {
     })
 
     console.log("payload:\n" + familyMemberRequestPayload);
-
-    /*if (this.spouse[0]) {
-      familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        1, 'transaction-id', {} as FamilyTree
-      );
-    } else {
-      familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        1, 'transaction-id', familyTree
-      );
-    }*/
 
     this.familyTreeService.create(familyMemberRequestPayload).subscribe({
       next: (response) => {

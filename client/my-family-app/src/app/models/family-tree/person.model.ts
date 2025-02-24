@@ -2,7 +2,7 @@ import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
 import { FamilyMember } from './family-member';
 import { FamilyMemberModel } from './family-member.model';
-import {UnionModel} from "./union.model";
+import { Unions } from "./unions";
 
 export class PersonModel extends BaseDomainModel implements Person {
   readonly #firstName: string;
@@ -12,7 +12,7 @@ export class PersonModel extends BaseDomainModel implements Person {
   readonly #deceased: boolean;
   readonly #siblings: Person[] | null;
   readonly #parents: Person[] | null;
-  readonly #unions: UnionModel[] | null;
+  readonly #unions: Unions | null;
 
   constructor(...args: any[])
   constructor(props: any)
@@ -25,7 +25,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     deceased: boolean,
     siblings: Person[] | null,
     parents: Person[] | null,
-    unions: UnionModel[] | null,
+    unions: Unions[] | null,
     createdBy?: string,
     createdDate?: Date,
     updatedBy?: string,
@@ -91,7 +91,7 @@ export class PersonModel extends BaseDomainModel implements Person {
     this.#deceased = props?.deceased ?? false; // Default to `false` if not provided
     this.#siblings = props?.siblings;
     this.#parents = props?.parents;
-    this.#unions = props?.unions ?? [];  // props?.unions?.map((union: any) => new UnionModel(union)) || []
+    this.#unions = props?.unions;  // props?.unions?.map((union: any) => new UnionModel(union)) || []
   }
 
   // Property-style and Method-style combined for firstName
@@ -137,27 +137,27 @@ export class PersonModel extends BaseDomainModel implements Person {
     return this.#deceased;
   }
 
-  public getSiblings(): Person[] | null {
-    return this.#siblings;
-  }
-
   public get siblings(): Person[] | null {
     return this.#siblings;
   }
 
-  public getParents(): Person[] | null {
-    return this.#parents;
+  public getSiblings(): Person[] | null {
+    return this.#siblings;
   }
 
   public get parents(): Person[] | null {
     return this.#parents;
   }
 
-  public get unions(): UnionModel[] | null {
+  public getParents(): Person[] | null {
+    return this.#parents;
+  }
+
+  public get unions(): Unions | null {
     return this.#unions;
   }
 
-  public getUnions(): UnionModel[] | null {
+  public getUnions(): Unions | null {
     return this.#unions;
   }
 
@@ -176,6 +176,16 @@ export class PersonModel extends BaseDomainModel implements Person {
     return age;
   }
 
+  // todo: possible helper method to add/remove uncles, etc.
+  public addRelationship(person: Person, relationshipType: string, side: string, degreeOfSeparation: number): void {
+    // todo: more helper methods to specialize specific relationship type and side combination
+    // todo: create empty if not given
+  }
+
+  public removeRelationship(person: Person, relationshipType: string, side: string, degreeOfSeparation: number): void {
+    // todo: more helper methods to specialize specific relationship type and side combination
+  }
+
   public override toString(): string {
     const auditString = `${super.getAttributeAuditStrings()}`;
     const attributeStringsArray = [
@@ -183,17 +193,17 @@ export class PersonModel extends BaseDomainModel implements Person {
       `${super.constructJsonStringProp(this.#firstName, 'firstName', false)}`,
       `${super.constructJsonStringProp(this.#lastName, 'lastName', false)}`,
       `${super.constructJsonDateProp(this.#birthDate, 'birthDate', false)}`,
-      `${super.constructJsonBooleanProp(this.#deceased, 'deceased', false)}`,
       `${super.constructJsonStringProp(this.#gender, 'gender', false)}`,
+      `${super.constructJsonBooleanProp(this.#deceased, 'deceased', false)}`,
       `${super.constructJsonArrayProp(this.#siblings, 'siblings', false)}`,
       `${super.constructJsonArrayProp(this.#parents, 'parents', false)}`,
-      `${super.constructJsonArrayProp(this.#unions, 'unions', false)}`,
+      `${super.constructJsonDomainModelProp(this.#unions, 'unions', false)}`,
     ];
     const attributeStrings = super.concatenateAttributeStrings(attributeStringsArray);
     return `{
       ${attributeStrings}
       ${auditString.trim() === '' ? '' : `, ${auditString}`}
-   }`/*.replace(/^\s*$(?:\r\n?|\n)/gm, '')*/;
+    }`/*.replace(/^\s*$(?:\r\n?|\n)/gm, '')*/;
 
     // option 1
     // const jsonObj = JSON.parse(json)

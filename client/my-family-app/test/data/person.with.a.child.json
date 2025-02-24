@@ -5,16 +5,20 @@
   "birthDate": "1970-01-01T00:00:00.000Z",
   "gender": "Male",
   "deceased": false,
-  "siblings": [
+  "unions": [
     {
-      "firstName": "James",
-      "lastName": "Davis",
-      "gender": "Male",
-      "deceased": true
+      "married": true,
+      "children": [
+        {
+          "firstName": "Mike",
+          "lastName": "Davis",
+          "birthDate": "2000-05-12T00:00:00.000Z",
+          "gender": "Male",
+          "deceased": false
+        }
+      ]
     }
   ],
-  "parents": null,
-  "unions": null,
   "createdBy":"adminUser",
   "createdDate": "2024-10-16T10:00:00.000Z",
   "updatedBy":"technicianUser",
