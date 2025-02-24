@@ -7,6 +7,9 @@ deploy:
     skip_cleanup: true
     script:
       - make dockerpush
+  - on:
+      all_branches: true
+      condition: $TRAVIS_BRANCH =~ ^(master|deploy|feature/dockerize-apps)$
 notifications:
   email:
     recipients:
