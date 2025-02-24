@@ -3,6 +3,8 @@ sudo: required
 services:
 - docker
 deploy:
+  - edge:
+      branch: v2.0.3-beta.4
   - provider: script
     skip_cleanup: true
     script:
