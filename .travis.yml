@@ -1,12 +1,16 @@
 language: bash
 sudo: required
 services:
-- docker
+  - docker
 deploy:
+  - edge:
+      branch: true
   - provider: script
     skip_cleanup: true
     script:
       - make dockerpush
+  - on:
+      all_branches: true
 notifications:
   email:
     recipients:
