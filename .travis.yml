@@ -10,7 +10,10 @@ deploy:
     script:
       - make dockerpush
   - on:
-      all_branches: true
+      branches:
+        only:
+          - master
+          - feature/dockerize-app
 notifications:
   email:
     recipients:
