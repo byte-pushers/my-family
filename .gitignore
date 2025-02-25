@@ -1,5 +1,14 @@
+./**/.DS_Store
+./**/.angular
+./**/node_modules/
+node_modules
+client/my-family-app/www/
+server/my-family-ws/src/main/resources/application-secretkey.properties
+
 # Compiled class file
 *.class
+
+.DS_Store
 
 # Log file
 *.log
@@ -170,4 +179,6 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij
+# End of https://www.toptal.com/developers/gitignore/api/intellij.DS_Store
+.idea/
+**/.DS_Store

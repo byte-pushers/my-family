@@ -1,0 +1,53 @@
+.container {
+  @apply mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg text-gray-800;
+}
+
+h2 {
+  @apply text-center text-2xl font-bold mb-6 text-gray-900;
+}
+
+.input-item {
+  @apply mb-4;
+
+  label {
+    @apply text-gray-700;
+  }
+
+  input {
+    @apply text-gray-800;
+  }
+}
+
+label {
+  @apply text-gray-700;
+}
+
+input, select, textarea {
+  @apply text-gray-800 bg-white;
+}
+
+button {
+  &:hover {
+    @apply bg-blue-600 text-white;
+  }
+}
+
+.image-preview {
+  img {
+    @apply w-32 h-32 rounded-md object-cover;
+  }
+}
+
+// Form messages
+.success-message {
+  @apply text-green-600;
+}
+
+.error-message {
+  @apply text-red-600;
+}
+
+// Radio buttons and their labels
+input[type="radio"] + label {
+  @apply text-gray-700;
+}

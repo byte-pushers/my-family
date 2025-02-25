@@ -1,0 +1,28 @@
+// Add custom styles for the toast
+::ng-deep .custom-toast {
+  --background: #0D4C92;
+  --color: white;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  &::part(message) {
+    font-weight: 500;
+  }
+
+  &::part(button) {
+    color: white;
+  }
+}
+
+// Add animation to the buttons
+.plan-button {
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

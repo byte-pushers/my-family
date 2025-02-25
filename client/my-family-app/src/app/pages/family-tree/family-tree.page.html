@@ -1,0 +1,89 @@
+<!-- TODO List
+
+TODO: Create Family Members List Component
+- Prerequisites:
+  * Define FamilyMember interface/type with required properties
+  * Plan responsive layout for list visibility on different screen sizes
+- Implementation Details:
+  * Create scrollable container for member list
+  * Each list item should display:
+    - Profile picture (if available)
+    - Full name
+    - Basic info (age, relationship status)
+    - Quick action buttons (view details, highlight in tree)
+  * Add sorting capabilities (by name, age, relationship)
+
+
+    TODO: Send mock FamilyMembers list to the d3 component for testing once the GET API call is ready
+-->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Family Tree</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center h-32">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <!-- Error State -->
+  <ion-alert
+    [isOpen]="!!error"
+    header="Error"
+    [message]="error"
+    [buttons]="['OK']"
+    (didDismiss)="error = null">
+  </ion-alert>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error" class="max-w-7xl mx-auto">
+    <!-- Search and Controls -->
+    <div class="mb-6">
+      <ion-searchbar
+        placeholder="Search family members..."
+        (ionInput)="onSearch($event)"
+        [debounce]="300"
+        animated="true"
+        class="rounded-lg">
+      </ion-searchbar>
+    </div>
+
+    <!-- Tree Visualization -->
+    <div class="w-full max-w-[700px] min-w-[300px] mx-auto p-5 aspect-square">
+      <div id="family-tree" class="w-full h-full min-h-[450px] bg-gray-50 border-2 border-gray-300 rounded-lg shadow-sm relative flex justify-center overflow-hidden">
+        <ng-container *ngIf="familyTreeData; else noData">
+          <app-family-tree-visualization
+            [familyTreeData]="familyTreeData"
+            [selectedMemberId]="selectedId"
+            class="w-full h-full">
+          </app-family-tree-visualization>
+        </ng-container>
+
+        <ng-template #noData>
+          <div class="flex flex-col items-center justify-center text-center p-8">
+            <h3 class="text-xl font-semibold mb-2">No Family Tree Available</h3>
+            <p class="text-gray-600 mb-4">Start building your family tree by adding family members.</p>
+            <button
+              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              (click)="navigateToAddFamily()">
+              Create Family Tree
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Family Members List -->
+    <app-family-member-list
+      [members]="filteredMembers"
+      [rootMember]="rootMember"
+      [selectedMemberId]="selectedId"
+      (memberSelected)="onMemberSelected($event)">
+    </app-family-member-list>
+  </div>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>

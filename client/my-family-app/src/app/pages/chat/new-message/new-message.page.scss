@@ -1,0 +1,30 @@
+// new-message.page.scss
+:host {
+  ion-header {
+    ion-toolbar {
+      --background: transparent;
+    }
+  }
+
+  ion-searchbar {
+    --box-shadow: none;
+    --background: #f3f4f6;
+    --border-radius: 8px;
+  }
+
+  ion-list {
+    background: transparent;
+  }
+
+  ion-item {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-top: 0.75rem;
+    --padding-bottom: 0.75rem;
+    --background: transparent;
+
+    &:last-child {
+      --border-style: none;
+    }
+  }
+}

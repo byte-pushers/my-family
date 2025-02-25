@@ -1,0 +1,691 @@
+{
+	"info": {
+		"_postman_id": "df220d52-f0d8-4c54-aaba-04bbefc65698",
+		"name": "my-family-reunion-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35578910"
+	},
+	"item": [
+		{
+			"name": "Account & Authentication",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/94",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"94"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Versions",
+								"value": "0.0.0.1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"username\": \"user@example.com\",\r\n        \"password\": \"cGFzc3dvcmQxMjM=\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.com\",\n    \"password\": \"test2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/94",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"94"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password Reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/93",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"93"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Family Tree/Members",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Add Family Member",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"transactionId\": \"transaction-id-value\",\r\n    \"familyTree\": {\r\n        \"name\": \"The Pouncils\",\r\n        \"people\": [\r\n            {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Davis\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"unions\": [\r\n                    {\r\n                        \"married\": false,\r\n                        \"spouse\": {\r\n                            \"firstName\": \"Tammy\",\r\n                            \"lastName\": \"Davis\",\r\n                            \"birthDate\": \"1970-01-01\",\r\n                            \"gender\": \"Female\",\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"children\": [\r\n                            {\r\n                                \"firstName\": \"Mike\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2000-05-12\",\r\n                                \"gender\": \"Male\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            },\r\n                            {\r\n                                \"firstName\": \"Anna\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2005-08-20\",\r\n                                \"gender\": \"Female\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"siblings\": [\r\n                    {\r\n                        \"firstName\": \"Jimmy\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Male\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"firstName\": \"Jessica\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Female\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ],\r\n                \"parents\": [\r\n                    {\r\n                        \"firstName\": \"Jole\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Male\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"firstName\": \"Foxie\",\r\n                        \"lastName\": \"Brown\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Female\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ],\r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        ],\r\n        \"createdBy\": \"adminUser\",\r\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n    },\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/family-trees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family Member",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"transactionId\": \"transaction-id-value\",\n    \"familyTree\": {\n        \"name\": \"The Pouncils\",\n        \"people\": [\n            {\n                \"firstName\": \"John\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"unions\": [\n                    {\n                        \"married\": false,\n                        \"spouse\": {\n                            \"firstName\": \"Olivia\",\n                            \"lastName\": \"Davis\",\n                            \"birthDate\": \"1970-01-01\",\n                            \"gender\": \"Female\",\n                            \"createdBy\": \"adminUser\",\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\n                        },\n                        \"children\": [\n                            {\n                                \"firstName\": \"Emma\",\n                                \"lastName\": \"Davis\",\n                                \"birthDate\": \"2000-06-12\",\n                                \"gender\": \"Male\",\n                                \"createdBy\": \"adminUser\",\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\n                            },\n                            {\n                                \"firstName\": \"Anna\",\n                                \"lastName\": \"Davis\",\n                                \"birthDate\": \"2005-08-20\",\n                                \"gender\": \"Female\",\n                                \"createdBy\": \"adminUser\",\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\n                            }\n                        ]\n                    }\n                ],\n                \"sibilings\": [\n                    {\n                        \"firstName\": \"Amelia\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Charlotte\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ],\n                \"parents\": [\n                    {\n                        \"firstName\": \"Jole\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Foxie\",\n                        \"lastName\": \"Brown\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ],\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"createdBy\": \"adminUser\",\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\n    },\n    \"createdBy\": \"adminUser\",\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family Member",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Tree",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Api-Version",
+								"value": "1.0.0",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8090/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Family Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "GET with filters such as age, gender, lineage, etc."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventType\": \"family\",\n  \"eventName\": \"Tech Innovations 2024\",\n  \"eventStartDate\": \"2024-05-11\",\n  \"eventEndDate\": \"2024-05-17\",\n  \"address\": \"123 Innovation Road, Tech City\",\n  \"agendas\": [\n    {\n      \"agenda\": \"tech meeting 2026\",\n      \"startTime\": \"02:00\",\n      \"endTime\": \"05:00\",\n      \"date\": \"2024-05-11\"\n    },\n    {\n      \"agenda\": \"Dinner Time\",\n      \"startTime\": \"07:00\",\n      \"endTime\": \"09:00\",\n      \"date\": \"2024-05-11\"\n    }\n  ],\n  \"merchandise\": [\n    {\n      \"merchandiseType\": \"WEARABLE\",\n      \"wearableType\": \"T_SHIRT\",\n      \"productName\": \"v-neck tshirt\",\n      \"productPrice\": 25.99,\n      \"productDescription\": \"it is quality v-neck tshirt for summer\",\n      \"productImageUrl\": \"url\",\n      \"SKU\": \"123jwedwer3234238wd\",\n      \"size\": \"M\",\n      \"color\": \"black\"\n    },\n    {\n      \"merchandiseType\": \"BOOK\",\n      \"productName\": \"Rich dad poor dad\",\n      \"productPrice\": 30.99,\n      \"productDescription\": \"Rich Dad Poor Dad is a 1997 book written by Robert T. Kiyosaki and Sharon Lechter.\",\n      \"productImageUrl\": \"url\",\n      \"author\": \"Robert T\",\n      \"ISBN\": \"0-446-67745-0\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:54175/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "54175",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "GET with filters such as date, location, etc."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media/Content",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Upload Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Media",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Media",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription/Payment",
+			"item": [
+				{
+					"name": "Error Tests",
+					"item": []
+				},
+				{
+					"name": "Create Subscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Processing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Subscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "http://localhost:8080/api/create-account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"\",\n    \"middleName\":\"middleName\",\n    \"lastName\":\"\",\n    \"nickName\":\"j\",\n    \"birthday\":\"2000-10-10\",\n    \"age\":89,\n    \"password\":\"dhj\",\n    \"email\":\"dsds@gmail.com\",\n    \"address\":\"1234 N road CA\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/create-account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"create-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/home",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"home"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

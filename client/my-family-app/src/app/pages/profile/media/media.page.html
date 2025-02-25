@@ -1,0 +1,91 @@
+<!-- src/app/pages/media/media.page.html -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile" text="Back to profile"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Search Bar -->
+    <div class="py-2">
+      <ion-searchbar
+        placeholder="Search..."
+        class="rounded-lg"
+      ></ion-searchbar>
+    </div>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between py-4">
+      <h1 class="text-xl font-semibold">My Media</h1>
+      <ion-button size="small" (click)="addMedia()">Add</ion-button>
+    </div>
+
+    <!-- Profile Photo -->
+    <div class="flex justify-center mb-6">
+      <ion-avatar class="w-24 h-24">
+        <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Profile" />
+      </ion-avatar>
+    </div>
+
+    <!-- Segment Control -->
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="segmentChanged($event)" class="custom-segment">
+      <ion-segment-button value="photos" class="custom-segment-button">
+        <ion-label [class.text-[#0D4C92]]="selectedSegment === 'photos'">Photos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="videos" class="custom-segment-button">
+        <ion-label [class.text-[#0D4C92]]="selectedSegment === 'videos'">Videos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Media Grid -->
+    <div class="mt-4" [ngSwitch]="selectedSegment">
+      <!-- Photos Grid -->
+      <div *ngSwitchCase="'photos'" class="grid grid-cols-3 gap-1">
+        <div *ngFor="let photo of photos"
+             class="aspect-square relative overflow-hidden rounded-lg">
+          <img [src]="photo.url"
+               [alt]="'Photo ' + photo.id"
+               class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <!-- Videos Grid -->
+      <div *ngSwitchCase="'videos'" class="grid grid-cols-3 gap-1">
+        <div *ngFor="let video of videos"
+             class="aspect-square relative overflow-hidden rounded-lg">
+          <div class="absolute inset-0 flex items-center justify-center bg-black/20">
+            <ion-icon name="play-circle-outline"
+                      class="text-white text-4xl">
+            </ion-icon>
+          </div>
+          <img [src]="video.thumbnail"
+               [alt]="'Video ' + video.id"
+               class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Connections -->
+    <div class="mt-8 space-y-4">
+      <div *ngFor="let connection of socialConnections"
+           class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+        <div class="flex items-center gap-3">
+          <img [src]="connection.icon"
+               [alt]="connection.name"
+               class="w-6 h-6 object-contain"> <!-- Adjust size as needed -->
+          <span>{{ connection.name }}</span>
+        </div>
+        <ion-button fill="outline"
+                    size="small"
+                    (click)="connect(connection)">
+          {{ connection.connected ? 'Connected' : 'Connect' }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>

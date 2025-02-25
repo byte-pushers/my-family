@@ -1,0 +1,35 @@
+<div class="max-w-4xl mx-auto px-4 mt-3.5 mb-10">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-semibold text-slate-900 mb-4">Featured Event</h2>
+    <ion-card class="overflow-hidden rounded-2xl">
+      <div class="relative">
+        <ion-img
+          [src]="event.imageUrl"
+          [alt]="event.title"
+          class="h-96 w-full object-cover"
+        ></ion-img>
+
+        <!-- Semi-transparent overlay with warmer, softer tone -->
+        <div class="absolute bottom-0 left-0 w-full bg-slate-900/60 backdrop-blur-sm p-6">
+          <div class="flex items-center justify-between">
+            <ion-text>
+              <h2 class="text-2xl font-semibold text-slate-50">{{ event.title }}</h2>
+            </ion-text>
+
+            <ion-button
+              (click)="onRegister()"
+              [disabled]="!event.registrationOpen"
+              [class.opacity-50]="!event.registrationOpen"
+              class="font-semibold text-lg"
+              fill="solid"
+              size="large"
+              style="--background: #3b8cf5; --background-hover: #3B82F6; --color: white; --border-radius: 12px; --padding-start: 2rem; --padding-end: 2rem;"
+            >
+              Register
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-card>
+  </div>
+</div>

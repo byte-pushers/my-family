@@ -1,0 +1,17 @@
+// navigation-footer.component.scss
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-selected: var(--ion-color-primary);
+}
+
+.selected {
+  img {
+    @apply opacity-100;
+    filter: brightness(0) saturate(100%) invert(31%) sepia(98%)
+    saturate(1000%) hue-rotate(190deg) brightness(96%) contrast(107%);
+  }
+
+  ion-label {
+    @apply text-[var(--ion-color-primary)] font-medium;
+  }
+}

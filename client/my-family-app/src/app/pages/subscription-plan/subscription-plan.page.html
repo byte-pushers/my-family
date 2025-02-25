@@ -1,0 +1,90 @@
+<ion-content class="ion-padding">
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <h1 class="text-2xl font-bold mb-8">Hello {{username}}!</h1>
+    <p class="text-lg mb-6">Please Choose a plan</p>
+
+    <div class="space-y-6 w-full max-w-md">
+      <!-- Standard Plan -->
+      <div class="bg-white p-6 rounded-lg shadow-md transform transition duration-200 hover:scale-[1.02]">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Standard</h2>
+          <span class="text-[#0D4C92]">Free</span>
+        </div>
+        <ul class="space-y-2 mb-4">
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            All access to family
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            Upload photos and videos
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            View profiles
+          </li>
+        </ul>
+        <button (click)="selectPlan('free')"
+                class="w-full bg-[#0D4C92] text-white rounded-md py-2 hover:bg-[#0D4C92]/80 transition plan-button">
+          Choose Plan
+        </button>
+      </div>
+
+      <!-- Premium Plan -->
+      <div class="bg-white p-8 rounded-lg shadow-md border-2 border-[#0D4C92] transform transition duration-200 hover:scale-[1.02]">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold">Premium</h2>
+          <span class="text-[#0D4C92]">$2.99/Month</span>
+        </div>
+        <ul class="space-y-4 mb-6">
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            All access to family
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            Upload photos and videos
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            View profiles
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            Everything in Standard
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            Create Events
+          </li>
+          <li class="flex items-center">
+            <svg class="w-5 h-5 text-[#0D4C92] mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+            </svg>
+            Share event data and announcements
+          </li>
+        </ul>
+        <button (click)="selectPlan('premium')"
+                class="w-full bg-[#0D4C92] text-white rounded-md py-2 hover:bg-[#0D4C92]/80 transition plan-button">
+          Choose Plan
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

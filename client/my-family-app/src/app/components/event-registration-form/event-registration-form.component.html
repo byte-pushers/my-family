@@ -1,0 +1,319 @@
+<!-- Event Registration Form Component -->
+<div class="p-4 max-w-md mx-auto">
+  <!-- Step Indicator -->
+  <div class="text-center mb-6">
+    <div class="text-sm text-gray-600 mb-2">Step {{currentStep + 1}} of {{steps.length}}</div>
+    <div class="flex justify-center gap-2">
+      <span *ngFor="let step of steps; let i = index"
+            [class]="'w-2 h-2 rounded-full ' + (i === currentStep ? 'bg-blue-500' : 'bg-gray-200')">
+      </span>
+    </div>
+  </div>
+
+  <form [formGroup]="registrationForm">
+    <!-- Step 1: Personal Information -->
+    <div *ngIf="currentStep === 0" class="space-y-4">
+      <h2 class="!text-xl !font-bold !text-gray-900 !mb-4">Personal Information</h2>
+
+      <!-- First Name and Middle Name Row -->
+      <div class="flex gap-4">
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">First Name</ion-label>
+          <ion-input formControlName="firstName"
+                     placeholder="Enter Name..."
+                     class="p-3 bg-white rounded-lg">
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">Middle Name</ion-label>
+          <ion-input formControlName="middleName"
+                     placeholder="Enter Name..."
+                     class="p-3 bg-white rounded-lg">
+          </ion-input>
+        </ion-item>
+      </div>
+
+      <!-- Last Name and Nick Name Row -->
+      <div class="flex gap-4">
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">Last Name</ion-label>
+          <ion-input formControlName="lastName"
+                     placeholder="Enter Name..."
+                     class="p-3 bg-white rounded-lg">
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">Nick Name</ion-label>
+          <ion-input formControlName="nickName"
+                     placeholder="Enter nick name..."
+                     class="p-3 bg-white rounded-lg">
+          </ion-input>
+        </ion-item>
+      </div>
+
+      <!-- Birthday and Age Row -->
+      <div class="flex gap-4">
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">Birthday</ion-label>
+          <ion-input formControlName="birthday"
+                     type="date"
+                     class="p-3 bg-white rounded-lg">
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="flex-1 bg-transparent rounded-lg border border-gray-200">
+          <ion-label position="stacked" class="text-gray-600">Age</ion-label>
+          <ion-select formControlName="age"
+                      placeholder="Select Age"
+                      class="p-3 bg-white rounded-lg">
+            <ion-select-option *ngFor="let age of ageRange" [value]="age">{{age}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!-- Full Width Fields -->
+      <ion-item class="w-full bg-transparent rounded-lg border border-gray-200">
+        <ion-label position="stacked" class="text-gray-600">Email Address</ion-label>
+        <ion-input formControlName="email"
+                   type="email"
+                   placeholder="Email Address..."
+                   class="p-3 bg-white rounded-lg">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="w-full bg-transparent rounded-lg border border-gray-200">
+        <ion-label position="stacked" class="text-gray-600">Address</ion-label>
+        <ion-input formControlName="address"
+                   placeholder="Enter Address..."
+                   class="p-3 bg-white rounded-lg">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="w-full bg-transparent rounded-lg border border-gray-200">
+        <ion-label position="stacked" class="text-gray-600">Lineage</ion-label>
+        <ion-select formControlName="lineage"
+                    placeholder="Select Lineage..."
+                    class="p-3 bg-white rounded-lg">
+          <ion-select-option value="maternal">Maternal</ion-select-option>
+          <ion-select-option value="paternal">Paternal</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+    <!-- Step 2: Agenda -->
+    <div *ngIf="currentStep === 1" class="p-4">
+      <h2 class="!text-xl !font-bold !text-gray-900 !mb-4">Agenda</h2>
+
+      <div class="space-y-6">
+        <!-- First Agenda Item -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <img ngSrc="assets/icon/clock.png" alt="Time"
+                 class="w-5 h-5 brightness-0 opacity-60" height="512" width="512">
+            <span class="text-gray-600">7:00pm - 8:00pm</span>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="!text-base !font-semibold">Event Details</h3>
+            <div class="flex gap-2">
+              <ion-icon name="checkmark-outline"
+                        class="text-green-500 text-xl mt-0.5">
+              </ion-icon>
+              <p class="text-sm text-gray-600 leading-relaxed">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-gray-200 my-6"></div>
+
+        <!-- Second Agenda Item -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <img ngSrc="assets/icon/clock.png" alt="Time"
+                 class="w-5 h-5 brightness-0 opacity-60" height="512" width="512">
+            <span class="text-gray-600">8:00pm - 9:00pm</span>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="!text-base !font-semibold">Event Details</h3>
+            <div class="flex gap-2">
+              <ion-icon name="checkmark-outline"
+                        class="text-green-500 text-xl mt-0.5">
+              </ion-icon>
+              <p class="text-sm text-gray-600 leading-relaxed">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Merchandise -->
+    <div *ngIf="currentStep === 2" class="space-y-4">
+      <h2 class="!text-xl !font-bold !mb-4">Event Merchandise/Tickets</h2>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <!-- Image container with proper sizing -->
+        <div class="w-32 md:w-40 mx-auto md:mx-0">
+          <img ngSrc="assets/img/shirt.jpg"
+               alt="Event T-Shirt"
+               class="w-full h-auto object-contain"
+               height="512" width="512">
+        </div>
+
+        <!-- Form controls -->
+        <div>
+          <h3 class="!text-base !font-medium !mb-2">Price</h3>
+          <p class="!text-2xl !font-bold">${{merchandiseItems[0].price.toFixed(2)}}</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <h3 class="!text-base !font-medium !mb-2">T-Shirt Size</h3>
+            <ion-select interface="popover"
+                        placeholder="Select Size..."
+                        formControlName="tshirtSize"
+                        class="w-full bg-gray-50 rounded-lg border border-gray-200">
+              <ion-select-option *ngFor="let size of ['XS', 'S', 'M', 'L', 'XL', '2XL']"
+                                 [value]="size">{{size}}</ion-select-option>
+            </ion-select>
+          </div>
+
+          <div>
+            <h3 class="!text-base !font-medium !mb-2">Quantity</h3>
+            <ion-select interface="popover"
+                        placeholder="Quantity..."
+                        formControlName="tshirtQuantity"
+                        class="w-full bg-gray-50 rounded-lg border border-gray-200">
+              <ion-select-option *ngFor="let num of [1,2,3,4,5]"
+                                 [value]="num">{{num}}</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Payment Information -->
+    <div *ngIf="currentStep === 3" class="p-4 space-y-6">
+      <h2 class="!text-xl !font-bold !text-gray-900 !mb-4">Payment Information</h2>
+
+      <div class="mb-6">
+        <h3 class="!text-lg !font-bold !text-gray-900 !mb-2">
+          Total: <span class="font-semibold">${{calculateTotal().toFixed(2)}}</span>
+        </h3>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <!--Credit Card Button-->
+        <div [class]="'flex-1 p-3 border rounded-lg flex items-center gap-2 cursor-pointer ' +
+                     (paymentMethod === 'card' ? 'border-blue-500 bg-blue-50' : 'border-gray-200')"
+             (click)="selectPaymentMethod('card')">
+          <img ngSrc="assets/icon/credit-card.png" alt="Credit/Debit card icon" class="w-6 h-6" height="512"
+               width="512">
+          <span>Credit/Debit</span>
+        </div>
+
+        <!-- PayPal Button -->
+        <div [class]="'flex-1 p-3 pl-4 border rounded-lg flex items-center gap-3 cursor-pointer bg-white ' +
+             (paymentMethod === 'paypal' ? 'border-blue-500' : 'border-gray-200')"
+             (click)="selectPaymentMethod('paypal')">
+          <img ngSrc="assets/icon/paypal.png" alt="PayPal" class="h-6 w-6" height="512" width="512">
+          <span class="text-gray-600">PayPal</span>
+        </div>
+      </div>
+
+      <div *ngIf="paymentMethod === 'card'" class="space-y-4">
+        <div class="flex gap-4">
+          <ion-input placeholder="Card Number"
+                     class="flex-[2] p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="cardNumber">
+          </ion-input>
+          <ion-input placeholder="MM/YY"
+                     class="flex-1 p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="cardExpiry">
+          </ion-input>
+        </div>
+
+        <div class="flex gap-4">
+          <ion-input placeholder="First Name"
+                     class="flex-1 p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="firstName">
+          </ion-input>
+          <ion-input placeholder="Last Name"
+                     class="flex-1 p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="lastName">
+          </ion-input>
+        </div>
+
+        <div class="flex gap-4">
+          <ion-input placeholder="Zipcode"
+                     class="flex-1 p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="zipcode">
+          </ion-input>
+          <ion-input placeholder="Country"
+                     class="flex-1 p-4 bg-gray-100 rounded-lg border border-gray-200"
+                     formControlName="country">
+          </ion-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Success/Confirmation -->
+    <div *ngIf="currentStep === 4" class="min-h-[60vh] flex items-center justify-center p-6">
+      <!-- Success Message -->
+      <div class="text-center space-y-8 w-full max-w-md">
+        <h2 class="!text-2xl !font-bold !text-[#0D4C92] animate-fade-in">
+          See you at the Reunion!!
+        </h2>
+
+        <!-- Icon Container -->
+        <div class="flex justify-center py-8">
+          <img ngSrc="assets/icon/cheers.png"
+               alt="Cheers"
+               class="w-32 h-32 object-contain animate-bounce-slow filter drop-shadow-lg"
+               height="128"
+               width="128">
+        </div>
+
+        <!-- Return Home Button -->
+        <div class="w-full flex justify-center">
+          <ion-button
+            expand="block"
+            class="w-full max-w-[200px]"
+            (click)="returnHome()">
+            Return to Home
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between mt-6 p-4">
+      <ion-button *ngIf="currentStep > 0"
+                  fill="outline"
+                  (click)="previousStep()">
+        Previous
+      </ion-button>
+
+      <div class="flex justify-end flex-1">
+        <ion-button *ngIf="currentStep < steps.length - 2"
+                    (click)="nextStep()">
+          Next
+        </ion-button>
+        <ion-button *ngIf="currentStep === steps.length - 2"
+                    color="success"
+                    (click)="onSubmit()">
+          Submit Registration
+        </ion-button>
+      </div>
+    </div>
+  </form>
+</div>

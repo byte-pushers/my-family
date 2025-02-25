@@ -1,0 +1,43 @@
+<!-- announcements.component.html -->
+<div class="max-w-4xl mx-auto px-4">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-semibold text-slate-900 mb-4">Announcements</h2>
+
+    <div class="w-full space-y-4">
+      <ion-card *ngFor="let announcement of announcements" class="rounded-2xl">
+        <ion-card-content class="!p-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <ion-text>
+                <h2 class="!text-xl !font-bold !mb-2" style="color: #364F6B">
+                  {{ announcement.title }}
+                </h2>
+              </ion-text>
+              <ion-text>
+                <p class="!text-sm !mt-1" style="color: #FC5185">
+                  {{ announcement.date }}
+                </p>
+              </ion-text>
+              <ion-text color="medium">
+                <p class="!text-sm !mt-1">
+                  {{ announcement.location }}
+                </p>
+              </ion-text>
+            </div>
+<!--TODO: Add a "Created By:" section in the card to identify who's event its for -->
+            <ion-button
+              fill="outline"
+              size="medium"
+              color="primary"
+              (click)="handleRSVP(announcement)"
+              class="rsvp-button font-medium"
+              style="color: #0D4C92; --border-radius: 12px;"
+            >
+              RSVP
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</div>

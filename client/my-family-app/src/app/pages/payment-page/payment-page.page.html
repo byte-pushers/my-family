@@ -1,0 +1,66 @@
+<ion-content class="ion-padding">
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <h1 class="text-3xl font-bold mb-8">Premium</h1>
+    <p class="text-xl mb-4">Unlock everything for 1 month</p>
+    <p class="text-2xl font-bold mb-8">$2.99 / Month</p>
+
+    <div class="w-full max-w-md space-y-6">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Payment Information</h2>
+
+        <div class="space-y-4">
+          <div class="flex gap-4 mb-4">
+            <button class="flex-1 py-2 px-4 border-2 border-[#0D4C92] rounded-md text-center text-[#0D4C92] bg-white hover:bg-[#0D4C92] hover:text-white transition-colors duration-200 font-medium">
+              Credit/Debit
+            </button>
+            <button class="flex-1 py-2 px-4 border-2 border-[#0D4C92] rounded-md text-center text-[#0D4C92] bg-white hover:bg-[#0D4C92] hover:text-white transition-colors duration-200 font-medium">
+              PayPal
+            </button>
+          </div>
+
+          <input type="text" placeholder="Card Number" class="w-full p-2 border rounded-md">
+
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <input type="text" placeholder="MM/YY" class="w-full p-2 border rounded-md">
+            </div>
+            <div class="w-32">
+              <input type="text" placeholder="CVV" class="w-full p-2 border rounded-md">
+            </div>
+          </div>
+
+          <input type="text" placeholder="Name on Card" class="w-full p-2 border rounded-md">
+
+          <div class="flex gap-4">
+            <div class="w-1/2">
+              <input type="text" placeholder="Zipcode" class="w-full p-2 border rounded-md">
+            </div>
+            <div class="w-1/2">
+              <input type="text" placeholder="Country" class="w-full p-2 border rounded-md">
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="flex justify-between mb-2">
+            <span>Billing amount</span>
+            <span>$2.99</span>
+          </div>
+          <div class="flex justify-between mb-2">
+            <span>Tax</span>
+            <span>$1.00</span>
+          </div>
+          <div class="flex justify-between font-bold">
+            <span>Total</span>
+            <span>$3.99</span>
+          </div>
+        </div>
+
+        <button (click)="subscribe()"
+                class="w-full mt-6 bg-[#0D4C92] text-white rounded-md py-2 hover:bg-[#0D4C92]/80 transition">
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

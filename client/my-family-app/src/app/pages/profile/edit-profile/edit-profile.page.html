@@ -1,0 +1,219 @@
+<!-- edit-profile.page.html -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="max-w-3xl mx-auto">
+    <!-- Profile Image Section -->
+    <!-- Profile Image Section -->
+    <div class="flex flex-col items-center mb-6">
+      <div class="w-32 h-32 mb-3">
+        <ion-avatar class="w-full h-full border-2 border-blue-800">
+          <img [src]="selectedImage || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+               alt="Profile picture"
+               class="w-full h-full object-cover" />
+        </ion-avatar>
+      </div>
+      <ion-button
+        fill="clear"
+        class="text-blue-800"
+        (click)="fileInput.click()">
+        Upload Image
+      </ion-button>
+      <input
+        #fileInput
+        type="file"
+        class="hidden"
+        accept="image/*"
+        (change)="onImageUpload($event)">
+    </div>
+
+    <!-- Personal Information -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h2>
+
+      <div class="space-y-4">
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">First Name</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="firstName"
+            fill="solid"
+            shape="round"
+            type="text"
+            placeholder="Enter first name">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Middle Name</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="middleName"
+            fill="solid"
+            shape="round"
+            type="text"
+            placeholder="Enter middle name">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Last Name</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="lastName"
+            fill="solid"
+            shape="round"
+            type="text"
+            placeholder="Enter last name">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Nickname</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="nickName"
+            fill="solid"
+            shape="round"
+            type="text"
+            placeholder="Enter nickname">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Date of Birth</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="dateOfBirth"
+            fill="solid"
+            shape="round"
+            type="date">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Age</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="age"
+            fill="solid"
+            shape="round"
+            type="number"
+            placeholder="Enter age">
+          </ion-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h2>
+
+      <div class="space-y-4">
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Email</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="email"
+            fill="solid"
+            shape="round"
+            type="email"
+            placeholder="Enter email">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Phone</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="phone"
+            fill="solid"
+            shape="round"
+            type="tel"
+            placeholder="(555)-123-4567"
+            [inputmode]="'tel'"
+            maxlength="14">
+          </ion-input>
+          <div *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid"
+               class="text-sm text-red-500 mt-1">
+            Please enter a valid phone number format: (555)-123-4567
+          </div>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Address</label>
+          <ion-textarea
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="address"
+            fill="solid"
+            shape="round"
+            placeholder="Enter address"
+            rows="2">
+          </ion-textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Update -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Update Password</h2>
+
+      <div class="space-y-4">
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Current Password</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="currentPassword"
+            fill="solid"
+            shape="round"
+            type="password"
+            placeholder="Enter current password">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">New Password</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="newPassword"
+            fill="solid"
+            shape="round"
+            type="password"
+            placeholder="Enter new password">
+          </ion-input>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm text-gray-600 mb-1">Confirm New Password</label>
+          <ion-input
+            class="w-full rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all px-4 py-2"
+            formControlName="confirmPassword"
+            fill="solid"
+            shape="round"
+            type="password"
+            placeholder="Confirm new password">
+          </ion-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Buttons -->
+    <div class="flex flex-col gap-4 mt-6">
+      <ion-button expand="block" type="submit" class="font-medium">
+        Save Changes
+      </ion-button>
+      <ion-button expand="block" fill="outline" [routerLink]="['/profile']" class="font-medium">
+        Cancel
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
+
+<app-footer-navigation></app-footer-navigation>

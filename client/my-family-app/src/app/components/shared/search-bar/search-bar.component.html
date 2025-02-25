@@ -1,0 +1,219 @@
+<!-- Backdrop when filters are shown -->
+<div *ngIf="showFilters" class="backdrop" (click)="cancelSearch()"></div>
+
+<div class="relative w-full">
+  <!-- Search Bar -->
+  <div class="flex items-center gap-1 p-2">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      [placeholder]="placeholder"
+      class="flex-1"
+      (ionInput)="onSearchInput($event)"
+      (keyup.enter)="onSearch()"
+    ></ion-searchbar>
+    <div class="flex gap-1">
+      <ion-button
+        fill="clear"
+        (click)="onSearch()"
+        class="min-w-[40px] h-10"
+      >
+        <img
+          ngSrc="assets/icon/search.png"
+          height="24"
+          width="24"
+          alt="Search"
+          class="w-6 h-6 object-contain"
+        >
+      </ion-button>
+      <ion-button
+        fill="clear"
+        (click)="toggleFilters()"
+        class="min-w-[40px] h-10"
+      >
+        <img
+          ngSrc="assets/icon/filter.png"
+          alt="Search Filter"
+          class="w-6 h-6 object-contain"
+          height="24"
+          width="24">
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Filters Panel -->
+  <div *ngIf="showFilters"
+       class="absolute left-0 right-0 bg-white shadow-lg z-50">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+      <button class="text-gray-500" (click)="cancelSearch()">Cancel</button>
+      <h2 class="text-base font-medium">Search Filters</h2>
+      <button class="text-blue-600" (click)="applyFilters()">Apply</button>
+    </div>
+
+    <!-- Filter Categories -->
+    <ion-segment [value]="activeFilter" (ionChange)="filterTypeChanged($event)" class="px-4 pt-2">
+      <ion-segment-button value="events">
+        <ion-label>Events</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="family">
+        <ion-label>Family</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Event Filters -->
+    <div *ngIf="activeFilter === 'events'" class="p-4 space-y-4">
+      <!--Date Range Section-->
+      <div>
+        <div class="text-sm text-gray-600 mb-2">Date Range</div>
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-gray-500 w-12">From</span>
+            <button
+              (click)="openDatePicker('from')"
+              class="flex-1 flex items-center justify-between bg-blue-100 text-blue-800 px-4 py-2 rounded-lg"
+            >
+              {{ formatDate(fromDate) }}
+              <img ngSrc="assets/icon/calendar.png" alt="Calendar" class="w-6 h-6" height="512" width="512">
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-500 w-12">To</span>
+            <button
+              (click)="openDatePicker('to')"
+              class="flex-1 flex items-center justify-between bg-blue-100 text-blue-800 px-4 py-2 rounded-lg"
+            >
+              {{ formatDate(toDate) }}
+              <img ngSrc="assets/icon/calendar.png" alt="Calendar" class="w-6 h-6" height="512" width="512">
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- State Section -->
+      <div>
+        <div class="text-sm text-gray-600 mb-2">State</div>
+        <select
+          [ngModel]="selectedState"
+          (ngModelChange)="selectedState = $event"
+          class="w-full rounded-lg border border-gray-200 p-2 bg-white text-gray-700"
+        >
+          <option value="" selected disabled>Select state</option>
+          <option *ngFor="let state of states">{{ state }}</option>
+        </select>
+      </div>
+
+      <!-- City Section -->
+      <div>
+        <div class="text-sm text-gray-600 mb-2">City</div>
+        <ion-searchbar
+          [(ngModel)]="selectedCity"
+          placeholder="Type city name..."
+          class="p-0 bg-gray-50"
+          [debounce]="300"
+        ></ion-searchbar>
+      </div>
+    </div>
+
+    <!-- Family Filters -->
+    <div *ngIf="activeFilter === 'family'" class="p-4 space-y-4">
+      <!-- State Section -->
+      <div>
+        <div class="text-sm text-blue-800 mb-2">State</div>
+        <select
+          [ngModel]="selectedState"
+          (ngModelChange)="selectedState = $event"
+          class="w-full rounded-lg bg-blue-100 p-2 text-gray-700"
+        >
+          <option value="" selected disabled>Select state</option>
+          <option *ngFor="let state of states">{{ state }}</option>
+        </select>
+      </div>
+
+      <!-- City Section -->
+      <div>
+        <div class="text-sm text-blue-800 mb-2">City</div>
+        <ion-searchbar
+          [(ngModel)]="selectedCity"
+          placeholder="Type city name..."
+          class="custom-searchbar bg-blue-100"
+          [debounce]="300"
+        ></ion-searchbar>
+      </div>
+
+      <!-- Lineage Section -->
+      <div>
+        <div class="text-sm text-blue-800 mb-2">Lineage</div>
+        <select
+          [(ngModel)]="selectedLineage"
+          class="w-full rounded-lg bg-blue-100 p-2 text-gray-700"
+        >
+          <option value="" selected disabled>Select relation</option>
+          <option *ngFor="let relation of lineageOptions">{{ relation }}</option>
+        </select>
+      </div>
+
+      <!-- Name Section -->
+      <div>
+        <div class="text-sm text-blue-800 mb-2">Name</div>
+        <ion-searchbar
+          [(ngModel)]="searchQuery"
+          placeholder="Enter family name..."
+          class="custom-searchbar bg-blue-100"
+          [debounce]="300"
+          (ionInput)="onSearchInput($event)"
+        ></ion-searchbar>
+      </div>
+
+      <!-- Family Crests Section -->
+      <div>
+        <div class="text-sm text-blue-800 mb-2">Family Crests</div>
+        <ion-searchbar
+          placeholder="Enter last name..."
+          class="custom-searchbar bg-blue-100 mb-3"
+          [debounce]="300"
+        ></ion-searchbar>
+        <div class="flex gap-4 overflow-x-auto py-2">
+          <img
+            *ngFor="let crest of familyCrests"
+            [ngSrc]="crest"
+            [alt]="'Family Crest'"
+            class="w-16 h-16 object-contain"
+            width="64"
+            height="64"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Date Picker Modal -->
+  <ion-modal
+    [isOpen]="showDatePicker"
+    [breakpoints]="[0, 1]"
+    [initialBreakpoint]="1"
+    (didDismiss)="showDatePicker = false"
+    class="date-picker-modal"
+  >
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title class="text-center">Select {{ currentPickerType === 'from' ? 'Start' : 'End' }} Date</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showDatePicker = false" color="primary">
+              Done
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-datetime
+        #datetime
+        presentation="date"
+        [preferWheel]="true"
+        [value]="selectedDate"
+        (ionChange)="onDateSelected($event)"
+        [showDefaultButtons]="false"
+        [yearValues]="yearValues"
+      ></ion-datetime>
+    </ng-template>
+  </ion-modal>
+</div>

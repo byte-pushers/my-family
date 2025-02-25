@@ -1,0 +1,77 @@
+// search-results.page.scss
+:host {
+  ion-content {
+    --background: #f8f9fa;
+  }
+
+  ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    cursor: default;
+
+    &.bg-blue-50 {
+      --background: rgb(239 246 255);
+      --background-hover: rgb(219 234 254);
+    }
+
+    &::part(native) {
+      padding: 0;
+    }
+  }
+
+  ion-button {
+    margin: 0;
+    height: 32px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --border-radius: 16px;
+    font-size: 14px;
+
+    &.button-outline {
+      --border-width: 1px;
+    }
+
+    @media (max-width: 640px) {
+      --padding-start: 12px;
+      --padding-end: 12px;
+      height: 28px;
+      font-size: 12px;
+    }
+  }
+
+  ion-list {
+    background: transparent;
+    padding: 0;
+  }
+
+  // Improve touch targets on mobile
+  @media (max-width: 640px) {
+    ion-item {
+      --min-height: auto;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}
+
+// Custom spacing utilities
+.space-y-1 > * + * {
+  margin-top: 0.25rem;
+}
+
+// Improved truncation for long text
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
