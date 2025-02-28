@@ -11,10 +11,8 @@ deploy:
       - make dockerpush
   - on:
       branches:
-        only:
-          - master
-          - feature/dockerize-app
-  - target_branch: feature/dockerize-app
+        - master
+        - feature/dockerize-app
 notifications:
   email:
     recipients:
