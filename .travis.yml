@@ -8,10 +8,7 @@ deploy:
     script:
       - make dockerpush
   - on:
-      branches:
-        - master
-        - develop
-        - feature/dockerize-app
+      branch: feature/dockerize-app
 notifications:
   email:
     recipients:
