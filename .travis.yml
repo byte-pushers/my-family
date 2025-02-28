@@ -12,6 +12,7 @@ deploy:
   - on:
       branches:
         - master
+        - develop
         - feature/dockerize-app
 notifications:
   email:
