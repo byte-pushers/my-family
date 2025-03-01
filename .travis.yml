@@ -10,7 +10,10 @@ deploy:
     script:
       - make dockerpush
   - on:
-      branch: feature/dockerize-app
+      branches:
+        - feature/dockerize-app
+        - develop
+        - master
 notifications:
   email:
     recipients:
