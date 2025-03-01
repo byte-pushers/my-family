@@ -3,17 +3,14 @@ sudo: required
 services:
   - docker
 deploy:
-  - edge:
-      branch: true
   - provider: script
-    skip_cleanup: true
-    script:
-      - make dockerpush
+  - skip_cleanup: true
+  - script: make dockerpush
   - on:
       branches:
         - master
         - develop
-        - feature/dockerize-app
+        - dockerized-app
 notifications:
   email:
     recipients:
