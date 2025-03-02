@@ -3,6 +3,7 @@ services:
   - docker
 deploy:
   provider: script
+  edge: true
   script: make dockerpush
   on:
     all_branches: true
