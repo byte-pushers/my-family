@@ -1,19 +1,9 @@
 language: bash
-sudo: required
 services:
   - docker
 deploy:
-  - edge:
-      branch: true
-  - provider: script
-    skip_cleanup: true
-    script:
-      - make dockerpush
-  - on:
-      branches:
-        - master
-        - develop
-        - feature/dockerize-app
+  provider: script
+  script: make dockerpush
 notifications:
   email:
     recipients:
