@@ -8,11 +8,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { Event } from '../../models/event';
-import { Person } from '../../models/family-tree/person';
-import { PersonDisplay } from '../profile/family-member/person-display'
+import { Event } from '../../../models/event';
+import { Person } from '../../../models/family-tree/person';
+import { PersonDisplay } from '../../profile/family-member/person-display'
 import { Router, ActivatedRoute } from '@angular/router';
-import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
+import { FooterNavigationComponent } from "../../../components/shared/footer-navigation/footer-navigation.component";
 
 interface SearchFilters {
   type: 'events' | 'family';

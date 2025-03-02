@@ -13,16 +13,16 @@ export const routes: Routes = [
   },
   {
     path: 'create-event',
-    loadComponent: () => import('./pages/create-event/create-event.page').then(m => m.CreateEventPage) // Set CreateEventPage as the default
+    loadComponent: () => import('./pages/profile/events/create-event/create-event.page').then(m => m.CreateEventPage) // Set CreateEventPage as the default
   },
 
   {
     path: 'create-account',
-    loadComponent: () => import('./pages/create-account/create-account.page').then(m => m.CreateAccountPage)
+    loadComponent: () => import('./pages/welcome-page/create-account/create-account.page').then(m => m.CreateAccountPage)
   },
   {
     path: 'login-page',
-    loadComponent: () => import('./pages/login-page/login-page.page').then(m => m.LoginPagePage)
+    loadComponent: () => import('./pages/welcome-page/login-page/login-page.page').then(m => m.LoginPagePage)
   },
 
   {
@@ -39,7 +39,7 @@ export const routes: Routes = [
   },
   {
     path: 'event-signup',
-    loadComponent: () => import('./pages/event-signup/event-signup.page').then( m => m.EventSignupPage)
+    loadComponent: () => import('./pages/home/event-signup/event-signup.page').then(m => m.EventSignupPage)
   },
   {
     path: 'chat',
@@ -47,7 +47,7 @@ export const routes: Routes = [
   },
   {
     path: 'add-to-family',
-    loadComponent: () => import('./pages/add-to-family/add-to-family.page').then( m => m.AddToFamilyPage)
+    loadComponent: () => import('./pages/family-tree/add-to-family/add-to-family.page').then(m => m.AddToFamilyPage)
   },
   {
     path: 'profile',
@@ -71,19 +71,19 @@ export const routes: Routes = [
   },
   {
     path: 'search-results',
-    loadComponent: () => import('./pages/search-results/search-results.page').then( m => m.SearchResultsPage)
+    loadComponent: () => import('./pages/home/search-results/search-results.page').then(m => m.SearchResultsPage)
   },
   {
     path: 'tree-loading',
-    loadComponent: () => import('./pages/tree-loading/tree-loading.page').then( m => m.TreeLoadingPage)
+    loadComponent: () => import('./pages/family-tree/add-to-family/tree-loading/tree-loading.page').then(m => m.TreeLoadingPage)
   },
   {
     path: 'subscription-plan',
-    loadComponent: () => import('./pages/subscription-plan/subscription-plan.page').then( m => m.SubscriptionPlanPage)
+    loadComponent: () => import('./pages/welcome-page/create-account/subscription-plan/subscription-plan.page').then(m => m.SubscriptionPlanPage)
   },
   {
     path: 'payment',
-    loadComponent: () => import('./pages/payment-page/payment-page.page').then( m => m.PaymentPage)
+    loadComponent: () => import('./pages/welcome-page/create-account/subscription-plan/payment-page/payment-page.page').then(m => m.PaymentPage)
   },
   {
     path: 'family-member/:id',

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { CreateAccountPage } from '../../pages/create-account/create-account.page';
-import { CreateEventPage } from '../../pages/create-event/create-event.page';
-import {AddToFamilyPage} from "../../pages/add-to-family/add-to-family.page"; // Import CreateEventPage
+import { CreateAccountPage } from '../../pages/welcome-page/create-account/create-account.page';
+import { CreateEventPage } from '../../pages/profile/events/create-event/create-event.page';
+import {AddToFamilyPage} from "../../pages/family-tree/add-to-family/add-to-family.page"; // Import CreateEventPage
 
 @Component({
   selector: 'app-root',
