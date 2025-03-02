@@ -1,12 +1,15 @@
 language: bash
+sudo: required
+services:
+  - docker
 deploy:
-  provider: script
-  script: make dockerpush
-  on:
-    branches:
-      - master
-      - develop
-      - dockerized-app
+  - provider: script
+  - script: make dockerpush
+  - on:
+      branches:
+        - master
+        - develop
+        - dockerized-app
 notifications:
   email:
     recipients:
