@@ -2,6 +2,7 @@ package com.bytepushers.family.service;
 
 import com.bytepushers.family.model.Account;
 import com.bytepushers.family.model.Address;
+import com.bytepushers.family.model.Merchandise;
 import com.bytepushers.family.model.Order;
 import com.bytepushers.family.repo.AccountRepository;
 import com.stripe.exception.StripeException;
@@ -14,13 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,13 +46,16 @@ public class OrderServiceTest {
     private Order order;
 
     @Mock
-    private AccountRepository accountRepository;
+    private TaxService taxService;
+
+    @Mock
+    private Merchandise merchandise;
 
     @InjectMocks
     private OrderService orderService;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -92,18 +96,13 @@ public class OrderServiceTest {
         mockAccount.setLastName("Doe");
         mockAccount.setAddress(addressMock);
 
-        when(accountRepository.findByEmail("zayan12@gmail.com")).thenReturn(Optional.of(mockAccount));
-
-        when(apiService.getStripeApiKey()).thenReturn("test_stripe_api_key");
-
        doReturn(mockAccount).when(accountService).getAccountByEmail("zayan12@gmail.com");
-
-        when(account.getEmail()).thenReturn("zayan12@gmail.com");
 
         Account account1 = accountService.getAccountByEmail("zayan12@gmail.com");
 
-        OrderService orderServiceSpy = spy(orderService);
+        OrderService orderServiceSpy = Mockito.spy(orderService);
         doReturn("customer-id-123").when(orderServiceSpy).getOrCreateCustomer(anyString());
+        ReflectionTestUtils.setField(orderServiceSpy, "accountService", accountService);
 
 
         List<Order> testOrders = new ArrayList<>();
@@ -115,10 +114,30 @@ public class OrderServiceTest {
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             mockedSession.when(() -> Session.create(any(SessionCreateParams.class))).thenReturn(mockSession);
-            String resultUrl = orderServiceSpy.processOrder(testOrders);
+            String resultUrl = orderServiceSpy.processOrder(testOrders, "zayan12@gmail.com");
 
             assertNotNull(resultUrl);
-            assertEquals("https://checkout.stripe.com/test-url", resultUrl);
+           assertEquals("https://checkout.stripe.com/test-url", resultUrl);
+
+        }
+    }
+
+    @Test
+    public void processOrder_FailedPayment_Test() throws StripeException {
+
+       OrderService orderServiceSpy = Mockito.spy(orderService);
+
+        List<Order> testOrders = new ArrayList<>();
+        testOrders.add(new Order("book", "testing", "new book", 50));
+        testOrders.add(new Order("t-shirt", "v-neck", "new t-shirt", 15));
+
+        Session mockSession = mock(Session.class);
+
+        try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
+            mockedSession.when(() -> Session.create(any(SessionCreateParams.class))).thenReturn(mockSession);
+            String resultUrl = orderServiceSpy.processOrder(testOrders, "zayan12@gmail.com");
+
+            assertEquals("Account not found", resultUrl);
 
         }
     }

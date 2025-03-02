@@ -53,11 +53,11 @@ public class PaymentController {
     }
 
     @GetMapping(value = "/payments", consumes = {"application/json"}, produces = {"application/json"})
-    public String payment(@Valid @RequestBody List<Order> order) throws StripeException {
+    public String payment(@Valid @RequestBody List<Order> order, @RequestParam String email) throws StripeException {
 
         Stripe.apiKey = apiService.getStripeApiKey();
 
-        String text = orderService.processOrder( order);
+        String text = orderService.processOrder( order, email);
         System.out.println(text);
        orderService.getCustomerPurchases("Casey11@gmail.com");
         return "your payment has successfully completed with id: " + text;

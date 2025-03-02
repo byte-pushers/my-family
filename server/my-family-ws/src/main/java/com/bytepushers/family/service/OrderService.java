@@ -115,14 +115,14 @@ public class OrderService {
      * @return {@code true} if the order is processed successfully, {@code false} otherwise
      */
     //TODO: process order through stripe
-    public String processOrder(List<Order> order) throws StripeException {
-        Account account = accountService.getAccountByEmail("zayan12@gmail.com");
+    public String processOrder(List<Order> order, String email) throws StripeException {
+        Account account = accountService.getAccountByEmail(email);
         if(account == null){
             return "Account not found";
         }
 
         //calculate the price of order with the tax
-        double Price = Math.ceil(calaculatePrice(order, account.getEmail()));
+       // double Price = Math.ceil(calaculatePrice(order, account.getEmail()));
 
         Stripe.apiKey = apiService.getStripeApiKey();
        String customerId =  getOrCreateCustomer(account.getEmail());
@@ -195,7 +195,11 @@ public class OrderService {
     public double calaculatePrice(List<Order> orders, String email) {
         double totalCost = 0.0;
 
-        for (Package order : orders) {
+        for (Order order : orders) {
+            System.out.println(order.getPrice());
+        }
+
+        for (Order order : orders) {
             String type = order.getType().toLowerCase();
             switch (type) {
                 case "wearable":
