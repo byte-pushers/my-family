@@ -1,11 +1,10 @@
 language: bash
 services:
   - docker
-install:
-  gem install ruby -v 2.7
-  gem install json_pure -v 2.7.6
 deploy:
   provider: script
+  edge:
+    branch: v2.0.3-beta.4
   script: make dockerpush
   on:
     branch: feature/dockerized-app-1
