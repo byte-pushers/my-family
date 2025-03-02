@@ -1,6 +1,8 @@
 language: bash
 services:
   - docker
+install:
+  gem install json_pure -v 2.7.6
 deploy:
   provider: script
   script: make dockerpush
