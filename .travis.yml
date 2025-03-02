@@ -4,7 +4,7 @@ services:
 deploy:
   provider: script
   edge:
-    branch: true
+    branch: v2.0.5-beta
   script: make dockerpush
   on:
     branch: feature/dockerized-app-1
