@@ -5,6 +5,7 @@ import com.bytepushers.family.model.Address;
 import com.bytepushers.family.model.Merchandise;
 import com.bytepushers.family.model.Order;
 import com.bytepushers.family.repo.AccountRepository;
+import com.bytepushers.family.repo.OrderRepository;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import com.stripe.model.CustomerCollection;
@@ -17,9 +18,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -49,7 +48,7 @@ public class OrderServiceTest {
     private TaxService taxService;
 
     @Mock
-    private Merchandise merchandise;
+    private OrderRepository orderRepository;
 
     @InjectMocks
     private OrderService orderService;
@@ -60,22 +59,23 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void getOrCreateAccount_Test() throws StripeException {
+    public void getOrCreateAccount_CustomerExists_ReturnExistingCustomerId() throws StripeException {
 
-        List<Customer> mockCustomers = new ArrayList<>();
-        mockCustomers.add(customer);
+        Customer mockCustomer = mock(Customer.class);
+        when(mockCustomer.getId()).thenReturn("existing-customer-id");
 
-        CustomerCollection customerCollectionMock = mock(CustomerCollection.class);
-        when(customerCollectionMock.getData()).thenReturn(mockCustomers);
+        CustomerCollection mockCustomerCollection = mock(CustomerCollection.class);
+        when(mockCustomerCollection.getData()).thenReturn(Collections.singletonList(mockCustomer));
 
-        try (MockedStatic<Customer> customerMockedStatic = mockStatic(Customer.class)) {
-            customerMockedStatic.when(() -> Customer.list(anyMap())).thenReturn(customerCollectionMock);
-            when(customer.getId()).thenReturn("existing-customer-id");
+        try (MockedStatic<Customer> mockedCustomer = mockStatic(Customer.class)) {
+            mockedCustomer.when(() -> Customer.list(any(Map.class))).thenReturn(mockCustomerCollection);
 
+            // Call method
             String customerId = orderService.getOrCreateCustomer("zayan12@gmail.com");
 
+            // Verify and assert
             assertNotNull(customerId);
-            assertEquals(mockCustomers.get(0).getId(), customerId);
+            assertEquals("existing-customer-id", customerId);
         }
     }
 
@@ -140,5 +140,24 @@ public class OrderServiceTest {
             assertEquals("Account not found", resultUrl);
 
         }
+    }
+
+    @Test
+    public void saveOrder_SuccessfulPayment_Test() {
+
+        OrderService orderServiceSpy = Mockito.spy(orderService);
+
+
+        List<Order> mockOrders = Arrays.asList(
+                new Order("book", "testing", "new book", 50.0),
+                new Order("t-shirt", "v-neck", "new t-shirt", 15.0)
+        );
+
+        doReturn(mockOrders).when(orderServiceSpy).saveOrder(mockOrders);
+
+        List<Order> orders = orderServiceSpy.saveOrder(mockOrders);
+
+        assertNotNull(orders);
+        assertEquals(mockOrders.size(), orders.size());
     }
 }

@@ -59,16 +59,15 @@ public class PaymentController {
 
         String text = orderService.processOrder( order, email);
         System.out.println(text);
-       orderService.getCustomerPurchases("Casey11@gmail.com");
         return "your payment has successfully completed with id: " + text;
 
     }
 
-    @GetMapping(value = "/payments/history")
-    public ResponseEntity<?>paymentHistory(@RequestParam String email) throws StripeException {
-        List<Session> history = orderService.getCustomerPurchases(email);
-        return ResponseEntity.ok(history);
-    }
+//    @GetMapping(value = "/payments/history")
+//    public ResponseEntity<?>paymentHistory(@RequestParam String email) throws StripeException {
+//        List<Session> history = orderService.getCustomerPurchases(email);
+//        return ResponseEntity.ok(history);
+//    }
 
     /**
      * Creates a new order with the provided order details. The order is saved in the system.
@@ -90,11 +89,11 @@ public class PaymentController {
      * @param email an optional email address that may affect the pricing (e.g., for discounts)
      * @return a {@link ResponseEntity} containing the total price of the orders and a status of {@link HttpStatus#CREATED}
      */
-    @GetMapping(value = "/orders", consumes = {"application/json"})
-    public ResponseEntity<?> calculateOrder(@Valid @RequestBody List<Order> order, @RequestParam(required = false) String email) {
-        double price =  orderService.calaculatePrice(order, email);
-        return new ResponseEntity<>(price, HttpStatus.CREATED);
-    }
+//    @GetMapping(value = "/orders", consumes = {"application/json"})
+//    public ResponseEntity<?> calculateOrder(@Valid @RequestBody List<Order> order, @RequestParam(required = false) String email) {
+//        double price =  orderService.calaculatePrice(order, email);
+//        return new ResponseEntity<>(price, HttpStatus.CREATED);
+//    }
 
 
 }
