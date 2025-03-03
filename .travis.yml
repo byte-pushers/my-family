@@ -1,27 +1,21 @@
 jobs:
   include:
     - language: java
-      #addons:
-        #apt:
-          #packages:
-            #- openjdk-22-jdk
       jdk: openjdk22
       cache:
         directories:
           - "$HOME/.m2"
-      #before_install:
-        #- pyenv global 3.7.13
-        #- pip install -U pip
-        #- pip install awscli
       install:
-        - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests docker:build
-      #before_deploy:
-        #- cp -Rf 'my-family/server/my-family-ws/target/my-family-ws.jar' ${S3_DEPLOYMENT_OBJECT_NAME}
+        - java --version
+        - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests
+    - language: bash
+      services:
+        - docker
       deploy:
-        - provider: script
-          edge:
-            branch: v2.0.3-beta.4
-          script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws
+        provider: script
+        edge:
+          branch: v2.0.3-beta.4
+        script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
     - language: bash
       services:
         - docker

@@ -1,10 +1,11 @@
 BASEDIR=$(CURDIR)
 
 #DOCKER_IMAGE_NAME=my-family
+#DOCKER_IMAGE_SRC_DIR=client/my-family-app
 SHA := $(shell git rev-parse --short HEAD)
 
 dockerbuild:
-	docker build -t $(DOCKER_IMAGE_NAME) client/my-family-app
+	docker build -t $(DOCKER_IMAGE_NAME) $(DOCKER_IMAGE_SRC_DIR)
 
 dockerpush: dockerbuild
 	echo "$(DOCKER_USER_TOKEN)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
