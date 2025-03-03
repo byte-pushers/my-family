@@ -5,9 +5,9 @@ jobs:
       cache:
         directories:
           - "$HOME/.m2"
-      before_install:
-        - pyenv global 3.7.13
-        - pip install -U pip
+      #before_install:
+        #- pyenv global 3.7.13
+        #- pip install -U pip
         #- pip install awscli
       install:
         - mvn clean install -P dev
