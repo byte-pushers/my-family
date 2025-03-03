@@ -10,7 +10,7 @@ jobs:
         #- pip install -U pip
         #- pip install awscli
       install:
-        - mvn clean install -P dev -DskipTests
+        - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests docker:build
       #before_deploy:
         #- cp -Rf 'my-family/server/my-family-ws/target/my-family-ws.jar' ${S3_DEPLOYMENT_OBJECT_NAME}
       deploy:
