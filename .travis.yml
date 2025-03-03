@@ -1,7 +1,7 @@
 nvmmatrix:
   include:
     - language: java
-      jdk: oraclejdk22
+      jdk: openjdk22
       cache:
         directories:
           - "$HOME/.m2"
