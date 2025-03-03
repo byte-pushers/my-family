@@ -1,10 +1,14 @@
 jobs:
   include:
     - language: java
+      addons:
+        apt:
+          packages:
+            - openjdk-22-jdk
       jdk: oraclejdk22
-      #cache:
-        #directories:
-          #- "$HOME/.m2"
+      cache:
+        directories:
+          - "$HOME/.m2"
       #before_install:
         #- pyenv global 3.7.13
         #- pip install -U pip
