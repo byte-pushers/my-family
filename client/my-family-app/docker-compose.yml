@@ -2,13 +2,13 @@ services:
   my-family-app:
     container_name: my-family-angular-app-container
     build: .
-    image: tontepouncil/my-family:latest
+    image: tontepouncil/my-family-web:latest
     ports:
       - 4100:4100
     expose:
       - 4100
     networks:
-      - internalnet
+      - bp-internal-network
 networks:
-  internalnet:
+  bp-internal-network:
     driver: bridge

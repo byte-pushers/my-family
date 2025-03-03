@@ -1,13 +1,37 @@
-language: bash
-services:
-  - docker
-deploy:
-  provider: script
-  edge:
-    branch: v2.0.3-beta.4
-  script: make dockerpush
-  on:
-    branch: feature/dockerized-app-1
+nvmmatrix:
+  include:
+    - language: java
+      jdk: oraclejdk22
+      cache:
+        directories:
+          - "$HOME/.m2"
+      #before_install:
+        #- pyenv global 3.7.13
+        #- pip install -U pip
+        #- pip install awscli
+      install:
+        - mvn clean install -P dev
+      #before_deploy:
+        #- cp -Rf 'my-family/server/my-family-ws/target/my-family-ws.jar' ${S3_DEPLOYMENT_OBJECT_NAME}
+      deploy:
+        - provider: script
+          edge:
+            branch: v2.0.3-beta.4
+          script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws
+    - language: bash
+    - services:
+      - docker
+    - deploy:
+      provider: script
+      edge:
+        branch: v2.0.3-beta.4
+      script: make dockerpush DOCKER_IMAGE_NAME=my-family-web
+      on:
+        branches:
+          only:
+            - feature/dockerized-app-1
+            - develop
+            - master
 notifications:
   email:
     recipients:

@@ -7,37 +7,37 @@ services:
     ports:
       - 8090:8090
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/myfamily?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://my-family-ws-mysqldb:3306/myfamily?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: myfamily
       SPRING_DATASOURCE_PASSWORD: myfamily
     depends_on:
-      - mysqldb
+      - mysql-db
     volumes:
-      - springboot-app:/var/app/my-family-ws
-    #networks:
-      #- bp-network
+      - my-family-springboot-app-data:/var/app/data/my-family-ws-springboot-app
+    networks:
+      - bp-internal-network
 
-  mysqldb:
-    container_name: mysqldb
+  mysql-db:
+    container_name: my-family-ws-mysqldb
     image: mysql:8.0
     platform: linux/x86_64
     environment:
-      DATABASE_HOST: mysqldb
+      DATABASE_HOST: my-family-ws-mysqldb
       DATABASE_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: myfamily
       MYSQL_USER: myfamily
       MYSQL_PASSWORD: myfamily
     volumes:
-      - mysql-data:/var/app/mysql
+      - my-family-mysql-data:/var/app/data/my-family-mysql
       #- ./mysql-init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
-    #networks:
-      #- bp-network
+    networks:
+      - bp-internal-network
 
 volumes:
-  mysql-data:
-  springboot-app:
-#networks:
-  #bp-network:
+  my-family-mysql-data:
+  my-family-springboot-app-data:
+networks:
+  bp-internal-network:

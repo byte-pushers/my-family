@@ -1,6 +1,6 @@
 BASEDIR=$(CURDIR)
 
-DOCKER_IMAGE_NAME=my-family
+#DOCKER_IMAGE_NAME=my-family
 SHA := $(shell git rev-parse --short HEAD)
 
 dockerbuild:
