@@ -20,10 +20,9 @@ jobs:
         script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
         on:
           branches:
-            only:
-              - feature/dockerized-app-1
-              - develop
-              - master
+            - feature/dockerized-app-1
+            - develop
+            - master
     - stage: my-family-app-docker-deploy
       language: bash
       services:
@@ -35,10 +34,9 @@ jobs:
         script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
         on:
           branches:
-            only:
-              - feature/dockerized-app-1
-              - develop
-              - master
+            - feature/dockerized-app-1
+            - develop
+            - master
 notifications:
   email:
     recipients:
