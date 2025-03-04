@@ -8,7 +8,7 @@ jobs:
           - "$HOME/.m2"
       install:
         - java --version
-        - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -Dmaven.test.skip=true
+        - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests -Dmaven.test.skip=true
     - stage: my-family-ws-docker-deploy
       language: bash
       services:
