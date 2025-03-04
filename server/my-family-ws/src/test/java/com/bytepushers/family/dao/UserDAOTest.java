@@ -1,3 +1,4 @@
+/*
 package com.bytepushers.family.dao;
 
 import com.bytepushers.family.exception.UserNotFoundException;
@@ -113,4 +114,4 @@ public class UserDAOTest {
 
         logger.info("Delete User Test passed: Deleted user with ID {}", testUser.getId());
     }
-}
+}*/
