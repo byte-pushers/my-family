@@ -1,6 +1,7 @@
 jobs:
   include:
-    - language: java
+    - stage: my-family-ws-maven-install
+      language: java
       jdk: openjdk22
       cache:
         directories:
@@ -8,7 +9,8 @@ jobs:
       install:
         - java --version
         - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -Dmaven.test.skip=true
-    - language: bash
+    - stage: my-family-ws-docker-deploy
+      language: bash
       services:
         - docker
       deploy:
@@ -16,7 +18,8 @@ jobs:
         edge:
           branch: v2.0.3-beta.4
         script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
-    - language: bash
+    - stage: my-family-app-docker-deploy
+      language: bash
       services:
         - docker
       deploy:
