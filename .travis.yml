@@ -1,3 +1,4 @@
+dist: jammy
 jobs:
   include:
     - stage: my-family-app-angular-build
@@ -7,7 +8,7 @@ jobs:
           packages:
             - lftp
       node_js:
-        - "18.19.1"
+        - "20"
       cache:
         directories:
           - "client/my-family-app/node_modules"
