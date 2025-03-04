@@ -32,7 +32,16 @@ jobs:
         - provider: script
           edge:
             branch: v2.0.3-beta.4
-          script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
+          script:
+            - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
+              fi
+            - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "true"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
+              fi
+            - if [ "$TRAVIS_BRANCH" = "feature/dockerized-app-1" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
+              fi
           #on:
             #branches:
               #only:
@@ -56,7 +65,16 @@ jobs:
         - provider: script
           edge:
             branch: v2.0.3-beta.4
-          script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
+          script:
+            - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+              fi
+            - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "true"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+              fi
+            - if [ "$TRAVIS_BRANCH" = "feature/dockerized-app-1" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
+              make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+              fi
           #on:
             #branches:
               #only:
