@@ -19,23 +19,21 @@ jobs:
             branch: v2.0.3-beta.4
           script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
           on:
-            branch: feature/dockerized-app-1
-            #branches:
-              #only:
-                #- feature/dockerized-app-1
-                #- develop
-                #- master
+            branches:
+              only:
+                - feature/dockerized-app-1
+                - develop
+                - master
         - provider: script
           edge:
             branch: v2.0.3-beta.4
           script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
           on:
-            branch: feature/dockerized-app-1
-            #branches:
-              #only:
-                #- feature/dockerized-app-1
-                #- develop
-                #- master
+            branches:
+              only:
+                - feature/dockerized-app-1
+                - develop
+                - master
 notifications:
   email:
     recipients:
