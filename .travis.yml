@@ -17,7 +17,7 @@ jobs:
         provider: script
         edge:
           branch: v2.0.3-beta.4
-        script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
+        script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
         on:
           branches:
             only:
@@ -32,7 +32,7 @@ jobs:
         provider: script
         edge:
           branch: v2.0.3-beta.4
-        script: make dockerpush DOCKER_IMAGE_NAME=my-family-web
+        script: make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
         on:
           branches:
             only:
