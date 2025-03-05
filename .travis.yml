@@ -58,15 +58,15 @@ jobs:
       install:
         - java --version
         - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests -Dmaven.test.skip=true
-        - mkdir -p my-family-ws-workspace
-        - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
-        - echo "About to list contents of ./my-family-ws-workspace directory"
-        - ls ./my-family-ws-workspace
     - stage: my-family-ws-docker-deploy
       language: bash
       services:
         - docker
       script:
+        - mkdir -p my-family-ws-workspace
+        - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
+        - echo "About to list contents of ./my-family-ws-workspace directory"
+        - ls ./my-family-ws-workspace
         - cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
         - echo "About to list contents of ./server/my-family-ws/target directory"
         - ls ./server/my-family-ws/target
