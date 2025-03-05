@@ -1,4 +1,4 @@
-import { Credentials } from "./credentials";
+import { Credentials } from './credentials';
 
 /**
  * Represents the payload for a login request, including transaction ID and user credentials.

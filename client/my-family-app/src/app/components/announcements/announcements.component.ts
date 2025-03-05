@@ -7,7 +7,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Announcement } from "../../models/announcement.model";
+import { Announcement } from '../../models/announcement';
 import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";

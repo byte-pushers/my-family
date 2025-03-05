@@ -58,8 +58,8 @@ export class CreateEventPage {
 
 
   addAgenda(): void {
-    const newAgenda = new AgendaItemModel(this.agendaStartTime, this.agendaEndTime, this.agendaDescription);
-    this.event.agendas.push(newAgenda);
+    const newAgenda = new AgendaItemModel('null', new Date(this.agendaStartTime), new Date(this.agendaEndTime), this.agendaDescription);
+    this.event.agendas?.push(newAgenda);
     this.agendaDescription = '';
     this.agendaStartTime = '';
     this.agendaEndTime = '';

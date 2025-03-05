@@ -5,20 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "CivalUnion")
-public class Union {
+@Table(name = "CivilUnion")
+public class Union extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     /*@ManyToOne(cascade = CascadeType.ALL)  // Add cascade
     @JoinColumn(name = "person_id")
@@ -34,7 +34,9 @@ public class Union {
 
     public Union() {}
 
-    public Union(UnionBuilder builder) {
+    public Union(Builder builder) {
+        super(builder.createdBy, builder.createdDate, builder.updatedBy, builder.updatedDate);
+        this.id = builder.id;
         this.spouse = builder.spouse;
         this.married = builder.married;
         this.children = builder.children;
@@ -50,11 +52,11 @@ public class Union {
         '}';
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -86,21 +88,65 @@ public class Union {
         this.children.add(child);
     }
 
-    public static class UnionBuilder {
+    public static class Builder {
+        private Long id;
         private Person spouse;
-        private Boolean married;
+        private Boolean married = false;
         private List<Person> children = new ArrayList<>();
+        private String createdBy;
+        private Date createdDate;
+        private String updatedBy;
+        private Date updatedDate;
+        
+        public Builder withId(Long id) {
+            this.id = id;
 
-        public UnionBuilder unitedWith(Person spouse, Boolean married) {
+            return this;
+        }
+
+        public Builder unitedWith(Person spouse, Boolean married) {
             this.spouse = spouse;
             this.married = married;
+
             return this;
         }
 
-        public UnionBuilder withChild(Person person) {
+        public Builder withChild(Person person) {
             this.children.add(person);
+
             return this;
         }
+
+        public Builder withChildren(List<Person> children) {
+            this.children = children;
+
+            return this;
+        }
+
+        public Builder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+
+            return this;
+        }
+
+        public Builder withCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+
+            return this;
+        }
+
+        public Builder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+
+            return this;
+        }
+
+        public Builder withUpdatedDate(Date updatedDate) {
+            this.updatedDate = updatedDate;
+
+            return this;
+        }
+
         public Union build() {
             return new Union(this);
         }

@@ -9,18 +9,15 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from "@ionic/angular";
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { FamilyTreeVisualizationComponent } from "../../components/family-tree-visualization/family-tree-visualization.component";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { FamilyTreeService } from "../../services/family-tree.service";
 import { FamilyMemberListComponent } from "../../components/family-member-list/family-member-list.component";
 import { createFamilyMemberFromResponse, FamilyTreeResponse } from "../../models/family-tree/family-tree-response";
-import { FamilyMember } from '../../models/family-tree/family-member.model';
-import { Person } from '../../models/family-tree/person';
-import { RelationshipType } from '../../models/family-tree/relationship-type';
 import { FamilySearchService } from "../../services/family-search.service";
-import { MOCK_FAMILY_MEMBERS, MOCK_FAMILY_TREE_RESPONSE } from './mock-family-data';
 import { Router } from '@angular/router';
+import { FamilyMember } from '../../models/family-tree/family-member';
 
 @Component({
   selector: 'app-family-tree',
@@ -63,7 +60,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   /**
    * The ID of the selected family member.
    */
-  selectedId?: number;
+  selectedId?: number| null;
 
   /**
    * Indicates whether the data is loading.
@@ -121,7 +118,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
    */
   ngOnInit() {
     console.log('FamilyTreePage: ngOnInit');
-    this.loadFamilyTree();
+    // this.loadFamilyTree();
   }
 
   /**
@@ -136,14 +133,14 @@ export class FamilyTreePage implements OnInit, OnDestroy {
   /**
    * Loads the family tree data.
    */
-  loadFamilyTree() {
+  /*loadFamilyTree() {
     console.log('FamilyTreePage: Starting loadFamilyTree');
     this.loading = true;
     this.error = null;
 
     try {
-      this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
-
+      // this.familyTreeData = MOCK_FAMILY_TREE_RESPONSE;
+      this.familyTreeData = null;
       // Create root member from the top-level data
       this.rootMember = createFamilyMemberFromResponse({
         id: this.familyTreeData.id,
@@ -175,7 +172,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
       this.error = 'Failed to load family tree data.';
       this.loading = false;
     }
-  }
+  }*/
 
   /**
    * Handles the search event.
@@ -191,7 +188,7 @@ export class FamilyTreePage implements OnInit, OnDestroy {
     this.familySearchService.searchMembers(query, allMembers);
 
     if (this.familyTreeVisualization) {
-      this.familyTreeVisualization.highlightNodes(query);
+      // this.familyTreeVisualization.highlightNodes(query);
     }
   }
 

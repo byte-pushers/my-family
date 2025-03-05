@@ -9,34 +9,24 @@
     </div>
 
     <!-- Step 2 forms -->
-    <div *ngIf="currentStep == 1">
+    <div *ngIf="currentStep == 1" class="flex flex-col gap-y-5">
       <app-family-member-form
         [relationshipType]="'Parents'"
-        [relationshipTypeDropdownArray]="['Dad', 'Mom', 'Stepdad', 'Stepmom']"
         [addFamilyMemberForm]="parentsForm">
       </app-family-member-form>
 
       <app-family-member-form
-        [relationshipType]="'Grandparents'"
-        [relationshipTypeDropdownArray]="['Grandma', 'Grandpa']"
-        [addFamilyMemberForm]="grandparentsForm">
-      </app-family-member-form>
-
-      <app-family-member-form
         [relationshipType]="'Siblings'"
-        [relationshipTypeDropdownArray]="['Brother', 'Sister']"
         [addFamilyMemberForm]="siblingsForm">
       </app-family-member-form>
 
       <app-family-member-form
         [relationshipType]="'Spouse'"
-        [relationshipTypeDropdownArray]="['Husband', 'Wife']"
         [addFamilyMemberForm]="spouseForm">
       </app-family-member-form>
 
       <app-family-member-form
         [relationshipType]="'Children'"
-        [relationshipTypeDropdownArray]="['Daughter', 'Son']"
         [addFamilyMemberForm]="childrenForm">
       </app-family-member-form>
 
@@ -61,20 +51,32 @@
     </div>
 
     <!-- Step 3 forms -->
-    <div *ngIf="currentStep == 2">
+    <div *ngIf="currentStep == 2" class="flex flex-col gap-y-5">
+      <app-family-member-form
+        [relationshipType]="'Grandparents'"
+        [addFamilyMemberForm]="grandparentsForm"
+        [relatedRelationshipType]="'Parent'"
+        [relatedRelationshipTypeForm]="parentsForm">
+      </app-family-member-form>
+
       <app-family-member-form
         [relationshipType]="'Uncles'"
-        [addFamilyMemberForm]="unclesForm">
+        [addFamilyMemberForm]="unclesForm"
+        [relatedRelationshipType]="'Brother'"
+        [relatedRelationshipTypeForm]="parentsForm">
       </app-family-member-form>
 
       <app-family-member-form
         [relationshipType]="'Aunts'"
-        [addFamilyMemberForm]="auntsForm">
+        [addFamilyMemberForm]="auntsForm"
+        [relatedRelationshipType]="'Sister'"
+        [relatedRelationshipTypeForm]="parentsForm">
       </app-family-member-form>
 
       <app-family-member-form
         [relationshipType]="'Cousins'"
-        [addFamilyMemberForm]="cousinsForm">
+        [addFamilyMemberForm]="cousinsForm"
+        [relatedRelationshipType]="'Child'">
       </app-family-member-form>
 
       <!-- Crest Upload Option -->

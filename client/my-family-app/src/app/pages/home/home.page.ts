@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { AnnouncementsComponent } from "../../components/announcements/announcements.component";
 import { FeaturedEventComponent } from "../../components/featured-event/featured-event.component";
 import { IonicModule } from "@ionic/angular";
-import { Announcement } from "../../models/announcement.model";
+import { Announcement } from "../../models/announcement";
+import { AnnouncementModel } from "../../models/announcement.model";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { SearchBarComponent } from "../../components/shared/search-bar/search-bar.component";
 

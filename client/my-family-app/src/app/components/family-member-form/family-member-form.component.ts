@@ -12,7 +12,7 @@ import {
 } from "@angular/forms";
 
 /**
- * A standalone Angular component for adding and managing family members of one relationship.
+ * A standalone Angular component for adding and removing family members of one relationship.
  * @author Stella Choi
  */
 @Component({
@@ -36,7 +36,7 @@ export class FamilyMemberFormComponent implements OnInit {
    */
   @Input({ required: true }) relationshipType: string = '';
 
-  /**
+  /** delete
    * Array of specific relations for Parents, Grandparents, Siblings, Spouse, and Children.
    * Example: For Parents, pass in [Mom, Dad].
    * @property {string[]} relationshipTypeDropdownArray
@@ -48,6 +48,10 @@ export class FamilyMemberFormComponent implements OnInit {
    * @property {FormGroup} addFamilyMemberForm
    */
   @Input() addFamilyMemberForm: FormGroup = this.fb.group({}); // FormGroup passed in from parent to hold family members
+
+  @Input() relatedRelationshipType: string = '';
+  @Input() relatedPeopleList: string[] = [];
+  @Input() relatedRelationshipTypeForm: FormGroup = this.fb.group({}); // FormGroup used for the "related to" select
 
   /**
    * Tracks whether the form has been submitted.
@@ -61,6 +65,16 @@ export class FamilyMemberFormComponent implements OnInit {
    * @property {string} tempType
    */
   tempType: string = '';
+
+  relationshipMap: {
+    [key: string]: { [key: string]: string }
+  } = {
+    Parents: {Male: 'Dad', Female: 'Mom'},
+    Siblings: {Male: 'Brother', Female: 'Sister'},
+    Spouse: {Male: 'Husband', Female: 'Wife'},
+    Children: {Male: 'Son', Female: 'Daughter'},
+    Grandparents: {Male: 'Grandpa', Female: 'Grandma'}
+  };
 
   /**
    * Constructor for FamilyMemberFormComponent.
@@ -96,43 +110,61 @@ export class FamilyMemberFormComponent implements OnInit {
   addFamilyMember() {
     this.submitted = true;
 
-    // Adding members with relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['type']?.valid) {
+    // Adding members with relatedPerson (for page 3)
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.relatedRelationshipType && this.addFamilyMemberForm.controls['gender']?.valid && this.addFamilyMemberForm.controls['birthDate']?.valid) {
+      console.log(`1 with: ${this.relatedRelationshipType}`);
+      const name = this.addFamilyMemberForm.controls['name'].value;
+      const relatedPersonName = this.addFamilyMemberForm.controls['relatedPersonName']
+      const gender = this.addFamilyMemberForm.controls['gender'].value;
+      const birthDate = this.addFamilyMemberForm.controls['birthDate'].value;
+
+      const member = this.fb.group({
+        name: new FormControl(name, Validators.required),
+        relatedPersonName: new FormControl(relatedPersonName, Validators.required),
+        type: this.relationshipMap[this.relationshipType]?.[gender],
+        gender: new FormControl(gender, Validators.required),
+        birthDate: new FormControl(birthDate, Validators.required)
+      });
+
+      this.familyMembers.push(member);
+      this.resetFormControls(true);
+    }
+    // todo: add one more if for uncles, aunts, and cousins because their type is not showing in the list when person added
+    // Adding members with no relatedPerson (for page 2)
+    // && this.relationshipTypeDropdownArray.length == 0
+    if (this.addFamilyMemberForm.controls['name']?.valid && this.addFamilyMemberForm.controls['gender']?.valid && this.addFamilyMemberForm.controls['birthDate']?.valid) {
+      console.log(2);
       // If Spouse has already been added, don't add anymore
       if (this.relationshipType === 'Spouse' && this.familyMembers.length > 0) {
         console.log('Cannot have multiple spouses.');
+        this.resetFormControls(false);
         return;
       }
 
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-      const familyMemberType = this.addFamilyMemberForm.controls['type'].value;
+      const name = this.addFamilyMemberForm.controls['name'].value;
+      const gender = this.addFamilyMemberForm.controls['gender'].value;
+      const birthDate = this.addFamilyMemberForm.controls['birthDate'].value;
 
       const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(familyMemberType, Validators.required)
+        name: new FormControl(name, Validators.required),
+        type: this.relationshipMap[this.relationshipType]?.[gender],
+        gender: new FormControl(gender, Validators.required),
+        birthDate: new FormControl(birthDate, Validators.required)
       });
 
       this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.addFamilyMemberForm.controls['type'].reset();
-      this.submitted = false;
+      this.resetFormControls(false);
     }
+  }
 
-    // Adding members with no relationshipDropdownArray
-    if (this.addFamilyMemberForm.controls['name']?.valid && this.relationshipTypeDropdownArray.length == 0) {
-      const familyMemberName = this.addFamilyMemberForm.controls['name'].value;
-
-      const member = this.fb.group({
-        name: new FormControl(familyMemberName, Validators.required),
-        type: new FormControl(this.tempType, Validators.required)
-      });
-
-      this.familyMembers.push(member);
-
-      this.addFamilyMemberForm.controls['name'].reset();
-      this.submitted = false;
+  resetFormControls(resetRelated: boolean) {
+    this.addFamilyMemberForm.controls['name'].reset();
+    if (resetRelated) {
+      this.addFamilyMemberForm.controls['relatedPersonName'].reset();
     }
+    this.addFamilyMemberForm.controls['gender'].reset();
+    this.addFamilyMemberForm.controls['birthDate'].reset();
+    this.submitted = false;
   }
 
   /**
@@ -151,5 +183,13 @@ export class FamilyMemberFormComponent implements OnInit {
 
     this.addFamilyMemberForm.get('name')?.setValue('');
     this.addFamilyMemberForm.get('type')?.setValue('');
+  }
+
+  onFocus(event: any) {
+    event.target.placeholder = '';
+  }
+
+  onBlur(event: any) {
+    event.target.placeholder = 'YYYY-MM-DD';
   }
 }

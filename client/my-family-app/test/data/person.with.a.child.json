@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "firstName": "John",
+  "lastName": "Davis",
+  "birthDate": "1970-01-01T00:00:00.000Z",
+  "gender": "Male",
+  "deceased": false,
+  "unions": [
+    {
+      "married": true,
+      "children": [
+        {
+          "firstName": "Mike",
+          "lastName": "Davis",
+          "birthDate": "2000-05-12T00:00:00.000Z",
+          "gender": "Male",
+          "deceased": false
+        }
+      ]
+    }
+  ],
+  "createdBy":"adminUser",
+  "createdDate": "2024-10-16T10:00:00.000Z",
+  "updatedBy":"technicianUser",
+  "updatedDate":"2024-10-17T10:00:00.000Z"
+}

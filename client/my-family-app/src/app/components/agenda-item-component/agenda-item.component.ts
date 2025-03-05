@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AgendaItem } from '../../pages/create-event/agenda-item.model';
-
+import { AgendaItem } from '../../models/agenda-item';
 
 @Component({
   selector: 'app-agenda-item',

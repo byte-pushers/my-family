@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "df220d52-f0d8-4c54-aaba-04bbefc65698",
+		"_postman_id": "ef68e2d6-dc2f-49f8-8619-d2f09b85b7bd",
 		"name": "my-family-reunion-app",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "35578910"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -75,23 +74,14 @@
 				},
 				{
 					"name": "Login User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "12345",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "john",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -101,12 +91,18 @@
 							{
 								"key": "Accept-Versions",
 								"value": "0.0.0.1",
-								"type": "text"
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"username\": \"user@example.com\",\r\n        \"password\": \"cGFzc3dvcmQxMjM=\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"transactionId\": \"unique-transaction-id\",\r\n    \"credentials\": {\r\n        \"userName\": \"john@doe.com\",\r\n        \"password\": \"123456\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -114,15 +110,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/session",
+							"raw": "http://localhost:8090/api/sessions",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8090",
 							"path": [
 								"api",
-								"session"
+								"sessions"
 							]
 						}
 					},
@@ -196,6 +192,268 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "OAuth2 Get Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "default"
+								},
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app",
+									"type": "default"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret",
+									"type": "default"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:3000/login/oauth2/code/public-client-bp-web-app",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/oauth2/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app",
+									"disabled": true
+								},
+								{
+									"key": "client_secret",
+									"value": "secret",
+									"disabled": true
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:3000/login/oauth2/code/public-client-bp-web-app",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth2 Authorize",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/oauth2/authorize?client_id=public-client-bp-web-app&response_type=code&scope=openid&redirect_uri=http://127.0.0.1:8083/login/oauth2/code/public-client-bp-web-app&code_challenge=zZvC8A9xUiWhFq_YTINfVvU4SDFj0CZsjOQWzpWJK-I&code_challenge_method=S256",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app"
+								},
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "scope",
+									"value": "openid"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:8083/login/oauth2/code/public-client-bp-web-app"
+								},
+								{
+									"key": "code_challenge",
+									"value": "zZvC8A9xUiWhFq_YTINfVvU4SDFj0CZsjOQWzpWJK-I"
+								},
+								{
+									"key": "code_challenge_method",
+									"value": "S256"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth2 Request Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "OXUuEbiX5DHvxYA39yzJcmCMTheU-UiC2c4-kuNG-ogEuK7prZwADspKE4KchEWX5AXI11ElwaYZ_8xTHI6qcas7oRxlK5ADpoHmtnACDvDMqwvM7cAYCF5pM57-rmpK",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:8083/login/oauth2/code/public-client-bp-web-app",
+									"type": "text"
+								},
+								{
+									"key": "code_verifier",
+									"value": "LIt0AFwKIqhWHG86hFIbll3TNQrn8Bw6Pwd-OFGxmyqSeuw2vSUb-23CJu5vpLA3Q8YoFpTHWBWvDz2LNN5ywD-nhUj53D9ZZOnNV2h6D-NK8CqMaqQh6iUFpMh8UTC7",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/oauth2/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app",
+									"disabled": true
+								},
+								{
+									"key": "code",
+									"value": "ZXlG28XJXFn2fd0An1Tz9_p8VL5yxb_FJL4krnrGX9weZeg22LXWE2zSZbQMpXnaJkaftnPvLtzLQBov5QjjA1PFdUJzf0IBRYHIUKk-wYd8lZarYRx3N0sPdVDmA2zY",
+									"disabled": true
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:8083/login/oauth2/code/public-client-bp-web-app",
+									"disabled": true
+								},
+								{
+									"key": "code_verifier",
+									"value": "LIt0AFwKIqhWHG86hFIbll3TNQrn8Bw6Pwd-OFGxmyqSeuw2vSUb-23CJu5vpLA3Q8YoFpTHWBWvDz2LNN5ywD-nhUj53D9ZZOnNV2h6D-NK8CqMaqQh6iUFpMh8UTC7",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJraWQiOiI3YTQ0MGNjMy03NWQ4LTQyYzEtODYxYS1hZTdlNWQwNTFiZjMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXVkIjoicHVibGljLWNsaWVudC1icC13ZWItYXBwIiwibmJmIjoxNzM2NzI4MzUwLCJzY29wZSI6WyJvcGVuaWQiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZXhwIjoxNzM2NzI4NjUwLCJpYXQiOjE3MzY3MjgzNTAsImp0aSI6IjA3Y2RmZDI3LWYzZTctNGFiYS1iMDM5LWYwMjJmYWRkNDRhOCJ9.nZbTQyGK2CdUtVmMSNKuFvP-ZufRB27U1g_bqCu8W-b_fuw67PowC7ikq7aLIgjItCHYXC_JoYawWa-lexsHNVX4OKvEXbyf8kzdnZ0HLNIIbDWV8grS01K2rpGfJmAiywqvb7bYXTqWPzxLOfX0dhdMivGdgdX_cByu6RlCEyQEGNf2aa1df4ypdQyFjdAF1W3xoXohre2BCwFt79M3jj_TOFrCz2ie_9LMwFXkgW865dBCCPl0FTRMqq0JSCdlu_XmE0c3e5JjwHG7mHkqiS0_K5xmWT4aFilKcaUaLNRLULJ918o_gmAJYRMK_K5pjBEINTjxra7Z7zVJnR1pQw",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9000/order-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"order-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/oauth2/token?grant_type=refresh_token&client_id=public-client-bp-web-app&redirect_uri=http://127.0.0.1:3000/login/oauth2/code/public-client-bp-web-app&refresh_token&code",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token"
+								},
+								{
+									"key": "client_id",
+									"value": "public-client-bp-web-app"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://127.0.0.1:3000/login/oauth2/code/public-client-bp-web-app"
+								},
+								{
+									"key": "refresh_token",
+									"value": null
+								},
+								{
+									"key": "code",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -205,6 +463,56 @@
 				{
 					"name": "Error Tests",
 					"item": []
+				},
+				{
+					"name": "Add One Family Member",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"transactionId\": \"transaction-id-value\",\n    \"familyTree\": {\n        \"name\": \"The Pouncils\",\n        \"people\": [\n            {\n                \"firstName\": \"John\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"createdBy\": \"adminUser\",\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\n    },\n    \"createdBy\": \"adminUser\",\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/family-trees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"family-trees"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "Add Family Member",
@@ -234,7 +542,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"transactionId\": \"transaction-id-value\",\r\n    \"familyTree\": {\r\n        \"name\": \"The Pouncils\",\r\n        \"people\": [\r\n            {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Davis\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"unions\": [\r\n                    {\r\n                        \"married\": false,\r\n                        \"spouse\": {\r\n                            \"firstName\": \"Tammy\",\r\n                            \"lastName\": \"Davis\",\r\n                            \"birthDate\": \"1970-01-01\",\r\n                            \"gender\": \"Female\",\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"children\": [\r\n                            {\r\n                                \"firstName\": \"Mike\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2000-05-12\",\r\n                                \"gender\": \"Male\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            },\r\n                            {\r\n                                \"firstName\": \"Anna\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2005-08-20\",\r\n                                \"gender\": \"Female\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                \"siblings\": [\r\n                    {\r\n                        \"firstName\": \"Jimmy\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Male\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"firstName\": \"Jessica\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Female\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ],\r\n                \"parents\": [\r\n                    {\r\n                        \"firstName\": \"Jole\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Male\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"firstName\": \"Foxie\",\r\n                        \"lastName\": \"Brown\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Female\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ],\r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        ],\r\n        \"createdBy\": \"adminUser\",\r\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n    },\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"transactionId\": \"transaction-id-value\",\r\n    \"familyTree\": {\r\n        \"name\": \"The Pouncils\",\r\n        \"people\": [\r\n            {\r\n                \"firstName\": \"John\",\r\n                \"lastName\": \"Davis\",\r\n                \"birthDate\": \"1970-01-01\",\r\n                \"gender\": \"Male\",\r\n                \"unions\": [\r\n                    {\r\n                        \"married\": false,\r\n                        \"spouse\": {\r\n                            \"firstName\": \"Tammy\",\r\n                            \"lastName\": \"Davis\",\r\n                            \"birthDate\": \"1970-01-01\",\r\n                            \"gender\": \"Female\",\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        \"children\": [\r\n                            {\r\n                                \"firstName\": \"Mike\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2000-05-12\",\r\n                                \"gender\": \"Male\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            },\r\n                            {\r\n                                \"firstName\": \"Anna\",\r\n                                \"lastName\": \"Davis\",\r\n                                \"birthDate\": \"2005-08-20\",\r\n                                \"gender\": \"Female\",\r\n                                \"createdBy\": \"adminUser\",\r\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                            }\r\n                        ]\r\n                    }\r\n                ],\r\n                    \"siblings\": [\r\n                        {\r\n                            \"firstName\": \"Jimmy\",\r\n                            \"lastName\": \"Davis\",\r\n                            \"birthDate\": \"1970-01-01\",\r\n                            \"gender\": \"Male\",\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        },\r\n                        {\r\n                            \"firstName\": \"Jessica\",\r\n                            \"lastName\": \"Davis\",\r\n                            \"birthDate\": \"1970-01-01\",\r\n                            \"gender\": \"Female\",\r\n                            \"createdBy\": \"adminUser\",\r\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                        }\r\n                    ],\r\n                \"parents\": [\r\n                    {\r\n                        \"firstName\": \"Jole\",\r\n                        \"lastName\": \"Davis\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Male\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    },\r\n                    {\r\n                        \"firstName\": \"Foxie\",\r\n                        \"lastName\": \"Brown\",\r\n                        \"birthDate\": \"1970-01-01\",\r\n                        \"gender\": \"Female\",\r\n                        \"createdBy\": \"adminUser\",\r\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n                    }\r\n                ],\r\n                \"createdBy\": \"adminUser\",\r\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n            }\r\n        ],\r\n        \"createdBy\": \"adminUser\",\r\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n    },\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -251,6 +559,57 @@
 							"path": [
 								"api",
 								"family-trees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Family Member with Existing People",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionId\": \"transaction-id-value\",\r\n    \"people\": [\r\n        {\"id\", 1, ...},\r\n        {\"id\", 2, ...},\r\n    ],\r\n    \"createdBy\": \"adminUser\",\r\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:49517/api/family-trees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "49517",
+							"path": [
+								"api",
+								"family-trees",
+								"1"
 							]
 						}
 					},
@@ -284,7 +643,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": 1,\n    \"transactionId\": \"transaction-id-value\",\n    \"familyTree\": {\n        \"name\": \"The Pouncils\",\n        \"people\": [\n            {\n                \"firstName\": \"John\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"unions\": [\n                    {\n                        \"married\": false,\n                        \"spouse\": {\n                            \"firstName\": \"Olivia\",\n                            \"lastName\": \"Davis\",\n                            \"birthDate\": \"1970-01-01\",\n                            \"gender\": \"Female\",\n                            \"createdBy\": \"adminUser\",\n                            \"createdDate\": \"2024-10-16T10:00:00Z\"\n                        },\n                        \"children\": [\n                            {\n                                \"firstName\": \"Emma\",\n                                \"lastName\": \"Davis\",\n                                \"birthDate\": \"2000-06-12\",\n                                \"gender\": \"Male\",\n                                \"createdBy\": \"adminUser\",\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\n                            },\n                            {\n                                \"firstName\": \"Anna\",\n                                \"lastName\": \"Davis\",\n                                \"birthDate\": \"2005-08-20\",\n                                \"gender\": \"Female\",\n                                \"createdBy\": \"adminUser\",\n                                \"createdDate\": \"2024-10-16T10:00:00Z\"\n                            }\n                        ]\n                    }\n                ],\n                \"sibilings\": [\n                    {\n                        \"firstName\": \"Amelia\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Charlotte\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ],\n                \"parents\": [\n                    {\n                        \"firstName\": \"Jole\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Foxie\",\n                        \"lastName\": \"Brown\",\n                        \"birthDate\": \"1970-02-02\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ],\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"createdBy\": \"adminUser\",\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\n    },\n    \"createdBy\": \"adminUser\",\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\n}",
+							"raw": "{\n    \"transactionId\": \"transaction-id-value\",\n    \"person\": {\n        \"id\": 1,\n        \"firstName\": \"Johnnie\",\n        \"lastName\": \"Bell\",\n        \"birthDate\": \"1978-01-01\",\n        \"gender\": \"Male\",\n        \"unions\": [\n            {\n                \"married\": false,\n                \"spouse\": {\n                    \"firstName\": \"Tammy\",\n                    \"lastName\": \"Davis\",\n                    \"birthDate\": \"1970-01-01\",\n                    \"gender\": \"Female\",\n                    \"createdBy\": \"adminUser\",\n                    \"createdDate\": \"2024-10-16T10:00:00Z\"\n                },\n                \"children\": [\n                    {\n                        \"firstName\": \"Mike\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"2000-05-12\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Anna\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"2005-08-20\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ]\n            }\n        ],\n        \"siblings\": [\n            {\n                \"firstName\": \"Jimmy\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            },\n            {\n                \"firstName\": \"Jessica\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Female\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"parents\": [\n            {\n                \"firstName\": \"Jole\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            },\n            {\n                \"firstName\": \"Foxie\",\n                \"lastName\": \"Brown\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Female\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"createdBy\": \"adminUser\",\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\n    },\n    \"createdBy\": \"adminUser\",\n    \"createdDate\": \"2024-10-16T10:00:00Z\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -617,6 +976,61 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Person API",
+			"item": [
+				{
+					"name": "Update Person",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "john@doe.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-API-Version",
+								"value": "1.0.0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transactionId\": \"transaction-id-value\",\n    \"person\": {\n        \"id\": 2,\n        \"firstName\": \"Johnie\",\n        \"lastName\": \"Bell\",\n        \"birthDate\": \"1978-01-01\",\n        \"gender\": \"Male\",\n        \"unions\": [\n            {\n                \"married\": false,\n                \"spouse\": {\n                    \"firstName\": \"Tammy\",\n                    \"lastName\": \"Davis\",\n                    \"birthDate\": \"1970-01-01\",\n                    \"gender\": \"Female\",\n                    \"createdBy\": \"adminUser\",\n                    \"createdDate\": \"2024-10-16T10:00:00Z\"\n                },\n                \"children\": [\n                    {\n                        \"firstName\": \"Mike\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"2000-05-12\",\n                        \"gender\": \"Male\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    },\n                    {\n                        \"firstName\": \"Anna\",\n                        \"lastName\": \"Davis\",\n                        \"birthDate\": \"2005-08-20\",\n                        \"gender\": \"Female\",\n                        \"createdBy\": \"adminUser\",\n                        \"createdDate\": \"2024-10-16T10:00:00Z\"\n                    }\n                ]\n            }\n        ],\n        \"siblings\": [\n            {\n                \"firstName\": \"Jimmy\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            },\n            {\n                \"firstName\": \"Jessica\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Female\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"parents\": [\n            {\n                \"firstName\": \"Jole\",\n                \"lastName\": \"Davis\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Male\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            },\n            {\n                \"firstName\": \"Foxie\",\n                \"lastName\": \"Brown\",\n                \"birthDate\": \"1970-01-01\",\n                \"gender\": \"Female\",\n                \"createdBy\": \"adminUser\",\n                \"createdDate\": \"2024-10-16T10:00:00Z\"\n            }\n        ],\n        \"createdBy\": \"adminUser\",\n        \"createdDate\": \"2024-10-16T10:00:00Z\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/persons",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"persons"
+							]
 						}
 					},
 					"response": []

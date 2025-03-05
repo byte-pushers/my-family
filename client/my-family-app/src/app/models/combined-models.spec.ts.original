@@ -1,5 +1,5 @@
 import { Person } from './family-tree/person';
-import { FamilyMember } from './family-tree/family-member.model';
+import { FamilyMemberModel } from './family-tree/family-member.model';
 import { FamilyTreeRequestPayload } from './family-tree/family-tree-request.payload';
 import { Permission } from './permission';
 import { Role } from './role';
@@ -11,7 +11,7 @@ describe('Combined Model Tests', () => {
   // ISO 8601 format for date validation
   const iso8601Format = 'YYYY-MM-DDTHH:mm:ss';
 
-  const testBaseDomainModel = (model: Person | FamilyMember, expectedId: number, expectedCreatedBy: string, expectedUpdatedBy: string) => {
+  const testBaseDomainModel = (model: Person | FamilyMemberModel, expectedId: number, expectedCreatedBy: string, expectedUpdatedBy: string) => {
     it('should have correct ID, createdBy, updatedBy properties', () => {
       expect(model.getId()).toBe(expectedId);
       expect(model.getCreatedBy()).toBe(expectedCreatedBy);
@@ -32,7 +32,7 @@ describe('Combined Model Tests', () => {
 
   // ----- Tests for Person Model -----
   describe('Person Model Tests', () => {
-    const person = new Person(1, 'John', 'Doe', new Date(1980, 0, 1), [] as FamilyMember[], 'creatorUser', new Date(), 'updaterUser', new Date());
+    const person = new Person(1, 'John', 'Doe', new Date(1980, 0, 1), [] as FamilyMemberModel[], 'creatorUser', new Date(), 'updaterUser', new Date());
 
     testBaseDomainModel(person, 1, 'creatorUser', 'updaterUser');
 
@@ -49,8 +49,8 @@ describe('Combined Model Tests', () => {
 
   // ----- Tests for FamilyMember Model -----
   describe('FamilyMember Model Tests', () => {
-    const person = new Person(2, 'Jane', 'Doe', new Date(1972, 5, 15), [] as FamilyMember[]);
-    const familyMember = new FamilyMember(1, RelationshipType.SPOUSE, person, 'creatorUser', 'updaterUser', new Date(), new Date());
+    const person = new Person(2, 'Jane', 'Doe', new Date(1972, 5, 15), [] as FamilyMemberModel[]);
+    const familyMember = new FamilyMemberModel(1, RelationshipType.SPOUSE, person, 'creatorUser', 'updaterUser', new Date(), new Date());
 
     testBaseDomainModel(familyMember, 1, 'creatorUser', 'updaterUser');
 
@@ -90,8 +90,8 @@ describe('Combined Model Tests', () => {
     const adminRole = new Role('Admin', [readPermission, writePermission]);
     const userRole = new Role('User', [readPermission]);
 
-    const person1 = new Person(1, 'John', 'Doe', new Date(1970, 0, 1), [] as FamilyMember[]);
-    const familyMember1 = new FamilyMember(1, RelationshipType.FATHER, person1, 'creatorUser', 'updaterUser', new Date(), new Date());
+    const person1 = new Person(1, 'John', 'Doe', new Date(1970, 0, 1), [] as FamilyMemberModel[]);
+    const familyMember1 = new FamilyMemberModel(1, RelationshipType.FATHER, person1, 'creatorUser', 'updaterUser', new Date(), new Date());
 
     const user = new User('testUser', 'password123', [adminRole, userRole], [familyMember1]);
 
@@ -111,21 +111,21 @@ describe('Combined Model Tests', () => {
 
   // ----- Tests for FamilyTreeRequestPayload -----
   describe('FamilyTreeRequestPayload Tests', () => {
-    const parentPerson = new Person(1, 'Parent', 'One', new Date(1950, 0, 1), [] as FamilyMember[]);
-    const childPerson = new Person(2, 'Child', 'One', new Date(1980, 0, 1), [] as FamilyMember[]);
-    const parent = new FamilyMember(1, RelationshipType.FATHER, parentPerson, 'creatorUser', 'updaterUser', new Date(), new Date());
-    const child = new FamilyMember(2, RelationshipType.CHILD, childPerson, 'creatorUser', 'updaterUser', new Date(), new Date());
+    const parentPerson = new Person(1, 'Parent', 'One', new Date(1950, 0, 1), [] as FamilyMemberModel[]);
+    const childPerson = new Person(2, 'Child', 'One', new Date(1980, 0, 1), [] as FamilyMemberModel[]);
+    const parent = new FamilyMemberModel(1, RelationshipType.FATHER, parentPerson, 'creatorUser', 'updaterUser', new Date(), new Date());
+    const child = new FamilyMemberModel(2, RelationshipType.CHILD, childPerson, 'creatorUser', 'updaterUser', new Date(), new Date());
 
     // Explicitly set spouse to null (not an array)
     const payload = new FamilyTreeRequestPayload(
       [parent],                      // parents
-      [] as FamilyMember[],           // grandparents
+      [] as FamilyMemberModel[],           // grandparents
       [child],                        // siblings
       null,                           // spouse (set to null)
-      [] as FamilyMember[],           // children
-      [] as FamilyMember[],           // cousins
-      [] as FamilyMember[],           // uncles
-      [] as FamilyMember[]            // aunts
+      [] as FamilyMemberModel[],           // children
+      [] as FamilyMemberModel[],           // cousins
+      [] as FamilyMemberModel[],           // uncles
+      [] as FamilyMemberModel[]            // aunts
     );
 
     it('should generate the correct payload structure', () => {

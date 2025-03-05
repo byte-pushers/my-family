@@ -2,16 +2,18 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { FamilyMember } from "../../models/family-tree/family-member.model";
 import { RelationshipType } from "../../models/family-tree/relationship-type";
-import { Person } from "../../models/family-tree/person";
 import { today } from "ionicons/icons";
-import { FamilyTreeRequestPayload } from "../../models/family-tree/family-tree-request.payload";
+import { FamilyTreeRequestPayloadModel } from "../../models/family-tree/family-tree-request.payload.model";
 import { FamilyMemberFormComponent } from "../../components/family-member-form/family-member-form.component";
 import { FooterNavigationComponent } from "../../components/shared/footer-navigation/footer-navigation.component";
 import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { FamilyTreeService } from '../../services/family-tree.service';
+import { PersonModel } from '../../models/family-tree/person.model';
+import { FamilyTreeModel } from "../../models/family-tree/family-tree.model";
+import { UnionsModel } from "../../models/family-tree/unions.model";
+import { Person } from "../../models/family-tree/person";
 
 /**
  * The AddToFamilyPage component handles the addition of family members to a family tree.
@@ -51,15 +53,15 @@ export class AddToFamilyPage implements OnInit {
   auntsForm: FormGroup;
   cousinsForm: FormGroup;
 
-  // Arrays to hold added family members.
-  parents: FamilyMember[] = [];
-  grandparents: FamilyMember[] = [];
-  siblings: FamilyMember[] = [];
-  spouse: FamilyMember[] = [];
-  children: FamilyMember[] = [];
-  uncles: FamilyMember[] = [];
-  aunts: FamilyMember[] = [];
-  cousins: FamilyMember[] = [];
+  // Array of FamilyMember's to pass in to the FamilyTreeRequestPayload
+  parents: Person[] = [];
+  grandparents: Person[] = [];
+  siblings: Person[] = [];
+  spouse: Person[] = []; // Can only have one Person
+  children: Person[] = [];
+  uncles: Person[] = [];
+  aunts: Person[] = [];
+  cousins: Person[] = [];
 
   /**
    * Initializes all the form groups
@@ -103,7 +105,10 @@ export class AddToFamilyPage implements OnInit {
   private constructFormGroup(): FormGroup {
     return this.fb.group({
       name: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
+      relatedPersonName: new FormControl(''),
+      // type: new FormControl('', Validators.required),
+      gender: new FormControl('', Validators.required),
+      birthDate: new FormControl('', Validators.required),
       familyMembers: this.fb.array([])
     });
   }
@@ -131,62 +136,78 @@ export class AddToFamilyPage implements OnInit {
   }
 
   /**
-   * Populates the respective FamilyMember array from the form group.
-   * @param {FormGroup} fg The form group.
-   * @param {FamilyMember[]} arr The FamilyMember array to populate.
-   */
-  private fillFamilyMemberArray(fg: FormGroup, arr: FamilyMember[]): void {
-    const formArray = fg.get('familyMembers') as FormArray;
-    formArray.controls.forEach((control) => {
-      const name = control.get('name')?.value;
-      const type = control.get('type')?.value as RelationshipType;
-
-      const parsedName = name.split(' ');
-      let firstName = parsedName[0];
-      let lastName = parsedName[1];
-
-      const person = new Person(1, firstName, lastName, new Date(1 / 2001));
-      const familyMember = new FamilyMember(1, type, person, 'createdBy', 'updatedBy', new Date(today), new Date(today));
-      arr.push(familyMember);
-    });
-  }
-
-  /**
    * Goes to the next step in the form process.
    */
   nextStep(): void {
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
     }
-
-    this.fillFamilyMemberArray(this.parentsForm, this.parents);
-    this.fillFamilyMemberArray(this.grandparentsForm, this.grandparents);
-    this.fillFamilyMemberArray(this.siblingsForm, this.siblings);
-    this.fillFamilyMemberArray(this.spouseForm, this.spouse);
-    this.fillFamilyMemberArray(this.childrenForm, this.children);
   }
 
-  /**
-   * Handles the "Add to Family" button click.
-   * Creates a FamilyTreeRequestPayload and calls a POST method
-   */
-  addToFamilyButton(): void {
-    this.fillFamilyMemberArray(this.unclesForm, this.uncles);
-    this.fillFamilyMemberArray(this.auntsForm, this.aunts);
-    this.fillFamilyMemberArray(this.cousinsForm, this.cousins);
+  // Taking people from form and populating respective PersonModel[]
+  private fillPersonModelArray(fg: FormGroup, arr: Person[]): void {
+    const formArray = fg.get('familyMembers') as FormArray;
+    formArray.controls.forEach((control) => {
+      const name = control.get('name')?.value;
+      const nameArray = name.split(' ');
+      const firstName = nameArray[0];
+      const lastName = nameArray[1];
 
-    let familyMemberRequestPayload: FamilyTreeRequestPayload;
-    if (this.spouse[0]) {
-      familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, this.spouse[0]!, this.children,
-        this.uncles, this.aunts, this.cousins
-      );
-    } else {
-      familyMemberRequestPayload = new FamilyTreeRequestPayload(
-        this.parents, this.grandparents, this.siblings, null, this.children,
-        this.uncles, this.aunts, this.cousins
-      );
-    }
+      // const type = control.get('type')?.value as RelationshipType;
+      const type = control.get('type')?.value as string;
+
+      const gender = control.get('gender')?.value as string;
+      /*let gender: string = '';
+      if (type === 'Dad' || type === 'Stepdad' || type === 'Grandpa' || type === 'Brother' || type === 'Husband' || type === 'Son') {
+        gender = 'Male';
+      } else {
+        gender = 'Female';
+      }*/
+
+      const birthDate = control.get('birthDate')?.value as string;
+
+      const person: PersonModel = new PersonModel(1, firstName, lastName, new Date(birthDate), gender, false, undefined, undefined, undefined, "adminUser", new Date(), undefined, undefined);
+      arr.push(person);
+    });
+  }
+
+  // Add To Family button call
+  addToFamilyButton(): void {
+    this.fillPersonModelArray(this.parentsForm, this.parents);
+    this.fillPersonModelArray(this.grandparentsForm, this.grandparents);
+    this.fillPersonModelArray(this.siblingsForm, this.siblings);
+    this.fillPersonModelArray(this.spouseForm, this.spouse);
+    this.fillPersonModelArray(this.childrenForm, this.children);
+    this.fillPersonModelArray(this.unclesForm, this.uncles);
+    this.fillPersonModelArray(this.auntsForm, this.aunts);
+    this.fillPersonModelArray(this.cousinsForm, this.cousins);
+
+    const tempPeople: PersonModel[] = [];
+    const tempUnions: UnionsModel = new UnionsModel(1, this.spouse.length > 0, this.spouse[0], this.children);
+
+    // Get mainPerson from sign up page?
+    const mainPerson: PersonModel = new PersonModel(1, "John", "Davis", new Date("1970-01-01"), "Male", false, this.siblings, this.parents, tempUnions, "adminUser", new Date("2024-10-16T10:00:00Z"), undefined, undefined);
+    tempPeople.push(mainPerson);
+    console.log("person: " + mainPerson);
+
+    const tempFamilyTree: FamilyTreeModel = new FamilyTreeModel({
+      id: 1,
+      name: `The ${mainPerson.lastName} Family`,
+      people: tempPeople,
+      createdBy: "adminUser",
+      createdDate: new Date("2024-10-16T10:00:00Z")
+    });
+
+    const familyMemberRequestPayload: FamilyTreeRequestPayloadModel = new FamilyTreeRequestPayloadModel({
+      id: 1,
+      userId: 1,
+      transactionId: "transaction-id-value",
+      familyTree: tempFamilyTree,
+      createdBy: "adminUser",
+      createdDate: new Date("2024-10-16T10:00:00Z")
+    })
+
+    console.log("payload:\n" + familyMemberRequestPayload);
 
     this.familyTreeService.create(familyMemberRequestPayload).subscribe({
       next: (response) => {

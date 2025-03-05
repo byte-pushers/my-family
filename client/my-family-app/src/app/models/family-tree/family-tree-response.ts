@@ -5,10 +5,11 @@
  * @author Danny Amezquita
  */
 
-import { BaseDomainModel } from '../base-domain-model';
+import { BaseDomainModel } from '../base-domain.model';
 import { Person } from './person';
-import { FamilyMember } from './family-member.model';
 import { RelationshipType } from './relationship-type';
+import { FamilyMember } from './family-member';
+import {FamilyTree} from "./family-tree";
 
 /**
  * Interface representing raw person data from API before instantiation.
@@ -31,6 +32,7 @@ export interface PersonResponseData {
  * @returns {Person} Instance of Person.
  */
 export function createPersonFromResponse(data: PersonResponseData): Person {
+  // @ts-ignore
   return new Person(
     data.id,
     data.firstName,
@@ -38,8 +40,8 @@ export function createPersonFromResponse(data: PersonResponseData): Person {
     new Date(data.birthDate),
     [], // Initialize empty family members array
     data.createdBy,
-    new Date(data.createdDate),
     data.updatedBy || undefined,
+    new Date(data.createdDate),
     data.updatedDate ? new Date(data.updatedDate) : undefined
   );
 }
@@ -48,15 +50,16 @@ export function createPersonFromResponse(data: PersonResponseData): Person {
  * Interface representing the main response for a family tree.
  */
 export interface FamilyTreeResponse {
-  id: number;
-  createdBy: string;
-  updatedBy: string | null;
-  createdDate: string;
-  updatedDate: string | null;
+  id?: number | null;
+  createdBy?: string;
+  updatedBy?: string | null;
+  createdDate?: string;
+  updatedDate?: string | null;
   relationship: string;
   person: PersonResponseData;  // Raw data that will be converted to Person
   parent: number | null;
   familyMembers: FamilyTreeResponse[];
+  data: FamilyTree;
 }
 
 /**
@@ -67,13 +70,14 @@ export interface FamilyTreeResponse {
 export function createFamilyMemberFromResponse(data: FamilyTreeResponse): FamilyMember {
   const person = createPersonFromResponse(data.person);
 
+  // @ts-ignore
   return new FamilyMember(
     data.id,
     data.relationship as RelationshipType,
     person,
     data.createdBy,
-    data.updatedBy || '',
-    new Date(data.createdDate),
-    data.updatedDate ? new Date(data.updatedDate) : new Date()
+    data.updatedBy || undefined,
+    data.createdDate,
+    data.updatedDate ? new Date(data.updatedDate) : undefined
   );
 }

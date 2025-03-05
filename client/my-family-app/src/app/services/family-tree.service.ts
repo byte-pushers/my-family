@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { FamilyTreeRequestPayload } from '../models/family-tree/family-tree-request.payload';
+import { FamilyTreeRequestPayloadModel } from '../models/family-tree/family-tree-request.payload.model';
 import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
+import { FamilyTree } from '../models/family-tree/family-tree';
 
 /**
  * Service for managing family tree data through API calls.
@@ -14,7 +15,7 @@ import { FamilyTreeResponse } from '../models/family-tree/family-tree-response';
   providedIn: 'root'
 })
 export class FamilyTreeService {
-  private apiBaseUrl = '/api'; // Replace with actual API URL (ask whose working on it)
+  private apiBaseUrl = '/api'; // Replace it with actual API URL (ask whose working on it)
 
   constructor(private http: HttpClient) {}
 
@@ -33,17 +34,18 @@ export class FamilyTreeService {
 
   /**
    * Creates a new family tree.
-   * @param {FamilyTreeRequestPayload} payload - The family tree data to be submitted.
+   * @param {FamilyTreeRequestPayloadModel} payload - The family tree data to be submitted.
    * @returns {Observable<any>} An observable that emits the server response.
    */
-  public create(payload: FamilyTreeRequestPayload): Observable<any> {
+  public create(payload: FamilyTreeRequestPayloadModel): Observable<any> {
     console.log(`payload: ${JSON.stringify(payload)}`, payload);
-
-    return this.http.post<any>(`${this.apiBaseUrl}/family-trees/`, payload, {
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
+    return new Observable<FamilyTree>((observer) => {
+      return this.http.post<FamilyTreeResponse>(`${this.apiBaseUrl}/family-trees`, payload, {
+        headers: this.getHeaders()
+      }).subscribe(familyTreeResponse => {
+        observer.next(familyTreeResponse.data);
+      });
+    });
   }
 
   /**
@@ -69,10 +71,10 @@ export class FamilyTreeService {
   /**
    * Updates an existing family tree.
    * @param {number} id - The ID of the family tree to update.
-   * @param {FamilyTreeRequestPayload} payload - The updated family tree data.
+   * @param {FamilyTreeRequestPayloadModel} payload - The updated family tree data.
    * @returns {Observable<any>} An observable that emits the server response.
    */
-  public updateFamilyTree(id: number, payload: FamilyTreeRequestPayload): Observable<any> {
+  public updateFamilyTree(id: number, payload: FamilyTreeRequestPayloadModel): Observable<any> {
     return this.http.put<any>(`${this.apiBaseUrl}/family-trees/${id}`, payload, {
       headers: this.getHeaders()
     }).pipe(

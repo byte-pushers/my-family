@@ -8,8 +8,8 @@
  * Interface representing an agenda item.
  */
 export interface AgendaItem {
-  timeStart: string;
-  timeEnd: string;
+  startTime: Date;
+  endTime: Date;
   title: string;
   description: string;
 }
