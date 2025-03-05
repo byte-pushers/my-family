@@ -30,7 +30,7 @@ jobs:
         - docker
       script:
         - if [ "$TRAVIS_BRANCH" = "feature/dockerized-app-1" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
-          make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
+          make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app
           fi
       #deploy:
         #- provider: script
@@ -58,7 +58,7 @@ jobs:
         - docker
       script:
         - if [ "$TRAVIS_BRANCH" = "feature/dockerized-app-1" ] && [ "$TRAVIS_PULL_REQUEST" = "false"]; then
-          make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+          make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
           fi
       #deploy:
         #- provider: script
