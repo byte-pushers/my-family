@@ -1,29 +1,6 @@
 dist: jammy
 jobs:
   include:
-    #- stage: my-family-app-angular-build
-      #language: node_js
-      #addons:
-        #apt:
-          #packages:
-            #- lftp
-      #node_js:
-        #- "20"
-      #cache:
-        #directories:
-          #- "client/my-family-app/node_modules"
-      #before_install:
-        #- cd client/my-family-app/
-      #install:
-        #- npm install
-      #script:
-        #- if [ $TRAVIS_BRANCH = "master" ]; then
-          #echo -e "Running npm run build --configuration production";
-          #npm run build -- --configuration production;
-          #else
-          #echo -e "Running npm run build --configuration development";
-          #npm run build -- --configuration development;
-          #fi;
     - stage: my-family-app-docker-deploy
       language: bash
       services:
