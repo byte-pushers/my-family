@@ -105,7 +105,9 @@ export class AddToFamilyPage implements OnInit {
   private constructFormGroup(): FormGroup {
     return this.fb.group({
       name: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
+      relatedPersonName: new FormControl(''),
+      // type: new FormControl('', Validators.required),
+      gender: new FormControl('', Validators.required),
       birthDate: new FormControl('', Validators.required),
       familyMembers: this.fb.array([])
     });
@@ -153,12 +155,14 @@ export class AddToFamilyPage implements OnInit {
 
       // const type = control.get('type')?.value as RelationshipType;
       const type = control.get('type')?.value as string;
-      let gender: string = '';
+
+      const gender = control.get('gender')?.value as string;
+      /*let gender: string = '';
       if (type === 'Dad' || type === 'Stepdad' || type === 'Grandpa' || type === 'Brother' || type === 'Husband' || type === 'Son') {
         gender = 'Male';
       } else {
         gender = 'Female';
-      }
+      }*/
 
       const birthDate = control.get('birthDate')?.value as string;
 
