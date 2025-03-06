@@ -45,7 +45,7 @@ jobs:
                 #- feature/dockerized-app-1
                 #- develop
                 #- master
-    - stage: my-family-ws-maven-install
+    - stage: my-family-ws-maven-build
       language: java
       jdk: openjdk22
       cache:
@@ -53,11 +53,13 @@ jobs:
           - "$HOME/.m2"
       install:
         - java --version
+        - echo "About to run maven clean install commands."
         - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests -Dmaven.test.skip=true
+        - echo "Done running maven clean install commands."
       workspaces:
         create:
           name: my-family-ws-workspace
-        paths:
+          paths:
           - ./server/my-family-ws/target/my-family-ws.jar
       #script:
         #- mkdir -p my-family-ws-workspace
@@ -76,7 +78,7 @@ jobs:
       script:
         #- cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
         #- echo "About to list contents of ./server/my-family-ws/target directory";
-        #- ls ./server/my-family-ws/target;
+        - ls ./server/my-family-ws/target;
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
           echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
