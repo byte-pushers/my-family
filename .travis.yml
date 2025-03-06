@@ -63,28 +63,6 @@ jobs:
         - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
         - echo "About to list contents of ./my-family-ws-workspace directory"
         - ls ./my-family-ws-workspace
-        - cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
-        - echo "About to list contents of ./server/my-family-ws/target directory"
-        - ls ./server/my-family-ws/target
-    - stage: my-family-ws-docker-deploy
-      language: bash
-      services:
-        - docker
-      script:
-        - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
-          make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
-          fi;
-      #deploy:
-        #- provider: script
-          #edge:
-            #branch: v2.0.3-beta.4
-          #script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
-          #on:
-            #branches:
-              #only:
-                #- feature/dockerized-app-1
-                #- develop
-                #- master
     - stage: my-family-ws-docker-deploy
       language: bash
       services:
