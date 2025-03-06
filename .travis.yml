@@ -28,12 +28,12 @@ jobs:
       language: bash
       services:
         - docker
-      script:
-        - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
-          echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app";
-          make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
-          echo -e "deployed my-family-web image to dockerhub successfully.";
-          fi;
+      #script:
+        #- if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
+          #echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app";
+          #make dockerpush DOCKER_IMAGE_NAME=my-family-web DOCKER_IMAGE_SRC_DIR=client/my-family-app;
+          #echo -e "deployed my-family-web image to dockerhub successfully.";
+          #fi;
       deploy:
         - provider: script
           edge:
@@ -68,13 +68,13 @@ jobs:
           - my-family-ws-workspace
       services:
         - docker
-      script:
-        - ls ./server/my-family-ws/target;
-        - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
-          echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
-          make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
-          echo -e "deployed my-family-ws image to dockerhub successfully.";
-          fi;
+      #script:
+        #- ls ./server/my-family-ws/target;
+        #- if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
+          #echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
+          #make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+          #echo -e "deployed my-family-ws image to dockerhub successfully.";
+          #fi;
       deploy:
         - provider: script
           edge:
