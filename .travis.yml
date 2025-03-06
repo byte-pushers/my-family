@@ -74,7 +74,7 @@ jobs:
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
           echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
-          echo -e "deployed my-family-ws image to dockerhub successfully."
+          echo -e "deployed my-family-ws image to dockerhub successfully.";
           fi;
       #deploy:
         #- provider: script
@@ -98,7 +98,7 @@ jobs:
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
           echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
-          echo -e "deployed my-family-ws image to dockerhub successfully."
+          echo -e "deployed my-family-ws image to dockerhub successfully.";
           fi;
       workspaces:
         use:
