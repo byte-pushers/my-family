@@ -59,15 +59,39 @@ jobs:
       install:
         - java --version
         - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests -Dmaven.test.skip=true
+        - mkdir -p my-family-ws-workspace
+        - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
+        - echo "About to list contents of ./my-family-ws-workspace directory"
+        - ls ./my-family-ws-workspace
+        - cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
+        - echo "About to list contents of ./server/my-family-ws/target directory"
+        - ls ./server/my-family-ws/target
     - stage: my-family-ws-docker-deploy
       language: bash
       services:
         - docker
       script:
-        - mkdir -p my-family-ws-workspace
-        - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
-        - echo "About to list contents of ./my-family-ws-workspace directory"
-        - ls ./my-family-ws-workspace
+        - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
+          echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
+          make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
+          echo -e "deployed my-family-ws image to dockerhub successfully."
+          fi;
+      #deploy:
+        #- provider: script
+          #edge:
+            #branch: v2.0.3-beta.4
+          #script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
+          #on:
+            #branches:
+              #only:
+                #- feature/dockerized-app-1
+                #- develop
+                #- master
+    - stage: my-family-ws-docker-deploy
+      language: bash
+      services:
+        - docker
+      script:
         - cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
         - echo "About to list contents of ./server/my-family-ws/target directory"
         - ls ./server/my-family-ws/target
