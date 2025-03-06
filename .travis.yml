@@ -61,13 +61,6 @@ jobs:
           name: my-family-ws-workspace
           paths:
           - ./server/my-family-ws/target/my-family-ws.jar
-      #script:
-        #- mkdir -p my-family-ws-workspace
-        #- cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
-        #- echo "About to list contents of ./my-family-ws-workspace directory"
-        #- ls ./my-family-ws-workspace
-        #- echo "About to list contents of ./my-family-ws-workspace directory"
-        #- ls ./my-family-ws-workspace
     - stage: my-family-ws-docker-deploy
       language: bash
       workspaces:
@@ -76,19 +69,17 @@ jobs:
       services:
         - docker
       script:
-        #- cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
-        #- echo "About to list contents of ./server/my-family-ws/target directory";
         - ls ./server/my-family-ws/target;
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
           echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
           echo -e "deployed my-family-ws image to dockerhub successfully.";
           fi;
-      #deploy:
-        #- provider: script
-          #edge:
-            #branch: v2.0.3-beta.4
-          #script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
+      deploy:
+        - provider: script
+          edge:
+            branch: v2.0.3-beta.4
+          script: make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws
           #on:
             #branches:
               #only:
