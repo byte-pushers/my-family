@@ -59,6 +59,7 @@ jobs:
       install:
         - java --version
         - mvn clean install -P dev -f ./server/my-family-ws/pom.xml -DskipTests -Dmaven.test.skip=true
+      script:
         - mkdir -p my-family-ws-workspace
         - cp ./server/my-family-ws/target/my-family-ws.jar my-family-ws-workspace
         - echo "About to list contents of ./my-family-ws-workspace directory"
