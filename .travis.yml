@@ -72,9 +72,7 @@ jobs:
         - docker
       script:
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
-          echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
-          echo -e "deployed my-family-ws image to dockerhub successfully.";
           fi;
       #deploy:
         #- provider: script
@@ -93,8 +91,8 @@ jobs:
         - docker
       script:
         - cp my-family-ws-workspace/my-family-ws.jar ./server/my-family-ws/target
-        - echo "About to list contents of ./server/my-family-ws/target directory"
-        - ls ./server/my-family-ws/target
+        - echo "About to list contents of ./server/my-family-ws/target directory";
+        - ls ./server/my-family-ws/target;
         - if [ $TRAVIS_BRANCH = "feature/dockerized-app-1" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then
           echo -e "Running docker deployment - make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws";
           make dockerpush DOCKER_IMAGE_NAME=my-family-ws DOCKER_IMAGE_SRC_DIR=server/my-family-ws;
