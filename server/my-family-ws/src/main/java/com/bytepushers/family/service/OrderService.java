@@ -70,7 +70,7 @@ public class OrderService {
 
     public String getOrCreateCustomer(String email) throws StripeException {
 
-        Account account = accountService.getAccountByEmail("zayan12@gmail.com");
+        Account account = accountService.getAccountByEmail(email);
 
         Map<String, Object> searchParams = new HashMap<>();
         searchParams.put("email", email);
@@ -81,10 +81,8 @@ public class OrderService {
 
         if(customers.isEmpty()){
             //System.out.println(customers.getEmail());
-
             //get the address of customer from account
             Address address = account.getAddress();
-
             //create params for customer address
             CustomerCreateParams.Address customerAddressParams = CustomerCreateParams.Address.builder()
                     .setLine1(address.getAddressLine1())
@@ -115,14 +113,14 @@ public class OrderService {
      * @return {@code true} if the order is processed successfully, {@code false} otherwise
      */
     //TODO: process order through stripe
-    public String processOrder(List<Order> order) throws StripeException {
-        Account account = accountService.getAccountByEmail("zayan12@gmail.com");
+    public String processOrder(List<Order> order, String email) throws StripeException {
+        Account account = accountService.getAccountByEmail(email);
         if(account == null){
             return "Account not found";
         }
 
         //calculate the price of order with the tax
-        double Price = Math.ceil(calaculatePrice(order, account.getEmail()));
+       // double Price = Math.ceil(calaculatePrice(order, account.getEmail()));
 
         Stripe.apiKey = apiService.getStripeApiKey();
        String customerId =  getOrCreateCustomer(account.getEmail());
@@ -167,20 +165,20 @@ public class OrderService {
     }
 
     //retrieve customer current invoice
-    public Invoice getInvoice(String invoiceId) throws StripeException {
-            return Invoice.retrieve(invoiceId);
-    }
+//    public Invoice getInvoice(String invoiceId) throws StripeException {
+//            return Invoice.retrieve(invoiceId);
+//    }
 
     //get all customer orders history
-    public List<Session> getCustomerPurchases(String email) throws StripeException {
-            Stripe.apiKey = apiService.getStripeApiKey();
-            String customerId = getOrCreateCustomer(email);
-
-            SessionListParams params = SessionListParams.builder()
-                    .setCustomer(customerId)
-                    .build();
-            return Session.list(params).getData();
-    }
+//    public List<Session> getCustomerPurchases(String email) throws StripeException {
+//            Stripe.apiKey = apiService.getStripeApiKey();
+//            String customerId = getOrCreateCustomer(email);
+//
+//            SessionListParams params = SessionListParams.builder()
+//                    .setCustomer(customerId)
+//                    .build();
+//            return Session.list(params).getData();
+//    }
 
     /**
      * Calculates the total price of a list of orders, including the applicable tax rate for the user's state.
@@ -192,50 +190,54 @@ public class OrderService {
      * @param email  the email address of the user placing the order
      * @return the total price of the orders, including tax
      */
-    public double calaculatePrice(List<Order> orders, String email) {
-        double totalCost = 0.0;
+//    public double calaculatePrice(List<Order> orders, String email) {
+//        double totalCost = 0.0;
+//
+//        for (Order order : orders) {
+//            System.out.println(order.getPrice());
+//        }
+//
+//        for (Order order : orders) {
+//            String type = order.getType().toLowerCase();
+//            switch (type) {
+//                case "wearable":
+//                case "book":
+//                    totalCost += Merchandise.calculateTotalCost(order);
+//                    break;
+//                case "family":
+//                    FamilyPackage familyPackage = new FamilyPackage();
+//                    totalCost += familyPackage.calculateTotalCost(order.getAttendees());
+//                    break;
+//                case "individual":
+//                    IndividualPackage individualPackage = new IndividualPackage();
+//                    totalCost += individualPackage.calculateTotalCost(order.getAttendees());
+//                    break;
+//                case "group":
+//                    GroupPackage groupPackage = new GroupPackage();
+//                    totalCost += groupPackage.calculateTotalCost(order.getAttendees());
+//                    break;
+//                case "free":
+//                    FreePackage freePackage = new FreePackage();
+//                    totalCost += freePackage.calculateTotalCost(order.getAttendees());
+//                    break;
+//            }
+//        }
+//
+//        //find user account by email and get user state
+//        Account account = accountService.getAccountByEmail(email);
+//
+//        String state = "TX";  //account.getState();
+//
+//        //calculate tax
+//        double taxRate = taxService.getTaxRate(state);
+//
+//        //calculate tax amount
+//        double taxAmount = taxRate * totalCost;
+//
+//        return totalCost + taxAmount;
+//    }
 
-        for (Package order : orders) {
-            String type = order.getType().toLowerCase();
-            switch (type) {
-                case "wearable":
-                case "book":
-                    totalCost += Merchandise.calculateTotalCost(order);
-                    break;
-                case "family":
-                    FamilyPackage familyPackage = new FamilyPackage();
-                    totalCost += familyPackage.calculateTotalCost(order.getAttendees());
-                    break;
-                case "individual":
-                    IndividualPackage individualPackage = new IndividualPackage();
-                    totalCost += individualPackage.calculateTotalCost(order.getAttendees());
-                    break;
-                case "group":
-                    GroupPackage groupPackage = new GroupPackage();
-                    totalCost += groupPackage.calculateTotalCost(order.getAttendees());
-                    break;
-                case "free":
-                    FreePackage freePackage = new FreePackage();
-                    totalCost += freePackage.calculateTotalCost(order.getAttendees());
-                    break;
-            }
-        }
-
-        //find user account by email and get user state
-        Account account = accountService.getAccountByEmail(email);
-
-        String state = "TX";  //account.getState();
-
-        //calculate tax
-        double taxRate = taxService.getTaxRate(state);
-
-        //calculate tax amount
-        double taxAmount = taxRate * totalCost;
-
-        return totalCost + taxAmount;
-    }
-
-    public Order findOrderByOrderId(Long orderId) {
-        return null;
-    }
+//    public Order findOrderByOrderId(Long orderId) {
+//        return null;
+//    }
 }
