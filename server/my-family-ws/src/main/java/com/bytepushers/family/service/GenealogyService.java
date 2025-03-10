@@ -7,6 +7,10 @@ import com.bytepushers.family.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 /**
  * Abstract service class for managing genealogy-related operations.
  * Provides a base implementation for creating {@link FamilyTree} entities.
@@ -51,7 +55,22 @@ public class GenealogyService implements FamilyTreeService {
 
     @Override
     public FamilyTree getFamilyTree(Long id) {
-        FamilyTree familyTree = familyTreeRepository.findById(id).orElseThrow(() -> new NotFoundException("Family tree not found."));
+        FamilyTree familyTree = familyTreeRepository.getReferenceById(id); //.orElseThrow(() -> new NotFoundException("Family tree not found."));
+
+        List<Person> transformedPeople = familyTree.getPeople().stream()
+                .map(Person::removeParentChildren)
+                .collect(toList());
+
+        familyTree = new FamilyTree.Builder()
+                .id(familyTree.getId())
+                .name(familyTree.getName())
+                .people(transformedPeople)
+                .createdDate(familyTree.getCreatedDate())
+                .createdBy(familyTree.getCreatedBy())
+                .updatedBy(familyTree.getUpdatedBy())
+                .updatedDate(familyTree.getUpdatedDate())
+                .build();
+
         return familyTree;
     }
 
@@ -68,13 +87,13 @@ public class GenealogyService implements FamilyTreeService {
 
     @Override
     public FamilyTree updateFamilyTree(Long id, FamilyTree familyTree) {
-        FamilyTree familyTreeToUpdate = familyTreeRepository.findById(id).orElseThrow(()->new NotFoundException("Family tree with id " + id + " does not exist."));
+        FamilyTree familyTreeToUpdate = familyTreeRepository.findById(id).orElseThrow(()-> new NotFoundException("Family tree with id " + id + " does not exist."));
         familyTreeToUpdate.getPeople().clear();
 
         if (familyTree.getPeople() != null) {
             familyTreeToUpdate.getPeople().addAll(familyTree.getPeople());
            return familyTreeRepository.save(familyTreeToUpdate);
-        }else {
+        } else {
             throw new IllegalArgumentException("Invalid family_tree_id: family tree does not exist.");
         }
     }

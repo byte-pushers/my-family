@@ -16,6 +16,12 @@
       --background-hover: rgb(219 234 254);
     }
 
+    &.bg-green-50 {
+      --background: rgb(240 253 244);
+      --background-hover: rgb(220 252 231);
+    }
+
+
     &::part(native) {
       padding: 0;
     }
@@ -42,8 +48,9 @@
   }
 
   ion-list {
-    background: transparent;
     padding: 0;
+    background-color: rgb(240, 253, 244) !important; // This is the Tailwind bg-green-50 color
+
   }
 
   // Improve touch targets on mobile

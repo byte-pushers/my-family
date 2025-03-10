@@ -1,41 +1,65 @@
 <div class="add-family-form" [formGroup]="addFamilyMemberForm">
-  <div class="mr-7 mt-4 flex g justify-center">
-    <div class="w-full">
-      <div class="flex justify-between">
-        <label for="input-box" class="block leading-6 text-sm">{{relationshipType}}</label>
-        <button class="color-blue" (click)="addFamilyMember()">
-          <div class="sub-header font-semibold text-xs text-blue-800">Add {{relationshipType}} +</div>
+  <div class="flex flex-row space-x-3 w-full">
+    <!-- LEFT SIDE -->
+    <div class="flex flex-col flex-grow">
+      <!-- todo: add some spacing for error msg?-->
+      <!-- relationship ... add x + -->
+      <div class="flex justify-between items-center">
+        <label for="input-name-box" class="text-sm">{{relationshipType}}</label>
+        <button (click)="addFamilyMember()">
+          <div class="text-blue-800 text-xs font-semibold">Add {{relationshipType}}+</div>
         </button>
       </div>
 
-      <!-- Name input box with -->
+      <!-- name input box -->
       <input type="text"
              placeholder="Enter Name..."
-             id="input-box"
+             id="input-name-box"
              autocomplete="given-name"
              formControlName="name"
-             class="form-control text-sm block w-full rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6 bg-rgba(245,251,255,1)">
+             class="form-control text-sm block rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec] sm:text-sm sm:leading-6">
       <div *ngIf="addFamilyMemberForm.controls['name'].errors?.['required'] && submitted" class="text-red-700 text-xs">
         Name required.
       </div>
-    </div>
 
-    <!-- Relationship type dropdown box -->
-    <!-- Only shows if parent component has passed in a relationshipTypeDropdownArray -->
-    <div *ngIf="relationshipTypeDropdownArray && relationshipTypeDropdownArray.length > 0" class="flex flex-col mt-6 ml-3 w-1/5 h-13">
-      <select id="relationship-type-dropdown-array"
-              formControlName="type"
-              class="form-control flex rounded-md border-0 py-2 bg-gray-100 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-[#97d2ec] text-xs font-inter font-semibold w-24 items-center">
-        <option *ngFor="let specificRelation of relationshipTypeDropdownArray;" [value]="specificRelation" class="text-xs font-inter text-gray-500">
-          {{specificRelation}}
-        </option>
-      </select>
-      <div *ngIf="addFamilyMemberForm.controls['type'].errors?.['required'] && submitted" class="text-red-700 text-xs">
-        Type required.
+      <!-- related to -->
+      <div *ngIf="relatedRelationshipType !== '' && relatedRelationshipTypeForm" class="w-full">
+        <div class="items-center">
+          <label for="relatedPersonName" class="text-sm">{{relatedRelationshipType}} Of</label>
+        </div>
+        <select class="form-control text-sm block rounded-md bg-gray-100 w-full border-[#97d2ec] ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec]"
+                id="relatedPersonName"
+                formControlName="relatedPersonName">
+          <option disabled selected></option>
+          <option *ngFor="let person of relatedRelationshipTypeForm?.get('familyMembers')?.value" [value]="person.name">
+            {{ person.name }}
+          </option>
+        </select>
       </div>
     </div>
-  </div>
 
+    <!-- RIGHT SIDE-->
+    <div class="flex flex-col">
+      <!-- gender -->
+      <label for="gender" class="text-sm">Gender</label>
+      <select class="form-control text-sm block rounded-md bg-gray-100 border-[#97d2ec] ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec]"
+              id="gender"
+              formControlName="gender">
+        <option disabled selected></option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <!-- birth date -->
+      <div class="items-center">
+        <label for="birthDate" class="text-sm">Birth Date</label>
+      </div>
+      <input type="date"
+             class="form-control text-sm block rounded-md border-[#97d2ec] ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset hover:ring-[#5aaefb] active:ring-[#97d2ec]"
+             id="birthDate"
+             formControlName="birthDate">
+    </div>
+  </div>
   <!-- List of family members -->
   <div class="text-align-center ml-11" formArrayName="familyMembers">
     <ul
@@ -46,7 +70,7 @@
         <span class="ml-5 text-sm">{{member.get('name')?.value}}</span>
         <span class="ml-1 text-gray-500 text-sm">({{member.get('type')?.value}})</span>
       </div>
-      <button (click)="removeFamilyMember(i)" class="ml-auto mr-1 text-[#0D4C92] text-xs text-semibold font-inter">
+      <button (click)="removeFamilyMember(i)" class="ml-auto mr-1 text-[#0D4C92] text-xs text-semibold">
         Remove
       </button>
     </ul>
